@@ -63,6 +63,11 @@ class m170626_040304_create_biblio_table extends Migration
      */
     public function down()
     {
+        // drops foreign key for table `biblio`
+        $this->dropForeignKey(
+            'fk-biblio-userid',
+            '{{%biblio}}'
+        );
         $this->dropTable('{{%biblio}}');
     }
 }
