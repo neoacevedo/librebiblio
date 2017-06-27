@@ -23,8 +23,8 @@ class m170626_040304_create_biblio_table extends Migration
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->notNull(),
             'updated_userid' => $this->integer()->notNull(),
-            'material_cd' => $this->smallInteger()->notNull(),
-            'collection_cd'=> $this->smallInteger()->notNull(),
+            'material_cd' => $this->integer()->notNull(),
+            'collection_cd'=> $this->integer()->notNull(),
             'call_nmbr1' => $this->string(20),
             'call_nmbr2' => $this->string(20),
             'call_nmbr3' => $this->string(20),
@@ -40,11 +40,45 @@ class m170626_040304_create_biblio_table extends Migration
             'opac_flg' => $this->char(1)->notNull()
         ]);
         
-        // creates index for column `author_id`
+        // creates index for column `updated_userid`
         $this->createIndex(
             'idx-biblio-userid',
             '{{%biblio}}',
             'updated_userid'
+        );
+        
+        // creates index for column `material_cd`
+        $this->createIndex(
+            'idx-biblio-materialid',
+            '{{%biblio}}',
+            'material_cd'
+        );
+        
+        // creates index for column `collection_cd`
+        $this->createIndex(
+            'idx-biblio-collectionid',
+            '{{%biblio}}',
+            'collection_cd'
+        );
+        
+        // add foreign key for table `material_type_dm`
+        $this->addForeignKey(
+            'fk-biblio-materialid',
+            '{{%biblio}}',
+            'material_cd',
+            '{{%material_type_dm}}',
+            'id',
+            'CASCADE'
+        );
+        
+        // add foreign key for table `collection_dm`
+        $this->addForeignKey(
+            'fk-biblio-collectionid',
+            '{{%biblio}}',
+            'collection_cd',
+            '{{%collection_dm}}',
+            'id',
+            'CASCADE'
         );
 
         // add foreign key for table `user`
@@ -67,7 +101,36 @@ class m170626_040304_create_biblio_table extends Migration
         $this->dropForeignKey(
             'fk-biblio-userid',
             '{{%biblio}}'
+        );             
+        
+        $this->dropForeignKey(
+            'fk-biblio-collectionid',
+            '{{%biblio}}'
         );
+        
+        $this->dropForeignKey(
+            'fk-biblio-collectionid',
+            '{{%biblio}}'
+        );
+        
+        // drops index for column `updated_userid`
+        $this->dropIndex(
+            'idx-biblio-userid',
+            '{{%biblio}}'
+        );
+        
+        // drops index for column `material_cd`
+        $this->dropIndex(
+            'idx-biblio-materialid',
+            '{{%biblio}}'
+        );
+        
+        // drops index for column `collection_cd`
+        $this->dropIndex(
+            'idx-biblio-collectionid',
+            '{{%biblio}}'
+        );        
+        
         $this->dropTable('{{%biblio}}');
     }
 }
