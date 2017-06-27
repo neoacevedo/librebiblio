@@ -1,0 +1,66 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `biblio_hold`.
+ * Has foreign keys to the tables:
+ *
+ * - `user`
+ */
+class m170627_000312_create_biblio_hold_table extends Migration
+{
+    /**
+     * @inheritdoc
+     */
+    public function up()
+    {
+        $this->createTable('{{%biblio_hold}}', [
+            'id' => $this->integer()->notNull(),
+            'bibid' => $this->integer()->notNull(),
+            'copyid' => $this->integer()->notNull(),
+            'hold_begin_dt' => $this->dateTime()->notNull(),
+            'mbr_id' => $this->integer(),
+        ]);
+        
+        // add primary keys
+        $this->addPrimaryKey('bibliohold_pk', '{{%biblio_hold}}', ['id', 'bibid', 'copyid']);
+
+        // creates index for column `mbr_id`
+        $this->createIndex(
+            'idx-biblio_hold-mbr_id',
+            '{{%biblio_hold}}',
+            'mbr_id'
+        );
+
+        // add foreign key for table `user`
+        $this->addForeignKey(
+            'fk-biblio_hold-mbr_id',
+            '{{%biblio_hold}}',
+            'mbr_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function down()
+    {
+        // drops foreign key for table `user`
+        $this->dropForeignKey(
+            'fk-biblio_hold-mbr_id',
+            '{{%biblio_hold}}'
+        );
+
+        // drops index for column `mbr_id`
+        $this->dropIndex(
+            'idx-biblio_hold-mbr_id',
+            '{{%biblio_hold}}'
+        );
+
+        $this->dropTable('{{%biblio_hold}}');
+    }
+}
