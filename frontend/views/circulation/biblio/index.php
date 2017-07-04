@@ -6,7 +6,8 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = Yii::t('app', 'Biblio Search');
+
+$this->title = Yii::t('app', 'Biblio');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-index">
@@ -19,8 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            //'material_cd',
-            'title',
+
+            'id',
+            'material_cd',
             'author',
             // 'collection_cd',
             // 'call_nmbr1',

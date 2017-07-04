@@ -14,6 +14,8 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Biblio;
+use common\models\BiblioSearch;
 
 
 /**
@@ -57,7 +59,15 @@ class CirculationController extends Controller {
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //return $this->render('index');
+        $searchModel = new BiblioSearch();
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
 }
