@@ -57,6 +57,7 @@ class BiblioController extends Controller
     {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -4,7 +4,19 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => 'yii\caching\MemCache',
+            'servers' => [
+                [
+                    'host' => 'localhost',
+                    'port' => 11211,
+                    'weight' => 100,
+                ]
+            ],
+            'useMemcached' => true,
+        ],
+        'session' => [
+            'class' => 'yii\web\CacheSession',
+            'cache' => 'cache',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -13,8 +25,8 @@ return [
             'translations' => [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@app/messages',
-                    'sourceLanguage' => 'es-CO',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
@@ -42,6 +54,6 @@ return [
             'beforeCreateController' => null,
             'beforeAction' => null
         ],
-        'gridview' => ['class' => 'kartik\grid\Module']
+        'gridview' => ['class' => 'kartik\grid\Module'],
     ]
 ];
