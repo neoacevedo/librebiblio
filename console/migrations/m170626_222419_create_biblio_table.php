@@ -37,7 +37,7 @@ class m170626_222419_create_biblio_table extends Migration
             'topic3' => $this->text(),
             'topic4' => $this->text(),
             'topic5' => $this->text(),
-            'opac_flg' => $this->char(1)->notNull()
+            'opac_flg' => $this->smallInteger(1)->notNull()
         ]);
         
         // creates index for column `updated_userid`

@@ -28,11 +28,19 @@ class BiblioController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($action) {
-                            if (Yii::$app->user->can('catalogingList')) {
+                            $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $isAdmin = false;
+                            foreach ($roles as $role) {
+                                if ($role->name == "admin") {
+                                    $isAdmin = true;
+                                }
+                            }
+
+                            if (Yii::$app->user->can('listBiblio') || Yii::$app->user->can('createBiblio') || Yii::$app->user->can('updateBiblio') || Yii::$app->user->can('deleteBiblio')) {
                                 return true;
                             }
                             return false;
@@ -88,12 +96,14 @@ class BiblioController extends Controller {
      */
     public function actionCreate() {
         $model = new Biblio();
+        $modelBiblioField = new \app\models\BiblioField;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                         'model' => $model,
+                        'modelBiblioField' => $modelBiblioField
             ]);
         }
     }
