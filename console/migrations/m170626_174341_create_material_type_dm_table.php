@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `material_type_dm`.
  */
-class m170627_010911_create_material_type_dm_table extends Migration
+class m170626_174341_create_material_type_dm_table extends Migration
 {
     /**
      * @inheritdoc

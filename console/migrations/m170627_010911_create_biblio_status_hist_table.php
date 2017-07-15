@@ -10,7 +10,7 @@ use yii\db\Migration;
  * - `biblio_copy`
  * - `user`
  */
-class m170627_005605_create_biblio_status_hist_table extends Migration
+class m170627_010911_create_biblio_status_hist_table extends Migration
 {
     /**
      * @inheritdoc

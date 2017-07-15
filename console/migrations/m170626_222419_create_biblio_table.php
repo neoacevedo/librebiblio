@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `biblio`.
  */
-class m170626_040304_create_biblio_table extends Migration
+class m170626_222419_create_biblio_table extends Migration
 {
     /**
      * @inheritdoc

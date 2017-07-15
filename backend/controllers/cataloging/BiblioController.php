@@ -13,13 +13,12 @@ use yii\filters\VerbFilter;
 /**
  * BiblioController implements the CRUD actions for Biblio model.
  */
-class BiblioController extends Controller
-{
+class BiblioController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -31,7 +30,13 @@ class BiblioController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['admin', 'staff'],
+                        'roles' => ['@'],
+                        'matchCallback' => function ($action) {
+                            if (Yii::$app->user->can('catalogingList')) {
+                                return true;
+                            }
+                            return false;
+                        },
                     ],
                     [
                         'actions' => ['logout'],
@@ -53,16 +58,16 @@ class BiblioController extends Controller
      * Lists all Biblio models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if (\Yii::$app->user->can('catalogingList')) {
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**
@@ -70,10 +75,9 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -82,15 +86,14 @@ class BiblioController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Biblio();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -101,15 +104,14 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -120,8 +122,7 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -134,12 +135,12 @@ class BiblioController extends Controller
      * @return Biblio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

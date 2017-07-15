@@ -8,7 +8,7 @@ use yii\db\Migration;
  *
  * - `biblio`
  */
-class m170626_222419_create_biblio_field_table extends Migration
+class m170627_011354_create_biblio_field_table extends Migration
 {
     /**
      * @inheritdoc

@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `collection_dm`.
  */
-class m170627_011354_create_collection_dm_table extends Migration
+class m170626_040304_create_collection_dm_table extends Migration
 {
     /**
      * @inheritdoc
