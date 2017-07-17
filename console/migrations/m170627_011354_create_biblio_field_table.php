@@ -16,20 +16,20 @@ class m170627_011354_create_biblio_field_table extends Migration
     public function up()
     {
         $this->createTable('{{%biblio_field}}', [
-            'id' => $this->integer()->notNull(),
             'bibid' => $this->integer()->notNull(),
+            'fieldid' => $this->integer()->notNull(),
             'tag' => $this->smallInteger()->notNull(),
-            'ind1_cd' => $this->char(1),
-            'ind2_cd' => $this->char(1),
+            'ind1_cd' => $this->char(1)->defaultValue('N'),
+            'ind2_cd' => $this->char(1)->defaultValue('N'),
             'subfield_cd' => $this->char(1)->notNull(),
             'field_data' => $this->text(),
         ]);
         
         // add primary keys
-        $this->addPrimaryKey('bibliofield_pk', '{{%biblio_field}}', ['id', 'bibid']);
+        $this->addPrimaryKey('bibliofield_pk', '{{%biblio_field}}', ['bibid', 'fieldid']);
 
         // alter id to autoincrement
-        $this->alterColumn('{{%biblio_field}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
+        #$this->alterColumn('{{%biblio_field}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `bibid`
         $this->createIndex(

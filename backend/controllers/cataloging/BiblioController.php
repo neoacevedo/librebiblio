@@ -28,19 +28,12 @@ class BiblioController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'create', 'update', 'delete'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($action) {
-                            $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            $isAdmin = false;
-                            foreach ($roles as $role) {
-                                if ($role->name == "admin") {
-                                    $isAdmin = true;
-                                }
-                            }
-
-                            if (Yii::$app->user->can('listBiblio') || Yii::$app->user->can('createBiblio') || Yii::$app->user->can('updateBiblio') || Yii::$app->user->can('deleteBiblio')) {
+                            #$roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            if (Yii::$app->user->can('view') || Yii::$app->user->can('create') || Yii::$app->user->can('update') || Yii::$app->user->can('delete')) {
                                 return true;
                             }
                             return false;
@@ -70,12 +63,12 @@ class BiblioController extends Controller {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if (\Yii::$app->user->can('catalogingList')) {
-            return $this->render('index', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-            ]);
-        }
+        #if (\Yii::$app->user->can('view')) {
+        return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+        #}
     }
 
     /**
@@ -96,16 +89,88 @@ class BiblioController extends Controller {
      */
     public function actionCreate() {
         $model = new Biblio();
-        $modelBiblioField = new \app\models\BiblioField;
+        // este modelo es solo para crear los campos en el formulario
+        $modelBiblioField = new \app\models\BiblioField();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+            $materialType->default_flg = 'Y';
+            $materialType->save();
+            $posts = Yii::$app->request->post('BiblioField', []);
+            for ($i = 0; $i < count($posts); $i++) {
+                $biblioFields[] = new \app\models\BiblioField();
+            }
+
+            if ($this->createBiblioField($model->id, $biblioFields, $posts)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                            'modelBiblioField' => $modelBiblioField
+                ]);
+            }
         } else {
             return $this->render('create', [
                         'model' => $model,
                         'modelBiblioField' => $modelBiblioField
             ]);
         }
+    }
+
+    /**
+     * Borra los registros si los hay de la tabla BiblioField de acuerdo al id del 
+     * campo bibid el cual es la relación con la tabla Biblio y procede a crear nuevos 
+     * para ese mismo modelo.
+     * @param int $bibid
+     * @param mixed $models
+     * @param mixed $posts
+     * @return boolean
+     */
+    private function createBiblioField($bibid, $models, $posts) {
+       /*foreach ($models as $model) {
+            foreach ($posts as $key => $value) {
+                $model->$key = $value;
+        }
+        
+        if (\yii\base\Model::loadMultiple($models, $posts) &&
+                \yii\base\Model::validateMultiple($models)) {
+            foreach ($models as $model) {
+                // populate and save records for each model
+                $model->bibid = $bibid;
+            if (!$model->save()) {
+                foreach ($model->errors as $error) {
+                    $msg .= implode(", ", $error) . "<br />";
+            }
+                Yii::$app->session->setFlash("error", $msg);
+                return false;
+        }
+        }*/
+        $array = [];
+        for ($i = 0; $i < count($posts); $i++) {
+            if($posts["field_data"][$i] != "") {
+                $array["BiblioField"][$i]['bibid'] = $bibid;
+                $array["BiblioField"][$i]['field_data'] = $posts["field_data"][$i];
+                $array["BiblioField"][$i]['tag'] = $posts["tag"][$i];
+                $array["BiblioField"][$i]['subfield_cd'] = $posts["subfield_cd"][$i];
+                $array["BiblioField"][$i]['fieldid'] = $posts["fieldid"][$i];
+                $array["BiblioField"][$i]['ind1_cd'] = $posts["ind1_cd"][$i];
+                $array["BiblioField"][$i]['ind2_cd'] = $posts["ind2_cd"][$i];
+            }
+        }
+        $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
+        if (count($modelBiblioField) > 0) {
+            \app\models\BiblioField::deleteAll(['bibid' => $bibid]);
+        }
+        if (\yii\base\Model::loadMultiple($models, $array)) {
+            foreach ($models as $model) {
+                // populate and save records for each model
+                if(!$model->save()) {
+                    Yii::trace(var_export($model->errors));
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -116,12 +181,38 @@ class BiblioController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        $modelBiblioField = \app\models\BiblioField::findOne(['bibid' => $id]);
+        if ($modelBiblioField === null) {
+            $modelBiblioField = new \app\models\BiblioField();
+        }
+        $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+        if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
+            $materialType->default_flg = 'N';
+            $materialType->save();
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+            $materialType->default_flg = 'Y';
+            $materialType->save();
+            $posts = Yii::$app->request->post('BiblioField', []);
+            for ($i = 0; $i < count($posts); $i++) {
+                #if (\yii\base\Model::loadMultiple($biblioFields, Yii::$app->request->post('BiblioField', []))) {
+                $biblioFields[] = new \app\models\BiblioField();
+            }
+            if ($this->createBiblioField($model->id, $biblioFields, $posts)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                            'modelBiblioField' => $modelBiblioField
+                ]);
+            }
+
+            #return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                         'model' => $model,
+                        'modelBiblioField' => $modelBiblioField
             ]);
         }
     }

@@ -7,8 +7,8 @@ use Yii;
 /**
  * This is the model class for table "{{%biblio_field}}".
  *
- * @property integer $id
  * @property integer $bibid
+ * @property integer $fieldid
  * @property integer $tag
  * @property string $ind1_cd
  * @property string $ind2_cd
@@ -37,7 +37,7 @@ class BiblioField extends \yii\db\ActiveRecord
             [['bibid', 'tag'], 'integer'],
             [['field_data'], 'string'],
             [['ind1_cd', 'ind2_cd', 'subfield_cd'], 'string', 'max' => 1],
-            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
+            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
         ];
     }
 
@@ -47,8 +47,8 @@ class BiblioField extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
             'bibid' => Yii::t('app', 'Bibid'),
+            'fieldid' => Yii::t('app', 'Fieldid'),
             'tag' => Yii::t('app', 'Tag'),
             'ind1_cd' => Yii::t('app', 'Ind1 Cd'),
             'ind2_cd' => Yii::t('app', 'Ind2 Cd'),
