@@ -37,25 +37,33 @@ endif;
 
     <?= $form->field($model, 'opac_flg')->checkbox() ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'data-value' => '245a']) ?>
 
-    <?= $form->field($model, 'title_remainder')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title_remainder')->textInput(['maxlength' => true, 'data-value' => '245b']) ?>
 
-    <?= $form->field($model, 'responsibility_stmt')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'responsibility_stmt')->textInput(['maxlength' => true, 'data-value' => '245c']) ?>
 
-    <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'author')->textInput(['maxlength' => true, 'data-value' => '100a']) ?>
 
-    <?= $form->field($model, 'topic1')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'topic1')->textInput(['maxlength' => true, 'data-value' => '650a']) ?>
 
-    <?= $form->field($model, 'topic2')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'topic2')->textInput(['maxlength' => true, 'data-value' => '650a1']) ?>
 
-    <?= $form->field($model, 'topic3')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'topic3')->textInput(['maxlength' => true, 'data-value' => '650a2']) ?>
 
-    <?= $form->field($model, 'topic4')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'topic4')->textInput(['maxlength' => true, 'data-value' => '650a3']) ?>
 
-    <?= $form->field($model, 'topic5')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
 
-    <!-- biblio field -->
+    <!-- biblio fields -->
+    <?php
+    foreach ($modelBiblioFields as $index => $biblioField) :
+        $form->field($biblioField, "[$index]value")->label($biblioField->name);
+        ?>
+        <?php
+    endforeach;
+    ?>
+    echo 
 
     <label for='field_data[]'><?= Yii::t('app', 'Summary, etc. note:') ?></label>
     <?= $form->field($modelBiblioField, 'field_data[]')->label('')->textarea(['cols' => 35, 'rows' => 4]) ?>    

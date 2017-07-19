@@ -90,7 +90,11 @@ class BiblioController extends Controller {
     public function actionCreate() {
         $model = new Biblio();
         // este modelo es solo para crear los campos en el formulario
-        $modelBiblioField = new \app\models\BiblioField();
+        $count = 17; // es el total de campos marc visibles en openbiblio
+        $modelBiblioFields[] = [new \app\models\BiblioField()];
+        for ($i = 1; $i < $count; $i++) {
+            $modelBiblioFields[] = new \app\models\BiblioField();
+        }        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
@@ -106,13 +110,13 @@ class BiblioController extends Controller {
             } else {
                 return $this->render('create', [
                             'model' => $model,
-                            'modelBiblioField' => $modelBiblioField
+                            'modelBiblioFields' => $modelBiblioFields
                 ]);
             }
         } else {
             return $this->render('create', [
                         'model' => $model,
-                        'modelBiblioField' => $modelBiblioField
+                        'modelBiblioFields' => $modelBiblioFields
             ]);
         }
     }
@@ -127,34 +131,17 @@ class BiblioController extends Controller {
      * @return boolean
      */
     private function createBiblioField($bibid, $models, $posts) {
-       /*foreach ($models as $model) {
-            foreach ($posts as $key => $value) {
-                $model->$key = $value;
-        }
-        
-        if (\yii\base\Model::loadMultiple($models, $posts) &&
-                \yii\base\Model::validateMultiple($models)) {
-            foreach ($models as $model) {
-                // populate and save records for each model
-                $model->bibid = $bibid;
-            if (!$model->save()) {
-                foreach ($model->errors as $error) {
-                    $msg .= implode(", ", $error) . "<br />";
-            }
-                Yii::$app->session->setFlash("error", $msg);
-                return false;
-        }
-        }*/
+        /*
         $array = [];
         for ($i = 0; $i < count($posts); $i++) {
-            if($posts["field_data"][$i] != "") {
+            if ($posts["field_data"][$i] != "") {
                 $array["BiblioField"][$i]['bibid'] = $bibid;
                 $array["BiblioField"][$i]['field_data'] = $posts["field_data"][$i];
                 $array["BiblioField"][$i]['tag'] = $posts["tag"][$i];
                 $array["BiblioField"][$i]['subfield_cd'] = $posts["subfield_cd"][$i];
                 $array["BiblioField"][$i]['fieldid'] = $posts["fieldid"][$i];
-                $array["BiblioField"][$i]['ind1_cd'] = $posts["ind1_cd"][$i];
-                $array["BiblioField"][$i]['ind2_cd'] = $posts["ind2_cd"][$i];
+                $array["BiblioField"][$i]['ind1_cd'] = ($posts["ind1_cd"][$i] != '') ? $posts["ind1_cd"][$i] : 'N';
+                $array["BiblioField"][$i]['ind2_cd'] = ($posts["ind2_cd"][$i] != '') ? $posts["ind2_cd"][$i] : 'N';
             }
         }
         $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
@@ -164,13 +151,19 @@ class BiblioController extends Controller {
         if (\yii\base\Model::loadMultiple($models, $array)) {
             foreach ($models as $model) {
                 // populate and save records for each model
-                if(!$model->save()) {
+                if (!$model->save()) {
                     Yii::trace(var_export($model->errors));
                 }
             }
+        }*/
+        if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
+            foreach ($models as $model) {
+                $model->save(false);
+            }
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
