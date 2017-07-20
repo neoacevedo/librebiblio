@@ -109,7 +109,7 @@ class m170626_222419_create_biblio_table extends Migration
         );
         
         $this->dropForeignKey(
-            'fk-biblio-collectionid',
+            'fk-biblio-materialid',
             '{{%biblio}}'
         );
         
