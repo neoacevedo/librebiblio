@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $this->render('_form', [
         'model' => $model,
         'modelBiblioFields' => $modelBiblioFields,
-        'usmarc1' => $usmarc1
+        'usmarc' => $usmarc
     ])
     ?>
 

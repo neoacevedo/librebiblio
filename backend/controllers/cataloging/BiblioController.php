@@ -90,11 +90,21 @@ class BiblioController extends Controller {
     public function actionCreate() {
         $model = new Biblio();
         // este modelo es solo para crear los campos en el formulario
-        $usmarc1 = \backend\models\UsmarcSubfield::find()
-                        ->where(["tag" => 245])
-                        ->andWhere(["subfield_cd" => ['a', 'b', 'c']])->all(); // es el total de campos marc visibles en openbiblio
+        $usmarc = \backend\models\UsmarcSubfield::find()
+                        ->where(["tag" => 100, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
+                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
+                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
+
         $modelBiblioFields[] = new \app\models\BiblioField();
-        for ($i = 1; $i < count($usmarc1); $i++) {
+        for ($i = 1; $i < count($usmarc); $i++) {
             $modelBiblioFields[] = new \app\models\BiblioField();
         }
 
@@ -102,25 +112,23 @@ class BiblioController extends Controller {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
             $materialType->default_flg = 'Y';
             $materialType->save();
-            $posts = Yii::$app->request->post('BiblioField', []);
-            for ($i = 0; $i < count($posts); $i++) {
-                $biblioFields[] = new \app\models\BiblioField();
-            }
+            #$posts = Yii::$app->request->post('BiblioField', []);
 
-            if ($this->createBiblioField($model->id, $biblioFields, $posts)) {
+            if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
+
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc1' => $usmarc1
+                            'usmarc' => $usmarc
                 ]);
             }
         } else {
             return $this->render('create', [
                         'model' => $model,
                         'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc1' => $usmarc1
+                        'usmarc' => $usmarc
             ]);
         }
     }
@@ -131,40 +139,22 @@ class BiblioController extends Controller {
      * para ese mismo modelo.
      * @param int $bibid
      * @param mixed $models
-     * @param mixed $posts
      * @return boolean
      */
-    private function createBiblioField($bibid, $models, $posts) {
-        /*
-          $array = [];
-          for ($i = 0; $i < count($posts); $i++) {
-          if ($posts["field_data"][$i] != "") {
-          $array["BiblioField"][$i]['bibid'] = $bibid;
-          $array["BiblioField"][$i]['field_data'] = $posts["field_data"][$i];
-          $array["BiblioField"][$i]['tag'] = $posts["tag"][$i];
-          $array["BiblioField"][$i]['subfield_cd'] = $posts["subfield_cd"][$i];
-          $array["BiblioField"][$i]['fieldid'] = $posts["fieldid"][$i];
-          $array["BiblioField"][$i]['ind1_cd'] = ($posts["ind1_cd"][$i] != '') ? $posts["ind1_cd"][$i] : 'N';
-          $array["BiblioField"][$i]['ind2_cd'] = ($posts["ind2_cd"][$i] != '') ? $posts["ind2_cd"][$i] : 'N';
-          }
-          }
-          $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
-          if (count($modelBiblioField) > 0) {
-          \app\models\BiblioField::deleteAll(['bibid' => $bibid]);
-          }
-          if (\yii\base\Model::loadMultiple($models, $array)) {
-          foreach ($models as $model) {
-          // populate and save records for each model
-          if (!$model->save()) {
-          Yii::trace(var_export($model->errors));
-          }
-          }
-          } */
-        if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
+    private function createBiblioField($bibid, $models) {
+        $i = 1; // fieldid
+        if (\yii\base\Model::loadMultiple($models, Yii::$app->request->post())) {
             foreach ($models as $model) {
-                $model->save(false);
+                if ($model->field_data !== '') {
+                    $model->bibid = $bibid;
+                    $model->fieldid = $i;
+                    $model->save(false);
+                    $i++;
+                }
             }
             return true;
+        } else {
+            Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
         }
 
         return false;

@@ -56,10 +56,21 @@ endif;
     <?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
 
     <!-- biblio fields -->
+    <h4><?= Yii::t('app', "USMarc Fields:") ?></h4>
     <?php
     foreach ($modelBiblioFields as $index => $biblioField) :
-        echo $form->field($biblioField, "[$index]field_data")->label($usmarc1[$index]->description);
+        // se deberá establecer el  número máximo del campo repetible.
+        if ($usmarc[$index]->tag == 520) {
+            if ($usmarc[$index]->subfield_cd == 'a') {
+                echo $form->field($biblioField, "[$index]field_data")->label($usmarc[$index]->description)->textarea(['cols' => 34, 'rows' => 4, 'data-value' => $usmarc[$index]->tag . $usmarc[$index]->subfield_cd]);
+            }
+        } else {
+            echo $form->field($biblioField, "[$index]field_data")->label($usmarc[$index]->description)->textInput(['data-value' => $usmarc[$index]->tag . $usmarc[$index]->subfield_cd]);
+        }
         ?>
+    <div class="hidden">
+        <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
+    </div>
         <?php
     endforeach;
     ?>
