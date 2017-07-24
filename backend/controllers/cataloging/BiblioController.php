@@ -143,6 +143,10 @@ class BiblioController extends Controller {
      */
     private function createBiblioField($bibid, $models) {
         $i = 1; // fieldid
+        $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
+        if (count($modelBiblioField) > 0) {
+            \app\models\BiblioField::deleteAll(['bibid' => $bibid]);
+        }
         if (\yii\base\Model::loadMultiple($models, Yii::$app->request->post())) {
             foreach ($models as $model) {
                 if ($model->field_data !== '') {
@@ -168,9 +172,32 @@ class BiblioController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $modelBiblioField = \app\models\BiblioField::findOne(['bibid' => $id]);
-        if ($modelBiblioField === null) {
-            $modelBiblioField = new \app\models\BiblioField();
+        // este modelo es solo para crear los campos en el formulario
+        $usmarc = \backend\models\UsmarcSubfield::find()
+                        ->where(["tag" => 100, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
+                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
+                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
+        
+        $modelBiblioFields = \app\models\BiblioField::findAll(['bibid' => $id]);
+        
+        if (count($modelBiblioFields) == 0) {
+            $modelBiblioFields[] = new \app\models\BiblioField();
+            for ($i = 1; $i < count($usmarc); $i++) {
+                $modelBiblioFields[] = new \app\models\BiblioField();
+            }
+        } else {
+            for ($i = count($modelBiblioFields); $i < count($usmarc); $i++) {
+                $modelBiblioFields[] = new \app\models\BiblioField();
+            }
+            #$modelBiblioFields[] = \app\models\BiblioField::find(['bibid' => $id]);
         }
         $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
         if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
@@ -181,17 +208,15 @@ class BiblioController extends Controller {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
             $materialType->default_flg = 'Y';
             $materialType->save();
-            $posts = Yii::$app->request->post('BiblioField', []);
-            for ($i = 0; $i < count($posts); $i++) {
-                #if (\yii\base\Model::loadMultiple($biblioFields, Yii::$app->request->post('BiblioField', []))) {
-                $biblioFields[] = new \app\models\BiblioField();
-            }
-            if ($this->createBiblioField($model->id, $biblioFields, $posts)) {
+            #$posts = Yii::$app->request->post('BiblioField', []);
+            
+            if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                             'model' => $model,
-                            'modelBiblioField' => $modelBiblioField
+                            'modelBiblioFields' => $modelBiblioFields,
+                            'usmarc' => $usmarc
                 ]);
             }
 
@@ -199,7 +224,8 @@ class BiblioController extends Controller {
         } else {
             return $this->render('update', [
                         'model' => $model,
-                        'modelBiblioField' => $modelBiblioField
+                        'modelBiblioFields' => $modelBiblioFields,
+                        'usmarc' => $usmarc
             ]);
         }
     }

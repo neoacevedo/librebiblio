@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <?=
     $this->render('_form', [
         'model' => $model,
-        'modelBiblioField' => $modelBiblioField
+        'modelBiblioFields' => $modelBiblioFields,
+        'usmarc' => $usmarc
     ])
     ?>
 

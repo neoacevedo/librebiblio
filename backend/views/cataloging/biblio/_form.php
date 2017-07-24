@@ -70,6 +70,8 @@ endif;
         ?>
     <div class="hidden">
         <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
+        <?= $form->field($biblioField, "[$index]tag")->label("")->hiddenInput(['value' => $usmarc[$index]->tag]); ?>
+        <?= $form->field($biblioField, "[$index]subfield_cd")->label("")->hiddenInput(['value' => $usmarc[$index]->subfield_cd]); ?>
     </div>
         <?php
     endforeach;
