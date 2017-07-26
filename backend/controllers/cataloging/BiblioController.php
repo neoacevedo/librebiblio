@@ -15,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class BiblioController extends Controller {
 
+    private $usmarc = null;
+
     /**
      * @inheritdoc
      */
@@ -89,22 +91,11 @@ class BiblioController extends Controller {
      */
     public function actionCreate() {
         $model = new Biblio();
-        // este modelo es solo para crear los campos en el formulario
-        $usmarc = \backend\models\UsmarcSubfield::find()
-                        ->where(["tag" => 100, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
-                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
-                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
+        // este método es solo para crear los campos en el formulario
+        $this->fillUsMarc();
 
         $modelBiblioFields[] = new \app\models\BiblioField();
-        for ($i = 1; $i < count($usmarc); $i++) {
+        for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \app\models\BiblioField();
         }
 
@@ -121,14 +112,14 @@ class BiblioController extends Controller {
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $usmarc
+                            'usmarc' => $this->usmarc
                 ]);
             }
         } else {
             return $this->render('create', [
                         'model' => $model,
                         'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $usmarc
+                        'usmarc' => $this->usmarc
             ]);
         }
     }
@@ -172,60 +163,52 @@ class BiblioController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        // este modelo es solo para crear los campos en el formulario
-        $usmarc = \backend\models\UsmarcSubfield::find()
-                        ->where(["tag" => 100, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
-                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
-                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
-        
-        $modelBiblioFields = \app\models\BiblioField::findAll(['bibid' => $id]);
-        
-        if (count($modelBiblioFields) == 0) {
-            $modelBiblioFields[] = new \app\models\BiblioField();
-            for ($i = 1; $i < count($usmarc); $i++) {
-                $modelBiblioFields[] = new \app\models\BiblioField();
-            }
-        } else {
-            for ($i = count($modelBiblioFields); $i < count($usmarc); $i++) {
-                $modelBiblioFields[] = new \app\models\BiblioField();
-            }
-            #$modelBiblioFields[] = \app\models\BiblioField::find(['bibid' => $id]);
-        }
+
+        $this->fillUsMarc();
+
+        $modelBiblioFields[] = new \app\models\BiblioField();
+
         $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
         if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
             $materialType->default_flg = 'N';
             $materialType->save();
         }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
             $materialType->default_flg = 'Y';
             $materialType->save();
+            // crear la lista con todos los modelos bibliofield
+            for ($i = 1; $i < count($this->usmarc); $i++) {
+                $modelBiblioFields[] = new \app\models\BiblioField();
+            }
             #$posts = Yii::$app->request->post('BiblioField', []);
-            
+
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $usmarc
+                            'usmarc' => $this->usmarc
                 ]);
             }
 
             #return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
+            for ($i = 1; $i < count($this->usmarc); $i++) {
+                $biblioField = \app\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
+                if ($biblioField !== null) {
+                    $modelBiblioFields[] = $biblioField;
+                } else {
+                    $modelBiblioFields[] = new \app\models\BiblioField();
+                }
+            }
             return $this->render('update', [
                         'model' => $model,
                         'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $usmarc
+                        'usmarc' => $this->usmarc
             ]);
         }
     }
@@ -240,6 +223,22 @@ class BiblioController extends Controller {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    private function fillUsMarc() {
+        $this->usmarc = null;
+        $this->usmarc = \backend\models\UsmarcSubfield::find()
+                        ->where(["tag" => 100, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
+                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
+                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
+                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
+                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
+                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
     }
 
     /**
