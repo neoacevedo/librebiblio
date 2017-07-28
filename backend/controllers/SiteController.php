@@ -84,6 +84,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionLogin() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

@@ -25,15 +25,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            'title:ntext',
             'created_at',
             'updated_at',
-            'updated_userid',
-            'material_cd',
+            [
+                'attribute' => 'user',
+                'value' => 'user.username',
+                'label' => \Yii::t('app', 'User')
+            ],
+            [
+                'attribute' => 'materialType',
+                'value' => 'materialType.description',
+                'label' => 'Material'
+            ],
             // 'collection_cd',
             // 'call_nmbr1',
             // 'call_nmbr2',
             // 'call_nmbr3',
-            // 'title:ntext',
             // 'title_remainder:ntext',
             // 'responsibility_stmt:ntext',
             // 'author:ntext',

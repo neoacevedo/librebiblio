@@ -87,8 +87,25 @@ class Biblio extends \yii\db\ActiveRecord
      * Devuelve el ID del usuario que modificó la información del material bibliográfico
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedUser()
+    public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_userid']);
     }
+    
+    /**
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaterialType() {
+        return $this->hasOne(\backend\models\MaterialType::className(), ['id' => 'material_cd']);
+    }
+    
+    /**
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollection() {
+        return $this->hasOne(\backend\models\Collection::className(), ['id' => 'collection_cd']);
+    }
+    
 }

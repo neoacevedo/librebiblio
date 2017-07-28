@@ -79,8 +79,11 @@ class BiblioController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $biblioFields = \app\models\BiblioField::findAll(['bibid' => $id]);
         return $this->render('view', [
                     'model' => $this->findModel($id),
+                    'biblioFields' => $biblioFields
         ]);
     }
 
