@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Additional Bibliographic Information' => '',
     'Are you sure you want to delete this item?' => '',
     'Author' => '',
     'Bibid' => '',
@@ -26,6 +27,7 @@ return [
     'Call Nmbr1' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
+    'Collection' => '',
     'Collection Cd' => '',
     'Collections' => '',
     'Create' => '',
@@ -53,7 +55,7 @@ return [
     'Opac Flg' => '',
     'Repeatable Flg' => '',
     'Reset' => '',
-    'Responsibility Stmt' => '',
+    'Responsibility Stmt' => 'Statement of responsibility, etc.',
     'Search' => '',
     'Subfield Cd' => '',
     'Tag' => '',

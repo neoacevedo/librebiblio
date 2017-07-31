@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -9,6 +10,42 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblios'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$usmarc = [
+    [
+        'attribute' => 'topic1',
+        'value' => $model->topic1,
+        'label' => \Yii::t('app', 'Topic1')
+    ],
+    [
+        'attribute' => 'topic2',
+        'value' => $model->topic2,
+        'label' => \Yii::t('app', 'Topic2')
+    ],
+    [
+        'attribute' => 'topic3',
+        'value' => $model->topic3,
+        'label' => \Yii::t('app', 'Topic3')
+    ],
+    [
+        'attribute' => 'topic4',
+        'value' => $model->topic4,
+        'label' => \Yii::t('app', 'Topic4')
+    ],
+    [
+        'attribute' => 'topic5',
+        'value' => $model->topic5,
+        'label' => \Yii::t('app', 'Topic5')
+    ]
+];
+foreach ($model->biblioFields as $biblioField) {
+    $field = [
+        'attribute' => 'biblioFields',
+        'value' => $biblioField->field_data,
+        'label' => backend\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
+    ];
+    array_push($usmarc, $field);
+}
 ?>
 <div class="biblio-view">
 
@@ -49,9 +86,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->collection->description,
                 'label' => Yii::t('app', 'Collection')
             ],
-            'call_nmbr1',
-            'call_nmbr2',
-            'call_nmbr3',
+            [
+                'attribute' => 'call_nmbr1',
+                'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
+                'label' => Yii::t('app', 'Call Nmbr1')
+            ],
             'title:ntext',
             'title_remainder:ntext',
             'responsibility_stmt:ntext',
@@ -65,44 +104,12 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
     <div class="row">
         <h4><?= Yii::t('app', 'Additional Bibliographic Information') ?></h4>
-        
+
     </div>
     <?=
     DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'topic1:ntext',
-            'topic2:ntext',
-            'topic3:ntext',
-            'topic4:ntext',
-            'topic5:ntext',
-        ]
+        "model" => $biblioFields,
+        "attributes" => $usmarc
     ]);
     ?>
-    <?php
-    $attrs = [];
-    foreach ($biblioFields as $biblioField) {
-        $usmarc = backend\models\UsmarcSubfield::findOne(["tag" => $biblioField->tag, "subfield_cd" => $biblioField->subfield_cd]);
-        $attrs['attribute'][] = 'field_data';
-        $attrs['value'][] = $biblioField->field_data;
-        $attrs['label'][] = $usmarc->description;
-    }
-    echo DetailView::widget([
-            'model' => $biblioFields,
-            'attributes' => [
-                $attrs
-                /*[
-                    'attribute' => 'field_data',
-                    'value' => $attrs['value'][0],
-                    'label' => $attrs['label'][0]
-                ],
-                [
-                    'attribute' => 'field_data',
-                    'value' => "",
-                    'label' => ""
-                ]*/
-            ]
-        ]);
-    ?>
-
 </div>

@@ -80,7 +80,29 @@ class BiblioController extends Controller {
      */
     public function actionView($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        $biblioFields = \app\models\BiblioField::findAll(['bibid' => $id]);
+        $command = Yii::$app->db->createCommand("SELECT topic1, topic2, topic3, topic4, topic5, description, field_data "
+            . "FROM {{%biblio}} b "
+            . "left join {{%biblio_field}} bf "
+            . "on bf.bibid = b.id "
+            . "left join {{%usmarc_subfield_dm}} um "
+            . "on um.tag = bf.tag "
+            . "where b.id = $id "
+            . "and um.subfield_cd = bf.subfield_cd");
+        $biblioFields = $command->queryAll();
+        /*$dataProvider = new \yii\data\SqlDataProvider([
+            'sql' => "SELECT topic1, topic2, topic3, topic4, topic5, description, field_data "
+            . "FROM {{%biblio}} b "
+            . "left join {{%biblio_field}} bf "
+            . "on bf.bibid = b.id "
+            . "left join {{%usmarc_subfield_dm}} um "
+            . "on um.tag = bf.tag "
+            . "where b.id = :biblio_id "
+            . "and um.subfield_cd = bf.subfield_cd",
+            'params' => [':biblio_id' => (int) $id],
+            'pagination' => false,
+            'sort' => false
+                ]
+        );*/
         return $this->render('view', [
                     'model' => $this->findModel($id),
                     'biblioFields' => $biblioFields

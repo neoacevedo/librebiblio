@@ -15,6 +15,7 @@ class BiblioSearch extends Biblio {
     public $user;
     public $materialType;
     public $collection;
+    public $biblioFields;
 
     /**
      * @inheritdoc
@@ -23,7 +24,7 @@ class BiblioSearch extends Biblio {
         return [
             [['id'], 'integer'],
             [['user', 'materialType', 'collection', 'created_at', 'updated_at', 'call_nmbr1', 'call_nmbr2', 'call_nmbr3',
-            'title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'opac_flg'], 'safe'],
+            'title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'opac_flg', 'biblioFields'], 'safe'],
         ];
     }
 
@@ -110,7 +111,6 @@ class BiblioSearch extends Biblio {
                 ->andFilterWhere(['like', '{{%user}}.username', $this->user])
                 ->andFilterWhere(['like', '{{%material_type_dm}}.description', $this->materialType])
                 ->andFilterWhere(['like', '{{%collection_dm}}.description', $this->collection]);
-
         return $dataProvider;
     }
 

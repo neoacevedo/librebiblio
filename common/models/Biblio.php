@@ -108,4 +108,8 @@ class Biblio extends \yii\db\ActiveRecord
         return $this->hasOne(\backend\models\Collection::className(), ['id' => 'collection_cd']);
     }
     
+    public function getBiblioFields() {
+        return $this->hasMany(\app\models\BiblioField::className(), ['bibid' => 'id']);
+    }
+    
 }
