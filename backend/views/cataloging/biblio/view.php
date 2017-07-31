@@ -103,12 +103,13 @@ foreach ($model->biblioFields as $biblioField) {
     ])
     ?>
     <div class="row">
-        <h4><?= Yii::t('app', 'Additional Bibliographic Information') ?></h4>
-
+        <div class="col-md-12 col-sm-12">
+            <h4><?= Yii::t('app', 'Additional Bibliographic Information') ?></h4>
+        </div>
     </div>
     <?=
     DetailView::widget([
-        "model" => $biblioFields,
+        "model" => $model,
         "attributes" => $usmarc
     ]);
     ?>
