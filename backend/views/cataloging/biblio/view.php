@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\widgets\ListView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -52,6 +52,7 @@ foreach ($model->biblioFields as $biblioField) {
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a(Yii::t('app', 'Add Copy'), ['biblio-copy/create', 'bibid' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?=
         Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
@@ -101,6 +102,28 @@ foreach ($model->biblioFields as $biblioField) {
             ]
         ],
     ])
+    ?>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h4><?= Yii::t('app', 'Bibliography Copy Information') ?></h4>
+        </div>
+    </div>
+    <?php
+    $biblioCopySearch = new \app\models\BiblioCopySearch();
+    $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
+
+    echo GridView::widget([
+        "dataProvider" => $biblioCopy,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'barcode_nmbr',
+            'copy_desc',
+            'status_cd',
+            'status_begin_dt',
+            'due_back_dt',
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]);
     ?>
     <div class="row">
         <div class="col-md-12 col-sm-12">

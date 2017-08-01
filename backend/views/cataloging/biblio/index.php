@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,17 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="biblio-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Biblio'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php Pjax::begin(); ?>    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'title:ntext',
             'created_at',
@@ -38,6 +39,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'materialType.description',
                 'label' => 'Material'
             ],
+            [
+                'value' => function($model) {
+                    $biblioCopySearch = new \app\models\BiblioCopySearch();
+                    $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
+
+                    return GridView::widget([
+                                "dataProvider" => $biblioCopy,
+                                'columns' => [
+                                    ['class' => 'yii\grid\SerialColumn'],
+                                    'barcode_nmbr',
+                                    'status_cd'
+                                ],
+                    ]);
+                },
+                'label' => 'Copias',
+                'format' => 'raw'
+            ],
             // 'collection_cd',
             // 'call_nmbr1',
             // 'call_nmbr2',
@@ -51,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'topic4:ntext',
             // 'topic5:ntext',
             // 'opac_flg',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
+    ]);
+    ?>
+    <?php Pjax::end(); ?></div>

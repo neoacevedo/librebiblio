@@ -31,9 +31,9 @@ endif;
 
     <?= $form->field($model, 'call_nmbr1')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'call_nmbr2')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'call_nmbr2')->textInput(['maxlength' => true])->label('') ?>
 
-    <?= $form->field($model, 'call_nmbr3')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'call_nmbr3')->textInput(['maxlength' => true])->label('') ?>
 
     <?= $form->field($model, 'opac_flg')->checkbox() ?>
 

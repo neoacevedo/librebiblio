@@ -19,10 +19,10 @@ class m170627_005605_create_biblio_copy_table extends Migration {
             'copy_desc' => $this->string(160),
             'barcode_nmbr' => $this->string(20)->notNull(),
             'status_cd' => $this->char(3)->notNull(),
-            'status_begint_dt' => $this->dateTime()->notNull(),
+            'status_begin_dt' => $this->dateTime()->notNull(),
             'due_back_dt' => $this->dateTime(),
             'mbr_id' => $this->integer(),
-            'renewal_count' => $this->smallInteger()->unsigned()->notNull(),
+            'renewal_count' => $this->smallInteger()->unsigned()->defaultValue(0),
         ]);
 
         // add primary keys

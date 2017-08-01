@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             'default_flg',
             'days_due_back',
-            'dayli_late_fee',
+            'daily_late_fee',
         ],
     ]) ?>
 

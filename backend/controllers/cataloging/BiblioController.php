@@ -100,7 +100,7 @@ class BiblioController extends Controller {
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \app\models\BiblioField();
         }
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
             $materialType->default_flg = 'Y';
@@ -175,7 +175,7 @@ class BiblioController extends Controller {
             $materialType->default_flg = 'N';
             $materialType->save();
         }
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
             $materialType->default_flg = 'Y';

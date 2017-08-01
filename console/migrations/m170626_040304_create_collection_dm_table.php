@@ -22,7 +22,7 @@ class m170626_040304_create_collection_dm_table extends Migration
             'description' => $this->string(40)->notNull(),
             'default_flg' => $this->char(1)->notNull(),
             'days_due_back' => $this->smallInteger()->unsigned()->notNull(),
-            'dayli_late_fee' => $this->decimal(4,2)->notNull(),
+            'daily_late_fee' => $this->decimal(4,2)->notNull(),
         ]);
         
         $sql = file_get_contents(__DIR__."/sql/$this->language/collection_dm.sql");

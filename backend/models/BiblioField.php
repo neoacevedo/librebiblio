@@ -35,7 +35,7 @@ class BiblioField extends \yii\db\ActiveRecord
         return [
             [['bibid', 'tag', 'subfield_cd'], 'required'],
             [['bibid', 'tag'], 'integer'],
-            [['field_data'], 'string'],
+            [['field_data'], 'string', 'skipOnEmpty' => true],
             [['ind1_cd', 'ind2_cd', 'subfield_cd'], 'string', 'max' => 1],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
         ];

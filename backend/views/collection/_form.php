@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'days_due_back')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'dayli_late_fee')->textInput(['type' => 'number', 'step' => 0.01]) ?>
+    <?= $form->field($model, 'daily_late_fee')->textInput(['type' => 'number', 'step' => 0.01]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

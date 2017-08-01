@@ -31,9 +31,9 @@ class Collection extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'default_flg', 'days_due_back', 'dayli_late_fee'], 'required'],
+            [['description', 'default_flg', 'days_due_back', 'daily_late_fee'], 'required'],
             [['days_due_back'], 'integer'],
-            [['dayli_late_fee'], 'number'],
+            [['daily_late_fee'], 'number'],
             [['description'], 'string', 'max' => 40],
             [['default_flg'], 'string', 'max' => 1],
         ];
@@ -49,7 +49,7 @@ class Collection extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'default_flg' => Yii::t('app', 'Default Flg'),
             'days_due_back' => Yii::t('app', 'Days Due Back'),
-            'dayli_late_fee' => Yii::t('app', 'Dayli Late Fee'),
+            'daily_late_fee' => Yii::t('app', 'Daily Late Fee'),
         ];
     }
 
