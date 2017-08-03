@@ -46,10 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     return GridView::widget([
                                 "dataProvider" => $biblioCopy,
+                                'summary' => '',
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
                                     'barcode_nmbr',
-                                    'status_cd'
+                                    [
+                                        'attribute' => 'status_cd',
+                                        'value' => function($model) {
+                                            return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                                        },
+                                        'label' => Yii::t('app', 'Status')
+                                    ],
                                 ],
                     ]);
                 },

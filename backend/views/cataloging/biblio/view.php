@@ -114,11 +114,18 @@ foreach ($model->biblioFields as $biblioField) {
 
     echo GridView::widget([
         "dataProvider" => $biblioCopy,
+        'summary' => '',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'barcode_nmbr',
             'copy_desc',
-            'status_cd',
+            [
+                'attribute' => 'status_cd',
+                'value' => function($model) {
+                    return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                },
+                'label' => Yii::t('app', 'Status')
+            ],
             'status_begin_dt',
             'due_back_dt',
             ['class' => 'yii\grid\ActionColumn'],
