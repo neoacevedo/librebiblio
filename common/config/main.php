@@ -35,6 +35,10 @@ return [
                 ],
             ],
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true, //for the testing purpose, you need to enable this
+        ]
     ],
     'modules' => [
         'rbac' => [
@@ -82,7 +86,6 @@ return [
                     ]
                 ]
             ],
-        
         ],
     ]
 ];

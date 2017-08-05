@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Add Copy' => '',
     'Additional Bibliographic Information' => '',
     'Are you sure you want to delete this item?' => '',
     'Author' => '',
@@ -30,6 +31,8 @@ return [
     'Call Nmbr1' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
+    'Circulation' => '',
+    'Code' => '',
     'Collection' => '',
     'Collection Cd' => '',
     'Collections' => '',
@@ -39,8 +42,9 @@ return [
     'Create Biblio Copy' => '',
     'Create Collection' => '',
     'Create Material Type' => '',
+    'Create User' => '',
     'Created At' => '',
-    'Dayli Late Fee' => '',
+    'Daily Late Fee' => '',
     'Days Due Back' => '',
     'Default Flg' => '',
     'Delete' => '',
@@ -65,6 +69,8 @@ return [
     'Reset' => '',
     'Responsibility Stmt' => '',
     'Search' => '',
+    'Search User' => '',
+    'Status' => '',
     'Status Begin Dt' => '',
     'Status Cd' => '',
     'Subfield Cd' => '',
@@ -82,8 +88,10 @@ return [
     'Updated At' => '',
     'Updated Userid' => '',
     'User' => '',
+    'Users' => '',
     'Yes' => '',
     'You are not allowed to perform this action.' => '',
+    'Dayli Late Fee' => '@@@@',
     'Status Begint Dt' => '@@@@',
     'user' => '@@@@',
 ];
