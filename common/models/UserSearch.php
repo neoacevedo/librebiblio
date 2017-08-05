@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\BiblioCopy;
+use common\models\User;
 
 /**
- * BiblioCopySearch represents the model behind the search form about `common\models\BiblioCopy`.
+ * UserSearch represents the model behind the search form about `common\models\User`.
  */
-class BiblioCopySearch extends BiblioCopy
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class BiblioCopySearch extends BiblioCopy
     public function rules()
     {
         return [
-            [['id', 'bibid', 'mbr_id', 'renewal_count'], 'integer'],
-            [['created_at', 'updated_at', 'copy_desc', 'barcode_nmbr', 'status_cd', 'status_begin_dt', 'due_back_dt'], 'safe'],
+            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class BiblioCopySearch extends BiblioCopy
      */
     public function search($params)
     {
-        $query = BiblioCopy::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -60,18 +60,16 @@ class BiblioCopySearch extends BiblioCopy
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'bibid' => $this->bibid,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'status_begin_dt' => $this->status_begin_dt,
-            'due_back_dt' => $this->due_back_dt,
-            'mbr_id' => $this->mbr_id,
-            'renewal_count' => $this->renewal_count,
         ]);
 
-        $query->andFilterWhere(['like', 'copy_desc', $this->copy_desc])
-            ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
-            ->andFilterWhere(['like', 'status_cd', $this->status_cd]);
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
+            ->andFilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;
     }

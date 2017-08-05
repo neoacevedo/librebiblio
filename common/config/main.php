@@ -61,14 +61,28 @@ return [
                         $isAdmin = true;
                     }
                 }
-                
-                if(!$isAdmin) {
+
+                if (!$isAdmin) {
                     throw new \yii\web\ForbiddenHttpException(\Yii::t("app", "You are not allowed to perform this action."));
                 }
-                
+
                 return $isAdmin;
             },
         ],
         'gridview' => ['class' => 'kartik\grid\Module'],
+        // accesos solo administrativos a módulos específicos
+        'menu' => [
+            'class' => '\pceuropa\menu\Menu',
+            'as access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ]
+                ]
+            ],
+        
+        ],
     ]
 ];

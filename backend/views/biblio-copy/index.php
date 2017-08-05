@@ -18,12 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <!--<?= Html::a(Yii::t('app', 'Create Biblio Copy'), ['create'], ['class' => 'btn btn-success']) ?>-->
     </p>
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'bibid',
             'created_at',
@@ -35,8 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'due_back_dt',
             // 'mbr_id',
             // 'renewal_count',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+        'options' => [
+            'class' => 'table table-striped table-bordered table-responsive'
+        ],
+    ]);
+    ?>
 </div>

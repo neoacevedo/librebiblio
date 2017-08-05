@@ -19,7 +19,9 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "webvimark/module-user-management": "^1.0",
-        "johnitvn/yii2-rbac-plus": "^1.0"
+        "johnitvn/yii2-rbac-plus": "^1.0",
+        "pceuropa/yii2-menu": "dev-master",
+        "kartik-v/yii2-widget-sidenav": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
