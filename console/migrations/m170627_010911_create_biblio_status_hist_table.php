@@ -44,7 +44,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'fk-biblio_status_hist-bibid',
             '{{%biblio_status_hist}}',
             'bibid',
-            'biblio',
+            '{{%biblio}}',
             'id',
             'CASCADE'
         );
@@ -61,7 +61,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'fk-biblio_status_hist-copyid',
             '{{%biblio_status_hist}}',
             'copyid',
-            'biblio_copy',
+            '{{%biblio_copy}}',
             'id',
             'CASCADE'
         );
@@ -78,7 +78,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'fk-biblio_status_hist-mbr_id',
             '{{%biblio_status_hist}}',
             'mbr_id',
-            'user',
+            '{{%member}}',
             'id',
             'CASCADE'
         );

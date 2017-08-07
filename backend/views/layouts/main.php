@@ -48,13 +48,36 @@ AppAsset::register($this);
                     $item['type'] = $menu['type'];
                     array_push($menuItems, $item);
                 }
-                $menuItems[] = '<li>'
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                                Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout']
-                        )
-                        . Html::endForm()
-                        . '</li>';
+
+                // este menú cambia para el administrador.
+                $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                $isAdmin = false;
+                foreach ($roles as $role) {
+                    if ($role->name == "admin") {
+                        $isAdmin = true;
+                    }
+                }
+                if ($isAdmin) {
+                    $menuItems[] = ['label' => Yii::$app->user->identity->username,
+                        'items' => [
+                            ['label' => Yii::t('app', 'Settings'), 'url' => "#", 'class' => 'btn btn-link'],
+                            '<li>'
+                            . Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                    Yii::t('app', 'Logout'), ['class' => 'btn btn-link']
+                            )
+                            . Html::endForm()
+                            . '</li>'
+                        ]];
+                } else {
+                    $menuItems[] = '<li>'
+                            . Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                    Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout']
+                            )
+                            . Html::endForm()
+                            . '</li>';
+                }
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],

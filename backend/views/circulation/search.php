@@ -30,28 +30,63 @@ foreach (Menu::NavbarLeft(1) as $menu) {
             ?>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <?php Pjax::begin(); ?>   <?=
-                GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    //'filterModel' => $searchModel,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'id',
-                        'username',
-                        'first_name',
-                        'last_name',
-                        'email:email',
-                        'phone',
-                        'status',
-                        // 'created_at',
-                        // 'updated_at',
-                        ['class' => 'yii\grid\ActionColumn'],
+            <?php Pjax::begin(); ?>   <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'id',
+                    'username',
+                    'first_name',
+                    'last_name',
+                    'email:email',
+                    'phone',
+                    'status',
+                    // 'created_at',
+                    // 'updated_at',
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['style' => 'color:#337ab7'],
+                        'template' => '{view}{update}{delete}',
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                            'title' => Yii::t('app', 'View'),
+                                ]);
+                            },
+                            'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                            'title' => Yii::t('app', 'Update'),
+                                ]);
+                            },
+                            'delete' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                            'title' => Yii::t('app', 'Delete'),
+                                ]);
+                            }
+                        ],
+                        'urlCreator' => function ($action, $model, $key, $index) {
+                            if ($action === 'view') {
+                                $url = 'index.php?r=circulation/member-view&id=' . $model->id;
+                                return $url;
+                            }
+
+                            if ($action === 'update') {
+                                $url = 'index.php?r=circulation/member-update&id=' . $model->id;
+                                return $url;
+                            }
+                            if ($action === 'delete') {
+                                $url = 'index.php?r=circulation/member-delete&id=' . $model->id;
+                                return $url;
+                            }
+                        }
                     ],
-                ]);
-                ?>
-                <?php Pjax::end(); ?>
-            </div>
+                ],
+                'options' => ['class' => 'table-responsive']
+            ]);
+            ?>
+            <?php Pjax::end(); ?>
         </div>
     </div>
 </div>

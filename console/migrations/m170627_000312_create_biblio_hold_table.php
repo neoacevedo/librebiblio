@@ -38,7 +38,7 @@ class m170627_000312_create_biblio_hold_table extends Migration
             'fk-biblio_hold-mbr_id',
             '{{%biblio_hold}}',
             'mbr_id',
-            'user',
+            '{{%member}}',
             'id',
             'CASCADE'
         );

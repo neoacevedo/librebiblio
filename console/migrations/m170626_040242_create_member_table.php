@@ -1,0 +1,40 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `member`.
+ */
+class m170626_040242_create_member_table extends Migration {
+
+    /**
+     * @inheritdoc
+     */
+    public function up() {
+        $this->createTable('{{%member}}', [
+            'id' => $this->primaryKey(),
+            'username' => $this->string()->notNull()->unique(),
+            'first_name' => $this->string()->notNull(),
+            'last_name' => $this->string()->notNull(),
+            'address' => $this->string()->notNull(),
+            'auth_key' => $this->string(32)->notNull(),
+            'password_hash' => $this->string()->notNull(),
+            'password_reset_token' => $this->string()->notNull(),
+            'email' => $this->string()->notNull()->unique(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'phone' => $this->string(32)->notNull(),
+            'classification_id' => $this->integer()->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+        ]);
+
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function down() {
+        $this->dropTable('{{%member}}');
+    }
+
+}

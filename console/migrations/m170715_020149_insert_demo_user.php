@@ -17,7 +17,7 @@ class m170715_020149_insert_demo_user extends Migration {
         $password_hash = ($instance_id !== false) ? Yii::$app->security->generatePasswordHash($instance_id) :
                 Yii::$app->security->generatePasswordHash('admin');
 
-        $this->insert('user', [
+        $this->insert('{{%user}}', [
             'username' => 'admin',
             'first_name' => 'admin',
             'last_name' => 'admin',

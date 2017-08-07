@@ -1,9 +1,9 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use yii\base\Model;
-use common\models\User;
+use common\models\Member;
 
 /**
  * Signup form
@@ -15,7 +15,9 @@ class SignupForm extends Model {
     public $last_name;
     public $phone;
     public $email;
+    public $address;
     public $password;
+    public $classification_id;
 
     /**
      * @inheritdoc
@@ -40,8 +42,13 @@ class SignupForm extends Model {
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This email address has already been taken.'],
+            ['address', 'trim'],
+            ['address', 'required'],
+            ['address', 'string', 'min' => 4, 'max' => 255],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['classification_id', 'required'],
+            ['classification_id', 'integer']
         ];
     }
 
@@ -61,10 +68,11 @@ class SignupForm extends Model {
         $user->last_name = $this->last_name;
         $user->phone = $this->phone;
         $user->email = $this->email;
+        $user->address = $this->address;
         $user->setPassword($this->password);
         $user->generateAuthKey();
-        $user->classification_id = 1;
-
+        $user->classification_id = $this->classification_id;
+        //
         return $user->save() ? $user : null;
     }
 

@@ -9,6 +9,7 @@ use pceuropa\menu\Menu;
 use kartik\sidenav\SideNav;
 
 $this->title = Yii::t('app', 'New Member');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $items = [];
 foreach (Menu::NavbarLeft(1) as $menu) {
@@ -17,6 +18,8 @@ foreach (Menu::NavbarLeft(1) as $menu) {
     $item['type'] = $menu['type'];
     array_push($items, $item);
 }
+
+$mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
 ?>
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -42,10 +45,14 @@ foreach (Menu::NavbarLeft(1) as $menu) {
                 <?= $form->field($model, 'last_name')->textInput() ?>
             </div>
         </div>
+        
+        <?= $form->field($model, 'address') ?>
 
         <?= $form->field($model, 'email') ?>
         
         <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 100000]) ?>
+        
+        <?= $form->field($model, 'classification_id')->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
         
         <div class="hidden">
             <?= $form->field($model, 'password')->hiddenInput(['value' => $model->generateUniqueRandomString(8)])->label('') ?>
