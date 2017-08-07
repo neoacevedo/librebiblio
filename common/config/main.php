@@ -37,7 +37,8 @@ return [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            //'useFileTransport' => true, //for the testing purpose, you need to enable this
+            'viewPath' => '@common/mail',
+            'useFileTransport' => false, //for the testing purpose, you need to enable this
             'transport' => [
              'class' => 'Swift_SmtpTransport',
              'host' => 'smtp.googlemail.com',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
