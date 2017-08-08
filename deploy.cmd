@@ -60,7 +60,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-xcopy /E /Y "https://getcomposer.org/composer.phar"
+bitsadmin.exe /transfer "JobName" https://getcomposer.org/composer.phar composer.phar
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
