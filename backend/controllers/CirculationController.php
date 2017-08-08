@@ -105,11 +105,7 @@ class CirculationController extends Controller {
                         ->setTo($user->email)
                         ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
                         ->setSubject('Signup Confirmation')
-                        ->setTextBody("
-Click this link " . \yii\helpers\Html::a('confirm', Yii::$app->urlManager->createAbsoluteUrl(
-                                                ['site/confirm', 'id' => $user->id, 'key' => $user->auth_key]
-                                ))
-                        )
+                        ->setTextBody("")
                         ->send();
                 if ($email) {
                     Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Email sent to user'));
