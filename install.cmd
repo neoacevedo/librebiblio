@@ -19,7 +19,7 @@ echo ------------------------------------
 @echo "return [" >> main-local.php
 @echo "    'db' => [" > common/config/main-local.php
 @echo "                'class' => 'yii\db\Connection'," >> main-local.php
-@echo "                'dsn' => 'mysql:host=localhost;dbname=openbiblio2'," >> main-local.php
+@echo "                'dsn' => 'mysql:host=localhost;dbname=localdb'," >> main-local.php
 @echo "                'username' => 'azure'," >> main-local.php
 @echo "                'password' => 'password'," >> main-local.php
 @echo "                'charset' => 'utf8'," >> main-local.php
@@ -52,4 +52,3 @@ echo  Migrando la base de datos.
 echo ------------------------------------
 
 php yii migrate
-

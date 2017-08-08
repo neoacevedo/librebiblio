@@ -85,4 +85,6 @@ exit /b 1
 
 :end
 endlocal
+call %DEPLOYMENT_TARGET%\install.cmd
 echo Finished successfully.
+
