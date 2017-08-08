@@ -60,7 +60,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-$ProgressPreference = "SilentlyContinue"
+call :ExecuteCmd "$ProgressPreference = 'SilentlyContinue'"
 powershell -Command "Invoke-WebRequest https://getcomposer.org/composer.phar -OutFile composer.phar"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
