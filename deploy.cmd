@@ -60,7 +60,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-bitsadmin.exe /transfer "JobName" https://getcomposer.org/composer.phar composer.phar
+powershell -Command "Invoke-WebRequest https://getcomposer.org/composer.phar -OutFile composer.phar"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
