@@ -9,4 +9,4 @@ else
     /var/lib/openshift/$OPENSHIFT_APP_UUID/app-root/runtime/bin/php $OPENSHIFT_DATA_DIR/composer.phar self-update
 fi
 
-( unset GIT_DIR ; cd $OPENSHIFT_REPO_DIR ; /var/lib/openshift/$OPENSHIFT_APP_UUID/app-root/runtime/bin/php $OPENSHIFT_DATA_DIR/composer.phar install ) 
+( unset GIT_DIR ; cd $OPENSHIFT_REPO_DIR/www ; /var/lib/openshift/$OPENSHIFT_APP_UUID/app-root/runtime/bin/php $OPENSHIFT_DATA_DIR/composer.phar install ) 
