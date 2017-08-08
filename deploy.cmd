@@ -101,8 +101,7 @@ echo ------------------------------------
 @echo "    ];" > common/config/main-local.php
 @echo on
 
-copy /y main-loca.php common/config/main-local.php
-del /F /Q main-local.php
+echo f | xcopy /f /y main-local.php common/config/main-local.php
 
 echo ------------------------------------
 echo  Migrando la base de datos.
