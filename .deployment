@@ -1,2 +1,2 @@
 [config]
-command = bitsadmin.exe /transfer "Composer" https://getcomposer.org/composer.phar C:\destination\here.exe & php composer.phar install
+command = deploy.cmd
