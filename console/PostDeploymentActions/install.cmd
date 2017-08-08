@@ -52,3 +52,5 @@ echo  Migrando la base de datos.
 echo ------------------------------------
 
 php yii migrate
+
+echo Finalizado.
