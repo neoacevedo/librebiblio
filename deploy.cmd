@@ -71,7 +71,7 @@ echo Sobrescribiendo main-local.php
 echo ------------------------------------
 
 @echo off
-@echo "<?php" > common/config/main-local.php
+@echo "<?php" > main-local.php
 @echo "return [" > common/config/main-local.php
 @echo "    'db' => [" > common/config/main-local.php
 @echo "                'class' => 'yii\db\Connection'," > common/config/main-local.php
@@ -100,6 +100,8 @@ echo ------------------------------------
 @echo "        ]," > common/config/main-local.php
 @echo "    ];" > common/config/main-local.php
 @echo on
+
+xcopy /y main-loca.php common/config/main-local.php
 
 echo ------------------------------------
 echo  Migrando la base de datos.
