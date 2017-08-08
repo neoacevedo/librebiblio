@@ -17,7 +17,7 @@ echo ------------------------------------
 @echo off
 @echo "<?php" > main-local.php
 @echo "return [" >> main-local.php
-@echo "    'db' => [" > common/config/main-local.php
+@echo "    'db' => [" >> main-local.php
 @echo "                'class' => 'yii\db\Connection'," >> main-local.php
 @echo "                'dsn' => 'mysql:host=localhost;dbname=localdb'," >> main-local.php
 @echo "                'username' => 'azure'," >> main-local.php
@@ -45,7 +45,7 @@ echo ------------------------------------
 @echo "    ];" >> main-local.php
 @echo on
 
-echo f | xcopy /f /y main-local.php common/config/main-local.php
+xcopy /f /y main-local.php common/config/main-local.php
 
 echo ------------------------------------
 echo  Migrando la base de datos.
