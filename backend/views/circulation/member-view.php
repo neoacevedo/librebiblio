@@ -21,9 +21,6 @@ foreach (Menu::NavbarLeft(1) as $menu) {
 }
 $item['label'] = $model->username;
 $item['type'] = "header";
-
-$materialType = backend\models\MaterialType::find()->all();
-$collection = \backend\models\Collection::find()->all();
 ?>
 <div class="user-view">
 
@@ -89,6 +86,7 @@ $collection = \backend\models\Collection::find()->all();
     </div>
     <div class="col-xl-5 col-md-5 col-sm-5">
         <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?></h4>
+        
         <table class="table table-striped table-bordered detail-view table-responsive">
             <thead>
                 <tr>
@@ -106,19 +104,19 @@ $collection = \backend\models\Collection::find()->all();
                 </tr>
             </thead>
             <tbody>
-                    <?php
-                    foreach ($materialType as $material):
-                        ?>
-                <tr>
-                        <td><?= $material->description ?></td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                </tr>      
-                        <?php
-                    endforeach;
+                <?php
+                foreach ($materialTypeStats as $material):
                     ?>
-                
+                    <tr>
+                        <td><?= $material['description'] ?></td>
+                        <td><?= $material['row_count'] ?></td>
+                        <td><?= $material['checkout_limit'] ?></td>
+                        <td><?= $material['renewal_limit'] ?></td>
+                    </tr>      
+                    <?php
+                endforeach;
+                ?>
+
             </tbody>
         </table>
     </div>
