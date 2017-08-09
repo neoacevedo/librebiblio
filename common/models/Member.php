@@ -123,13 +123,7 @@ class Member extends ActiveRecord implements IdentityInterface
         return $timestamp + $expire >= time();
     }
     
-    public function getHistoryByMaterialType() {
-        
-    }
     
-    public function getHistoryByCollectionType() {
-        
-    }
     
 // attributos
 

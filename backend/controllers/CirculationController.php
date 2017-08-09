@@ -76,12 +76,13 @@ class CirculationController extends Controller {
      */
     public function actionMemberView($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $materialType = backend\models\MaterialType::find()->all();
+        $collection = \backend\models\Collection::find()->all();
         return $this->render('member-view', [
                     'model' => $this->findModel($id),
         ]);
     }
 
-    
     public function actionSearch() {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

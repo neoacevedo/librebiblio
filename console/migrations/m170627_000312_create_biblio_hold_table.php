@@ -25,6 +25,9 @@ class m170627_000312_create_biblio_hold_table extends Migration
         
         // add primary keys
         $this->addPrimaryKey('bibliohold_pk', '{{%biblio_hold}}', ['id', 'bibid', 'copyid']);
+        
+        // alter id to autoincrement
+        $this->alterColumn('{{%biblio_hold}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `mbr_id`
         $this->createIndex(
