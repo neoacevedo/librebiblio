@@ -1,65 +1,63 @@
 curl -O https://getcomposer.org/composer.phar
 
-echo Ejecutando Composer
+@echo Ejecutando Composer
 
 php composer.phar install
 
-echo ------------------------------------
-echo Iniciando Yii2 en modo Produccion
-echo ------------------------------------
+@echo ------------------------------------
+@echo Iniciando Yii2 en modo Produccion
+@echo ------------------------------------
 
 php init --env=Production
 
-echo ------------------------------------
-echo Sobrescribiendo main-local.php
-echo ------------------------------------
+@echo ------------------------------------
+@echo Sobrescribiendo main-local.php
+@echo ------------------------------------
 
-@echo off
-@echo "<?php" > main-local.php
-@echo "$servername = "";" >> main-local.php
-@echo "$username = "";" >> main-local.php
-@echo "$password = "";" >> main-local.php
-@echo "$dbname = "";" >> main-local.php
+$main-local = "<?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
+// Parsing connnection string
+foreach ($_SERVER as $key => $value) {
+    if (strpos($key, "MYSQLCONNSTR_") !== 0) {
+        continue;
+    }
+    $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+    $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+    $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+return [
+    'db' => [
+                'class' => 'yii\db\Connection',
+                'dsn' => 'mysql:host='.$dbname.';dbname='.$dbname.',
+                'username' => $username,
+                'password' => $password,
+                'charset' => 'utf8',
+            ],
+            'mailer' => [
+                'class' => 'yii\swiftmailer\Mailer',
+                'viewPath' => '@common/mail',
+                // send all mails to a file by default. You have to set
+                // 'useFileTransport' to false and configure a transport
+                // for the mailer to send real emails.
+                'useFileTransport' => false,
+                'transport' => [
+                    'class' => 'Swift_SmtpTransport',
+                    'host' => 'smtp.googlemail.com', // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                    'username' => 'nestor.acevedo.romero',
+                    'password' => '_*Hynt1b@_*',
+                    'port' => '587', // Port 25 is a very common port too
+                    'encryption' => 'tls', // It is often used, check your provider or mail server specs
+                ],
+            ],
+            'gridview' => ['class' => 'kartik\grid\Module']
+        ],
+    ];"
 
-@echo "// Parsing connnection string" >> main-local.php
-@echo "foreach ($_SERVER as $key => $value) {" >> main-local.php
-@echo "    if (strpos($key, "MYSQLCONNSTR_") !== 0) {" >> main-local.php
-@echo "        continue;" >> main-local.php
-@echo "    }" >> main-local.php
-    
-@echo "    $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);" >> main-local.php
-@echo "    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);" >> main-local.php
-@echo "    $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);" >> main-local.php
-@echo "    $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);" >> main-local.php
-@echo "}" >> main-local.php
-@echo "return [" >> main-local.php
-@echo "    'db' => [" >> main-local.php
-@echo "                'class' => 'yii\db\Connection'," >> main-local.php
-@echo "                'dsn' => 'mysql:host='.$dbname.';dbname='.$dbname.'," >> main-local.php
-@echo "                'username' => $username," >> main-local.php
-@echo "                'password' => $password," >> main-local.php
-@echo "                'charset' => 'utf8'," >> main-local.php
-@echo "            ]," >> main-local.php
-@echo "            'mailer' => [" >> main-local.php
-@echo "                'class' => 'yii\swiftmailer\Mailer'," >> main-local.php
-@echo "                'viewPath' => '@common/mail'," >> main-local.php
-@echo "                // send all mails to a file by default. You have to set" >> main-local.php
-@echo "                // 'useFileTransport' to false and configure a transport" >> main-local.php
-@echo "                // for the mailer to send real emails." >> main-local.php
-@echo "                'useFileTransport' => false," >> main-local.php
-@echo "                'transport' => [" >> main-local.php
-@echo "                    'class' => 'Swift_SmtpTransport'," >> main-local.php
-@echo "                    'host' => 'smtp.googlemail.com', // e.g. smtp.mandrillapp.com or smtp.gmail.com" >> main-local.php
-@echo "                    'username' => 'nestor.acevedo.romero'," >> main-local.php
-@echo "                    'password' => '_*Hynt1b@_*'," >> main-local.php
-@echo "                    'port' => '587', // Port 25 is a very common port too" >> main-local.php
-@echo "                    'encryption' => 'tls', // It is often used, check your provider or mail server specs" >> main-local.php
-@echo "                ]," >> main-local.php
-@echo "            ]," >> main-local.php
-@echo "            'gridview' => ['class' => 'kartik\grid\Module']" >> main-local.php
-@echo "        ]," >> main-local.php
-@echo "    ];" >> main-local.php
-@echo on
+$main-local | Set-Content 'main-local.php'
 
 xcopy /f /y main-local.php common/config/main-local.php
 
