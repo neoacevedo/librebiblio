@@ -16,12 +16,28 @@ echo ------------------------------------
 
 @echo off
 @echo "<?php" > main-local.php
+@echo "$servername = "";" >> main-local.php
+@echo "$username = "";" >> main-local.php
+@echo "$password = "";" >> main-local.php
+@echo "$dbname = "";" >> main-local.php
+
+@echo "// Parsing connnection string" >> main-local.php
+@echo "foreach ($_SERVER as $key => $value) {" >> main-local.php
+@echo "    if (strpos($key, "MYSQLCONNSTR_") !== 0) {" >> main-local.php
+@echo "        continue;" >> main-local.php
+@echo "    }" >> main-local.php
+    
+@echo "    $servername = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);" >> main-local.php
+@echo "    $dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);" >> main-local.php
+@echo "    $username = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);" >> main-local.php
+@echo "    $password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);" >> main-local.php
+@echo "}" >> main-local.php
 @echo "return [" >> main-local.php
 @echo "    'db' => [" >> main-local.php
 @echo "                'class' => 'yii\db\Connection'," >> main-local.php
-@echo "                'dsn' => 'mysql:host=localhost;dbname=localdb'," >> main-local.php
-@echo "                'username' => 'azure'," >> main-local.php
-@echo "                'password' => 'password'," >> main-local.php
+@echo "                'dsn' => 'mysql:host='.$dbname.';dbname='.$dbname.'," >> main-local.php
+@echo "                'username' => $username," >> main-local.php
+@echo "                'password' => $password," >> main-local.php
 @echo "                'charset' => 'utf8'," >> main-local.php
 @echo "            ]," >> main-local.php
 @echo "            'mailer' => [" >> main-local.php
