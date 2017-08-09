@@ -14,7 +14,7 @@ echo ------------------------------------
 echo Sobrescribiendo main-local.php
 echo ------------------------------------
 
-Move-Item -Path "main-local.php" -Destination "%ARTIFACTS%\wwwroot\common\config\main-local.php"
+xcopy /f /y main-local.php %ARTIFACTS%\wwwroot\common\config\main-local.php
 
 echo ------------------------------------
 echo  Migrando la base de datos.
