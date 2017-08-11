@@ -28,15 +28,14 @@ class MaterialTypeController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        //'actions' => ['index', 'view', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($action) {
-                            $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            foreach ($roles as $role) {
-                                if ($role->name == "admin") {
-                                    return true;
-                                }
+                        'matchCallback' => function () {
+                            $roles = (array)Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if(array_key_exists("admin", $roles)) {
+                                return true;
                             }
                             return false;
                         },

@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'user',
                 'value' => 'user.username',
-                'label' => \Yii::t('app', 'User')
+                'label' => \Yii::t('app', 'Updated by')
             ],
             [
                 'attribute' => 'materialType',
@@ -42,7 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'value' => function($model) {
                     $biblioCopySearch = new \app\models\BiblioCopySearch();
-                    $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
+                    $biblioCopySearch->bibid = $model->id;
+                    $biblioCopy = $biblioCopySearch->search();
 
                     return GridView::widget([
                                 "dataProvider" => $biblioCopy,

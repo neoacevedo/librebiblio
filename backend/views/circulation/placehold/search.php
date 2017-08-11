@@ -42,10 +42,7 @@ foreach (Menu::NavbarLeft(1) as $menu) {
                     'last_name',
                     'email:email',
                     'phone',
-                    [
-                        'attribute' => 'status',
-                        'value' => function($model) { return $model::STATUS_ACTIVE ? 'Activo' : 'Bloqueado'; }
-                    ],
+                    'status',
                     // 'created_at',
                     // 'updated_at',
                     [

@@ -91,8 +91,8 @@ class BiblioSearch extends Biblio {
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'material_cd' => $this->material_cd,
-            'collection_cd' => $this->collection_cd,
+            /*'material_cd' => $this->material_cd,
+            'collection_cd' => $this->collection_cd,*/
         ]);
 
         $query->andFilterWhere(['like', 'call_nmbr1', $this->call_nmbr1])

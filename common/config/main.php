@@ -4,7 +4,7 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\MemCache',
+            'class' => strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'yii\caching\WinCache' :'yii\caching\MemCache',
             'servers' => [
                 [
                     'host' => 'localhost',

@@ -73,7 +73,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBib()
+    public function getBiblio()
     {
         return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
     }

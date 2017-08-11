@@ -31,12 +31,13 @@ class CirculationController extends Controller {
                         //'actions' => ['index', 'search', 'new-member', 'member-view', 'member-update', 'member-delete'],
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($action) {
-                            #$roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            if (Yii::$app->user->can('view') || Yii::$app->user->can('create') || Yii::$app->user->can('update') || Yii::$app->user->can('delete') || Yii::$app->user->can('new-member')) {
+                        'matchCallback' => function () {
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
-                            return false;
+                            return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);
                         },
                     ],
                     [
@@ -70,13 +71,14 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Displays a single User model.
+     * Muestra los datos del miembro como su información básica, los materiales en préstamo o
+     * reservados y las estadísticas en la biblioteca.
      * @param integer $id
      * @return mixed
      */
     public function actionMemberView($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-
+// estadísticas del usuario con los tipos de material registrados en la biblioteca
         $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
                     "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
                 ])->from("{{%material_type_dm}} mat")
@@ -84,14 +86,31 @@ class CirculationController extends Controller {
                 ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
                 ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
                         . 'from biblio_copy c, biblio b '
-                        . 'where c.mbr_id='.$id.' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                        . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
                 ->where('{{%member}}.id = :id', [":id" => $id])
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
+// status: checkout
+        $biblioCopySearch = [new \app\models\BiblioCopySearch()];
+        $biblioCopySearch[0]->mbr_id = $id;
+        $biblioCopySearch[0]->status_cd = 'out';
+        $biblioCopy = [$biblioCopySearch[0]->search([])];
+// status: hold
+        $biblioCopySearch[] = new \app\models\BiblioCopySearch();
+        $biblioCopySearch[1]->mbr_id = $id;
+        $biblioCopySearch[1]->status_cd = 'hld';
+        $biblioCopy[] = $biblioCopySearch[0]->search([]);
+// copias bibliográficas
+        $searchModel = new \app\models\BiblioCopySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('member-view', [
                     'model' => $this->findModel($id),
-                    'materialTypeStats' => $materialTypeStats
+                    'materialTypeStats' => $materialTypeStats,
+                    'biblioCopySearch' => $biblioCopySearch,
+                    'biblioCopy' => $biblioCopy,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
         ]);
     }
 
@@ -103,6 +122,18 @@ class CirculationController extends Controller {
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionBiblioCopySearch($id) {
+        $searchModel = new \app\models\BiblioCopySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
+            return $this->renderAjax('checkout/search', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**
@@ -132,6 +163,54 @@ class CirculationController extends Controller {
         return $this->render('signup', [
                     'model' => $model,
         ]);
+    }
+
+    /**
+     * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
+     * @param int $id
+     * @param int $bibid
+     * @param int $copyid
+     * @param string $status
+     * @return mixed
+     */
+    public function actionCreate($id, $bibid, $copyid, $status) {
+        $model = $this->findModel($id);
+        $biblioCopy = \common\models\BiblioCopy::findOne(["copyid" => $copyid, "bibid" => $bibid]);
+        if($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+            // si ya el miembro tiene el material...
+            // se renueva el item
+            $biblioCopy->renewal_count += 1;
+            $biblioCopy->updated_at = date('Y-m-d H:i:s');
+            // actualizar el historial
+            $biblioStatusHistory = \common\models\BiblioStatusHistory::findOne(["copyid" => $copyid, "bibid" => $bibid, 'mbr_id' => $id]);
+            $biblioStatusHistory->renewal_count += 1;
+            $biblioStatusHistory->updated_at = date('Y-m-d H:i:s');
+            // guardar la información
+            $biblioCopy->save();
+            $biblioStatusHistory->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        } elseif($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
+            // si otro miembro se llevó el material
+            Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+        $biblioCopy->mbr_id = $id;
+        $biblioCopy->status_cd = $status;
+        $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
+        if ($biblioCopy->save()) {
+            $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+            $biblioStatusHistory->mbr_id = $id;
+            $biblioStatusHistory->status_cd = 'out';
+            $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
+            $biblioStatusHistory->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
+            if (!$biblioStatusHistory->save()) {
+                Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioStatusHistory->getErrors()));
+            }
+        } else {
+            Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioCopy->getErrors()));
+        }
+
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

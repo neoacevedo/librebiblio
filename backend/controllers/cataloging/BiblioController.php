@@ -30,15 +30,16 @@ class BiblioController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        //'actions' => ['index', 'view', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($action) {
-                            #$roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            if (Yii::$app->user->can('view') || Yii::$app->user->can('create') || Yii::$app->user->can('update') || Yii::$app->user->can('delete')) {
+                        'matchCallback' => function () {
+                            $roles = (array)Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if(array_key_exists("admin", $roles)) {
                                 return true;
                             }
-                            return false;
+                            return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);
                         },
                     ],
                     [

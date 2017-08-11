@@ -89,7 +89,7 @@ class Biblio extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_userid']);
+        return $this->hasOne(\backend\models\User::className(), ['id' => 'updated_userid']);
     }
     
     /**

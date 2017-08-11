@@ -29,7 +29,7 @@ class SiteController extends Controller {
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($action) {
+                        'matchCallback' => function () {
                             $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             $isAdmin = false;
                             foreach ($roles as $role) {

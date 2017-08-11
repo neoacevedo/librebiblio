@@ -75,7 +75,7 @@ foreach ($model->biblioFields as $biblioField) {
             [
                 'attribute' => 'user',
                 'value' => $model->user->username,
-                'label' => \Yii::t('app', 'User')
+                'label' => \Yii::t('app', 'Updated by')
             ],
             [
                 'attribute' => 'materialType',
