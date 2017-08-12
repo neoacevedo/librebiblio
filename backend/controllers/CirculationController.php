@@ -181,28 +181,23 @@ class CirculationController extends Controller {
             // se renueva el item
             $biblioCopy->renewal_count += 1;
             $biblioCopy->updated_at = date('Y-m-d H:i:s');
-            // actualizar el historial
-            $biblioStatusHistory = \common\models\BiblioStatusHistory::findOne(["copyid" => $copyid, "bibid" => $bibid, 'mbr_id' => $id]);
-            $biblioStatusHistory->renewal_count += 1;
-            $biblioStatusHistory->updated_at = date('Y-m-d H:i:s');
-            // guardar la información
-            $biblioCopy->save();
-            $biblioStatusHistory->save();
-            return $this->redirect(['view', 'id' => $model->id]);
         } elseif($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
             // si otro miembro se llevó el material
             Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
             return $this->redirect(['view', 'id' => $model->id]);
-        }
+        } 
+        
         $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = $status;
         $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
         if ($biblioCopy->save()) {
+            // crear el historial para el miembro
             $biblioStatusHistory = new \common\models\BiblioStatusHistory;
             $biblioStatusHistory->mbr_id = $id;
             $biblioStatusHistory->status_cd = 'out';
             $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
             $biblioStatusHistory->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
+            $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
                 Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioStatusHistory->getErrors()));
             }
