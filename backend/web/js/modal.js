@@ -10,19 +10,26 @@ $(document).on('click', '.showModalButton', function () {
     //the if else are intentionally separated instead of put into a function to get the 
     //button since it is using a class not an #id so there are many of them and we need
     //to ensure we get the right button and content. 
-    if ($('#modal').data('bs.modal').isShown) {
-        $('#modal').find('#modalContent')
-                .load($(this).attr('value'));
-        //dynamiclly set the header for the modal
-        document.getElementById('modalHeaderTitle').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
-    } else {
-        //if modal isn't open; open it and load content
-        $('#modal').modal('show')
-                .find('#modalContent')
-                .load($(this).attr('value'));
-        //dynamiclly set the header for the modal
-        document.getElementById('modalHeaderTitle').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
-    }
+    /*if ($('#modal').data('bs.modal').isShown) {
+     $('#modal').find('#modalContent')
+     .load($(this).attr('value'));
+     //dynamiclly set the header for the modal
+     document.getElementById('modalHeaderTitle').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
+     } else {
+     //if modal isn't open; open it and load content
+     $('#modal').modal('show')
+     .find('#modalContent')
+     .load($(this).attr('value'));
+     //dynamiclly set the header for the modal
+     document.getElementById('modalHeaderTitle').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
+     }*/
+
+    //if modal isn't open; open it and load content
+    $('#modal').modal('show')
+            .find('#modalContent')
+            .load($(this).attr('value'));
+    //dynamiclly set the header for the modal
+    document.getElementById('modalHeaderTitle').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
 
     //$.pjax.defaults.timeout = false;//IMPORTANT
     //$.pjax.reload({container: '#pjax'});

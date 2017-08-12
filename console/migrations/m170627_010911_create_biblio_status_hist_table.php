@@ -28,10 +28,6 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'renewal_count' => $this->smallInteger()->unsigned(),
         ]);
         
-        // add primary keys
-        $this->addPrimaryKey('biblio_status_hist_pk', '{{%biblio_status_hist}}', ['bibid', 'copyid']);
-
-
         // creates index for column `bibid`
         $this->createIndex(
             'idx-biblio_status_hist-bibid',

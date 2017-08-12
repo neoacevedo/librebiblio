@@ -91,15 +91,15 @@ class CirculationController extends Controller {
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
 // status: checkout
-        $biblioCopySearch = [new \app\models\BiblioCopySearch()];
+        $biblioCopySearch[0] = new \app\models\BiblioCopySearch();
         $biblioCopySearch[0]->mbr_id = $id;
         $biblioCopySearch[0]->status_cd = 'out';
-        $biblioCopy = [$biblioCopySearch[0]->search([])];
+        $biblioCopy[0] = $biblioCopySearch[0]->search([]);
 // status: hold
-        $biblioCopySearch[] = new \app\models\BiblioCopySearch();
+        $biblioCopySearch[1] = new \app\models\BiblioCopySearch();
         $biblioCopySearch[1]->mbr_id = $id;
         $biblioCopySearch[1]->status_cd = 'hld';
-        $biblioCopy[] = $biblioCopySearch[0]->search([]);
+        $biblioCopy[1] = $biblioCopySearch[1]->search([]);
 // copias bibliográficas
         $searchModel = new \app\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -128,7 +128,14 @@ class CirculationController extends Controller {
         $searchModel = new \app\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        Yii::info(Yii::$app->request->isAjax, 'ajax');
+        Yii::info(Yii::$app->request->isPjax, 'pjax');
         if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
+            return $this->renderAjax('copysearch', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        } else {
             return $this->renderAjax('copysearch', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
@@ -175,21 +182,26 @@ class CirculationController extends Controller {
      */
     public function actionCreate($id, $bibid, $copyid, $status) {
         $model = $this->findModel($id);
+        $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        if($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+        if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
             // si ya el miembro tiene el material...
             // se renueva el item
-            $biblioCopy->renewal_count += 1;
+            $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
             $biblioCopy->updated_at = date('Y-m-d H:i:s');
-        } elseif($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
+            // la fecha de devolución se amplía basado en la fecha de devolución inicial.
+            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $due_back);
+        } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
             // si otro miembro se llevó el material
             Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
             return $this->redirect(['member-view', 'id' => $model->id]);
-        } 
-        
+        } else {
+            // hasta ahora se va a tomar en préstamo, solo se genera la fecha de devolución a la establecida.
+            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', $due_back);
+        }
+
         $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = $status;
-        $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if ($biblioCopy->save()) {
             // crear el historial para el miembro
@@ -199,7 +211,8 @@ class CirculationController extends Controller {
             $biblioStatusHistory->mbr_id = $id;
             $biblioStatusHistory->status_cd = 'out';
             $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
-            $biblioStatusHistory->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
+            // la fecha de devolución en el historial es la misma de la de la copia.
+            $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
             $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
                 Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioStatusHistory->getErrors()));
