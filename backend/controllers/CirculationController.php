@@ -124,12 +124,12 @@ class CirculationController extends Controller {
         ]);
     }
 
-    public function actionBiblioCopySearch($id) {
+    public function actionCopySearch($id) {
         $searchModel = new \app\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
-            return $this->renderAjax('checkout/search', [
+            return $this->renderAjax('copysearch', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
             ]);
@@ -175,7 +175,7 @@ class CirculationController extends Controller {
      */
     public function actionCreate($id, $bibid, $copyid, $status) {
         $model = $this->findModel($id);
-        $biblioCopy = \common\models\BiblioCopy::findOne(["copyid" => $copyid, "bibid" => $bibid]);
+        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         if($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
             // si ya el miembro tiene el material...
             // se renueva el item
@@ -184,15 +184,18 @@ class CirculationController extends Controller {
         } elseif($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
             // si otro miembro se llevó el material
             Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['member-view', 'id' => $model->id]);
         } 
         
         $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = $status;
         $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('+1 week'));
+        $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if ($biblioCopy->save()) {
             // crear el historial para el miembro
             $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+            $biblioStatusHistory->bibid = $bibid;
+            $biblioStatusHistory->copyid = $copyid;
             $biblioStatusHistory->mbr_id = $id;
             $biblioStatusHistory->status_cd = 'out';
             $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
@@ -205,7 +208,7 @@ class CirculationController extends Controller {
             Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioCopy->getErrors()));
         }
 
-        return $this->redirect(['view', 'id' => $model->id]);
+        return $this->redirect(['member-view', 'id' => $model->id]);
     }
 
     /**

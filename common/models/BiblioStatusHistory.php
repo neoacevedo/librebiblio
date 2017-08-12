@@ -18,7 +18,7 @@ use Yii;
  *
  * @property Biblio $bib
  * @property BiblioCopy $copy
- * @property User $mbr
+ * @property Member $mbr
  */
 class BiblioStatusHistory extends \yii\db\ActiveRecord
 {
@@ -42,7 +42,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
             [['copyid'], 'exist', 'skipOnError' => true, 'targetClass' => BiblioCopy::className(), 'targetAttribute' => ['copyid' => 'id']],
-            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['mbr_id' => 'id']],
+            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 

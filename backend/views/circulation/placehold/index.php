@@ -24,24 +24,24 @@ use yii\widgets\Pjax;
             [
                 'label' => Yii::t('app', 'Title'),
                 'value' => function($model) {
-                    return $model->getBiblio()->title;
-                }//\common\models\Biblio::findOne(["id" => $model->bibid])->title
+                    return \common\models\Biblio::findOne(["id" => $model->bibid])->title;
+                }//
             ],
             [
                 'label' => Yii::t('app', 'Author'),
                 'value' => function($model) {
-                    return $model->getBiblio()->author;
-                }//\common\models\Biblio::findOne(["id" => $model->bibid])->author
+                    return \common\models\Biblio::findOne(["id" => $model->bibid])->author;
+                }//
             ],
             [
                 'attribute' => 'material_cd',
                 'value' => function($model) {
-                    //$biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
-                    return \backend\models\MaterialType::findOne(['id' => $model->getBiblio()->material_cd])->description;
+                    $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
+                    return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
                 },
                 'label' => 'Material'
             ],
-            'due_back',
+            'due_back_dt',
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'view',

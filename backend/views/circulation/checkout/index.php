@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 ?>
 <div class="biblio-index">     
     <?=
-    Html::button(Yii::t('app', 'Check Out'), ['value' => yii\helpers\Url::to(['circulation/checkout', 'id' => $id]),
+    Html::button(Yii::t('app', 'Check Out'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'out']),
         'title' => Yii::t('app', 'Check Out'), 'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12']);
     ?>
     <?=
@@ -23,23 +23,25 @@ use yii\widgets\Pjax;
             [
                 'label' => Yii::t('app', 'Title'),
                 'value' => function($model) {
-                    return $model->getBiblio()->title;
-                }//\common\models\Biblio::findOne(["id" => $model->bibid])->title
+                    return \common\models\Biblio::findOne(["id" => $model->bibid])->title;
+                }//
             ],
             [
                 'label' => Yii::t('app', 'Author'),
                 'value' => function($model) {
-                    return $model->getBiblio()->author;
-                }//\common\models\Biblio::findOne(["id" => $model->bibid])->author
+                    return \common\models\Biblio::findOne(["id" => $model->bibid])->author;
+                }//
             ],
             [
                 'attribute' => 'material_cd',
                 'value' => function($model) {
-                    return \backend\models\MaterialType::findOne(['id' => $model->getBiblio()->material_cd])->description;
+                    $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
+                    return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
                 },
                 'label' => 'Material'
             ],
             'due_back_dt',
+            'renewal_count'
         /* ['class' => 'yii\grid\ActionColumn',
           'buttons' => [
           'renew-item' => function($url, $model) {
