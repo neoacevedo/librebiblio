@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     $biblioCopySearch = new \app\models\BiblioCopySearch();
                     $biblioCopySearch->bibid = $model->id;
-                    $biblioCopy = $biblioCopySearch->search();
+                    $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
 
                     return GridView::widget([
                                 "dataProvider" => $biblioCopy,

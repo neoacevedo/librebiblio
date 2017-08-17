@@ -124,23 +124,36 @@ class CirculationController extends Controller {
         ]);
     }
 
-    public function actionCopySearch($id) {
+    public function actionCopySearch() {
         $searchModel = new \app\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        Yii::info(Yii::$app->request->isAjax, 'ajax');
-        Yii::info(Yii::$app->request->isPjax, 'pjax');
-        if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
-            return $this->renderAjax('copysearch', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-            ]);
-        } else {
-            return $this->renderAjax('copysearch', [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-            ]);
-        }
+        return $this->renderAjax('copysearch', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+        /* if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
+          return $this->renderAjax('copysearch', [
+          'searchModel' => $searchModel,
+          'dataProvider' => $dataProvider,
+          ]);
+          } else {
+          return $this->renderAjax('copysearch', [
+          'searchModel' => $searchModel,
+          'dataProvider' => $dataProvider,
+          ]);
+          } */
+    }
+
+    public function actionCheckin() {
+        $searchModel = new \app\models\BiblioCopySearch();
+        $searchModel->status_cd = 'out';
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('checkin', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -180,24 +193,31 @@ class CirculationController extends Controller {
      * @param string $status
      * @return mixed
      */
-    public function actionCreate($id, $bibid, $copyid, $status) {
-        $model = $this->findModel($id);
+    public function actionCreate($bibid, $copyid, $status, $id = 0) {
+
         $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
-            // si ya el miembro tiene el material...
-            // se renueva el item
-            $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
-            $biblioCopy->updated_at = date('Y-m-d H:i:s');
-            // la fecha de devolución se amplía basado en la fecha de devolución inicial.
-            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $due_back);
-        } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
-            // si otro miembro se llevó el material
-            Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
-            return $this->redirect(['member-view', 'id' => $model->id]);
-        } else {
-            // hasta ahora se va a tomar en préstamo, solo se genera la fecha de devolución a la establecida.
-            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', $due_back);
+        // si se env�a el id del miembro y el estado no es 'in', se procede como si fuera una reserva o un pr�stamo interno.
+        if ($id != 0) {
+            if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+                // si ya el miembro tiene el material...
+                // se renueva el item
+                $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
+                $biblioCopy->updated_at = date('Y-m-d H:i:s');
+                // la fecha de devolución se amplía basado en la fecha de devolución inicial.
+                $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $due_back);
+            } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
+                // si otro miembro se llevó el material
+                Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
+                return $this->redirect(['member-view', 'id' => $id]);
+            } else {
+                // hasta ahora se va a tomar en préstamo, solo se genera la fecha de devolución a la establecida.
+                $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('now') + $due_back);
+            }
+        }
+
+        if ($status == "in") {
+            $biblioCopy->due_back_dt = null;
         }
 
         $biblioCopy->mbr_id = $id;
@@ -215,13 +235,22 @@ class CirculationController extends Controller {
             $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
             $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
-                Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioStatusHistory->getErrors()));
+                var_dump($biblioStatusHistory->getErrors());
+                exit;
+                $errors = array_map(function($v) {
+                    return $v;
+                }, $biblioStatusHistory->getErrors());
+                Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
             }
         } else {
-            Yii::$app->getSession()->setFlash('error', implode("<br />", $biblioCopy->getErrors()));
+            Yii::error(var_export($biblioCopy->getErrors()), 'CirculationController');
+            $errors = array_map(function($v) {
+                return $v;
+            }, $biblioCopy->getErrors());
+            Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
         }
 
-        return $this->redirect(['member-view', 'id' => $model->id]);
+        return $id != 0 ? $this->redirect(['member-view', 'id' => $id]) : $this->redirect(['index']);
     }
 
     /**
