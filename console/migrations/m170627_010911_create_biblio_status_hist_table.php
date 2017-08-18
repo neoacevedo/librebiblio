@@ -24,7 +24,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime(),
             'due_back_dt' => $this->date(),
-            'mbr_id' => $this->integer()->notNull(),
+            'mbr_id' => $this->integer(),
             'renewal_count' => $this->smallInteger()->unsigned(),
         ]);
         
@@ -62,22 +62,6 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'CASCADE'
         );
 
-        // creates index for column `mbr_id`
-        $this->createIndex(
-            'idx-biblio_status_hist-mbr_id',
-            '{{%biblio_status_hist}}',
-            'mbr_id'
-        );
-
-        // add foreign key for table `user`
-        $this->addForeignKey(
-            'fk-biblio_status_hist-mbr_id',
-            '{{%biblio_status_hist}}',
-            'mbr_id',
-            '{{%member}}',
-            'id',
-            'CASCADE'
-        );
     }
 
     /**
@@ -106,18 +90,6 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
         // drops index for column `copyid`
         $this->dropIndex(
             'idx-biblio_status_hist-copyid',
-            '{{%biblio_status_hist}}'
-        );
-
-        // drops foreign key for table `user`
-        $this->dropForeignKey(
-            'fk-biblio_status_hist-mbr_id',
-            '{{%biblio_status_hist}}'
-        );
-
-        // drops index for column `mbr_id`
-        $this->dropIndex(
-            'idx-biblio_status_hist-mbr_id',
             '{{%biblio_status_hist}}'
         );
 

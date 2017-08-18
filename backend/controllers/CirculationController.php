@@ -193,12 +193,12 @@ class CirculationController extends Controller {
      * @param string $status
      * @return mixed
      */
-    public function actionCreate($bibid, $copyid, $status, $id = 0) {
+    public function actionCreate($bibid, $copyid, $status, $id = null) {
 
         $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         // si se env�a el id del miembro y el estado no es 'in', se procede como si fuera una reserva o un pr�stamo interno.
-        if ($id != 0) {
+        if (null !== $id) {
             if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
                 // si ya el miembro tiene el material...
                 // se renueva el item
@@ -235,22 +235,23 @@ class CirculationController extends Controller {
             $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
             $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
-                var_dump($biblioStatusHistory->getErrors());
-                exit;
+                $errors = [];
                 $errors = array_map(function($v) {
                     return $v;
                 }, $biblioStatusHistory->getErrors());
+                var_dump($errors);
+                exit;
                 Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
             }
         } else {
             Yii::error(var_export($biblioCopy->getErrors()), 'CirculationController');
-            $errors = array_map(function($v) {
+            $errors = array_map(function($k, $v) {
                 return $v;
             }, $biblioCopy->getErrors());
             Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
         }
 
-        return $id != 0 ? $this->redirect(['member-view', 'id' => $id]) : $this->redirect(['index']);
+        return null !== $id ? $this->redirect(['member-view', 'id' => $id]) : $this->redirect(['index']);
     }
 
     /**

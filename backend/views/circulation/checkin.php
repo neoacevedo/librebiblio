@@ -75,7 +75,7 @@ foreach (Menu::NavbarLeft(1) as $menu) {
                         ],
                         'urlCreator' => function ($action, $model, $key, $index) use($mbr_id) {
                             if ($action === 'checkin') {
-                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=in";
+                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=in&data-pjax=0";
                                 return $url;
                             }
                         }],

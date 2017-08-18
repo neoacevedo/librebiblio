@@ -52,7 +52,7 @@ $mbr_id = Yii::$app->request->get('id');
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) use($mbr_id) {
                     if ($action === 'checkout') {
-                        $url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=out";
+                        $url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=out&data-pjax=0";
                         return $url;
                     }
                 }],

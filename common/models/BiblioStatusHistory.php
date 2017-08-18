@@ -36,13 +36,13 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bibid', 'copyid', 'status_cd', 'created_at', 'mbr_id'], 'required'],
+            [['bibid', 'copyid', 'status_cd', 'created_at'], 'required'],
             [['bibid', 'copyid', 'mbr_id', 'renewal_count'], 'integer'],
             [['created_at', 'updated_at', 'due_back_dt'], 'safe'],
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
             [['copyid'], 'exist', 'skipOnError' => true, 'targetClass' => BiblioCopy::className(), 'targetAttribute' => ['copyid' => 'id']],
-            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
+            //[['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 
@@ -82,8 +82,8 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMbr()
+    /*public function getMbr()
     {
         return $this->hasOne(Member::className(), ['id' => 'mbr_id']);
-    }
+    }*/
 }
