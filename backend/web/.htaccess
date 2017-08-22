@@ -1,9 +1,18 @@
 SetEnvIfNoCase User-Agent “^Wget” bad_bot
-<Limit GET POST>
-    Order Allow,Deny
-    Allow from all
-    Deny from env=bad_bot
-</Limit>
+## Apache 2.2
+#<Limit GET POST>
+#    Order Allow,Deny
+#    Allow from all
+#    Deny from env=bad_bot
+#</Limit>
+##
+
+## Apache 2.4 con PHP7
+<RequireAll>
+    Require all granted
+    Require not env bad_bot
+</RequireAll>
+##
 <IfModule mod_rewrite.c>
     RewriteEngine On
 

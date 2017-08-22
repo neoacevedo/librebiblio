@@ -57,6 +57,18 @@ class CirculationController extends Controller {
     }
 
     /**
+     * Gestión de errores
+     * @return mixed
+     */
+    public function actions() {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+
+    /**
      * Lists all User models.
      * @return mixed
      */
@@ -124,6 +136,11 @@ class CirculationController extends Controller {
         ]);
     }
 
+    /**
+     * Muestra una lista de copias bibliográficas.
+     * La vista es renderizada vía ajax.
+     * @return mixed
+     */
     public function actionCopySearch() {
         $searchModel = new \app\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -145,6 +162,10 @@ class CirculationController extends Controller {
           } */
     }
 
+    /**
+     * Muestra una lista de copias bibliográficas que estén prestadas de manera local.
+     * @return mixed
+     */
     public function actionCheckin() {
         $searchModel = new \app\models\BiblioCopySearch();
         $searchModel->status_cd = 'out';
@@ -232,22 +253,22 @@ class CirculationController extends Controller {
             $biblioStatusHistory->status_cd = 'out';
             $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
             // la fecha de devolución en el historial es la misma de la de la copia.
-            $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
+            $biblioStatusHistory->due_back_dt = null !== $id ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
             $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
                 $errors = [];
-                $errors = array_map(function($v) {
-                    return $v;
-                }, $biblioStatusHistory->getErrors());
+                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                    $errors[] = $v;
+                });
                 var_dump($errors);
                 exit;
                 Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
             }
         } else {
-            Yii::error(var_export($biblioCopy->getErrors()), 'CirculationController');
-            $errors = array_map(function($k, $v) {
-                return $v;
-            }, $biblioCopy->getErrors());
+            $errors = [];
+            array_walk_recursive($biblioCopy->errors, function($v, $k) {
+                $errors[] = $v;
+            });
             Yii::$app->getSession()->setFlash('error', implode("<br />", $errors));
         }
 
@@ -295,7 +316,8 @@ class CirculationController extends Controller {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
 
