@@ -11,8 +11,12 @@ use common\widgets\Alert;
 use pceuropa\menu\Menu;
 
 AppAsset::register($this);
+
+$settings = \common\models\Settings::find()->one();
+$library_name = null !== $settings->library_name ? $settings->library_name: "OpenBiblio2";
 ?>
 <?php $this->beginPage() ?>
+
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
     <head>
@@ -29,7 +33,7 @@ AppAsset::register($this);
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' => 'OpenBiblio2',
+                'brandLabel' =>  $library_name,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -60,7 +64,7 @@ AppAsset::register($this);
                 if ($isAdmin) {
                     $menuItems[] = ['label' => Yii::$app->user->identity->username,
                         'items' => [
-                            ['label' => Yii::t('app', 'Settings'), 'url' => "#", 'class' => 'btn btn-link'],
+                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/settings"], 'class' => 'btn btn-link'],
                             '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(
@@ -99,9 +103,10 @@ AppAsset::register($this);
 
         <footer class="footer">
             <div class="container">
-                <p class="pull-left">&copy; OpenBiblio2 <?= date('Y') ?></p>
+                <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
 
                 <p class="pull-right"><?= Yii::powered() ?></p>
+                
             </div>
         </footer>
 
