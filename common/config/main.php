@@ -16,20 +16,23 @@ $connectstr_dbname = (null !== $connectstr_dbname) ? $connectstr_dbname: "openbi
 $connectstr_dbusername = (null !== $connectstr_dbusername) ? $connectstr_dbusername: "root";
 $connectstr_dbpassword = (null !== $connectstr_dbpassword) ? $connectstr_dbpassword: "";
 
+if(strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+    $cache['class'] = "yii\caching\MemCache";
+    $servers['host'] = 'localhost';
+    $servers['port'] = 11211;
+    $servers['weight'] = 100;
+    $cache['servers'] = [];
+    array_push($cache['servers'], $servers);
+    $cache['useMemcached'] = true;
+} else {
+    $cache['class'] = 'yii\caching\FileCache';
+}
+
+
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'cache' => [
-            'class' => strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'yii\caching\WinCache' : 'yii\caching\MemCache',
-            'servers' => [
-                [
-                    'host' => 'localhost',
-                    'port' => 11211,
-                    'weight' => 100,
-                ]
-            ],
-            'useMemcached' => true,
-        ],       
+        'cache' => $cache,       
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => "mysql:host=$connectstr_dbhost;dbname=$connectstr_dbname",
