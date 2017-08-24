@@ -51,7 +51,7 @@ class Biblio extends \yii\db\ActiveRecord
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string'],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],
             [['opac_flg'], 'string', 'max' => 1],
-            [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_userid' => 'id']],
+            [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => \backend\models\User::className(), 'targetAttribute' => ['updated_userid' => 'id']],
         ];
     }
 
