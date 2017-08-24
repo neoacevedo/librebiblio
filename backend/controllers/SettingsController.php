@@ -76,13 +76,12 @@ class SettingsController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('index', ['model' => $model]);
         } else {
-            array_walk_recursive($model->getErrors(), function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             
             return $this->render('index', ['model' => $model]);
-        }
-        
+        }        
     }
 
     /**

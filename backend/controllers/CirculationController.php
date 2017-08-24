@@ -256,12 +256,12 @@ class CirculationController extends Controller {
             $biblioStatusHistory->due_back_dt = null !== $id ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
             $biblioStatusHistory->renewal_count = $biblioCopy->renewal_count;
             if (!$biblioStatusHistory->save()) {
-                array_walk_recursive($model->getErrors(), function($v, $k) {
+                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
         } else {
-            array_walk_recursive($model->getErrors(), function($v, $k) {
+            array_walk_recursive($biblioCopy->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
         }
