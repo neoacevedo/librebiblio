@@ -64,11 +64,12 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
                 if ($isAdmin) {
                     $menuItems[] = ['label' => Yii::$app->user->identity->username,
                         'items' => [
-                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/settings"], 'class' => 'btn btn-link'],
+                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/settings"]],
+                            ['label' => Yii::t('app', 'Staff'), 'url' => ['/admin/users']],
                             '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(
-                                    Yii::t('app', 'Logout'), ['class' => 'btn btn-link']
+                                    Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
                             )
                             . Html::endForm()
                             . '</li>'

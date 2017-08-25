@@ -33,19 +33,7 @@ foreach (Menu::NavbarLeft(1) as $menu) {
             ?>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9">
-            <div class="row">
-                
-                OpenBiblio2 circulation forms are designed to support efficient circulation when using a barcode scanner and 
-                <a href="../shared/help.php?page=barcodes">barcodes</a> 
-                printed on member cards and labeled to copies.
-                <br>
-                It is also possible to circulate when barcode numbers are not known; members can be searched by last 
-                name and OPAC-based 
-                <a href="../shared/help.php?page=opacLookup">Barcode Lookup</a> 
-                retrieves a copy's barcode number for Check Out, Check In or Hold.
-            </div>
-
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-10 col-md-10 col-sm-10">
                 <h4><?= Yii::t('app', 'Search User') ?></h4>
                 <?= $this->render('_search', ['model' => $searchModel]) ?>
             </div>

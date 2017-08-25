@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\User;
+use backend\models\User;
 
 /**
  * UserSearch represents the model behind the search form about `common\models\User`.
@@ -59,8 +59,6 @@ class UserSearch extends User {
             // $query->where('0=1');
             return $dataProvider;
         }
-        
-        $query->where(['auth_assignment.item_name' => 'user']);
 
         // grid filtering conditions
         $query->andFilterWhere([

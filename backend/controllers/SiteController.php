@@ -30,15 +30,13 @@ class SiteController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            $isAdmin = false;
-                            foreach ($roles as $role) {
-                                if ($role->name == "admin" || $role->name == "staff") {
-                                    $isAdmin = true;
-                                }
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists(['admin', 'staff'], $roles)) {
+                                return true;
                             }
                             
-                            return $isAdmin;
+                            return false;
                         },
                     ],
                     [

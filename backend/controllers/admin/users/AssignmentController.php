@@ -1,7 +1,7 @@
 <?php
 
 #namespace johnitvn\rbacplus\controllers;
-namespace backend\controllers;
+namespace backend\controllers\admin\users;
 
 use Yii;
 use yii\web\Controller;

@@ -8,6 +8,7 @@ use backend\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * AdminController implements the CRUD actions for User model.
@@ -20,6 +21,34 @@ class AdminController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        //'actions' => ['users'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+                            
+                            return false;
+                        },
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -33,12 +62,12 @@ class AdminController extends Controller
      * Lists all User models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionUsers()
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('users/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -49,9 +78,9 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionUsersView($id)
     {
-        return $this->render('view', [
+        return $this->render('users/view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -61,14 +90,14 @@ class AdminController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionUsersCreate()
     {
         $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['users/view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
+            return $this->render('users/create', [
                 'model' => $model,
             ]);
         }
@@ -80,14 +109,14 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUsersUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['users/view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
+            return $this->render('users/update', [
                 'model' => $model,
             ]);
         }
@@ -99,7 +128,7 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionUsersDelete($id)
     {
         $this->findModel($id)->delete();
 
