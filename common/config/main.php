@@ -1,22 +1,23 @@
 <?php
 
+// Azure MySQL in-app 
 foreach ($_SERVER as $key => $value) {
     if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
         continue;
     }
-    
+
     $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
     $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
     $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
     $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
 }
 
-$connectstr_dbhost = (null !== $connectstr_dbhost) ? $connectstr_dbhost: "localhost";
-$connectstr_dbname = (null !== $connectstr_dbname) ? $connectstr_dbname: "openbiblio2";
-$connectstr_dbusername = (null !== $connectstr_dbusername) ? $connectstr_dbusername: "root";
-$connectstr_dbpassword = (null !== $connectstr_dbpassword) ? $connectstr_dbpassword: "";
+$connectstr_dbhost = (null !== $connectstr_dbhost) ? $connectstr_dbhost : "localhost";
+$connectstr_dbname = (null !== $connectstr_dbname) ? $connectstr_dbname : "openbiblio2";
+$connectstr_dbusername = (null !== $connectstr_dbusername) ? $connectstr_dbusername : "root";
+$connectstr_dbpassword = (null !== $connectstr_dbpassword) ? $connectstr_dbpassword : "";
 
-if(strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
     $cache['class'] = "yii\caching\MemCache";
     $servers['host'] = 'localhost';
     $servers['port'] = 11211;
@@ -32,7 +33,7 @@ if(strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'cache' => $cache,       
+        'cache' => $cache,
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => "mysql:host=$connectstr_dbhost;dbname=$connectstr_dbname",
@@ -92,21 +93,23 @@ return [
 //                    }
 //                ]
 //            ],
-            'beforeCreateController' => null,
+            'beforeCreateController' => function ($action) {
+                $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                //Yii::info($roles);
+                if (array_key_exists("admin", $roles)) {
+                    return true;
+                }
+
+                throw new NotFoundHttpException('The requested page does not exist.');
+            },
             'beforeAction' => function ($action) {
-                $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                $isAdmin = false;
-                foreach ($roles as $role) {
-                    if ($role->name == "admin") {
-                        $isAdmin = true;
-                    }
+                $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                //Yii::info($roles);
+                if (array_key_exists("admin", $roles)) {
+                    return true;
                 }
 
-                if (!$isAdmin) {
-                    throw new \yii\web\ForbiddenHttpException(\Yii::t("app", "You are not allowed to perform this action."));
-                }
-
-                return $isAdmin;
+                throw new NotFoundHttpException('The requested page does not exist.');
             },
         ],
         'gridview' => ['class' => 'kartik\grid\Module'],

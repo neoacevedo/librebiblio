@@ -10,6 +10,7 @@ use yii\web\Response;
 use yii\helpers\Html;
 use johnitvn\rbacplus\models\Rule;
 use johnitvn\rbacplus\models\RuleSearch;
+use yii\filters\AccessControl;
 
 /**
  * RuleController is controller for manager rule
@@ -24,6 +25,34 @@ class RuleController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        //'actions' => ['users'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+
+                            return false;
+                        },
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

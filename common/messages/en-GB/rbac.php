@@ -40,7 +40,7 @@ return [
     'Page' => '',
     'Permission name' => '',
     'Permissions' => '',
-    'Permisstions Manager' => '',
+    'Permissions Manager' => '',
     'Reload Grid' => '',
     'Role name' => '',
     'Roles' => '',
@@ -57,4 +57,5 @@ return [
     'User Assignment' => '',
     'User ID' => '',
     'View' => '',
+    'Permisstions Manager' => '@@@@',
 ];

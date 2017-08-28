@@ -1,6 +1,7 @@
 <?php
 
 #namespace johnitvn\rbacplus\controllers;
+
 namespace backend\controllers\admin\users;
 
 use Yii;
@@ -11,6 +12,7 @@ use yii\web\Response;
 use yii\helpers\Html;
 use johnitvn\rbacplus\models\Role;
 use johnitvn\rbacplus\models\RoleSearch;
+use yii\filters\AccessControl;
 
 /**
  * RoleController is controller for manager role
@@ -24,6 +26,34 @@ class RoleController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        //'actions' => ['users'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+
+                            return false;
+                        },
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

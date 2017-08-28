@@ -10,6 +10,7 @@ use yii\helpers\Html;
 use johnitvn\rbacplus\Module;
 use johnitvn\rbacplus\models\AssignmentSearch;
 use johnitvn\rbacplus\models\AssignmentForm;
+use yii\filters\AccessControl;
 
 /**
  * AssignmentController is controller for manager user assignment
@@ -18,6 +19,49 @@ use johnitvn\rbacplus\models\AssignmentForm;
  * @since 1.0.0
  */
 class AssignmentController extends Controller {
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        //'actions' => ['users'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            //Yii::info($roles);
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+                            
+                            return false;
+                        },
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * The current rbac module
