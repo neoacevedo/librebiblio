@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'value' => function($model) {
-                    $biblioCopySearch = new \app\models\BiblioCopySearch();
+                    $biblioCopySearch = new \common\models\BiblioCopySearch();
                     $biblioCopySearch->bibid = $model->id;
                     $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
 

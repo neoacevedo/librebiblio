@@ -8,28 +8,26 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="biblio-search">
-
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'created_at') ?>
-
-    <?= $form->field($model, 'updated_at') ?>
-
-    <?= $form->field($model, 'updated_userid') ?>
-
-    <?= $form->field($model, 'material_cd') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+<div class="biblio-search">    
+    <div class="col-lg-12 col-md-12 col-sm-12"> 
+        <div class="col-lg-2 col-md-2 col-sm-2"></div>
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <?php
+            $form = ActiveForm::begin([
+                        'action' => ['index'],
+                        'method' => 'get',
+                        'options' => ['class' => 'form-inline']
+            ]);
+            ?>
+            <input id="input_search" name="BiblioSearch[title]" class="form-control" style="width: 66.66666667%" />
+            <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+            <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+            <?php
+            ActiveForm::end();
+            ?>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2"></div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>
+<div class="row">&nbsp;</div>
+<div class="row">&nbsp;</div>

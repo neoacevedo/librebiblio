@@ -1,28 +1,41 @@
 <?php
 /* @var $this yii\web\View */
 
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 $settings = \common\models\Settings::find()->one();
 $this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1><?= $this->title ?></h1>
+
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12"> 
-                <form action="<?= \yii\helpers\Url::to(['cataloging/biblio/index']) ?>" method="get" class="form-inline">               
-                    <input id="input_search" name="BiblioSearch[title]" class="form-control" />
-                    <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
-                </form>
+                <div class="col-lg-2 col-md-2 col-sm-2"></div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <?php
+                    $form = ActiveForm::begin([
+                                'action' => ['cataloging/biblio/index'],
+                                'method' => 'get',
+                                'options' => ['class' => 'form-inline']
+                    ]);
+                    ?>
+                    <input id="input_search" name="BiblioSearch[title]" class="form-control input-lg" style="width: 83.33333333%" />
+                    <button type="submit" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                    <?php
+                    ActiveForm::end();
+                    ?>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2"></div>
             </div>
         </div>
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
     <div class="body-content">
-
+        
         <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>

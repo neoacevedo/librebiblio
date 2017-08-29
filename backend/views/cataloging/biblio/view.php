@@ -109,7 +109,7 @@ foreach ($model->biblioFields as $biblioField) {
         </div>
     </div>
     <?php
-    $biblioCopySearch = new \app\models\BiblioCopySearch();
+    $biblioCopySearch = new \common\models\BiblioCopySearch();
     $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
 
     echo GridView::widget([

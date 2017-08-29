@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,35 +14,59 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="biblio-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    
+    <?php Pjax::begin(); ?>    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'created_at',
-            'updated_at',
-            'updated_userid',
-            'material_cd',
             // 'collection_cd',
             // 'call_nmbr1',
             // 'call_nmbr2',
             // 'call_nmbr3',
-            // 'title:ntext',
-            // 'title_remainder:ntext',
+            [
+                'attribute' => 'materialType',
+                'value' => function($model) {
+                    return Html::img("@web/images/{$model->materialType->image_file}", ['alt' => $model->materialType->description,
+                                'title' => $model->materialType->description,
+                                'class' => 'image-responsive center-block',
+                                'style' => 'width: 33.333333%']);
+                },
+                'label' => 'Material',
+                'format' => 'raw'
+            ],
+            [
+                'label' => Yii::t('app', 'Title'),
+                'attribute' => 'title',
+                'value' => function($model) {
+                    return "<h5>$model->title</h5><h6>$model->title_remainder</h6>";
+                },
+                'format' => 'raw'
+            ],
             // 'responsibility_stmt:ntext',
-            // 'author:ntext',
+            'author:ntext',
+            [
+                'label' => Yii::t('app', 'BiblioCopy Total'),
+                'value' => function($model) {
+                    $biblioCopySearch = new \common\models\BiblioCopySearch();
+                    $biblioCopySearch->bibid = $model->id;
+                    $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
+
+                    return $biblioCopy->count;
+                }
+            ],
             // 'topic1:ntext',
             // 'topic2:ntext',
             // 'topic3:ntext',
             // 'topic4:ntext',
             // 'topic5:ntext',
             // 'opac_flg',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'],
         ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
+    ]);
+    ?>
+    <?php Pjax::end(); ?></div>
