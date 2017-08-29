@@ -32,7 +32,7 @@ class SiteController extends Controller {
                         'matchCallback' => function () {
                             $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             //Yii::info($roles);
-                            if (array_key_exists(['admin', 'staff'], $roles)) {
+                            if (array_key_exists('admin', $roles) || array_key_exists('staff', $roles)) {
                                 return true;
                             }
                             

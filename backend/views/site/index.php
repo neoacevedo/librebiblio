@@ -2,7 +2,8 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$settings = \common\models\Settings::find()->one();
+$this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 ?>
 <div class="site-index">
 

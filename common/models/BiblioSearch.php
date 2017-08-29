@@ -88,12 +88,13 @@ class BiblioSearch extends Biblio {
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            /*'material_cd' => $this->material_cd,
-            'collection_cd' => $this->collection_cd,*/
-        ]);
+                    '{{%biblio}}.id' => $this->id])
+                ->andFilterWhere(
+                        ['<=', 'date({{%biblio}}.created_at)', $this->created_at])
+                ->andFilterWhere(
+                        ['<=', 'date({{%biblio}}.updated_at)', $this->updated_at]);
+        /* 'material_cd' => $this->material_cd,
+          'collection_cd' => $this->collection_cd, */
 
         $query->andFilterWhere(['like', 'call_nmbr1', $this->call_nmbr1])
                 ->andFilterWhere(['like', 'call_nmbr2', $this->call_nmbr2])

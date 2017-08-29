@@ -13,6 +13,7 @@ AppAsset::register($this);
 
 $settings = \common\models\Settings::find()->one();
 $library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -44,7 +45,7 @@ $library_name = null !== $settings->library_name ? $settings->library_name : "Op
             ];
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
                 $menuItems[] = '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
@@ -74,9 +75,14 @@ Breadcrumbs::widget([
 
         <footer class="footer">
             <div class="container">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-md-4"><?= Yii::t('library', 'Date').": ".date('l jS \of F Y') ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library hours').": $library_hours" ?></div>
+                </div>
                 <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
 
                 <p class="pull-right"><?= Yii::powered() ?></p>
+
             </div>
         </footer>
 

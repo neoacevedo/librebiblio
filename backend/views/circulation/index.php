@@ -10,13 +10,6 @@ use kartik\sidenav\SideNav;
 
 $this->title = Yii::t('app', 'Circulation');
 $this->params['breadcrumbs'][] = $this->title;
-$items = [];
-foreach (Menu::NavbarLeft(1) as $menu) {
-    $item['label'] = Yii::t('app', $menu['label']);
-    $item['url'] = $menu['url'];
-    $item['type'] = $menu['type'];
-    array_push($items, $item);
-}
 ?>
 <div class="circulation-index">
 
@@ -28,7 +21,11 @@ foreach (Menu::NavbarLeft(1) as $menu) {
             SideNav::widget([
                 'type' => SideNav::TYPE_DEFAULT,
                 'heading' => Yii::t('app', 'Circulation'),
-                'items' => $items,
+                'items' => [
+                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation']],
+                    ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
+                    ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
+                ]
             ]);
             ?>
         </div>

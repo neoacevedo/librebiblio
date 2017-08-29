@@ -61,6 +61,24 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'rbac*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'rbac' => 'rbac.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+                'library*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'library' => 'library.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
             ],
         ],
         'mailer' => [
@@ -94,22 +112,20 @@ return [
 //                ]
 //            ],
             'beforeCreateController' => function ($action) {
-                $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                //Yii::info($roles);
-                if (array_key_exists("admin", $roles)) {
-                    return true;
-                }
+                
+                return Yii::$app->response->redirect(["admin/users"]);
 
-                throw new NotFoundHttpException('The requested page does not exist.');
+                #throw new NotFoundHttpException('The requested page does not exist.');
             },
             'beforeAction' => function ($action) {
-                $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                /*$roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                 //Yii::info($roles);
                 if (array_key_exists("admin", $roles)) {
                     return true;
-                }
+                }*/
+                return Yii::$app->response->redirect(["admin/users"]);
 
-                throw new NotFoundHttpException('The requested page does not exist.');
+                #throw new NotFoundHttpException('The requested page does not exist.');
             },
         ],
         'gridview' => ['class' => 'kartik\grid\Module'],

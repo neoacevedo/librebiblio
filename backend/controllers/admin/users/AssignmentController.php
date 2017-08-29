@@ -11,6 +11,7 @@ use johnitvn\rbacplus\Module;
 use johnitvn\rbacplus\models\AssignmentSearch;
 use johnitvn\rbacplus\models\AssignmentForm;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 /**
  * AssignmentController is controller for manager user assignment
@@ -84,6 +85,7 @@ class AssignmentController extends Controller {
     public function actionIndex() {
         $searchModel = new AssignmentSearch;
         $dataProvider = $searchModel->search();
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->render('index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
@@ -101,6 +103,7 @@ class AssignmentController extends Controller {
         $model = call_user_func($this->rbacModule->userModelClassName . '::findOne', $id);
         $formModel = new AssignmentForm($id);
         $request = Yii::$app->request;
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isPost) {
@@ -115,7 +118,7 @@ class AssignmentController extends Controller {
                     'formModel' => $formModel,
                 ]),
                 'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                Html::button(Yii::t('rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
             ];
         } else {
             return $this->render('assignment', [

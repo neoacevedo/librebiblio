@@ -1,14 +1,21 @@
 <?php
-
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$settings = \common\models\Settings::find()->one();
+$this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
         <h1>Congratulations!</h1>
-
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12"> 
+                <form action="<?= \yii\helpers\Url::to(['cataloging/biblio/index']) ?>" method="get" class="form-inline">               
+                    <input id="input_search" name="BiblioSearch[title]" class="form-control" />
+                    <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                </form>
+            </div>
+        </div>
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>

@@ -35,6 +35,7 @@ return [
     'Call Nmbr1' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
+    'Cataloging' => '',
     'Check Out' => '',
     'Check in' => '',
     'Check your email for further instructions.' => '',

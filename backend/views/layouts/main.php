@@ -13,7 +13,8 @@ use pceuropa\menu\Menu;
 AppAsset::register($this);
 
 $settings = \common\models\Settings::find()->one();
-$library_name = null !== $settings->library_name ? $settings->library_name: "OpenBiblio2";
+$library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
 ?>
 <?php $this->beginPage() ?>
 
@@ -33,7 +34,7 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' =>  $library_name,
+                'brandLabel' => $library_name,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -45,13 +46,13 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
-                $items = [];
-                foreach (Menu::NavbarRight(2) as $menu) {
-                    $item['label'] = Yii::t('app', $menu['label']);
-                    $item['url'] = $menu['url'];
-                    $item['type'] = $menu['type'];
-                    array_push($menuItems, $item);
-                }
+                /* $items = [];
+                  foreach (Menu::NavbarRight(2) as $menu) {
+                  $item['label'] = Yii::t('app', $menu['label']);
+                  $item['url'] = $menu['url'];
+                  $item['type'] = $menu['type'];
+                  array_push($menuItems, $item);
+                  } */
 
                 // este menú cambia para el administrador.
                 $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
@@ -62,7 +63,10 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
                     }
                 }
                 if ($isAdmin) {
-                    $menuItems[] = ['label' => Yii::$app->user->identity->username,
+                    $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
+                    $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
+                    $menuItems[] = [
+                        'label' => Yii::$app->user->identity->username,
                         'items' => [
                             ['label' => Yii::t('app', 'Settings'), 'url' => ["/settings"]],
                             ['label' => Yii::t('app', 'Staff'), 'url' => ['/admin/users']],
@@ -73,7 +77,7 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
                             )
                             . Html::endForm()
                             . '</li>'
-                        ]];
+                    ]];
                 } else {
                     $menuItems[] = '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
@@ -104,10 +108,14 @@ $library_name = null !== $settings->library_name ? $settings->library_name: "Ope
 
         <footer class="footer">
             <div class="container">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-md-4"><?= Yii::t('library', 'Date').": ".date('l jS \of F Y') ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library hours').": $library_hours" ?></div>
+                </div>
                 <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
 
                 <p class="pull-right"><?= Yii::powered() ?></p>
-                
+
             </div>
         </footer>
 

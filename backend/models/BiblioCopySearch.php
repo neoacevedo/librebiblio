@@ -67,14 +67,16 @@ class BiblioCopySearch extends BiblioCopy {
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'bibid' => $this->bibid,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'status_begin_dt' => $this->status_begin_dt,
-            'due_back_dt' => $this->due_back_dt,
-            'mbr_id' => $this->mbr_id,
-            'renewal_count' => $this->renewal_count,
+                    '{{%biblio_copy}}.id' => $this->id,
+                    '{{%biblio_copy}}.bibid' => $this->bibid])
+                ->andFilterWhere(
+                        ['<=', 'date({{%biblio_copy}}.created_at)', $this->created_at])
+                ->andFilterWhere(
+                        ['<=', 'date({{%biblio_copy}}.updated_at)', $this->updated_at])
+                ->andFilterWhere(['<=', 'date(status_begin_dt)', $this->status_begin_dt])
+                ->andFilterWhere(['<=', 'date(due_back_dt)', $this->due_back_dt])
+                ->andFilterWhere(['mbr_id' => $this->mbr_id,
+                    'renewal_count' => $this->renewal_count,
         ]);
 
         $query->andFilterWhere(['like', 'copy_desc', $this->copy_desc])
