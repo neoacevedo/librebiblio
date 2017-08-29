@@ -27,15 +27,30 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
                     <button type="submit" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-search"></i></button>
                     <?php
                     ActiveForm::end();
-                    ?>
+                    ?>                    
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2"></div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-5"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <input type="radio" name="search_opt" value="BiblioSearch[title]" checked="checked" class="form-inline biblio" onchange="changeName(this.value)" /> <?= Yii::t('app', 'Title') ?>
+                <input type="radio" name="search_opt" value="BiblioSearch[author]" class="form-inline biblio" onchange="changeName(this.value)" /> <?= Yii::t('app', 'Author') ?>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5"></div>
+            <script>
+                function changeName(name) {
+                    search = document.getElementById('input_search');
+                    search.name = name;
+                }
+            </script>
+        </div>
     </div>
 
+
     <div class="body-content">
-        
+
         <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>

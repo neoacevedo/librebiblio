@@ -5,7 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\BiblioCopy;
 use yii\filters\AccessControl;
-use app\models\BiblioCopySearch;
+use common\models\BiblioCopySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
