@@ -53,7 +53,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                     ['label' => Yii::t('app', 'Update'), 'url' => ['circulation/member-update', 'id' => $model->id]],
                     ['label' => Yii::t('app', 'Delete'), 'url' => ['circulation/member-delete', 'id' => $model->id],
                         'options' => ['id' => 'member_delete']],
-                    ['label' => Yii::t('app', 'HIstory'), 'url' => ['circulation/member-history', 'id' => $model->id]],
+                    ['label' => Yii::t('app', 'History'), 'url' => ['circulation/member-history', 'id' => $model->id]],
                 ]
             ]);
             ?>

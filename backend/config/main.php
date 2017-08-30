@@ -19,20 +19,21 @@ return [
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'authTimeout' => 300
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'ob2',
-            'timeout' => 300
+            'timeout' => 3600
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning', 'info'],
+                    'levels' => ['error', 'warning'],
                 ],
             ],
         ],

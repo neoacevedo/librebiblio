@@ -21,10 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-6 col-lg-6 col-md-6 col-sm-6">
                     <?= $form->field($model, 'first_name')->textInput() ?>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-6 col-lg-6 col-md-6 col-sm-6">
                     <?= $form->field($model, 'last_name')->textInput() ?>
                 </div>
             </div>
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'password')->passwordInput() ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

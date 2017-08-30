@@ -103,17 +103,17 @@ class CirculationController extends Controller {
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
 // status: checkout
-        $biblioCopySearch[0] = new \app\models\BiblioCopySearch();
+        $biblioCopySearch[0] = new \common\models\BiblioCopySearch();
         $biblioCopySearch[0]->mbr_id = $id;
         $biblioCopySearch[0]->status_cd = 'out';
         $biblioCopy[0] = $biblioCopySearch[0]->search([]);
 // status: hold
-        $biblioCopySearch[1] = new \app\models\BiblioCopySearch();
+        $biblioCopySearch[1] = new \common\models\BiblioCopySearch();
         $biblioCopySearch[1]->mbr_id = $id;
         $biblioCopySearch[1]->status_cd = 'hld';
         $biblioCopy[1] = $biblioCopySearch[1]->search([]);
 // copias bibliográficas
-        $searchModel = new \app\models\BiblioCopySearch();
+        $searchModel = new \common\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('member-view', [
@@ -142,7 +142,7 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCopySearch() {
-        $searchModel = new \app\models\BiblioCopySearch();
+        $searchModel = new \common\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->renderAjax('copysearch', [
@@ -167,7 +167,7 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCheckin() {
-        $searchModel = new \app\models\BiblioCopySearch();
+        $searchModel = new \common\models\BiblioCopySearch();
         $searchModel->status_cd = 'out';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
