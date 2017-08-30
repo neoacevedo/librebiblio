@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\jui\Accordion;
-use pceuropa\menu\Menu;
 use kartik\sidenav\SideNav;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -14,15 +13,6 @@ use yii\widgets\Pjax;
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$items = [];
-foreach (Menu::NavbarLeft(1) as $menu) {
-    $item['label'] = Yii::t('app', $menu['label']);
-    $item['url'] = $menu['url'];
-    $item['type'] = $menu['type'];
-    array_push($items, $item);
-}
-$item['label'] = $model->username;
-$item['type'] = "header";
 
 // emulación de data-confirm en elemento "a"
 $js = "\$('#member_delete a').on('click', function(e) {
@@ -42,7 +32,11 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
             SideNav::widget([
                 'type' => SideNav::TYPE_DEFAULT,
                 'heading' => Yii::t('app', 'Circulation'),
-                'items' => $items,
+                'items' => [
+                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation']],
+                    ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
+                    ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
+                ]
             ]);
             ?>
             <?=
