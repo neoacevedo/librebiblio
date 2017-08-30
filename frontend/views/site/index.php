@@ -24,6 +24,7 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
                     ]);
                     ?>
                     <input id="input_search" name="BiblioSearch[title]" class="form-control input-lg" style="width: 83.33333333%" />
+                    <input type="hidden" name="BiblioSearch[opac_flg]" value="1" />
                     <button type="submit" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-search"></i></button>
                     <?php
                     ActiveForm::end();
@@ -50,7 +51,7 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
 
 
     <div class="body-content">
-
+<!--
         <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>
@@ -85,4 +86,5 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
         </div>
 
     </div>
+-->
 </div>

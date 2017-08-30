@@ -56,13 +56,6 @@ foreach ($model->biblioFields as $biblioField) {
         'model' => $model,
         'attributes' => [
             'id',
-            'created_at',
-            'updated_at',
-            [
-                'attribute' => 'user',
-                'value' => $model->user->username,
-                'label' => \Yii::t('app', 'Updated by')
-            ],
             [
                 'attribute' => 'materialType',
                 'value' => $model->materialType->description,
@@ -82,10 +75,6 @@ foreach ($model->biblioFields as $biblioField) {
             'title_remainder:ntext',
             'responsibility_stmt:ntext',
             'author:ntext',
-            [
-                'attribute' => 'opac_flg',
-                'value' => 1 ? Yii::t('app', 'Yes') : Yii::t('app', 'No'),
-            ]
         ],
     ])
     ?>
@@ -96,7 +85,7 @@ foreach ($model->biblioFields as $biblioField) {
     </div>
     <?php
     $biblioCopySearch = new \common\models\BiblioCopySearch();
-    $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
+    $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' =>['bibid' => $model->id]]);
 
     echo GridView::widget([
         "dataProvider" => $biblioCopy,

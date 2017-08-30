@@ -17,21 +17,19 @@ use Yii;
  * @property string $block_checkouts_when_fines_due
  * @property integer $hold_max_days
  */
-class Settings extends \yii\db\ActiveRecord
-{
+class Settings extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%settings}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['library_hours', 'purge_history_after_months', 'block_checkouts_when_fines_due', 'hold_max_days'], 'required'],
             [['purge_history_after_months', 'hold_max_days'], 'integer'],
@@ -43,10 +41,18 @@ class Settings extends \yii\db\ActiveRecord
     }
 
     /**
+     * Sobreescribiendo el método primaryKey.
+     * @inheritdoc
+     * @return mixed
+     */
+    public static function primaryKey() {
+        return ['library_name'];
+    }
+
+    /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'library_name' => Yii::t('app', 'Library Name'),
             'library_image_url' => Yii::t('app', 'Library Image Url'),
@@ -58,4 +64,5 @@ class Settings extends \yii\db\ActiveRecord
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),
         ];
     }
+
 }

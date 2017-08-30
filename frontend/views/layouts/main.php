@@ -14,6 +14,7 @@ AppAsset::register($this);
 $settings = \common\models\Settings::find()->one();
 $library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 $library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
+$library_phone = null !== $settings->library_hours ? $settings->library_phone : "N/A";
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -63,11 +64,11 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
             ?>
 
             <div class="container">
-<?=
-Breadcrumbs::widget([
-    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-])
-?>
+                <?=
+                Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ])
+                ?>
                 <?= Alert::widget() ?>
                 <?= $content ?>
             </div>
@@ -76,13 +77,16 @@ Breadcrumbs::widget([
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date').": ".date('l jS \of F Y') ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library hours').": $library_hours" ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . date('l jS \of F Y') ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?></div>
                 </div>
-                <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
-
-                <p class="pull-right"><?= Yii::powered() ?></p>
-
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2014 Dave Stevens, et al.</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2, <?= date('Y') ?></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4"><?= Yii::powered() ?></div>
+                </div>
+                <p>&nbsp;</p>
             </div>
         </footer>
 

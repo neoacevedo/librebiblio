@@ -98,7 +98,9 @@ foreach ($model->biblioFields as $biblioField) {
             'author:ntext',
             [
                 'attribute' => 'opac_flg',
-                'value' => 1 ? Yii::t('app', 'Yes') : Yii::t('app', 'No'),
+                'value' => function($model) {
+                    return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
+                },
             ]
         ],
     ])
@@ -110,7 +112,7 @@ foreach ($model->biblioFields as $biblioField) {
     </div>
     <?php
     $biblioCopySearch = new \common\models\BiblioCopySearch();
-    $biblioCopy = $biblioCopySearch->search(['bibid' => $model->id]);
+    $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
 
     echo GridView::widget([
         "dataProvider" => $biblioCopy,
