@@ -98,7 +98,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
             <table class="table table-striped table-bordered detail-view table-responsive">
                 <thead>
                     <tr>
-                        <th rowspan="2" style="vertical-align: middle">Material</th>
+                        <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?></th>
                         <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?></th>
                         <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?></th>
                     </tr>
@@ -116,10 +116,10 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                     foreach ($materialTypeStats as $material):
                         ?>
                         <tr>
-                            <td><?= $material['description'] ?></td>
-                            <td><?= $material['row_count'] ?></td>
-                            <td><?= $material['checkout_limit'] ?></td>
-                            <td><?= $material['renewal_limit'] ?></td>
+                            <td><?= Html::encode($material['description']) ?></td>
+                            <td><?= Html::encode($material['row_count']) ?></td>
+                            <td><?= Html::encode($material['checkout_limit']) ?></td>
+                            <td><?= Html::encode($material['renewal_limit']) ?></td>
                         </tr>      
                         <?php
                     endforeach;

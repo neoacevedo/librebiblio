@@ -287,6 +287,19 @@ class CirculationController extends Controller {
         }
     }
 
+    public function actionMemberHistory($id) {
+        $model = $this->findModel($id);
+        $biblioStatusHist = \common\models\BiblioStatusHistory::find(['bibid' => $id]);
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $biblioStatusHist,
+        ]);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('member-history', [
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

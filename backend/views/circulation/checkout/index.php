@@ -41,7 +41,19 @@ use yii\widgets\Pjax;
                 'label' => 'Material'
             ],
             'due_back_dt',
-            'renewal_count'
+            'renewal_count',
+            [
+                'label' => Yii::t('app', 'Days Late'),
+                'value' => function($model) {
+                    $datetime1 = new DateTime($model->due_back_dt);
+                    $datetime2 = new DateTime('now');
+                    $interval = $datetime1->diff($datetime2);
+                    $cero = 0;
+                    $diff = (int)$interval->format('%r%a');
+                    return max($cero, $diff);
+                    //greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late
+                }
+            ]
         /* ['class' => 'yii\grid\ActionColumn',
           'buttons' => [
           'renew-item' => function($url, $model) {

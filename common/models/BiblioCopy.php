@@ -83,7 +83,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
      */
     public function getBiblioStatusHists()
     {
-        return $this->hasMany(BiblioStatusHist::className(), ['copyid' => 'id']);
+        return $this->hasMany(BiblioStatusHistory::className(), ['copyid' => 'id']);
     }
 
     /**
