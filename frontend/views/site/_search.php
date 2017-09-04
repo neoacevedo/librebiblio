@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-8 col-md-8 col-sm-8">
             <?php
             $form = ActiveForm::begin([
-                        'action' => ['index'],
+                        'action' => ['search'],
                         'method' => 'get',
                         'options' => ['class' => 'form-inline']
             ]);

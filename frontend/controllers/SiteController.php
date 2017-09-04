@@ -12,6 +12,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Biblio;
+use common\models\BiblioSearch;
 
 /**
  * Site controller
@@ -164,6 +166,20 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+        ]);
+    }
+    
+    /**
+     * Lists all Biblio models.
+     * @return mixed
+     */
+    public function actionSearch() {
+        $searchModel = new BiblioSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('search', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

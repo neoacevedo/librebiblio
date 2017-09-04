@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers\cataloging;
+namespace frontend\controllers;
 
 use Yii;
 use common\models\Biblio;
@@ -35,13 +35,14 @@ class BiblioController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new BiblioSearch();
+        return $this->redirect(['site/index']);
+        /*$searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]);*/
     }
 
     /**
@@ -57,7 +58,56 @@ class BiblioController extends Controller
         ]);
     }
 
-   
+    /**
+     * Creates a new Biblio model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Biblio();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing Biblio model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Biblio model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
     /**
      * Finds the Biblio model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -67,6 +117,7 @@ class BiblioController extends Controller
      */
     protected function findModel($id)
     {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {

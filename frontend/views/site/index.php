@@ -18,7 +18,7 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php
                     $form = ActiveForm::begin([
-                                'action' => ['cataloging/biblio/index'],
+                                'action' => ['search'],
                                 'method' => 'get',
                                 'options' => ['class' => 'form-inline']
                     ]);

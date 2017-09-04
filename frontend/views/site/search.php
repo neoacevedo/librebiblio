@@ -8,14 +8,14 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\BiblioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Biblios');
+$this->title = Yii::t('app', 'Biblio Search');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    
+
     <?php Pjax::begin(); ?>    <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
@@ -64,8 +64,23 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'topic4:ntext',
             // 'topic5:ntext',
             // 'opac_flg',
-            ['class' => 'yii\grid\ActionColumn',
-                'template' => '{view}'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => ['style' => 'color:#337ab7'],
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('app', 'View'),
+                        ]);
+                    },                    
+                ],
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action === 'view') {
+                        return yii\helpers\Url::to(["biblio/view", "id" => $model->id]);
+                    }
+                }
+            ],
         ],
     ]);
     ?>

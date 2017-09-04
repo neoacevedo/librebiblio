@@ -102,6 +102,17 @@ class CirculationController extends Controller {
                 ->where('{{%member}}.id = :id', [":id" => $id])
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
+        
+        $sql = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
+                    "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+                ])->from("{{%material_type_dm}} mat")
+                ->join('join', '{{%member}}')
+                ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
+                ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
+                        . 'from biblio_copy c, biblio b '
+                        . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                ->where('{{%member}}.id = :id', [":id" => $id])
+                ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit']);
 // status: checkout
         $biblioCopySearch[0] = new \common\models\BiblioCopySearch();
         $biblioCopySearch[0]->mbr_id = $id;

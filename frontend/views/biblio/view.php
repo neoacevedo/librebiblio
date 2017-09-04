@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $model common\models\Biblio */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblios'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblio Search'), 'url' => Yii::$app->request->referrer];
 $this->params['breadcrumbs'][] = $this->title;
 
 $usmarc = [
@@ -56,6 +56,13 @@ foreach ($model->biblioFields as $biblioField) {
         'model' => $model,
         'attributes' => [
             'id',
+            'created_at',
+            'updated_at',
+            [
+                'attribute' => 'user',
+                'value' => $model->user->username,
+                'label' => \Yii::t('app', 'Updated by')
+            ],
             [
                 'attribute' => 'materialType',
                 'value' => $model->materialType->description,
@@ -75,6 +82,7 @@ foreach ($model->biblioFields as $biblioField) {
             'title_remainder:ntext',
             'responsibility_stmt:ntext',
             'author:ntext',
+            
         ],
     ])
     ?>
@@ -85,7 +93,7 @@ foreach ($model->biblioFields as $biblioField) {
     </div>
     <?php
     $biblioCopySearch = new \common\models\BiblioCopySearch();
-    $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' =>['bibid' => $model->id]]);
+    $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
 
     echo GridView::widget([
         "dataProvider" => $biblioCopy,
@@ -101,9 +109,9 @@ foreach ($model->biblioFields as $biblioField) {
                 },
                 'label' => Yii::t('app', 'Status')
             ],
-            'status_begin_dt',
-            'due_back_dt',
-            //['class' => 'yii\grid\ActionColumn'],
+//            'status_begin_dt',
+//            'due_back_dt',
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
     ?>
