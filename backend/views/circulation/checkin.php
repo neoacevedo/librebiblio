@@ -12,13 +12,7 @@ use kartik\sidenav\SideNav;
 $this->title = Yii::t('app', 'Check in');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$items = [];
-foreach (Menu::NavbarLeft(1) as $menu) {
-    $item['label'] = Yii::t('app', $menu['label']);
-    $item['url'] = $menu['url'];
-    $item['type'] = $menu['type'];
-    array_push($items, $item);
-}
+
 ?>
 <div class="circulation-index">
     <div class="bibliosearch-index">
@@ -28,7 +22,11 @@ foreach (Menu::NavbarLeft(1) as $menu) {
             SideNav::widget([
                 'type' => SideNav::TYPE_DEFAULT,
                 'heading' => Yii::t('app', 'Circulation'),
-                'items' => $items,
+                'items' => [
+                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation']],
+                    ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
+                    ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
+                ]
             ]);
             ?>
         </div>
@@ -73,9 +71,9 @@ foreach (Menu::NavbarLeft(1) as $menu) {
                                 ]);
                             }
                         ],
-                        'urlCreator' => function ($action, $model, $key, $index) use($mbr_id) {
+                        'urlCreator' => function ($action, $model, $key, $index) {
                             if ($action === 'checkin') {
-                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=in&id=$mbr_id&data-pjax=0";
+                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=0";
                                 return $url;
                             }
                         }],

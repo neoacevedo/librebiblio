@@ -218,30 +218,29 @@ class CirculationController extends Controller {
 
         $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        // si se env�a el id del miembro y el estado no es 'in', se procede como si fuera una reserva o un pr�stamo interno.
-        if (null !== $id) {
+        
+        if ($status == "in") {
+            $biblioCopy->due_back_dt = null;
+            $biblioCopy->mbr_id = null;
+        } elseif ($status == "out") {
+            // si el estado enviado no es 'in', se procede como si fuera una reserva o un préstamo interno.
+            $biblioCopy->mbr_id = $id;
             if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
-                // si ya el miembro tiene el material...
-                // se renueva el item
+                // el miembro tiene el material, se renueva el item
                 $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
                 $biblioCopy->updated_at = date('Y-m-d H:i:s');
                 // la fecha de devolución se amplía basado en la fecha de devolución inicial.
                 $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $due_back);
             } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
-                // si otro miembro se llevó el material
+                // si otro miembro tiene el material
                 Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
                 return $this->redirect(['member-view', 'id' => $id]);
-            } else {
-                // hasta ahora se va a tomar en préstamo, solo se genera la fecha de devolución a la establecida.
+            } elseif ($biblioCopy->status_cd == 'in') {
+                // nadie tiene el material. Se puede prestar.
                 $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('now') + $due_back);
             }
         }
 
-        if ($status == "in") {
-            $biblioCopy->due_back_dt = null;
-        }
-
-        $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = $status;
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if ($biblioCopy->save()) {
@@ -250,7 +249,7 @@ class CirculationController extends Controller {
             $biblioStatusHistory->bibid = $bibid;
             $biblioStatusHistory->copyid = $copyid;
             $biblioStatusHistory->mbr_id = $id;
-            $biblioStatusHistory->status_cd = 'out';
+            $biblioStatusHistory->status_cd = $status;
             $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
             // la fecha de devolución en el historial es la misma de la de la copia.
             $biblioStatusHistory->due_back_dt = null !== $id ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
