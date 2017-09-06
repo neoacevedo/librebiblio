@@ -102,7 +102,7 @@ class CirculationController extends Controller {
                 ->where('{{%member}}.id = :id', [":id" => $id])
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
-        
+
         $sql = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
                     "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
                 ])->from("{{%material_type_dm}} mat")
@@ -225,16 +225,44 @@ class CirculationController extends Controller {
      * @param string $status
      * @return mixed
      */
-    public function actionCreate($bibid, $copyid, $status, $id = null) {
+    public function actionCreate($bibid, $copyid, $status, $id) {
 
         $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        
+
         if ($status == "in") {
+            // una devolución
             $biblioCopy->due_back_dt = null;
             $biblioCopy->mbr_id = null;
+        } elseif ($status == "hld") {
+            // reserva
+            // si no está en préstamo o no está reservado (la reserva se debería buscar en la tabla biblio_hold)
+            if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
+                // el material debe tener el estado "out" o "hld" para realizar una reserva
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
+                return $this->redirect(['member-view', 'id' => $id]);
+            }
+
+            // si el material está prestado y es el miembro quien lo tiene
+            if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
+                return $this->redirect(['member-view', 'id' => $id]);
+            }
+
+            $biblioHold = new \common\models\BiblioHold;
+            $biblioHold->bibid = $bibid;
+            $biblioHold->copyid = $copyid;
+            $biblioHold->mbr_id = $id;
+            $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
+
+            if (!$biblioHold->save()) {
+                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
+            }
         } elseif ($status == "out") {
-            // si el estado enviado no es 'in', se procede como si fuera una reserva o un préstamo interno.
+            // préstamo
+
             $biblioCopy->mbr_id = $id;
             if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
                 // el miembro tiene el material, se renueva el item
@@ -244,7 +272,7 @@ class CirculationController extends Controller {
                 $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $due_back);
             } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
                 // si otro miembro tiene el material
-                Yii::$app->getSession()->setFlash('warning', Yii::t('app', "Item $biblioCopy->barcode_nmbr is already checked out to another member."));
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, item} is already checked out to another member.", ['n' => $biblioCopy->barcode_nmbr]));
                 return $this->redirect(['member-view', 'id' => $id]);
             } elseif ($biblioCopy->status_cd == 'in') {
                 // nadie tiene el material. Se puede prestar.
@@ -276,7 +304,7 @@ class CirculationController extends Controller {
             });
         }
 
-        return null !== $id ? $this->redirect(['member-view', 'id' => $id]) : $this->redirect(['index']);
+        return $this->redirect(['member-view', 'id' => $id]);
     }
 
     /**

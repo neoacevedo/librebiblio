@@ -18,5 +18,7 @@
  */
 return [
     'Date' => '',
+    'Library Hours' => '',
+    'Library Phone' => '',
     'Library hours' => '',
 ];

@@ -17,8 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Date' => '',
-    'Library Hours' => '',
-    'Library Phone' => '',
-    'Library hours' => '',
+    'Save' => '',
 ];
