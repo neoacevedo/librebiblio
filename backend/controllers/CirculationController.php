@@ -229,7 +229,7 @@ class CirculationController extends Controller {
 
         $due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($status == "in") {
             // una devolución
             $biblioCopy->due_back_dt = null;

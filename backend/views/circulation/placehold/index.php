@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 ?>
 <div class="biblio-index">      
     <?=
-    Html::button(Yii::t('app', 'Place Hold'), ['value' => yii\helpers\Url::to(['circulation/placehold']),
+    Html::button(Yii::t('app', 'Place Hold'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'hld']),
         'title' => Yii::t('app', 'Place Hold'), 'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12']);
     ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>

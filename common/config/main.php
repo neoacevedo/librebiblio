@@ -79,6 +79,15 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'circulation*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'circulation' => 'circulation.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
             ],
         ],
         'mailer' => [

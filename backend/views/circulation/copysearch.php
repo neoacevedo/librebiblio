@@ -45,9 +45,10 @@ $status = Yii::$app->request->get('status');
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{checkout}',
                 'buttons' => [
-                    'checkout' => function ($url, $model) {
+                    'checkout' => function ($url, $model) use($status) {
+                    $text = ($status == 'out') ? 'Check Out': 'Place Hold';
                         return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, [
-                                    'title' => Yii::t('app', 'Check Out'),
+                                    'title' => Yii::t('app', $text),
                         ]);
                     }
                 ],

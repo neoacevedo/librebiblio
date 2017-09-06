@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use common\models\Member;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -91,6 +92,35 @@ class CirculationController extends Controller {
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+    
+    public function actionHistory($id) {
+        $model = $this->findModel($id);
+        $biblioStatusHist = \common\models\BiblioStatusHistory::find(['bibid' => $id]);
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $biblioStatusHist,
+        ]);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('history', [
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    /**
+     * Finds the Member model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id) {
+        if (($model = Member::findOne($id)) !== null) {
+            return $model;
+        } else {
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
     }
 
 }

@@ -48,13 +48,18 @@ $library_phone = null !== $settings->library_hours ? $settings->library_phone : 
                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
-                $menuItems[] = '<li>'
+                $menuItems[] = [
+                    'label' => Yii::$app->user->identity->username,
+                    'items' => [
+                        ['label' => Yii::t('app', 'History'), 'url' => ['/circulation/history', 'id' => Yii::$app->user->id]],
+                        '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(
-                                'Logout (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout']
+                                Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
                         )
                         . Html::endForm()
-                        . '</li>';
+                        . '</li>'
+                ]];
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
