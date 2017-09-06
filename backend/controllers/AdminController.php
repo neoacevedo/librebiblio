@@ -66,7 +66,7 @@ class AdminController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->render('users/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -80,6 +80,7 @@ class AdminController extends Controller
      */
     public function actionUsersView($id)
     {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->render('users/view', [
             'model' => $this->findModel($id),
         ]);
@@ -93,7 +94,7 @@ class AdminController extends Controller
     public function actionUsersCreate()
     {
         $model = new User();
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['users/view', 'id' => $model->id]);
         } else {
@@ -112,7 +113,7 @@ class AdminController extends Controller
     public function actionUsersUpdate($id)
     {
         $model = $this->findModel($id);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['users/view', 'id' => $model->id]);
         } else {
@@ -144,10 +145,11 @@ class AdminController extends Controller
      */
     protected function findModel($id)
     {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
 }

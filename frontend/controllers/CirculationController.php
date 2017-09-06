@@ -81,22 +81,42 @@ class CirculationController extends Controller {
 
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
-        } 
-        
+        }
+
         if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
+        }
+
+        if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
+            // si el miembro ya ha reservado el material, se devuelve un aviso y no se reserva de nuevo el material.
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
+        } else {
+
+            $biblioHold = new \common\models\BiblioHold;
+            $biblioHold->bibid = $bibid;
+            $biblioHold->copyid = $copyid;
+            $biblioHold->mbr_id = $id;
+            $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
+
+            if (!$biblioHold->save()) {
+                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
+            } else {
+                Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
+            }
         }
 
         return $this->redirect(Yii::$app->request->referrer);
     }
-    
+
     public function actionHistory($id) {
         $model = $this->findModel($id);
-        $biblioStatusHist = \common\models\BiblioStatusHistory::find(['bibid' => $id]);
+        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
         ]);
@@ -106,7 +126,7 @@ class CirculationController extends Controller {
                     'dataProvider' => $dataProvider,
         ]);
     }
-    
+
     /**
      * Finds the Member model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

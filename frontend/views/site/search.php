@@ -74,17 +74,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'title' => Yii::t('app', 'View'),
                         ]);
                     },
-                    'placehold' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-plus"></span>&nbsp;', $url, [
-                                    'title' => Yii::t('app', 'Place Hold'),
-                        ]);
-                    }
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'view') {
-                        return yii\helpers\Url::to(["biblio/view", "id" => $model->id]);
-                    }
-                    if ($action === 'placehold') {
                         return yii\helpers\Url::to(["biblio/view", "id" => $model->id]);
                     }
                 }

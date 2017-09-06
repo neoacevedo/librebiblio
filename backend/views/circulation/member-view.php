@@ -33,7 +33,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                 'type' => SideNav::TYPE_DEFAULT,
                 'heading' => Yii::t('app', 'Circulation'),
                 'items' => [
-                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation']],
+                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation/index']],
                     ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
                     ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
                 ]

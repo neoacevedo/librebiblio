@@ -161,6 +161,10 @@ class SiteController extends Controller
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
+            } else {
+                 array_walk_recursive($model->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
             }
         }
 

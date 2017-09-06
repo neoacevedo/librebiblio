@@ -25,7 +25,6 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
             'updated_at' => $this->dateTime(),
             'due_back_dt' => $this->date(),
             'mbr_id' => $this->integer(),
-            'renewal_count' => $this->smallInteger()->unsigned(),
         ]);
         
         // creates index for column `bibid`

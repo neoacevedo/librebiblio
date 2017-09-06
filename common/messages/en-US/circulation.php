@@ -17,7 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Item placed hold.' => '',
     'Item {n, item} is already checked out to another member.' => '',
     'This item is not checked out or on hold.' => '',
     'This member already has that item checked out -- not placing hold.' => '',
+    'This member already has that item placed hold -- not placing hold.' => '',
 ];

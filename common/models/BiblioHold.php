@@ -13,7 +13,7 @@ use Yii;
  * @property string $hold_begin_dt
  * @property integer $mbr_id
  *
- * @property User $mbr
+ * @property Member $mbr
  */
 class BiblioHold extends \yii\db\ActiveRecord
 {
@@ -34,7 +34,7 @@ class BiblioHold extends \yii\db\ActiveRecord
             [['bibid', 'copyid', 'hold_begin_dt'], 'required'],
             [['bibid', 'copyid', 'mbr_id'], 'integer'],
             [['hold_begin_dt'], 'safe'],
-            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['mbr_id' => 'id']],
+            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 
@@ -51,12 +51,28 @@ class BiblioHold extends \yii\db\ActiveRecord
             'mbr_id' => Yii::t('app', 'Mbr ID'),
         ];
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBiblio()
+    {
+        return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBiblioCopy()
+    {
+        return $this->hasOne(BiblioCopy::className(), ['id' => 'copyid']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getMbr()
     {
-        return $this->hasOne(User::className(), ['id' => 'mbr_id']);
+        return $this->hasOne(Member::className(), ['id' => 'mbr_id']);
     }
 }

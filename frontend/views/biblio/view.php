@@ -82,7 +82,6 @@ foreach ($model->biblioFields as $biblioField) {
             'title_remainder:ntext',
             'responsibility_stmt:ntext',
             'author:ntext',
-            
         ],
     ])
     ?>
@@ -111,7 +110,21 @@ foreach ($model->biblioFields as $biblioField) {
             ],
 //            'status_begin_dt',
 //            'due_back_dt',
-//            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{placehold}',
+                'buttons' => [
+                    'placehold' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, [
+                                    'title' => Yii::t('app', 'Place Hold'),
+                        ]);
+                    }
+                ],
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action === 'placehold') {
+                        //$url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=hld";
+                        return \yii\helpers\Url::to(["circulation/create", "id" => Yii::$app->user->id, "copyid" => $model->id, "bibid" => $model->bibid]);
+                    }
+                }],
         ],
     ]);
     ?>

@@ -17,6 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Item placed hold.' => 'Ítem reservado.',
+    'This member already has that item placed hold -- not placing hold.' => 'Este miembro ya tiene en reserva este ítem -- no se reserva.',
     'Item {n, item} is already checked out to another member.' => 'El ítem {n, item} ya fue tomado por otro miembro.',
     'This item is not checked out or on hold.' => 'Este ítem no se encuentra prestado o reservado.',
     'This member already has that item checked out -- not placing hold.' => 'Este miembro ya tiene en préstamo este ítem -- no se reserva.',

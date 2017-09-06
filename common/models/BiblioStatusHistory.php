@@ -14,7 +14,6 @@ use Yii;
  * @property string $updated_at
  * @property string $due_back_dt
  * @property integer $mbr_id
- * @property integer $renewal_count
  *
  * @property Biblio $bib
  * @property BiblioCopy $copy
@@ -37,7 +36,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     {
         return [
             [['bibid', 'copyid', 'status_cd', 'created_at'], 'required'],
-            [['bibid', 'copyid', 'mbr_id', 'renewal_count'], 'integer'],
+            [['bibid', 'copyid', 'mbr_id'], 'integer'],
             [['created_at', 'updated_at', 'due_back_dt'], 'safe'],
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
@@ -59,7 +58,6 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('app', 'Updated At'),
             'due_back_dt' => Yii::t('app', 'Due Back Dt'),
             'mbr_id' => Yii::t('app', 'Mbr ID'),
-            'renewal_count' => Yii::t('app', 'Renewal Count'),
         ];
     }
 

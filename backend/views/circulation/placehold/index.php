@@ -20,7 +20,10 @@ use yii\widgets\Pjax;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'barcode_nmbr',
+            [
+                'label' => Yii::t('app', 'Barcode Nmbr'),
+                'value' => 'biblioCopy.barcode_nmbr'
+            ],
             [
                 'label' => Yii::t('app', 'Title'),
                 'value' => function($model) {
@@ -41,20 +44,22 @@ use yii\widgets\Pjax;
                 },
                 'label' => 'Material'
             ],
-            'due_back_dt',
+            [
+                'label' => Yii::t('app', 'Due Back Dt'),
+                'value' => 'biblioCopy.due_back_dt'
+            ],
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'view',
-                    'delete' => function($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['renew-item', 'id' => $model->id], [
-                                    'title' => Yii::t('app', 'Renew item'),
-                                    'id' => "modal"
-                        ]);
-                    }
+                    'delete'
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action == "view") {
+                        $url = "index.php?r=cataloging/biblio/view&id=$model->bibid";
+                        return $url;
+                    }
                     if ($action === 'delete') {
-                        $url = "index.php?r=cataloging/biblio/delete&id=$model->id&bibid=$model->bibid";
+                        $url = "index.php?r=circulation/hold-delete&id=$model->id&mbr_id=$model->mbr_id";
                         return $url;
                     }
                 },

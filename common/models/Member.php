@@ -19,6 +19,7 @@ use yii\web\IdentityInterface;
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
+ * @property string $address
  * @property string $auth_key
  * @property integer $status
  * @property integer $classification_id
@@ -53,8 +54,27 @@ class Member extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
+            ['first_name', 'trim'],
+            ['first_name', 'required'],
+            ['first_name', 'string', 'min' => 4, 'max' => 255],
+            ['last_name', 'trim'],
+            ['last_name', 'required'],
+            ['last_name', 'string', 'min' => 4, 'max' => 255],
+            ['phone', 'trim'],
+            ['phone', 'required'],
+            ['phone', 'string', 'min' => 4, 'max' => 32],
+            ['address', 'trim'],
+            ['address', 'required'],
+            ['address', 'string', 'min' => 5, 'max' => 255],
+            ['email', 'trim'],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This email address has already been taken.'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['classification_id', 'required'],
+            ['classification_id', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
         ];
     }
 

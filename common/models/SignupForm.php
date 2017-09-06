@@ -14,6 +14,7 @@ class SignupForm extends Model {
     public $first_name;
     public $last_name;
     public $phone;
+    public $address;
     public $email;
     public $password;
 
@@ -30,16 +31,19 @@ class SignupForm extends Model {
             ['last_name', 'string', 'min' => 4, 'max' => 255],
             ['phone', 'trim'],
             ['phone', 'required'],
-            ['phone', 'number', 'min' => 4, 'max' => 3999999999],
+            ['phone', 'string', 'min' => 4, 'max' => 32],
+            ['address', 'trim'],
+            ['address', 'required'],
+            ['address', 'string', 'min' => 5, 'max' => 255],
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['username', 'string', 'min' => 4, 'max' => 255],
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('app', 'This email address has already been taken.')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
         ];
@@ -61,6 +65,7 @@ class SignupForm extends Model {
         $user->last_name = $this->last_name;
         $user->phone = $this->phone;
         $user->email = $this->email;
+        $user->address = $this->address;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->classification_id = 1;
