@@ -1,19 +1,19 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\admin;
 
 use Yii;
-use backend\models\User;
-use backend\models\UserSearch;
+use backend\models\MaterialType;
+use backend\models\MaterialTypeSearch;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * AdminController implements the CRUD actions for User model.
+ * MaterialTypeController implements the CRUD actions for MaterialType model.
  */
-class AdminController extends Controller
+class MaterialTypeController extends Controller
 {
     /**
      * @inheritdoc
@@ -29,7 +29,7 @@ class AdminController extends Controller
                         'allow' => true,
                     ],
                     [
-                        //'actions' => ['users'],
+                        //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
@@ -38,7 +38,6 @@ class AdminController extends Controller
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
-                            
                             return false;
                         },
                     ],
@@ -59,125 +58,95 @@ class AdminController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all MaterialType models.
      * @return mixed
      */
-    public function actionUsers()
+    public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new MaterialTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('users/index', [
+
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single MaterialType model.
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersView($id)
+    public function actionView($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('users/view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new MaterialType model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionUsersCreate()
+    public function actionCreate()
     {
-        $model = new User();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $model = new MaterialType();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['users/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('users/create', [
+            return $this->render('create', [
                 'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing MaterialType model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersUpdate($id)
+    public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['users/view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('users/update', [
+            return $this->render('update', [
                 'model' => $model,
             ]);
         }
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing MaterialType model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersDelete($id)
+    public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
-    
-    public function actionSettings() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('settings/index');
-    }
-    
-    public function actionLibrarySettings() {
-        $model = $this->findSettingsModel();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->render('settings/library_settings', ['model' => $model]);
-        } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            
-            return $this->render('settings/library_settings', ['model' => $model]);
-        }    
-    }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the MaterialType model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return MaterialType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = MaterialType::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-        }
-    }
-    
-    private function findSettingsModel() {
-        if (($model = \common\models\Settings::find()->one()) !== null) {
-            return $model;
-        } else {
-            $model = new \common\models\Settings;
-            return $model;
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }

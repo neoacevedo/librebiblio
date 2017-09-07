@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\admin;
 
 use Yii;
 use yii\web\Controller;
@@ -26,7 +26,7 @@ class SettingsController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index'],
+                        //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
@@ -70,17 +70,17 @@ class SettingsController extends Controller {
      *
      * @return string
      */
-    public function actionIndex() {
+    public function actionLibrarySettings() {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->render('index', ['model' => $model]);
+            return $this->render('library_settings', ['model' => $model]);
         } else {
             array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             
-            return $this->render('index', ['model' => $model]);
+            return $this->render('library_settings', ['model' => $model]);
         }        
     }
 

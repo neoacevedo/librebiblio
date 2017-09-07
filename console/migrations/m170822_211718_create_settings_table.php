@@ -22,6 +22,7 @@ class m170822_211718_create_settings_table extends Migration
             'purge_history_after_months' => $this->smallInteger()->notNull(),
             'block_checkouts_when_fines_due' => $this->char(1)->notNull(),
             'hold_max_days' => $this->smallInteger()->notNull(),
+            'offline' => $this->smallInteger(1)->notNull()->defaultValue(0)
         ]);
     }
 

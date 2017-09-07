@@ -68,7 +68,7 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
                     $menuItems[] = [
                         'label' => Yii::$app->user->identity->username,
                         'items' => [
-                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/settings"]],
+                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/admin/settings"]],
                             ['label' => Yii::t('app', 'Staff'), 'url' => ['/admin/users']],
                             '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
