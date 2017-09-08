@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BiblioCopySearch */
@@ -31,12 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, "purge_history_after_months") ?>
 
-        <?= $form->field($model, "block_checkouts_when_fines_due") ?>
+        <?= $form->field($model, "block_checkouts_when_fines_due")->dropDownList(['Y' => Yii::t('app', 'Yes'), 'N' => Yii::t('app', 'No')]) ?>
 
         <?= $form->field($model, "hold_max_days") ?>
+        
+        <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

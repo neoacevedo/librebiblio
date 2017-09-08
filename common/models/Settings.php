@@ -16,6 +16,7 @@ use Yii;
  * @property integer $purge_history_after_months
  * @property string $block_checkouts_when_fines_due
  * @property integer $hold_max_days
+ * @property integer $offline
  */
 class Settings extends \yii\db\ActiveRecord {
 
@@ -32,10 +33,10 @@ class Settings extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['library_hours', 'purge_history_after_months', 'block_checkouts_when_fines_due', 'hold_max_days'], 'required'],
-            [['purge_history_after_months', 'hold_max_days'], 'integer'],
+            [['purge_history_after_months', 'hold_max_days', 'offline'], 'integer'],
             [['library_name', 'library_hours'], 'string', 'max' => 128],
             [['library_image_url'], 'string', 'max' => 255],
-            [['use_image_flg', 'block_checkouts_when_fines_due'], 'string', 'max' => 1],
+            [['use_image_flg', 'block_checkouts_when_fines_due', 'offline'], 'string', 'max' => 1],
             [['library_phone'], 'string', 'max' => 49],
         ];
     }
@@ -62,6 +63,7 @@ class Settings extends \yii\db\ActiveRecord {
             'purge_history_after_months' => Yii::t('app', 'Purge History After Months'),
             'block_checkouts_when_fines_due' => Yii::t('app', 'Block Checkouts When Fines Due'),
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),
+            'offline' => Yii::t('app', 'Offline')
         ];
     }
 

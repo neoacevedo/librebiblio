@@ -21,14 +21,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'headingOptions' => ['class' => 'head-style'],
             'items' => [
                 ['label' => Yii::t('app/settings', 'Library Settings'), 'url' => ['admin/settings/library-settings'], 'icon' => 'wrench'],
-                ['label' => Yii::t('app/settings', 'Material Types'), 'url' => ['admin/material-type/index']],
-                ['label' => Yii::t('app/settings', 'Collections'), 'url' => ['admin/collections/index'], 'icon' => 'duplicate'],
+                ['label' => Yii::t('app/settings', 'Material Types'), 'url' => ['admin/material-type/index'], 'icon' => 'tags'],
+                ['label' => Yii::t('app/settings', 'Collections'), 'url' => ['admin/collections/index'], 'icon' => 'folder-open'],
+                ['label' => Yii::t('app/settings', 'Member Classify'), 'url' => ['admin/member-classify/index'], 'icon' => 'user'],
                 ['label' => Yii::t('app/settings', 'Themes'), 'url' => ['admin/themes'], 'icon' => 'adjust']
             ],
         ]);
         ?>
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
-
+        <div class="content">
+            <h4><?= Html::encode(Yii::t('app/settings', 'Library Settings')) ?></h4>
+            <p><?= Html::encode(Yii::t('app/settings', 'Basic Library Settings.')) ?></p>
+            <h4><?= Html::encode(Yii::t('app/settings', 'Material Types')) ?></h4>
+            <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Material types for Library.')) ?></p>
+            <h4><?= Html::encode(Yii::t('app/settings', 'Collections')) ?></h4>
+            <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Bibliograhical Collections.')) ?></p>
+            <h4><?= Html::encode(Yii::t('app/settings', 'Member Classify')) ?></h4>
+            <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Classification for Library Members.')) ?></p>
+            <h4><?= Html::encode(Yii::t('app/settings', 'Themes')) ?></h4>
+            <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Themes.')) ?></p>
+        </div>
     </div>
 </div>

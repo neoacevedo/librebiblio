@@ -27,6 +27,12 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <style>
+            .navbar-inverse .btn-link:hover,
+            .navbar-inverse .btn-link:focus {
+                color: #333;
+            }
+        </style>
     </head>
     <body>
         <?php $this->beginBody() ?>
@@ -109,8 +115,8 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date').": ".date('l jS \of F Y') ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library hours').": $library_hours" ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . date('l jS \of F Y') ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library hours') . ": $library_hours" ?></div>
                 </div>
                 <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
 

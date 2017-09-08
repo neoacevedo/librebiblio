@@ -9,7 +9,7 @@ use kartik\sidenav\SideNav;
 /* @var $searchModel backend\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Users');
+$this->title = Yii::t('app', 'Staff');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -49,7 +49,43 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'status',
                 // 'created_at',
                 // 'updated_at',
-                ['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'headerOptions' => ['style' => 'color:#337ab7'],
+                    'template' => '{view}{update}{delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;', $url, [
+                                        'title' => Yii::t('app', 'View'),
+                            ]);
+                        },
+                        'update' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp;', $url, [
+                                        'title' => Yii::t('app', 'Update'),
+                            ]);
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>&nbsp;', $url, [
+                                        'title' => Yii::t('app', 'Delete'),
+                            ]);
+                        }
+                    ],
+                    'urlCreator' => function ($action, $model, $key, $index) {
+                        if ($action === 'view') {
+                            $url = 'index.php?r=admin/users-view&id=' . $model->id;
+                            return $url;
+                        }
+
+                        if ($action === 'update') {
+                            $url = 'index.php?r=admin/users-update&id=' . $model->id;
+                            return $url;
+                        }
+                        if ($action === 'delete') {
+                            $url = 'index.php?r=admin/users-delete&id=' . $model->id;
+                            return $url;
+                        }
+                    }
+                ],
             ],
         ]);
         ?>

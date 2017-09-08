@@ -74,7 +74,7 @@ class SettingsController extends Controller {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->render('library_settings', ['model' => $model]);
+            return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
         } else {
             array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);

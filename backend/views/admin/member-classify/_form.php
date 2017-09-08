@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\MaterialType */
+/* @var $model app\models\MemberClassify */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="material-type-form">
+<div class="member-classify-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'default_flg')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image_file')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'max_fines')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
