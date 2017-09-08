@@ -28,6 +28,15 @@ class m170626_040242_create_member_table extends Migration {
             'updated_at' => $this->integer()->notNull(),
         ]);
 
+        // creates index for column `updated_userid`
+        $this->createIndex(
+                'fk_member_classification_idx', '{{%member}}', 'classification_id'
+        );
+
+        // add foreign key for table `material_type_dm`
+        $this->addForeignKey(
+                'fk_member_classification', '{{%member}}', 'classification_id', '{{%mbr_classify_dm}}', 'id', 'RESTRICT', 'RESTRICT'
+        );
     }
 
     /**

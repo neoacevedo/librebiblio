@@ -68,7 +68,8 @@ class m170626_222419_create_biblio_table extends Migration
             'material_cd',
             '{{%material_type_dm}}',
             'id',
-            'CASCADE'
+            'RESTRICT',
+            'RESTRICT'
         );
         
         // add foreign key for table `collection_dm`
@@ -78,7 +79,8 @@ class m170626_222419_create_biblio_table extends Migration
             'collection_cd',
             '{{%collection_dm}}',
             'id',
-            'CASCADE'
+            'RESTRICT',
+            'RESTRICT'
         );
 
         // add foreign key for table `user`
@@ -88,7 +90,8 @@ class m170626_222419_create_biblio_table extends Migration
             'updated_userid',
             '{{%user}}',
             'id',
-            'CASCADE'
+            'RESTRICT',
+            'NO ACTION'
         );
     }
 

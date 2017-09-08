@@ -20,7 +20,7 @@ class m170627_013949_create_mbr_classify_dm_table extends Migration
         $this->createTable('{{%mbr_classify_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
-            'default_flg' => $this->char(1)->notNull(),
+            'default_flg' => $this->char(1)->notNull()->defaultValue('N'),
             'max_fines' => $this->decimal(4,2)->notNull(),
         ]);
         

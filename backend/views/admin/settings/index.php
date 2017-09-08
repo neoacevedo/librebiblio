@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['label' => Yii::t('app/settings', 'Material Types'), 'url' => ['admin/material-type/index'], 'icon' => 'tags'],
                 ['label' => Yii::t('app/settings', 'Collections'), 'url' => ['admin/collections/index'], 'icon' => 'folder-open'],
                 ['label' => Yii::t('app/settings', 'Member Classify'), 'url' => ['admin/member-classify/index'], 'icon' => 'user'],
+                ['label' => Yii::t('app/settings', 'Checkout Privileges'), 'url' => ['admin/checkout-privs/index'], 'icon' => 'check'],
                 ['label' => Yii::t('app/settings', 'Themes'), 'url' => ['admin/themes'], 'icon' => 'adjust']
             ],
         ]);
@@ -39,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Bibliograhical Collections.')) ?></p>
             <h4><?= Html::encode(Yii::t('app/settings', 'Member Classify')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Classification for Library Members.')) ?></p>
+            <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Checkout for Library Members.')) ?></p>
             <h4><?= Html::encode(Yii::t('app/settings', 'Themes')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Themes.')) ?></p>
         </div>

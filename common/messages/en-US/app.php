@@ -82,6 +82,7 @@ return [
     'Lirbrary Phone' => '',
     'Login' => '',
     'Logout' => '',
+    'Maintenance Mode' => '',
     'Material Cd' => '',
     'Material Types' => '',
     'Max Fines' => '',

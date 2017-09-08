@@ -45,7 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'description',
-                'default_flg',
                 'days_due_back',
                 'daily_late_fee',
                 ['class' => 'yii\grid\ActionColumn'],

@@ -5,14 +5,14 @@ use yii\widgets\DetailView;
 use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Collection */
+/* @var $model common\models\CheckoutPrivs */
 
-$this->title = $model->description;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
+$this->title = $model->materialType->description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Collections'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('checkout', 'Checkout Privs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="collection-view">
+<div class="checkout-privs-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <div class="col-lg-3 col-md-3 col-sm-3">
@@ -33,12 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <p>
-            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('checkout', 'Update'), ['update', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], ['class' => 'btn btn-primary']) ?>
             <?=
-            Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+            Html::a(Yii::t('checkout', 'Delete'), ['delete', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('checkout', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ])
@@ -50,11 +50,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
-                'description',
-                'days_due_back',
-                'daily_late_fee',
+                [
+                    'attribute' => 'materialType',
+                    'value' => 'materialType.description',
+                    'label' => 'Material'
+                ],
+                [
+                    'attribute' => 'classification',
+                    'value' => 'classification.description',
+                    'label' => Yii::t('app', 'Classification')
+                ],
+                'checkout_limit',
+                'renewal_limit',
             ],
         ])
         ?>
+
     </div>
 </div>

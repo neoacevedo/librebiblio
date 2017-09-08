@@ -88,6 +88,15 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'checkout*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'checkout' => 'checkout.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
             ],
         ],
         'mailer' => [

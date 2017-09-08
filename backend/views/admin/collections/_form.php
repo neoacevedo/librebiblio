@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'default_flg')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'days_due_back')->textInput() ?>
 
     <?= $form->field($model, 'daily_late_fee')->textInput(['maxlength' => true]) ?>
@@ -23,6 +21,9 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
+        <div class="hidden">
+            <?= $form->field($model, 'default_flg')->input('hidden', ['value' => 'N']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -1,20 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\grid\GridView;
 use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Collection */
+/* @var $searchModel common\models\CheckoutPrivsSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->description;
+$this->title = Yii::t('checkout', 'Checkout Privs');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Collections'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="collection-view">
+<div class="checkout-privs-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="col-lg-3 col-md-3 col-sm-3">
         <?=
         SideNav::widget([
@@ -33,28 +34,30 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <p>
-            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?=
-            Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ])
-            ?>
+            <?= Html::a(Yii::t('checkout', 'Create Checkout Privs'), ['create'], ['class' => 'btn btn-success']) ?>
         </p>
-
         <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
+        GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
                 'id',
-                'description',
-                'days_due_back',
-                'daily_late_fee',
+                [
+                    'attribute' => 'materialType',
+                    'value' => 'materialType.description',
+                    'label' => 'Material'
+                ],
+                [
+                    'attribute' => 'memberClassify',
+                    'value' => 'memberClassify.description',
+                    'label' => Yii::t('app', 'Member Classify')
+                ],
+                'checkout_limit',
+                'renewal_limit',
+                ['class' => 'yii\grid\ActionColumn'],
             ],
-        ])
+        ]);
         ?>
     </div>
 </div>
