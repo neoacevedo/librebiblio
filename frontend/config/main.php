@@ -7,8 +7,21 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'db'],
     'controllerNamespace' => 'frontend\controllers',
+    'on beforeRequest' => function() {
+        $settings = \common\models\Settings::find()->one();
+        if ($settings->offline == 1) {
+            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));
+            
+            /*Yii::$app->catchAll = [
+                // force route if portal in maintenance mode
+                'site/maintenance',
+                'message' => Yii::t('app', 'Maintenance Mode'),
+                'status' => 503
+            ];*/
+        }
+    },
     //'language' => 'es-CO',
     'components' => [
         'request' => [
@@ -49,12 +62,12 @@ return [
                 ],
             ],
         ],
-        /*'urlManager' => [
+        'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
-        ],*/
+        ],
     ],
     'params' => $params,
 ];

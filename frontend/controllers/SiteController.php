@@ -66,6 +66,11 @@ class SiteController extends Controller
             ],
         ];
     }
+    
+    public function actionMaintenance($message) {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('error', ['message' => $message]);
+    }
 
     /**
      * Displays homepage.
@@ -237,4 +242,6 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    
+    
 }
