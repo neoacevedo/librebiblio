@@ -17,7 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Active' => '',
     'Bibid' => '',
+    'Blocked' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
     'Cancel' => '',
@@ -28,6 +30,7 @@ return [
     'Copyid' => '',
     'Count' => '',
     'Default Flg' => '',
+    'Deleted' => '',
     'Field Data' => '',
     'Fieldid' => '',
     'Hold Begin Dt' => '',
@@ -37,6 +40,7 @@ return [
     'Maintenance Mode' => '',
     'Max Fines' => '',
     'Mbr ID' => '',
+    'Member Classify' => '',
     'No' => '',
     'Offline' => '',
     'Repeatable Flg' => '',
@@ -48,7 +52,6 @@ return [
     'Use Image Flg' => '',
     'Biblio' => '@@@@',
     'Renew item' => '@@Renovar ítem@@',
-    'You are not allowed to perform this action.' => '@@No está autorizado para realizar esta acción.@@',
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',
     'Are you sure you want to delete this item?' => '¿Está seguro que desea borrar este ítem?',
@@ -146,5 +149,6 @@ return [
     'Users' => 'Usuarios',
     'View' => 'Ver',
     'Yes' => 'Sí',
+    'You are not allowed to perform this action.' => 'No está autorizado para realizar esta acción.',
     '{modelClass} History: ' => 'Historial de {modelClass}: ',
 ];

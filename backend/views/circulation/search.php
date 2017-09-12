@@ -42,7 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'phone',
                     [
                         'attribute' => 'status',
-                        'value' => function($model) { return ($model->status == $model::STATUS_ACTIVE) ? 'Activo' : 'Bloqueado'; }
+                        'value' => function($model) {
+                            switch ($model->status) {
+                                case $model::STATUS_ACTIVE:
+                                    return Yii::t('app', 'Active');
+                                case $model::STATUS_BLOCKED:
+                                    return Yii::t('app', 'Blocked');
+                                case $model::STATUS_DELETED:
+                                    return Yii::t('app', 'Deleted');
+                            }
+                        }
                     ],
                     // 'created_at',
                     // 'updated_at',

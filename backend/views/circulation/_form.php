@@ -31,7 +31,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
 
     <?= $form->field($model, 'classification_id')->label(Yii::t('app', 'Classification'))->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
 
-    <?= $form->field($model, 'status')->dropDownList([0 => 'Bloqueado', 10 => "Activo"]) ?>
+    <?= $form->field($model, 'status')->dropDownList([\common\models\Member::STATUS_BLOCKED => Yii::t('app', 'Blocked'), \common\models\Member::STATUS_ACTIVE => Yii::t('app', 'Active')]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -12,6 +12,7 @@ use Yii;
 use common\models\Member;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -41,7 +42,8 @@ class CirculationController extends Controller {
                             if ($action->id == "create") {
                                 $model = $this->findModel(Yii::$app->user->id);
                                 if ($model->status == $model::STATUS_BLOCKED) {
-                                    throw new ForbiddenHttpException;
+                                    \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+                                    throw new ForbiddenHttpException(Yii::t('app', 'You are not allowed to perform this action.'));
                                 }
                             }
                         },

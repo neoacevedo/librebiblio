@@ -18,10 +18,12 @@
  */
 return [
     'Add/Edit/Delete Bibliograhical Collections.' => '',
+    'Add/Edit/Delete Checkout for Library Members.' => '',
     'Add/Edit/Delete Classification for Library Members.' => '',
     'Add/Edit/Delete Material types for Library.' => '',
     'Add/Edit/Delete Themes.' => '',
     'Basic Library Settings.' => '',
+    'Checkout Privileges' => '',
     'Collections' => '',
     'Library Settings' => '',
     'Material Types' => '',

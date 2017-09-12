@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Active' => '',
     'Add Copy' => '',
     'Additional Bibliographic Information' => '',
     'Are you sure you want to delete this item?' => '',
@@ -30,6 +31,7 @@ return [
     'Bibliographies Currently On Hold' => '',
     'Bibliography Copy Information' => '',
     'Block Checkouts When Fines Due' => '',
+    'Blocked' => '',
     'Call Nmbr1' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
@@ -62,6 +64,7 @@ return [
     'Days Late' => '',
     'Default Flg' => '',
     'Delete' => '',
+    'Deleted' => '',
     'Description' => '',
     'Due Back Dt' => '',
     'Email sent to user' => '',
@@ -88,6 +91,7 @@ return [
     'Max Fines' => '',
     'Mbr ID' => '',
     'Member Classifies' => '',
+    'Member Classify' => '',
     'New Member' => '',
     'New password saved.' => '',
     'No' => '',
@@ -146,7 +150,6 @@ return [
     'Renew item' => '@@@@',
     'Status Begint Dt' => '@@@@',
     'User' => '@@@@',
-    'You are not allowed to perform this action.' => '@@@@',
     'barcode_nmbr' => '@@@@',
     'due_back_dt' => '@@@@',
     'user' => '@@@@',
@@ -154,4 +157,5 @@ return [
     'Responsibility Stmt' => 'Statement of responsibility, etc.',
     'This email address has already been taken.' => '@@@@',
     'This username has already been taken.' => '@@@@',
+    'You are not allowed to perform this action.' => '@@@@',
 ];
