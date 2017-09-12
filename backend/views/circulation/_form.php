@@ -29,7 +29,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
 
     <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 100000]) ?>
 
-    <?= $form->field($model, 'classification_id')->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
+    <?= $form->field($model, 'classification_id')->label(Yii::t('app', 'Classification'))->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
 
     <?= $form->field($model, 'status')->dropDownList([0 => 'Bloqueado', 10 => "Activo"]) ?>
 

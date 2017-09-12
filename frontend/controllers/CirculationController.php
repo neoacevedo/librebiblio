@@ -33,8 +33,20 @@ class CirculationController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                //'only' => ['logout', 'signup'],
                 'rules' => [
+                    [
+                        'matchCallback' => function ($rule, $action) {
+                            //throw new \Exception('You are not allowed to access this page');
+                            if ($action->id == "create") {
+                                $model = $this->findModel(Yii::$app->user->id);
+                                if ($model->status == $model::STATUS_BLOCKED) {
+                                    throw new ForbiddenHttpException;
+                                }
+                            }
+                        },
+                        'roles' => ['@'],
+                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,

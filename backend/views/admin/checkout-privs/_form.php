@@ -18,9 +18,9 @@ $classification = app\models\MemberClassify::find()->all();
 
     <?= $form->field($model, 'classification_id')->label(Yii::t('app', 'Member Classify'))->dropDownList(\yii\helpers\ArrayHelper::map($classification, 'id', 'description')) ?>
 
-    <?= $form->field($model, 'checkout_limit')->textInput() ?>
+    <?= $form->field($model, 'checkout_limit')->input("number") ?>
 
-    <?= $form->field($model, 'renewal_limit')->textInput() ?>
+    <?= $form->field($model, 'renewal_limit')->input("number") ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('checkout', 'Create') : Yii::t('checkout', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

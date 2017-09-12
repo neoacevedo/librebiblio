@@ -37,7 +37,7 @@ class MemberClassifyController extends Controller {
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
-                            
+
                             return false;
                         },
                     ],
@@ -125,7 +125,12 @@ class MemberClassifyController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if (!@$model->delete()) {
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+        }
 
         return $this->redirect(['index']);
     }

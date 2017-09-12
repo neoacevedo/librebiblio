@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'phone',
                     [
                         'attribute' => 'status',
-                        'value' => function($model) { return $model::STATUS_ACTIVE ? 'Activo' : 'Bloqueado'; }
+                        'value' => function($model) { return ($model->status == $model::STATUS_ACTIVE) ? 'Activo' : 'Bloqueado'; }
                     ],
                     // 'created_at',
                     // 'updated_at',

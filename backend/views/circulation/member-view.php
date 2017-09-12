@@ -75,7 +75,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                     'phone',
                     [
                         'attribute' => 'status',
-                        'value' => $model::STATUS_ACTIVE ? 'Activo' : 'Bloqueado'
+                        'value' => ($model->status == $model::STATUS_ACTIVE) ? 'Activo' : 'Bloqueado'
                     ],
                     [
                         'attribute' => 'created_at',
