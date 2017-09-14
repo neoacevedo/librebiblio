@@ -32,6 +32,7 @@ if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'timeZone' => 'America/Bogota', 
     'components' => [
         'cache' => $cache,
         'db' => [

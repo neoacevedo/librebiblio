@@ -17,6 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '(not set)' => '',
-    '{attribute} "{value}" has already been taken.' => '',
+    '(not set)' => '(sin establecer)',
+    '{attribute} "{value}" has already been taken.' => '{attribute} "{value}" ya ha sido tomado.',
 ];

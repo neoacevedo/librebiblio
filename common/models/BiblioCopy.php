@@ -23,27 +23,27 @@ use Yii;
  * @property BiblioStatusHist[] $biblioStatusHists
  * @property Biblio[] $bibs
  */
-class BiblioCopy extends \yii\db\ActiveRecord
-{
+class BiblioCopy extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%biblio_copy}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['bibid', 'barcode_nmbr', 'status_cd', 'status_begin_dt'], 'required'],
             [['bibid', 'mbr_id', 'renewal_count'], 'integer'],
             [['created_at', 'updated_at', 'status_begin_dt'], 'safe'],
             [['due_back_dt'], 'date', 'format' => 'php:Y-m-d H:i:s', 'skipOnEmpty' => true],
-            [['copy_desc'], 'string', 'max' => 160, 'isEmpty' => function($model) { return null; }],
+            [['copy_desc'], 'string', 'max' => 160, 'isEmpty' => function($model) {
+                    return null;
+                }],
             [['barcode_nmbr'], 'string', 'max' => 20],
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
@@ -53,8 +53,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'bibid' => Yii::t('app', 'Bibid'),
@@ -73,24 +72,21 @@ class BiblioCopy extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBiblio()
-    {
+    public function getBiblio() {
         return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBiblioStatusHists()
-    {
+    public function getBiblioStatusHists() {
         return $this->hasMany(BiblioStatusHistory::className(), ['copyid' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBibs()
-    {
+    public function getBibs() {
         return $this->hasMany(Biblio::className(), ['id' => 'bibid'])->viaTable('{{%biblio_status_hist}}', ['copyid' => 'id']);
     }
 }

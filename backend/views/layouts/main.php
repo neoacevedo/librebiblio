@@ -115,13 +115,16 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . date('l jS \of F Y') ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library hours') . ": $library_hours" ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "php:l jS \of F Y") ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?></div>
                 </div>
-                <p class="pull-left">&copy; 2002-2014 Dave Stevens, et al. OpenBiblio2, <?= date('Y') ?></p>
-
-                <p class="pull-right"><?= Yii::powered() ?></p>
-
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2, <?= date('Y') ?></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4"><?= Yii::powered() ?></div>
+                </div>
+                <p>&nbsp;</p>
             </div>
         </footer>
 

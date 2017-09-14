@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add/Edit/Delete Bibliograhical Collections.' => '',
     'Add/Edit/Delete Checkout for Library Members.' => '',
-    'Add/Edit/Delete Classification for Library Members.' => '',
-    'Add/Edit/Delete Material types for Library.' => '',
-    'Add/Edit/Delete Themes.' => '',
-    'Basic Library Settings.' => '',
     'Checkout Privileges' => '',
-    'Collections' => '',
-    'Library Settings' => '',
-    'Material Types' => '',
-    'Member Classify' => '',
-    'Themes' => '',
+    'Add/Edit/Delete Bibliograhical Collections.' => 'Agregar/Editar/Borrar Colecciones Bibliográficas.',
+    'Add/Edit/Delete Classification for Library Members.' => 'Agregar/Editar/Borrar Clasificaciones para Miembros de la Biblioteca.',
+    'Add/Edit/Delete Material types for Library.' => 'Agregar/Editar/Borrar Tipos de material para la Biblioteca',
+    'Add/Edit/Delete Themes.' => 'Agregar/Editar/Borrar Temas.',
+    'Basic Library Settings.' => 'Configuración básica de la Biblioteca',
+    'Collections' => 'Colecciones',
+    'Library Settings' => 'Configuración de la Biblioteca',
+    'Material Types' => 'Tipos de Material',
+    'Member Classify' => 'Clasificación de Miembros',
+    'Themes' => 'Temas',
 ];
