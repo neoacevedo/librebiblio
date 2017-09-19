@@ -76,12 +76,4 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(BiblioCopy::className(), ['id' => 'copyid']);
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    /*public function getMbr()
-    {
-        return $this->hasOne(Member::className(), ['id' => 'mbr_id']);
-    }*/
 }

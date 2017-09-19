@@ -15,6 +15,14 @@ $settings = \common\models\Settings::find()->one();
 $library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 $library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
 $library_phone = null !== $settings->library_hours ? $settings->library_phone : "N/A";
+$brandLabel = "";
+if ($settings->library_image_url !== null) {
+    $brandLabel .= Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
+}
+
+if ($settings->use_image_flg == 0) {
+    $brandLabel .= "&nbsp;$library_name";
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -33,7 +41,7 @@ $library_phone = null !== $settings->library_hours ? $settings->library_phone : 
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' => $library_name,
+                'brandLabel' => $brandLabel,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',

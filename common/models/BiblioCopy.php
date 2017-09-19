@@ -19,7 +19,7 @@ use Yii;
  * @property integer $mbr_id
  * @property integer $renewal_count
  *
- * @property Biblio $bib
+ * @property Biblio $biblio
  * @property BiblioStatusHist[] $biblioStatusHists
  * @property Biblio[] $bibs
  */
@@ -88,5 +88,48 @@ class BiblioCopy extends \yii\db\ActiveRecord {
      */
     public function getBibs() {
         return $this->hasMany(Biblio::className(), ['id' => 'bibid'])->viaTable('{{%biblio_status_hist}}', ['copyid' => 'id']);
+    }
+    
+    /**
+     * Determina si se ha alcanzado el límite de renovación para el miembro dado y el tipo de material
+     * @param int $classification_id
+     * @return boolean
+     */
+    public function hasReachedRenewalLimit($classification_id) {
+        $checkoutPrivs = \common\models\CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
+        if($checkoutPrivs->renewal_limit == 0) {
+            return false; // ilimitado
+        }
+        
+        if($this->renewal_count < $checkoutPrivs->renewal_limit) {
+            return false; //aún no alcanza el límite de renovaciones
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Determina si se ha alcanzado el límite de comprobación para el miembro dado y el tipo de material
+     * @param int $mbr_id
+     * @param int $classification_id
+     * @return boolean
+     */
+    public function hasReachedCheckoutLimit($mbr_id, $classification_id) {
+        $checkoutPrivs = \common\models\CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
+        if($checkoutPrivs->checkout_limit == 0) {
+            return false; // ilimitado
+        }
+        
+        $count = (new \yii\db\Query)
+                ->select("*")
+                ->from(['{{%biblio_copy}}', '{{%biblio}}'])
+                ->where(['{{%biblio_copy}}.bibid' => '{{%biblio}}.id', '{{%biblio_copy}}.mbr_id' => $mbr_id, '{{%biblio}}.material_cd' => $checkoutPrivs->material_cd])
+                ->count();
+        
+        if($count >= $checkoutPrivs->checkout_limit) {
+            return true; // alcanzó el límite de préstamos
+        }
+        
+        return false;
     }
 }

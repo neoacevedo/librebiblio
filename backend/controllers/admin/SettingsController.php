@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\LoginForm;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -73,15 +74,34 @@ class SettingsController extends Controller {
     public function actionLibrarySettings() {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
+        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg']]);
+        $files_list = [];
+        foreach ($files as $file) {
+            $file_name = substr($file, strrpos($file, "/") + 1);
+            $files_list[$file_name] = $file_name;
+        }
+        // primer elemento en el array
+        array_unshift($files_list, Yii::t('app', 'Choose an option'));
+        // último elemento en el array
+        array_push($files_list, Yii::t('app', 'Upload File:'));
+        if ($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->post('imageFile') !== null) {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                if ($model->upload() && $model->save()) {
+                    return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
+                }
+            } else {
+                if ($model->save()) {
+                    return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
+                }
+            }
         } else {
             array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
-            
-            return $this->render('library_settings', ['model' => $model]);
-        }        
+
+            return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
+        }
     }
 
     /**
