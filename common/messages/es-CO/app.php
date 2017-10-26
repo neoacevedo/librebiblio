@@ -41,7 +41,7 @@ return [
     'Incorrect username or password.' => 'Usuario o contraseña incorrecto.',
     'Ind1 Cd' => '',
     'Ind2 Cd' => '',
-    'Max Fines' => '',
+    'Max Fines' => 'Multas máximas',
     'Mbr ID' => '',
     'No' => '',
     'Offline' => '',

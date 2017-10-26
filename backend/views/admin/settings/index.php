@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Bibliograhical Collections.')) ?></p>
             <h4><?= Html::encode(Yii::t('app/settings', 'Member Classify')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Classification for Library Members.')) ?></p>
+            <h4><?= Html::encode(Yii::t('app/settings', 'Checkout Privileges')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Checkout for Library Members.')) ?></p>
             <h4><?= Html::encode(Yii::t('app/settings', 'Themes')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Add/Edit/Delete Themes.')) ?></p>

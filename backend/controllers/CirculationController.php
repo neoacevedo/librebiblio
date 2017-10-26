@@ -231,7 +231,7 @@ class CirculationController extends Controller {
         }
         if ($status == "crt") {
             // una devolución
-            if(!$this->shelving_cart($bibid, $copyid, $id)) {
+            if (!$this->shelving_cart($bibid, $copyid, $id)) {
                 return $this->redirect(['circulation/checkin']);
             }
         } elseif ($status == "hld") {
@@ -250,36 +250,30 @@ class CirculationController extends Controller {
             return $this->redirect(['member-view', 'id' => $id]);
         }
 
-        $biblioCopy->status_cd = $status;
-        $biblioCopy->updated_at = date('Y-m-d H:i:s');
-        if ($biblioCopy->save()) {
-            // crear el historial para el miembro
-            $biblioStatusHistory = new \common\models\BiblioStatusHistory;
-            $biblioStatusHistory->bibid = $bibid;
-            $biblioStatusHistory->copyid = $copyid;
-            $biblioStatusHistory->mbr_id = $id;
-            $biblioStatusHistory->status_cd = $status;
-            $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
-            // la fecha de devolución en el historial es la misma de la de la copia.
-            $biblioStatusHistory->due_back_dt = null !== $id ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
-            if (!$biblioStatusHistory->save()) {
-                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-            }
-            // antes de hacer la purga, se debe revisar si tiene alguna deuda.
-            $purge_history_after_months = \common\models\Settings::find()->one()->purge_history_after_months;
-            $oldBibStatus = \common\models\BiblioStatusHistory::find()->where(['<=', 'date(created_at)', "date_add(sysdate(),interval - $purge_history_after_months month)"])
-                        ->andWhere(['mbr_id' => null])->all();
 
-            foreach ($oldBibStatus as $ob) {
-                $ob->delete();
-            }
-        } else {
-            array_walk_recursive($biblioCopy->errors, function($v, $k) {
+        // crear el historial para el miembro
+        $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+        $biblioStatusHistory->bibid = $bibid;
+        $biblioStatusHistory->copyid = $copyid;
+        $biblioStatusHistory->mbr_id = $id;
+        $biblioStatusHistory->status_cd = $status;
+        $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
+        // la fecha de devolución en el historial es la misma de la de la copia.
+        $biblioStatusHistory->due_back_dt = ($status != "crt") ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
+        if (!$biblioStatusHistory->save()) {
+            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
         }
+        // antes de hacer la purga, se debe revisar si tiene alguna deuda.
+        $purge_history_after_months = \common\models\Settings::find()->one()->purge_history_after_months;
+        $oldBibStatus = \common\models\BiblioStatusHistory::find()->where(['<=', 'date(created_at)', "date_add(sysdate(),interval - $purge_history_after_months month)"])
+                        ->andWhere(['mbr_id' => null])->all();
+
+        foreach ($oldBibStatus as $ob) {
+            $ob->delete();
+        }
+
 
         return $this->redirect(['member-view', 'id' => $id]);
     }
@@ -305,6 +299,11 @@ class CirculationController extends Controller {
         }
     }
 
+    /**
+     * Muestra el historial de préstamos del miembro.
+     * @param int $id
+     * @return mixed
+     */
     public function actionMemberHistory($id) {
         $model = $this->findModel($id);
         $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
@@ -330,6 +329,12 @@ class CirculationController extends Controller {
         return $this->redirect(['index']);
     }
 
+    /**
+     * Borra una reserva de un usuario dado
+     * @param int $id
+     * @param int $mbr_id
+     * @return mixed
+     */
     public function actionHoldDelete($id, $mbr_id) {
         \common\models\BiblioHold::findOne($id)->delete();
         return $this->redirect(['member-view', 'id' => $mbr_id]);
@@ -351,6 +356,13 @@ class CirculationController extends Controller {
         }
     }
 
+    /**
+     * Finds the Biblio model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findBiblioModel($id) {
         if (($model = \common\models\Biblio::findOne($id)) !== null) {
             return $model;
@@ -360,6 +372,13 @@ class CirculationController extends Controller {
         }
     }
 
+    /**
+     * Finds the BiblioCopy model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findCopyModel($bibid, $copyid) {
         if (($model = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid])) !== null) {
             return $model;
@@ -503,14 +522,22 @@ class CirculationController extends Controller {
             $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('now') + $collection->days_due_back);
         }
         $biblioCopy->mbr_id = $id;
+        $biblioCopy->status_cd = 'out';
+        $biblioCopy->updated_at = date('Y-m-d H:i:s');
+        if (!$biblioCopy->save()) {
+            array_walk_recursive($biblioCopy->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+            return false;
+        }
         return true;
     }
 
     /**
-     * 
-     * @param type $bibid
-     * @param type $copyid
-     * @param type $id
+     * Cambia el estado de la copia bibliográfica a próxima a archivar.
+     * @param int $bibid
+     * @param int $copyid
+     * @param int $id
      * @return boolean
      */
     protected function shelving_cart($bibid, $copyid, $id) {
@@ -558,7 +585,7 @@ class CirculationController extends Controller {
                 return false;
             }
         }
-        
+
         return true;
     }
 
