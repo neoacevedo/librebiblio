@@ -115,7 +115,7 @@ class AdminController extends Controller
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['users/view', 'id' => $model->id]);
+            return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
             return $this->render('users/update', [
                 'model' => $model,

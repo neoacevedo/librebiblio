@@ -26,6 +26,8 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'nS24qNF2Yr72wN56u08P6wgfIZQsPoaC',
         ],
         'user' => [
             'identityClass' => 'common\models\Member',
