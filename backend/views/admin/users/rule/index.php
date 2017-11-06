@@ -9,6 +9,7 @@ use johnitvn\ajaxcrud\CrudAsset;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('rbac','Rules Manager');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Staff'), 'url' => ['admin/users']];
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);

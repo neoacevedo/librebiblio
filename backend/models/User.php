@@ -53,8 +53,21 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
+            ['first_name', 'trim'],
+            ['first_name', 'required'],
+            ['first_name', 'string', 'min' => 4, 'max' => 255],
+            ['last_name', 'trim'],
+            ['last_name', 'required'],
+            ['last_name', 'string', 'min' => 4, 'max' => 255],
+            ['phone', 'trim'],
+            ['phone', 'required'],
+            ['phone', 'string', 'min' => 4, 'max' => 32],
+            ['address', 'trim'],
+            ['address', 'required'],
+            ['address', 'string', 'min' => 5, 'max' => 255],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
+            ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
         ];
     }
 

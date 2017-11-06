@@ -96,7 +96,7 @@ class AdminController extends Controller
         $model = new User();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['users/view', 'id' => $model->id]);
+            return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
             return $this->render('users/create', [
                 'model' => $model,
@@ -117,6 +117,9 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('users/update', [
                 'model' => $model,
             ]);

@@ -11,6 +11,7 @@ use kartik\sidenav\SideNav;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('rbac', 'Permissions Manager');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Staff'), 'url' => ['admin/users']];
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
