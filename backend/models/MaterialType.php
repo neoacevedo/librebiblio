@@ -71,5 +71,5 @@ class MaterialType extends \yii\db\ActiveRecord
         } else {
             return false;
         }
-    }
+    } 
 }

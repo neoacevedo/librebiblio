@@ -20,6 +20,6 @@ class m171107_160458_add_image_file_column_to_biblio_table extends Migration
      */
     public function down()
     {
-        $this->dropColumn('biblio', 'image_file');
+        $this->dropColumn('biblio', 'image_file'); 
     }
 }
