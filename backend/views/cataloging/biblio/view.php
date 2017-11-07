@@ -94,6 +94,16 @@ foreach ($model->biblioFields as $biblioField) {
             ],
             'title:ntext',
             'title_remainder:ntext',
+            [
+                'attribute' => 'image_file',
+                'value' => function($model) {
+                    return Html::img(Yii::$app->urlManagerFrontend->baseUrl . "/images/covers/{$model->image_file}", ['alt' => $model->title,
+                                'title' => $model->title,
+                                'class' => 'image-thumbnail center-block',
+                                'style' => 'width: 140px']);
+                },
+                'format' => 'raw'
+            ],
             'responsibility_stmt:ntext',
             'author:ntext',
             [

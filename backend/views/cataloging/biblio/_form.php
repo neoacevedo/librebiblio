@@ -41,6 +41,14 @@ endif;
 
     <?= $form->field($model, 'title_remainder')->textInput(['maxlength' => true, 'data-value' => '245b']) ?>
 
+    <?= $form->field($model, 'image_file')->fileInput() ?>
+    <?=
+    Html::img(Yii::$app->urlManagerFrontend->baseUrl."/images/covers/{$model->image_file}", ['alt' => $model->title,
+        'title' => $model->title,
+        'class' => 'image-thumbnail center-block',
+        'style' => 'width: 140px'])
+    ?>
+
     <?= $form->field($model, 'responsibility_stmt')->textInput(['maxlength' => true, 'data-value' => '245c']) ?>
 
     <?= $form->field($model, 'author')->textInput(['maxlength' => true, 'data-value' => '100a']) ?>
@@ -53,7 +61,7 @@ endif;
 
     <?= $form->field($model, 'topic4')->textInput(['maxlength' => true, 'data-value' => '650a3']) ?>
 
-    <?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
+<?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
 
     <!-- biblio fields -->
     <h4><?= Yii::t('app', "USMarc Fields:") ?></h4>
@@ -68,11 +76,11 @@ endif;
             echo $form->field($biblioField, "[$index]field_data")->label($usmarc[$index]->description)->textInput(['data-value' => $usmarc[$index]->tag . $usmarc[$index]->subfield_cd]);
         }
         ?>
-    <div class="hidden">
-        <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
+        <div class="hidden">
+            <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
         <?= $form->field($biblioField, "[$index]tag")->label("")->hiddenInput(['value' => $usmarc[$index]->tag]); ?>
         <?= $form->field($biblioField, "[$index]subfield_cd")->label("")->hiddenInput(['value' => $usmarc[$index]->subfield_cd]); ?>
-    </div>
+        </div>
         <?php
     endforeach;
     ?>
@@ -80,12 +88,12 @@ endif;
     <!-- // -->
     <div class="hidden">
         <?= $form->field($model, 'updated_userid')->label('')->hiddenInput(['value' => \Yii::$app->user->id]) ?>
-        <?= $form->field($model, 'created_at')->label('')->hiddenInput(['value' => ($model->created_at === null) ? date('Y-m-d H:i:s') : $model->created_at]) ?>
-        <?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => date("Y-m-d H:i:s")]) ?>
+<?= $form->field($model, 'created_at')->label('')->hiddenInput(['value' => ($model->created_at === null) ? date('Y-m-d H:i:s') : $model->created_at]) ?>
+<?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => date("Y-m-d H:i:s")]) ?>
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-    <?php ActiveForm::end(); ?>  
+<?php ActiveForm::end(); ?>  
 </div>

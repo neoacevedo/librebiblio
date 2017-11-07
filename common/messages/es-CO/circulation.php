@@ -24,6 +24,7 @@ return [
     'Member has reached checkout limit for this collection.' => '',
     'Note: Member has an outstanding account balance of {t, total}.' => '',
     'This member is currently blocked.' => '',
+    'holdMessageMsg1' => '',
     'Item placed hold.' => 'Ítem reservado.',
     'Item {n, number} is already checked out to another member.' => 'El ítem {n, number} ya fue tomado por otro miembro.',
     'This item is not checked out or on hold.' => 'Este ítem no se encuentra prestado o reservado.',

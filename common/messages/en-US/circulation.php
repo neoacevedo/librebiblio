@@ -29,4 +29,5 @@ return [
     'This member already has that item checked out -- not placing hold.' => '',
     'This member already has that item placed hold -- not placing hold.' => '',
     'This member is currently blocked.' => '',
+    'holdMessageMsg1' => '',
 ];

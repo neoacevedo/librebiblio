@@ -6,6 +6,8 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
+$urlManagerFrontend = require(__DIR__ . '/../../frontend/config/urlManager.php');
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -56,6 +58,7 @@ return [
                 ],
             ],
         ],
+        'urlManagerFrontend' => $urlManagerFrontend,
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

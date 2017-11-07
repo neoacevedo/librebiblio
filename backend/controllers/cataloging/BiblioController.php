@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * BiblioController implements the CRUD actions for Biblio model.
@@ -34,9 +35,9 @@ class BiblioController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            $roles = (array)Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             //Yii::info($roles);
-                            if(array_key_exists("admin", $roles)) {
+                            if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);
@@ -102,16 +103,26 @@ class BiblioController extends Controller {
             $modelBiblioFields[] = new \app\models\BiblioField();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
-            $materialType->default_flg = 'Y';
-            $materialType->save();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->save() && $model->upload()) {
+                // file is uploaded successfully
+                $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                $materialType->default_flg = 'Y';
+                $materialType->save();
+            } else {
+                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                return $this->render('create', [
+                            'model' => $model,
+                            'modelBiblioFields' => $modelBiblioFields,
+                            'usmarc' => $this->usmarc
+                ]);
+            }
             #$posts = Yii::$app->request->post('BiblioField', []);
 
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
@@ -177,10 +188,20 @@ class BiblioController extends Controller {
             $materialType->save();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
-            $materialType->default_flg = 'Y';
-            $materialType->save();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->save() && $model->upload()) {
+                $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                $materialType->default_flg = 'Y';
+                $materialType->save();
+            } else {
+                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                return $this->render('create', [
+                            'model' => $model,
+                            'modelBiblioFields' => $modelBiblioFields,
+                            'usmarc' => $this->usmarc
+                ]);
+            }
             // crear la lista con todos los modelos bibliofield
             for ($i = 1; $i < count($this->usmarc); $i++) {
                 $modelBiblioFields[] = new \app\models\BiblioField();

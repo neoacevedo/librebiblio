@@ -49,6 +49,7 @@ class Biblio extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['updated_userid', 'material_cd', 'collection_cd'], 'integer'],
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string'],
+            [['image_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],
             [['opac_flg'], 'string', 'max' => 1],
             [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => \backend\models\User::className(), 'targetAttribute' => ['updated_userid' => 'id']],
@@ -72,6 +73,7 @@ class Biblio extends \yii\db\ActiveRecord
             'call_nmbr3' => Yii::t('app', 'Call Nmbr3'),
             'title' => Yii::t('app', 'Title'),
             'title_remainder' => Yii::t('app', 'Title Remainder'),
+            'image_file' => Yii::t('app', 'Image File'),
             'responsibility_stmt' => Yii::t('app', 'Responsibility Stmt'),
             'author' => Yii::t('app', 'Author'),
             'topic1' => Yii::t('app', 'Topic1'),
@@ -111,5 +113,19 @@ class Biblio extends \yii\db\ActiveRecord
     public function getBiblioFields() {
         return $this->hasMany(\app\models\BiblioField::className(), ['bibid' => 'id']);
     }
+    
+    /**
+     * Sube el archivo de imagen.
+     * @return boolean
+     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            return true;
+        } else {
+            return false;
+        }
+    } 
     
 }
