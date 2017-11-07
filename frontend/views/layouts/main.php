@@ -90,7 +90,7 @@ if ($settings->use_image_flg == 0) {
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "php:l jS \of F Y") ?></div>
+                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?></div>
                     <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?></div>
                     <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?></div>
                 </div>
