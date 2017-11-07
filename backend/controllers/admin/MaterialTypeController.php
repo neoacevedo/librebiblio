@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * MaterialTypeController implements the CRUD actions for MaterialType model.
@@ -94,7 +95,12 @@ class MaterialTypeController extends Controller
     {
         $model = new MaterialType();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->save() && $model->upload()) {
+                // file is uploaded successfully
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

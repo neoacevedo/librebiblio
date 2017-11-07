@@ -50,6 +50,11 @@ class CirculationController extends Controller {
                         'roles' => ['@'],
                     ],
                     [
+                        'actions' => ['history'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],

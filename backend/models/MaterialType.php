@@ -33,7 +33,8 @@ class MaterialType extends \yii\db\ActiveRecord
             [['description', 'default_flg'], 'required'],
             [['description'], 'string', 'max' => 40],
             [['default_flg'], 'string', 'max' => 1],
-            [['image_file'], 'string', 'max' => 128],
+            [['image_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            #[['image_file'], 'string', 'max' => 128],
         ];
     }
 
@@ -56,5 +57,19 @@ class MaterialType extends \yii\db\ActiveRecord
     public function getBiblios()
     {
         return $this->hasMany(Biblio::className(), ['material_cd' => 'id']);
+    }
+    
+    /**
+     * Sube el archivo de imagen.
+     * @return boolean
+     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
