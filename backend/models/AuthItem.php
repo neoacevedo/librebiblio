@@ -6,7 +6,6 @@ use Yii;
 use yii\base\Model;
 use yii\rbac\Item;
 
-
 /**
  * @author John Martin <john.itvn@gmail.com>
  * @since 1.0.0
@@ -36,19 +35,6 @@ abstract class AuthItem extends Model {
         parent::__construct($config);
     }
 
-    public function unique() {
-        $authManager = Yii::$app->authManager;
-        $value = $this->name;
-        if ($authManager->getRole($value) !== null || $authManager->getPermission($value) !== null) {
-            $message = Yii::t('yii', '{attribute} "{value}" has already been taken.');
-            $params = [
-                'attribute' => $this->getAttributeLabel('name'),
-                'value' => $value,
-            ];
-            $this->addError('name', Yii::$app->getI18n()->format($message, $params, Yii::$app->language));
-        }
-    }
-
     /**
      * @inheritdoc
      */
@@ -57,12 +43,24 @@ abstract class AuthItem extends Model {
             [['ruleName'], 'in',
                 'range' => array_keys(Yii::$app->authManager->getRules()),
                 'message' => Yii::t('rbac', 'Rule not exists')],
-            [['name'], 'required'],
-            [['name'], 'unique', 'when' => function() {
-            return $this->isNewRecord || ($this->item->name != $this->name);
-        }],
+            ['name', 'required'],
+            ['name', 'string', 'max' => 64],
+            ['name', function() {
+                    // Movido el código del método unique declarado previamente en la clase a este método
+                    $authManager = Yii::$app->authManager;
+                    $value = $this->name;
+                    if ($authManager->getRole($value) !== null || $authManager->getPermission($value) !== null) {
+                        $message = Yii::t('yii', '{attribute} "{value}" has already been taken.');
+                        $params = [
+                            'attribute' => $this->getAttributeLabel('name'),
+                            'value' => $value,
+                        ];
+                        $this->addError('name', Yii::$app->getI18n()->format($message, $params, Yii::$app->language));
+                    }
+                }, 'when' => function() {
+                    return $this->isNewRecord || ($this->item->name != $this->name);
+                }],
             [['description', 'data', 'ruleName'], 'default'],
-            [['name'], 'string', 'max' => 64]
         ];
     }
 
@@ -121,26 +119,25 @@ abstract class AuthItem extends Model {
         $this->isNewRecord = !$isNewRecord;
         $this->item = $item;
         //$this->afterSave($isNewRecord,$this->attributes);
-        
-        
+
+
         if ($this->getType() == Item::TYPE_ROLE) {
-	        $role = $authManager->getRole($this->item->name);
-	        if (!$isNewRecord) {
-	            $authManager->removeChildren($role);
-	        }
-	        if ($this->permissions != null && is_array($this->permissions)) {
-	            foreach ($this->permissions as $permissionName) {
-	                $permistion = $authManager->getPermission($permissionName);
-	                $authManager->addChild($role, $permistion);
-	            }
-	        }
+            $role = $authManager->getRole($this->item->name);
+            if (!$isNewRecord) {
+                $authManager->removeChildren($role);
+            }
+            if ($this->permissions != null && is_array($this->permissions)) {
+                foreach ($this->permissions as $permissionName) {
+                    $permistion = $authManager->getPermission($permissionName);
+                    $authManager->addChild($role, $permistion);
+                }
+            }
         }
-        
+
 
         return true;
     }
-    
-   
+
     /**
      * Delete AuthItem
      * @return  boolean whether the role or permission is successfully removed

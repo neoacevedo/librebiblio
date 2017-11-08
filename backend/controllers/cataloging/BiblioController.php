@@ -188,7 +188,7 @@ class BiblioController extends Controller {
             $materialType->save();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {
                 $materialType = \backend\models\MaterialType::find($model->material_cd)->one();

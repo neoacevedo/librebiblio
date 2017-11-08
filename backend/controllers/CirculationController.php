@@ -220,7 +220,7 @@ class CirculationController extends Controller {
      * @param int $id
      * @return mixed
      */
-    public function actionCreate($bibid, $copyid, $status, $id) {
+    public function actionCheckout($bibid, $copyid, $status, $id) {
         $member = $this->findModel($id);
 
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);

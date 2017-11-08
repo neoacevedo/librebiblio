@@ -66,7 +66,7 @@ return [
                 ],
             ],
         ],
-        'urlManager' => $urlManager
+        'UrlManager' => $urlManager
     ],
     'params' => $params,
 ];
