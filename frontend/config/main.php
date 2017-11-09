@@ -14,8 +14,7 @@ return [
     'on beforeRequest' => function() {
         $settings = \common\models\Settings::find()->one();
         if ($settings->offline == 1) {
-            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));
-            
+            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));            
             /*Yii::$app->catchAll = [
                 // force route if portal in maintenance mode
                 'site/maintenance',

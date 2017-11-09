@@ -9,7 +9,7 @@ use kartik\sidenav\SideNav;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = Yii::t('app', 'Check in');
+$this->title = Yii::t('app', 'Cart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

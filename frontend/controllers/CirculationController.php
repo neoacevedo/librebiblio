@@ -162,4 +162,18 @@ class CirculationController extends Controller {
         }
     }
 
+    protected function getDueBack($mbrid) {
+        if ($mbrid != "" and $late > 0 and $fee > 0) {
+            $trans = new MemberAccountTransaction();
+            $trans->setMbrid($mbrid);
+            $trans->setCreateUserid($_SESSION['userid']);
+            $trans->setTransactionTypeCd("+c");
+            $trans->setAmount($fee * $late);
+            $trans->setDescription($this->_loc->getText("Late fee (barcode=%barcode%)", array('barcode' => $bcode)));
+            $transQ = new MemberAccountQuery();
+            if (!$transQ->insert($trans))
+                Fatal::internalError("Impossible transQ insert error.");
+        }
+    }
+
 }

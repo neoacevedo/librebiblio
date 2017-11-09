@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     
+    <?= $form->field($model, 'username') ?>
+    
     <div class="row">
         <div class="col-xs-4">
             <?= $form->field($model, 'first_name')->textInput() ?>

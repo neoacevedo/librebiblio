@@ -32,7 +32,7 @@ return [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.googlemail.com', // e.g. smtp.mandrillapp.com or smtp.gmail.com
                 'username' => 'nestor.acevedo.romero@gmail.com',
-                'password' => 'Hynt1b@2017',
+                'password' => "Hynt1b@2017",
                 'port' => '587', // Port 25 is a very common port too
                 'encryption' => 'tls', // It is often used, check your provider or mail server specs
             ],
@@ -60,8 +60,8 @@ return [
             ],
         ],
         'urlManager' => [
-            'baseUrl' => 'http://localhost/openbiblio2/frontend/web',
-            'enablePrettyUrl' => true,
+            'baseUrl' => 'http://localhost/openbiblio2/backend/web',
+            'enablePrettyUrl' => false,
             'showScriptName' => false,
             'rules' => [
             ],

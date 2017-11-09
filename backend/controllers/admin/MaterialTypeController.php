@@ -31,15 +31,15 @@ class MaterialTypeController extends Controller {
                     [
                         //'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function () {
+                        'roles' => ['admin'],
+                        /*'matchCallback' => function () {
                             $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             //Yii::info($roles);
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             return false;
-                        },
+                        },*/
                     ],
                     [
                         'actions' => ['logout'],

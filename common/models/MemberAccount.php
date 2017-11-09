@@ -55,4 +55,5 @@ class MemberAccount extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
         ];
     }
+    
 }

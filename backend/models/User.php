@@ -53,6 +53,10 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
+            ['username', 'trim'],
+            ['username', 'required'],
+            ['username', 'string', 'min' => 6, 'max' => 255],
+            ['username', 'unique', 'targetClass' => '\backend\models\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['first_name', 'trim'],
             ['first_name', 'required'],
             ['first_name', 'string', 'min' => 4, 'max' => 255],
@@ -65,6 +69,11 @@ class User extends ActiveRecord implements IdentityInterface {
             ['address', 'trim'],
             ['address', 'required'],
             ['address', 'string', 'min' => 5, 'max' => 255],
+            ['email', 'trim'],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'unique', 'targetClass' => '\backend\models\User', 'message' => Yii::t('app', 'This email address has already been taken.')],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],

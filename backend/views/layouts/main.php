@@ -8,7 +8,6 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
-use pceuropa\menu\Menu;
 
 AppAsset::register($this);
 
@@ -52,16 +51,10 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
-                /* $items = [];
-                  foreach (Menu::NavbarRight(2) as $menu) {
-                  $item['label'] = Yii::t('app', $menu['label']);
-                  $item['url'] = $menu['url'];
-                  $item['type'] = $menu['type'];
-                  array_push($menuItems, $item);
-                  } */
-
-                // este menú cambia para el administrador.
                 $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
+                $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
+                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
                 $isAdmin = false;
                 foreach ($roles as $role) {
                     if ($role->name == "admin") {
@@ -69,8 +62,6 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
                     }
                 }
                 if ($isAdmin) {
-                    $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
-                    $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
                     $menuItems[] = [
                         'label' => Yii::$app->user->identity->username,
                         'items' => [

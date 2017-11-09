@@ -41,7 +41,7 @@ return [
             'username' => $connectstr_dbusername,
             'password' => $connectstr_dbpassword,
             'charset' => 'utf8',
-            'enableQueryCache' => true
+            'enableQueryCache' => false
         ],
         'session' => [
             'class' => 'yii\web\CacheSession',
@@ -108,45 +108,14 @@ return [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.googlemail.com', // e.g. smtp.mandrillapp.com or smtp.gmail.com
                 'username' => 'nestor.acevedo.romero@gmail.com',
-                'password' => 'Hynt1b@2017',
+                'password' => "Hynt1b@2017",
                 'port' => '587', // Port 25 is a very common port too
                 'encryption' => 'tls', // It is often used, check your provider or mail server specs
             ],
-        ]
+        ],
     ],
     'modules' => [
-        'rbac' => [
-            'class' => 'johnitvn\rbacplus\Module',
-            'userModelClassName' => null,
-            'userModelIdField' => 'id',
-            'userModelLoginField' => 'username',
-            'userModelLoginFieldLabel' => null,
-            'userModelExtraDataColumls' => null,
-//            'userModelExtraDataColumls' => [
-//                [
-//                    'attributes' => 'created_at',
-//                    'value' => function($model) {
-//                        return date('m/d/Y', $model->created_at);
-//                    }
-//                ]
-//            ],
-            'beforeCreateController' => function ($action) {
-                
-                return Yii::$app->response->redirect(["admin/users"]);
-
-                #throw new NotFoundHttpException('The requested page does not exist.');
-            },
-            'beforeAction' => function ($action) {
-                /*$roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                //Yii::info($roles);
-                if (array_key_exists("admin", $roles)) {
-                    return true;
-                }*/
-                return Yii::$app->response->redirect(["admin/users"]);
-
-                #throw new NotFoundHttpException('The requested page does not exist.');
-            },
-        ],
+        
         'gridview' => ['class' => 'kartik\grid\Module'],
         // accesos solo administrativos a módulos específicos
         'menu' => [

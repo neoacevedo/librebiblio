@@ -24,8 +24,9 @@ CrudAsset::register($this);
             'headingOptions' => ['class' => 'head-style'],
             'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
                 ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
+                ['label' => Yii::t('app', 'Rules'), 'url' => ['admin/users/rule']],
                 ['label' => Yii::t('app', 'Permissions'), 'url' => ['admin/users/permission']],
-                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment']]],
+                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment'], 'options' => ['class' => 'active']]],
         ]);
     } else {
         echo SideNav::widget([
@@ -34,7 +35,7 @@ CrudAsset::register($this);
             'headingOptions' => ['class' => 'head-style'],
             'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
                 ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
-                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment']]],
+                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment'], 'options' => ['class' => 'active']]],
         ]);
     }
     ?>

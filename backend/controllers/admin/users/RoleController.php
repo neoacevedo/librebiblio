@@ -36,8 +36,8 @@ class RoleController extends Controller {
                     [
                         //'actions' => ['users'],
                         'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function () {
+                        'roles' => ['admin'],
+                        /*'matchCallback' => function () {
                             $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             //Yii::info($roles);
                             if (array_key_exists("admin", $roles)) {
@@ -45,7 +45,7 @@ class RoleController extends Controller {
                             }
 
                             return false;
-                        },
+                        },*/
                     ],
                     [
                         'actions' => ['logout'],

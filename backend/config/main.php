@@ -1,9 +1,7 @@
 <?php
+
 $params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
 );
 
 $urlManagerFrontend = require(__DIR__ . '/../../frontend/config/urlManager.php');
@@ -13,7 +11,40 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'rbac' => [
+            'class' => 'johnitvn\rbacplus\Module',
+            'userModelClassName' => null,
+            'userModelIdField' => 'id',
+            'userModelLoginField' => 'username',
+            'userModelLoginFieldLabel' => null,
+            'userModelExtraDataColumls' => null,
+//            'userModelExtraDataColumls' => [
+//                [
+//                    'attributes' => 'created_at',
+//                    'value' => function($model) {
+//                        return date('m/d/Y', $model->created_at);
+//                    }
+//                ]
+//            ],
+            'beforeCreateController' => function ($action) {
+
+                return Yii::$app->response->redirect(["admin/users"]);
+
+                #throw new NotFoundHttpException('The requested page does not exist.');
+            },
+            'beforeAction' => function ($action) {
+                /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                  //Yii::info($roles);
+                  if (array_key_exists("admin", $roles)) {
+                  return true;
+                  } */
+                return Yii::$app->response->redirect(["admin/users"]);
+
+                #throw new NotFoundHttpException('The requested page does not exist.');
+            },
+        ],
+    ],
     //'language' => 'es-CO',
     'components' => [
         'request' => [

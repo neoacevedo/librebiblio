@@ -29,16 +29,26 @@ class CirculationController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        //'actions' => ['index', 'search', 'new-member', 'member-view', 'member-update', 'member-delete'],
+                        //'actions' => $actions,
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
+                            /*$roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
-                            return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);
+                            return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);*/
+                            $action = Yii::$app->controller->action->id;
+                            $controller = Yii::$app->controller->id;
+                            $route = "$controller/$action";
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+                            //$post = Yii::$app->request->post();
+                            if (\Yii::$app->user->can($route)) {
+                                return true;
+                            }
                         },
                     ],
                     [
@@ -81,6 +91,210 @@ class CirculationController extends Controller {
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionSearch() {
+        $searchModel = new MemberSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('search', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lista todos los materiales bibliográficos que se encuentran en el carrito.
+     * @return mixed
+     */
+    public function actionCart() {
+        $searchModel = new \common\models\BiblioCopySearch();
+        $searchModel->status_cd = 'crt';
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('cart', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Muestra una lista de copias bibliográficas.
+     * La vista es renderizada vía ajax.
+     * @return mixed
+     */
+    public function actionCopySearch() {
+        $searchModel = new \common\models\BiblioCopySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->renderAjax('copysearch', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Muestra una lista de copias bibliográficas que estén prestadas de manera local.
+     * @return mixed
+     */
+    public function actionCheckin() {
+        $searchModel = new \common\models\BiblioCopySearch();
+        $searchModel->status_cd = 'out';
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('checkin', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
+     * Los estados de la copia pueden ser:
+     * <i>crt</i> En el carrito
+     * <i>hld</i> En reserva
+     * <i>out</i> En préstamo
+     * <i>in</i> Disponible
+     * @param int $bibid
+     * @param int $copyid
+     * @param string $status
+     * @param int $id
+     * @return mixed
+     */
+    public function actionCreate($bibid, $copyid, $status, $id) {
+        $member = $this->findModel($id);
+
+        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        if ($member->status == $member::STATUS_BLOCKED) {
+            Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
+            return $this->redirect(['member-view', 'id' => $id]);
+        }
+
+        switch ($status) {
+            case "crt":
+                // una devolución
+                if (!$this->shelving_cart($bibid, $copyid, $id)) {
+                    return $this->redirect(['circulation/checkin']);
+                }
+                break;
+            case "hld":
+                // reserva
+                $this->hold($bibid, $copyid, $id);
+                $this->redirect(['member-view', 'id' => $id]);
+            case "out":
+                // préstamo
+                if (!$this->checkout($bibid, $copyid, $id)) {
+                    return $this->redirect(['member-view', 'id' => $id]);
+                }
+                break;
+            case "in":
+                // disponible
+                if (!$this->checkin($bibid, $copyid, $id)) {
+                    return $this->redirect(['circulation/checkin']);
+                }
+            default:
+                break;
+        }
+
+        // verificar si el material bibliográfico ha alcanzado el límite de préstamos
+        if ($biblioCopy->hasReachedCheckoutLimit($id, Member::findOne($id)->classification_id)) {
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
+            return $this->redirect(['member-view', 'id' => $id]);
+        }
+
+
+        // crear el historial para el miembro
+        $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+        $biblioStatusHistory->bibid = $bibid;
+        $biblioStatusHistory->copyid = $copyid;
+        $biblioStatusHistory->mbr_id = $id;
+        $biblioStatusHistory->status_cd = $status;
+        $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
+        // la fecha de devolución en el historial es la misma de la de la copia.
+        if ($status == "crt") {
+            $biblioCopy->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
+        }
+        if (!$biblioStatusHistory->save()) {
+            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+        }
+        // antes de hacer la purga, se debe revisar si tiene alguna deuda.
+        $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
+        if ($memberDebt == 0) {
+            $purge_history_after_months = \common\models\Settings::find()->one()->purge_history_after_months;
+            $oldBibStatus = \common\models\BiblioStatusHistory::find()->where(['<=', 'date(created_at)', "date_add(sysdate(),interval - $purge_history_after_months month)"])
+                            ->andWhere(['mbr_id' => null])->all();
+
+            foreach ($oldBibStatus as $ob) {
+                $ob->delete();
+            }
+        }
+
+        return $this->redirect(['member-view', 'id' => $id]);
+    }
+
+    /**
+     * Borra una reserva de un usuario dado
+     * @param int $id
+     * @param int $mbr_id
+     * @return mixed
+     */
+    public function actionHoldDelete($id, $mbr_id) {
+        \common\models\BiblioHold::findOne($id)->delete();
+        return $this->redirect(['member-view', 'id' => $mbr_id]);
+    }
+
+    /**
+     * Updates an existing Member model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionMemberUpdate($id) {
+        $model = $this->findModel($id);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['member-view', 'id' => $model->id]);
+        } else {
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+            return $this->render('member-update', [
+                        'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Muestra el historial de préstamos del miembro.
+     * @param int $id
+     * @return mixed
+     */
+    public function actionMemberHistory($id) {
+        $model = $this->findModel($id);
+        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $biblioStatusHist,
+        ]);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        return $this->render('member-history', [
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Deletes an existing User model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionMemberDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -132,57 +346,6 @@ class CirculationController extends Controller {
         ]);
     }
 
-    public function actionSearch() {
-        $searchModel = new MemberSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('search', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Muestra una lista de copias bibliográficas.
-     * La vista es renderizada vía ajax.
-     * @return mixed
-     */
-    public function actionCopySearch() {
-        $searchModel = new \common\models\BiblioCopySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->renderAjax('copysearch', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-        /* if (Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
-          return $this->renderAjax('copysearch', [
-          'searchModel' => $searchModel,
-          'dataProvider' => $dataProvider,
-          ]);
-          } else {
-          return $this->renderAjax('copysearch', [
-          'searchModel' => $searchModel,
-          'dataProvider' => $dataProvider,
-          ]);
-          } */
-    }
-
-    /**
-     * Muestra una lista de copias bibliográficas que estén prestadas de manera local.
-     * @return mixed
-     */
-    public function actionCheckin() {
-        $searchModel = new \common\models\BiblioCopySearch();
-        $searchModel->status_cd = 'out';
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('checkin', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
     /**
      * Registrar un usuario de la biblioteca desde la administración.
      * @return mixed
@@ -210,134 +373,6 @@ class CirculationController extends Controller {
         return $this->render('signup', [
                     'model' => $model,
         ]);
-    }
-
-    /**
-     * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
-     * @param int $bibid
-     * @param int $copyid
-     * @param string $status
-     * @param int $id
-     * @return mixed
-     */
-    public function actionCheckout($bibid, $copyid, $status, $id) {
-        $member = $this->findModel($id);
-
-        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($member->status == $member::STATUS_BLOCKED) {
-            Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
-            return $this->redirect(['member-view', 'id' => $id]);
-        }
-        if ($status == "crt") {
-            // una devolución
-            if (!$this->shelving_cart($bibid, $copyid, $id)) {
-                return $this->redirect(['circulation/checkin']);
-            }
-        } elseif ($status == "hld") {
-            // reserva
-            $this->hold($bibid, $copyid, $id);
-            return $this->redirect(['member-view', 'id' => $id]);
-        } elseif ($status == "out") {
-            // préstamo
-            if (!$this->checkout($bibid, $copyid, $id)) {
-                return $this->redirect(['member-view', 'id' => $id]);
-            }
-        }
-        // verificar si el material bibliográfico ha alcanzado el límite de préstamos
-        if ($biblioCopy->hasReachedCheckoutLimit($id, Member::findOne($id)->classification_id)) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
-            return $this->redirect(['member-view', 'id' => $id]);
-        }
-
-
-        // crear el historial para el miembro
-        $biblioStatusHistory = new \common\models\BiblioStatusHistory;
-        $biblioStatusHistory->bibid = $bibid;
-        $biblioStatusHistory->copyid = $copyid;
-        $biblioStatusHistory->mbr_id = $id;
-        $biblioStatusHistory->status_cd = $status;
-        $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
-        // la fecha de devolución en el historial es la misma de la de la copia.
-        $biblioStatusHistory->due_back_dt = ($status != "crt") ? date('Y-m-d', strtotime($biblioCopy->due_back_dt)) : null;
-        if (!$biblioStatusHistory->save()) {
-            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-        }
-        // antes de hacer la purga, se debe revisar si tiene alguna deuda.
-        $purge_history_after_months = \common\models\Settings::find()->one()->purge_history_after_months;
-        $oldBibStatus = \common\models\BiblioStatusHistory::find()->where(['<=', 'date(created_at)', "date_add(sysdate(),interval - $purge_history_after_months month)"])
-                        ->andWhere(['mbr_id' => null])->all();
-
-        foreach ($oldBibStatus as $ob) {
-            $ob->delete();
-        }
-
-
-        return $this->redirect(['member-view', 'id' => $id]);
-    }
-
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionMemberUpdate($id) {
-        $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['member-view', 'id' => $model->id]);
-        } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            return $this->render('member-update', [
-                        'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Muestra el historial de préstamos del miembro.
-     * @param int $id
-     * @return mixed
-     */
-    public function actionMemberHistory($id) {
-        $model = $this->findModel($id);
-        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $biblioStatusHist,
-        ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('member-history', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionMemberDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Borra una reserva de un usuario dado
-     * @param int $id
-     * @param int $mbr_id
-     * @return mixed
-     */
-    public function actionHoldDelete($id, $mbr_id) {
-        \common\models\BiblioHold::findOne($id)->delete();
-        return $this->redirect(['member-view', 'id' => $mbr_id]);
     }
 
     /**
@@ -396,7 +431,7 @@ class CirculationController extends Controller {
      * @param int $bibid
      * @param int $copyid
      * @param int $id
-     * @return void
+     * @return boolean
      */
     protected function hold($bibid, $copyid, $id) {
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
@@ -404,27 +439,27 @@ class CirculationController extends Controller {
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
             // el material debe tener el estado "out" o "hld" para realizar una reserva
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
-            return;
+            return false;
         }
 
         // si el material está prestado y es el miembro quien lo tiene
         if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
-            return;
+            return false;
         }
 
         if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
             // si el miembro ya ha reservado el material, se devuelve un aviso y no se reserva de nuevo el material.
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
-            return;
+            return false;
         } else {
             // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
-            $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
+            $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
             if ($memberDebt > 0) {
                 Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {t, total}.", ["t" => Yii::$app->formatter->asCurrency($memberDebt)]));
                 // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
                 if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
-                    return;
+                    return false;
                 }
             }
 
@@ -438,9 +473,12 @@ class CirculationController extends Controller {
                 array_walk_recursive($biblioHold->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
+                return false;
             } else {
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
             }
+
+            return true;
         }
     }
 
@@ -519,7 +557,8 @@ class CirculationController extends Controller {
             return false;
         } elseif ($biblioCopy->status_cd == 'in') {
             // nadie tiene el material. Se puede prestar.
-            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime('now') + $collection->days_due_back);
+            $biblioCopy->status_begin_dt = date('Y-m-d H:i:s');
+            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->status_begin_dt) + $collection->days_due_back);
         }
         $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = 'out';
@@ -534,30 +573,26 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Cambia el estado de la copia bibliográfica a próxima a archivar.
+     * Cambia el estado de la copia bibliográfica.
+     * El estado de la copia puede ser: 
+     * <i>crt</i> En el carrito
+     * <i>hld</i> Rservado
+     * Este es el paso previo a devolverlo a la estantería, prestarlo o marcarlo con algún otro estado diferente 
+     * dependiendo de las coneiciones en que haya sido devuelto el material bibliográfico.
      * @param int $bibid
      * @param int $copyid
      * @param int $id
      * @return boolean
      */
     protected function shelving_cart($bibid, $copyid, $id) {
-        $late = $fee = 0; // se definen estas dos variables de tipo entero
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
-        $biblio = $this->findBiblioModel($bibid);
-        // encontrar el cargo por día de retraso
-        $fee = $biblio->getCollection()->one()->daily_late_fee;
+
         // buscar si ya hay una solicitud de reserva y cambiar el estado de la copia a "en reserva" si hay una reserva.
         if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid])) !== null) {
             $biblioCopy->status_cd = 'hld';
             Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'holdMessageMsg1'));
         } else {
             $biblioCopy->status_cd = 'crt';
-        }
-
-        if (null !== $biblioCopy->due_back_dt) {
-            if (strtotime($biblioCopy->due_back_dt) !== false && strtotime($biblioCopy->due_back_dt) !== -1) {
-                $late = (new DateTime($biblioCopy->due_back_dt))->diff(new DateTime());
-            }
         }
 
         $biblioCopy->mbr_id = null;
@@ -569,6 +604,35 @@ class CirculationController extends Controller {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Cambia el estado del material bibliográfico a disponible.
+     * 
+     * Se evalúa si el miembro que devuelve el libro lo devuelve en una fecha <br />
+     * posterior a la establecida, genera la multa correspondiente y bloquea la <br />
+     * cuenta del usuario para nuevos préstamos externos.
+     * @param int $bibid
+     * @param int $copyid
+     * @param int $id
+     * @return boolean
+     */
+    protected function checkin($bibid, $copyid, $id) {
+        $late = $fee = 0; // se definen estas dos variables de tipo entero
+        $biblio = $this->findBiblioModel($bibid);
+        // encontrar el cargo por día de retraso
+        $fee = $biblio->getCollection()->one()->daily_late_fee;
+        $biblioCopy = $this->findCopyModel($bibid, $copyid);
+        $biblioCopy->due_back_dt = null;
+        $biblioCopy->mbr_id = null;
+
+        if (null !== $biblioCopy->due_back_dt) {
+            if (strtotime($biblioCopy->due_back_dt) !== false && strtotime($biblioCopy->due_back_dt) !== -1) {
+                $late = (new DateTime($biblioCopy->due_back_dt))->diff(new DateTime());
+            }
         }
 
         if ($late > 0 && $fee > 0) {
@@ -584,15 +648,12 @@ class CirculationController extends Controller {
                 });
                 return false;
             }
+
+            $member = $this->findModel($id);
+            $member->status = Member::STATUS_BLOCKED;
+            $member->save();
         }
-
         return true;
-    }
-
-    protected function checkin($bibid, $copyid, $id) {
-        $biblioCopy = $this->findCopyModel($bibid, $copyid);
-        $biblioCopy->due_back_dt = null;
-        $biblioCopy->mbr_id = null;
     }
 
 }
