@@ -17,17 +17,7 @@ $connectstr_dbname = (null !== $connectstr_dbname) ? $connectstr_dbname : "openb
 $connectstr_dbusername = (null !== $connectstr_dbusername) ? $connectstr_dbusername : "root";
 $connectstr_dbpassword = (null !== $connectstr_dbpassword) ? $connectstr_dbpassword : "";
 
-if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-    $cache['class'] = "yii\caching\MemCache";
-    $servers['host'] = 'localhost';
-    $servers['port'] = 11211;
-    $servers['weight'] = 100;
-    $cache['servers'] = [];
-    array_push($cache['servers'], $servers);
-    $cache['useMemcached'] = true;
-} else {
-    $cache['class'] = 'yii\caching\FileCache';
-}
+$cache = require(__DIR__ . '/cache.php');
 
 
 return [

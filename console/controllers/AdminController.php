@@ -14,10 +14,10 @@ class AdminController extends Controller {
 
     /**
      * Requests password reset.
-     *
+     * @param string $email
      * @return mixed
      */
-    public function actionRequestPasswordReset($email) {
+    public function actionRequestPasswordReset(string $email) {
         $model = new PasswordResetRequest;
         $model->email = $email;
         if ($model->validate()) {

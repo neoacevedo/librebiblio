@@ -80,7 +80,7 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Lists all User models.
+     * Lists all Member models.
      * @return mixed
      */
     public function actionIndex() {
@@ -93,6 +93,10 @@ class CirculationController extends Controller {
         ]);
     }
 
+    /**
+     * Busca un modelo Member que coincida con ciertas especificaciones.
+     * @return mixed
+     */
     public function actionSearch() {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -151,10 +155,12 @@ class CirculationController extends Controller {
     /**
      * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
      * Los estados de la copia pueden ser:
-     * <i>crt</i> En el carrito
-     * <i>hld</i> En reserva
-     * <i>out</i> En préstamo
-     * <i>in</i> Disponible
+     * <ul>
+     * <li><i>crt</i> En el carrito</li>
+     * <li><i>hld</i> En reserva</li>
+     * <li><i>out</i> En préstamo</li>
+     * <li><i>in</i> Disponible</li>
+     * </ul>
      * @param int $bibid
      * @param int $copyid
      * @param string $status
@@ -286,7 +292,7 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Member model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
