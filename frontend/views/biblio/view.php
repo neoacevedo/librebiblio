@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $model common\models\Biblio */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblio Search'), 'url' => Yii::$app->request->referrer];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblio Search'), 'url' => ['site/search']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $usmarc = [
