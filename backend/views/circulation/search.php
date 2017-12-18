@@ -16,15 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?=
-            SideNav::widget([
-                'type' => SideNav::TYPE_DEFAULT,
-                'heading' => Yii::t('app', 'Circulation'),
-                'items' => [
-                    ['label' => Yii::t('app', 'Home'), 'url' => ['circulation']],
-                    ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
-                    ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
-                ]
-            ]);
+            $this->render('_sidenav');
             ?>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9">

@@ -11,13 +11,13 @@ use kartik\sidenav\SideNav;
 $this->title = Yii::t('app', 'New Member');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$items = [];
-foreach (Menu::NavbarLeft(1) as $menu) {
-    $item['label'] = Yii::t('app', $menu['label']);
-    $item['url'] = $menu['url'];
-    $item['type'] = $menu['type'];
-    array_push($items, $item);
-}
+//$items = [];
+//foreach (Menu::NavbarLeft(1) as $menu) {
+//    $item['label'] = Yii::t('app', $menu['label']);
+//    $item['url'] = $menu['url'];
+//    $item['type'] = $menu['type'];
+//    array_push($items, $item);
+//}
 
 $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
 ?>
@@ -25,11 +25,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
     <h1><?= Html::encode($this->title) ?></h1>
     <div class="col-lg-3 col-md-3 col-sm-3">
         <?=
-        SideNav::widget([
-            'type' => SideNav::TYPE_DEFAULT,
-            'heading' => Yii::t('app', 'Circulation'),
-            'items' => $items,
-        ]);
+        $this->render('_sidenav');
         ?>
     </div>
     <div class="col-lg-8">

@@ -59,11 +59,6 @@ foreach ($model->biblioFields as $biblioField) {
             'created_at',
             'updated_at',
             [
-                'attribute' => 'user',
-                'value' => $model->user->username,
-                'label' => \Yii::t('app', 'Updated by')
-            ],
-            [
                 'attribute' => 'materialType',
                 'value' => $model->materialType->description,
                 'label' => 'Material'

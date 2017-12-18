@@ -33,11 +33,11 @@ class CirculationController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            /*$roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            if (array_key_exists("admin", $roles)) {
-                                return true;
-                            }
-                            return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id);*/
+                            /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                              if (array_key_exists("admin", $roles)) {
+                              return true;
+                              }
+                              return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id); */
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
@@ -168,13 +168,15 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate($bibid, $copyid, $status, $id) {
-        $member = $this->findModel($id);
 
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        if ($member->status == $member::STATUS_BLOCKED) {
-            Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
-            return $this->redirect(['member-view', 'id' => $id]);
+        if ($id !== null) {
+            $member = $this->findModel($id);
+            if ($member->status == $member::STATUS_BLOCKED) {
+                Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
+                return $this->redirect(['member-view', 'id' => $id]);
+            }
         }
 
         switch ($status) {
@@ -340,7 +342,7 @@ class CirculationController extends Controller {
 // deudas
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {t, total}.", ["t" => Yii::$app->formatter->asCurrency($memberDebt)]));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
         }
         return $this->render('member-view', [
                     'model' => $this->findModel($id),
@@ -353,10 +355,10 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Registrar un usuario de la biblioteca desde la administración.
+     * Registrar un miembro de la biblioteca desde la administración.
      * @return mixed
      */
-    public function actionNewMember() {
+    public function actionMemberCreate() {
         $model = new \backend\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         if ($model->load(Yii::$app->request->post())) {
@@ -462,7 +464,7 @@ class CirculationController extends Controller {
             // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
             $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
             if ($memberDebt > 0) {
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {t, total}.", ["t" => Yii::$app->formatter->asCurrency($memberDebt)]));
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
                 // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
                 if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                     return false;
@@ -505,7 +507,7 @@ class CirculationController extends Controller {
         // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {t, total}.", ["t" => Yii::$app->formatter->asCurrency($memberDebt)]));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
             if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                 return false;
@@ -632,21 +634,23 @@ class CirculationController extends Controller {
         // encontrar el cargo por día de retraso
         $fee = $biblio->getCollection()->one()->daily_late_fee;
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
-        $biblioCopy->due_back_dt = null;
-        $biblioCopy->mbr_id = null;
 
         if (null !== $biblioCopy->due_back_dt) {
             if (strtotime($biblioCopy->due_back_dt) !== false && strtotime($biblioCopy->due_back_dt) !== -1) {
                 $late = (new DateTime($biblioCopy->due_back_dt))->diff(new DateTime());
             }
         }
+        
+        $biblioCopy->due_back_dt = null;
+        $biblioCopy->mbr_id = null;
 
         if ($late > 0 && $fee > 0) {
             $trans = new \common\models\MemberAccount;
             $trans->mbr_id = $id;
             $trans->create_userid = Yii::$app->user->id;
+            $trans->created_at = date('Y-m-d H:i:s');
             $trans->transaction_type_cd = "+c";
-            $trans->amout = $fee * $late;
+            $trans->amount = $fee * $late;
             $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
             if (!$trans->save()) {
                 array_walk_recursive($trans->errors, function($v, $k) {

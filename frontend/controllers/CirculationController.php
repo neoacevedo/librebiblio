@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use DateTime;
 use common\models\Member;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -37,6 +38,8 @@ class CirculationController extends Controller {
                 //'only' => ['logout', 'signup'],
                 'rules' => [
                     [
+                        'allow' => true,
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             //throw new \Exception('You are not allowed to access this page');
                             if ($action->id == "create") {
@@ -46,8 +49,9 @@ class CirculationController extends Controller {
                                     throw new ForbiddenHttpException(Yii::t('app', 'You are not allowed to perform this action.'));
                                 }
                             }
+
+                            return true;
                         },
-                        'roles' => ['@'],
                     ],
                     [
                         'actions' => ['history'],
@@ -97,10 +101,19 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate($bibid, $copyid, $id) {
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $this->updateMemberAccount($id);
+        $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
+        if ($memberDebt > 0) {
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
+            // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
+            if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
@@ -150,10 +163,10 @@ class CirculationController extends Controller {
      * Finds the Member model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Member the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
@@ -162,17 +175,49 @@ class CirculationController extends Controller {
         }
     }
 
-    protected function getDueBack($mbrid) {
-        if ($mbrid != "" and $late > 0 and $fee > 0) {
-            $trans = new MemberAccountTransaction();
-            $trans->setMbrid($mbrid);
-            $trans->setCreateUserid($_SESSION['userid']);
-            $trans->setTransactionTypeCd("+c");
-            $trans->setAmount($fee * $late);
-            $trans->setDescription($this->_loc->getText("Late fee (barcode=%barcode%)", array('barcode' => $bcode)));
-            $transQ = new MemberAccountQuery();
-            if (!$transQ->insert($trans))
-                Fatal::internalError("Impossible transQ insert error.");
+    /**
+     * Actualiza o crea una nueva deuda.
+     * @param int $mbrid
+     */
+    protected function updateMemberAccount(int $mbrid) {
+        $late = $fee = 0; // se definen estas dos variables de tipo entero
+
+        $biblioCopies = \common\models\BiblioCopy::find()->where(['mbr_id' => $mbrid])->all();
+
+        foreach ($biblioCopies as $biblioCopy) {
+
+            $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
+            // encontrar el cargo por día de retraso
+            $fee = $biblio->getCollection()->one()->daily_late_fee;
+
+            if (null !== $biblioCopy->due_back_dt) {
+                if (strtotime($biblioCopy->due_back_dt) !== false && strtotime($biblioCopy->due_back_dt) !== -1) {
+                    $dt = new DateTime($biblioCopy->due_back_dt);
+                    $now = new DateTime("now");
+                    $dtdiff = $dt->diff($now);
+                    $late = $dtdiff->format("%a");
+                }
+            }
+
+            if ($mbrid != "" and $late > 0 and $fee > 0) {
+                $trans = new \common\models\MemberAccount;
+                $trans->mbr_id = $mbrid;
+                $trans->create_userid = Yii::$app->user->id;
+                $trans->created_at = date('Y-m-d H:i:s');
+                $trans->transaction_type_cd = "+c";
+                $trans->amount = $fee * $late;
+                $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
+                if (!$trans->save()) {
+                    array_walk_recursive($trans->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
+                    return $this->redirect(Yii::$app->request->referrer);
+                } else {
+                    $member = $this->findModel($mbrid);
+                    $member->status = Member::STATUS_BLOCKED;
+                    $member->save();
+                }
+            }
         }
     }
 

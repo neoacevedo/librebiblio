@@ -83,7 +83,7 @@ class BiblioCopySearch extends BiblioCopy {
                 ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
                 ->andFilterWhere(['like', 'status_cd', $this->status_cd])
                 ->andFilterWhere(['like', '{{%biblio}}.title', $this->biblio]);
-
+        
         return $dataProvider;
     }
 

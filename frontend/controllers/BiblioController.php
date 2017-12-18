@@ -36,13 +36,6 @@ class BiblioController extends Controller
     public function actionIndex()
     {
         return $this->redirect(['site/index']);
-        /*$searchModel = new BiblioSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);*/
     }
 
     /**

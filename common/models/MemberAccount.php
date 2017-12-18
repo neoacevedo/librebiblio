@@ -12,7 +12,7 @@ use Yii;
  * @property string $created_at
  * @property integer $create_userid
  * @property string $transaction_type_cd
- * @property string $amout
+ * @property string $amount
  * @property string $description
  */
 class MemberAccount extends \yii\db\ActiveRecord
@@ -31,10 +31,10 @@ class MemberAccount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mbr_id', 'created_at', 'create_userid', 'transaction_type_cd', 'amout'], 'required'],
+            [['mbr_id', 'created_at', 'create_userid', 'transaction_type_cd', 'amount'], 'required'],
             [['mbr_id', 'create_userid'], 'integer'],
             [['created_at'], 'safe'],
-            [['amout'], 'number'],
+            [['amount'], 'number'],
             [['transaction_type_cd'], 'string', 'max' => 2],
             [['description'], 'string', 'max' => 128],
         ];
@@ -51,7 +51,7 @@ class MemberAccount extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'create_userid' => Yii::t('app', 'Create Userid'),
             'transaction_type_cd' => Yii::t('app', 'Transaction Type Cd'),
-            'amout' => Yii::t('app', 'Amout'),
+            'amount' => Yii::t('app', 'Amount'),
             'description' => Yii::t('app', 'Description'),
         ];
     }

@@ -3,8 +3,6 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use pceuropa\menu\Menu;
-use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
@@ -12,22 +10,13 @@ use kartik\sidenav\SideNav;
 $this->title = Yii::t('app', 'Cart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
 <div class="circulation-index">
     <div class="bibliosearch-index">
         <h1><?= Html::encode($this->title) ?></h1>
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?=
-            SideNav::widget([
-                'type' => SideNav::TYPE_DEFAULT,
-                'heading' => Yii::t('app', 'Circulation'),
-                'items' => [
-                    ['label' => Yii::t('app', 'Home'), 'url' => ['index']],
-                    ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/new-member']],
-                    ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
-                ]
-            ]);
+            $this->render('_sidenav');
             ?>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9">
@@ -73,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'urlCreator' => function ($action, $model, $key, $index) {
                             if ($action === 'checkin') {
-                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=crt&id=$model->mbr_id&data-pjax=0";
+                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=0";
                                 return $url;
                             }
                         }],

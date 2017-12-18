@@ -67,6 +67,11 @@ class SiteController extends Controller
         ];
     }
     
+    /**
+     * Establece la página para el modo mantenimiento del sitio.
+     * @param string $message
+     * @return mixed
+     */
     public function actionMaintenance($message) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->render('error', ['message' => $message]);

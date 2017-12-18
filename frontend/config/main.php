@@ -1,11 +1,7 @@
 <?php
 
 $params = array_merge(
-        require(__DIR__ . '/../../common/config/params.php'), 
-        require(__DIR__ . '/../../common/config/params-local.php'), 
-        require(__DIR__ . '/params.php'), 
-        require(__DIR__ . '/params-local.php'), 
-        require(__DIR__ . '/../../common/config/i18n.php')
+        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php'), require(__DIR__ . '/../../common/config/i18n.php')
 );
 
 $urlManager = require(__DIR__ . '/urlManager.php');
@@ -18,13 +14,13 @@ return [
     'on beforeRequest' => function() {
         $settings = \common\models\Settings::find()->one();
         if ($settings->offline == 1) {
-            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));            
-            /*Yii::$app->catchAll = [
-                // force route if portal in maintenance mode
-                'site/maintenance',
-                'message' => Yii::t('app', 'Maintenance Mode'),
-                'status' => 503
-            ];*/
+            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));
+            /* Yii::$app->catchAll = [
+              // force route if portal in maintenance mode
+              'site/maintenance',
+              'message' => Yii::t('app', 'Maintenance Mode'),
+              'status' => 503
+              ]; */
         }
     },
     //'language' => 'es-CO',
