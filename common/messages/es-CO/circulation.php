@@ -22,7 +22,7 @@ return [
     'Item {n, number} is on hold to another member.' => '',
     'Late fee (barcode={n, number})' => '',
     'Member has reached checkout limit for this collection.' => '',
-    'Note: Member has an outstanding account balance of {t, total}.' => '',
+    'Note: Member has an outstanding account balance of {total}.' => 'Nota: El miembro tiene un saldo de cuenta pendiente de {total}',
     'This member is currently blocked.' => '',
     'holdMessageMsg1' => '',
     'Item placed hold.' => 'Ítem reservado.',

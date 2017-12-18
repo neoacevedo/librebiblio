@@ -24,7 +24,7 @@ return [
     'Item {n, number} is on hold to another member.' => '',
     'Late fee (barcode={n, number})' => '',
     'Member has reached checkout limit for this collection.' => '',
-    'Note: Member has an outstanding account balance of {t, total}.' => '',
+    'Note: Member has an outstanding account balance of {total}.' => '',
     'This item is not checked out or on hold.' => '',
     'This member already has that item checked out -- not placing hold.' => '',
     'This member already has that item placed hold -- not placing hold.' => '',

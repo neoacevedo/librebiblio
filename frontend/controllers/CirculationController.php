@@ -101,10 +101,11 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate($bibid, $copyid, $id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         $this->updateMemberAccount($id);
+        
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
             if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
@@ -115,16 +116,19 @@ class CirculationController extends Controller {
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
         }
 
         if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
         }
 
         if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
             // si el miembro ya ha reservado el material, se devuelve un aviso y no se reserva de nuevo el material.
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
         } else {
 
@@ -139,6 +143,7 @@ class CirculationController extends Controller {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             } else {
+                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
             }
         }
