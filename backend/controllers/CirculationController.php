@@ -598,7 +598,7 @@ class CirculationController extends Controller {
         // buscar si ya hay una solicitud de reserva y cambiar el estado de la copia a "en reserva" si hay una reserva.
         if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid])) !== null) {
             $biblioCopy->status_cd = 'hld';
-            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'holdMessageMsg1'));
+            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.'));
         } else {
             $biblioCopy->status_cd = 'crt';
         }

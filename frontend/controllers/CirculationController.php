@@ -46,7 +46,7 @@ class CirculationController extends Controller {
                                 $model = $this->findModel(Yii::$app->user->id);
                                 if ($model->status == $model::STATUS_BLOCKED) {
                                     \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-                                    throw new ForbiddenHttpException(Yii::t('app', 'You are not allowed to perform this action.'));
+                                    throw new ForbiddenHttpException(Yii::t('circulation', 'This member is currently blocked.'));
                                 }
                             }
 
@@ -211,6 +211,7 @@ class CirculationController extends Controller {
                 $trans->created_at = date('Y-m-d H:i:s');
                 $trans->transaction_type_cd = "+c";
                 $trans->amount = $fee * $late;
+                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
                 $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
                 if (!$trans->save()) {
                     array_walk_recursive($trans->errors, function($v, $k) {
