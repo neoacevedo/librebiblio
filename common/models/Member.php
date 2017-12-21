@@ -152,6 +152,14 @@ class Member extends ActiveRecord implements IdentityInterface {
     public function getAuthKey() {
         return $this->auth_key;
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getPassword()
+    {
+        return '';
+    }
 
     /**
      * @inheritdoc

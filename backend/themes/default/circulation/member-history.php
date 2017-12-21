@@ -8,9 +8,9 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', '{modelClass} History: ', [
             'modelClass' => 'User',
-        ]) . " $model->username";
-#$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
-#$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['member-view', 'id' => $model->id]];
+        ]) . $model->username;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['member-view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'History');
 ?>
 <div class="user-update">
@@ -43,5 +43,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'History');
         ]
     ])
     ?>
+
 
 </div>

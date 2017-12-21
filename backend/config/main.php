@@ -11,6 +11,16 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'on beforeAction' => function() {
+        $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
+        Yii::$app->getView()->theme = new \yii\base\Theme([
+            'basePath' => "@app/themes/{$theme->name}",
+            'baseUrl' => "@web/themes/{$theme->name}",
+            'pathMap' => [
+                '@app/views' => "@app/themes/{$theme->name}",
+            ],
+        ]);
+    },
     'modules' => [
         'rbac' => [
             'class' => 'johnitvn\rbacplus\Module',
@@ -90,6 +100,7 @@ return [
             ],
         ],
         'urlManagerFrontend' => $urlManagerFrontend,
+        'view' => ['theme' => $theme],
     ],
     'params' => $params,
 ];

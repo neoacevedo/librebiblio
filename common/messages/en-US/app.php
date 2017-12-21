@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Account' => '',
     'Active' => '',
     'Add Copy' => '',
     'Additional Bibliographic Information' => '',
@@ -97,6 +98,7 @@ return [
     'Mbr ID' => '',
     'Member Classifies' => '',
     'Member Classify' => '',
+    'My Account' => '',
     'New Member' => '',
     'New password saved.' => '',
     'No' => '',
@@ -160,6 +162,7 @@ return [
     'Status Begint Dt' => '@@@@',
     'Use Image Flg' => '@@@@',
     'User' => '@@@@',
+    'You are not allowed to perform this action.' => '@@@@',
     'barcode_nmbr' => '@@@@',
     'due_back_dt' => '@@@@',
     'user' => '@@@@',
@@ -167,5 +170,4 @@ return [
     'Responsibility Stmt' => 'Statement of responsibility, etc.',
     'This email address has already been taken.' => '@@@@',
     'This username has already been taken.' => '@@@@',
-    'You are not allowed to perform this action.' => '@@@@',
 ];

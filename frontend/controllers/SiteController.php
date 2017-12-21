@@ -84,8 +84,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new \common\models\BiblioSearch();
-        
+        $searchModel = new \common\models\BiblioSearch();        
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
         return $this->render('index', ['searchModel' => $searchModel]);
     }

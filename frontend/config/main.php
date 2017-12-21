@@ -23,6 +23,16 @@ return [
               ]; */
         }
     },
+    'on beforeAction' => function() {
+        $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
+        Yii::$app->getView()->theme = new \yii\base\Theme([
+            'basePath' => "@app/themes/{$theme->name}",
+            'baseUrl' => "@web/themes/{$theme->name}",
+            'pathMap' => [
+                '@app/views' => "@app/themes/{$theme->name}",
+            ],
+        ]);
+    },
     //'language' => 'es-CO',
     'components' => [
         'request' => [
@@ -65,7 +75,7 @@ return [
                 ],
             ],
         ],
-        'UrlManager' => $urlManager
+        'urlManager' => $urlManager,
     ],
     'params' => $params,
 ];

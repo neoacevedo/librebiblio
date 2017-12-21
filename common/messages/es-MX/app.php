@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Account' => '',
     'Active' => '',
     'Amount' => '',
     'Bibid' => '',
@@ -24,7 +25,6 @@ return [
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
     'Cancel' => '',
-    'Cart' => '',
     'Check Out' => '',
     'Checkout' => '',
     'Checkout Stats' => '',
@@ -46,6 +46,7 @@ return [
     'Max Fines' => '',
     'Mbr ID' => '',
     'Member Classify' => '',
+    'My Account' => '',
     'No' => '',
     'Offline' => '',
     'Only Show Image in Header:' => '',
@@ -62,6 +63,7 @@ return [
     'Biblio' => '@@@@',
     'Renew item' => '@@Renovar ítem@@',
     'Use Image Flg' => '@@@@',
+    'You are not allowed to perform this action.' => '@@No está autorizado para realizar esta acción.@@',
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',
     'Are you sure you want to delete this item?' => '¿Está seguro que desea borrar este ítem?',
@@ -76,6 +78,7 @@ return [
     'Biblios' => 'Catalogación',
     'Block Checkouts When Fines Due' => 'Bloquear pagos cuando las multas venzan',
     'Call Nmbr1' => 'Número de entrada',
+    'Cart' => 'Carrito',
     'Cataloging' => 'Catalogación',
     'Check in' => 'Recepción',
     'Check your email for further instructions.' => 'Revise su correo electrónico para obtener más instrucciones.',
@@ -159,6 +162,5 @@ return [
     'Users' => 'Usuarios',
     'View' => 'Ver',
     'Yes' => 'Sí',
-    'You are not allowed to perform this action.' => 'No está autorizado para realizar esta acción.',
     '{modelClass} History: ' => 'Historial de {modelClass}: ',
 ];

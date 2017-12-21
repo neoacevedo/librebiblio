@@ -151,19 +151,6 @@ class CirculationController extends Controller {
         return $this->redirect(Yii::$app->request->referrer);
     }
 
-    public function actionHistory($id) {
-        $model = $this->findModel($id);
-        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $biblioStatusHist,
-        ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
-        return $this->render('history', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
     /**
      * Finds the Member model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

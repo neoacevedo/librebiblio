@@ -17,11 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Account' => '',
     'Amount' => '',
     'Bibid' => '',
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
-    'Cart' => '',
     'Check Out' => '',
     'Checkout' => '',
     'Checkout Stats' => '',
@@ -37,6 +37,7 @@ return [
     'Ind1 Cd' => '',
     'Ind2 Cd' => '',
     'Mbr ID' => '',
+    'My Account' => '',
     'No' => '',
     'Offline' => '',
     'Repeatable Flg' => '',
@@ -51,6 +52,7 @@ return [
     'Biblio' => '@@@@',
     'Renew item' => '@@Renovar ítem@@',
     'Use Image Flg' => '@@@@',
+    'You are not allowed to perform this action.' => '@@No está autorizado para realizar esta acción.@@',
     'Active' => 'Activo',
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',
@@ -68,6 +70,7 @@ return [
     'Blocked' => 'Bloqueado',
     'Call Nmbr1' => 'Número de entrada',
     'Cancel' => 'Cancelar',
+    'Cart' => 'Carrito',
     'Cataloging' => 'Catalogación',
     'Check in' => 'Recepción',
     'Check your email for further instructions.' => 'Revise su correo electrónico para obtener más instrucciones.',
@@ -159,6 +162,5 @@ return [
     'Users' => 'Usuarios',
     'View' => 'Ver',
     'Yes' => 'Sí',
-    'You are not allowed to perform this action.' => 'No está autorizado para realizar esta acción.',
     '{modelClass} History: ' => 'Historial de {modelClass}: ',
 ];
