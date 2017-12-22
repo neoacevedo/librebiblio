@@ -45,7 +45,7 @@ class CirculationController extends Controller {
                             if ($action->id == "create") {
                                 $model = $this->findModel(Yii::$app->user->id);
                                 if ($model->status == $model::STATUS_BLOCKED) {
-                                    \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+                                    \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                                     throw new ForbiddenHttpException(Yii::t('circulation', 'This member is currently blocked.'));
                                 }
                             }
@@ -82,7 +82,7 @@ class CirculationController extends Controller {
     public function actionIndex() {
         //return $this->render('index');
         $searchModel = new BiblioSearch();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -105,7 +105,7 @@ class CirculationController extends Controller {
         
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}.", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
             if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
@@ -116,19 +116,19 @@ class CirculationController extends Controller {
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
         }
 
         if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
         }
 
         if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
             // si el miembro ya ha reservado el material, se devuelve un aviso y no se reserva de nuevo el material.
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
         } else {
 
@@ -143,7 +143,7 @@ class CirculationController extends Controller {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             } else {
-                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
             }
         }
@@ -162,7 +162,7 @@ class CirculationController extends Controller {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
@@ -198,7 +198,7 @@ class CirculationController extends Controller {
                 $trans->created_at = date('Y-m-d H:i:s');
                 $trans->transaction_type_cd = "+c";
                 $trans->amount = $fee * $late;
-                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                 $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
                 if (!$trans->save()) {
                     array_walk_recursive($trans->errors, function($v, $k) {

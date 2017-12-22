@@ -60,7 +60,9 @@ return [
             ],
         ],
         'urlManager' => [
-            'baseUrl' => 'http://localhost/openbiblio2/backend/web',
+            'class' => 'yii\web\UrlManager',
+            'baseUrl' => 'http://localhost/openbiblio2/backend/web', // reemplazar de manera manual por el dominio para el backend
+            'scriptUrl' => 'http://localhost/openbiblio2/backend/web', // reemplazar de manera manual por el dominio para el backend
             'enablePrettyUrl' => false,
             'showScriptName' => false,
             'rules' => [

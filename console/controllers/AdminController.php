@@ -22,7 +22,7 @@ class AdminController extends Controller {
         $model->email = $email;
         if ($model->validate()) {
             if ($model->sendEmail()) {
-                echo $this->ansiFormat("Check your email for further instructions.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
+                echo $this->ansiFormat("Email sent.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
             } else {
                 echo $this->ansiFormat("Sorry, we are unable to reset password for the provided email address.\n", Console::BG_RED, Console::BOLD);
             }

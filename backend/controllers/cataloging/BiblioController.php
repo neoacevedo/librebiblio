@@ -75,7 +75,7 @@ class BiblioController extends Controller {
     public function actionIndex() {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         #if (\Yii::$app->user->can('view')) {
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -90,7 +90,7 @@ class BiblioController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 
         return $this->render('view', [
                     'model' => $this->findModel($id),
@@ -111,7 +111,7 @@ class BiblioController extends Controller {
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \app\models\BiblioField();
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {
@@ -196,7 +196,7 @@ class BiblioController extends Controller {
             $materialType->default_flg = 'N';
             $materialType->save();
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {

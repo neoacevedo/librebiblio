@@ -45,7 +45,7 @@ class BiblioController extends Controller
      */
     public function actionView($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -110,7 +110,7 @@ class BiblioController extends Controller
      */
     protected function findModel($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {

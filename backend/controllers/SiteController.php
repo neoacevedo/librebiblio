@@ -13,6 +13,8 @@ use backend\models\ResetPasswordForm;
  * Site controller
  */
 class SiteController extends Controller {
+    
+    public $bodyClass = "hold-transition skin-blue sidebar-mini";
 
     /**
      * @inheritdoc
@@ -78,7 +80,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index');
     }
 
@@ -88,7 +90,8 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionLogin() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        $this->bodyClass = "hold-transition login-page";
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -123,7 +126,7 @@ class SiteController extends Controller {
      */
     public function actionResetPassword($token)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {

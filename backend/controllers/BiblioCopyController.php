@@ -73,7 +73,7 @@ class BiblioCopyController extends Controller {
     public function actionIndex() {
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -87,7 +87,7 @@ class BiblioCopyController extends Controller {
      * @return mixed
      */
     public function actionView($id, $bibid) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id, $bibid),
         ]);
@@ -100,7 +100,7 @@ class BiblioCopyController extends Controller {
      */
     public function actionCreate() {
         $model = new BiblioCopy();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {
@@ -119,7 +119,7 @@ class BiblioCopyController extends Controller {
      */
     public function actionUpdate($id, $bibid) {
         $model = $this->findModel($id, $bibid);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {

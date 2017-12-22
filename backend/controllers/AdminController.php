@@ -29,10 +29,10 @@ class AdminController extends Controller
                         'allow' => true,
                     ],
                     [
-                        //'actions' => ['users'],
+                        'actions' => ['users', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        'controllers' => [AdminController::className()],
+                        //'controllers' => [AdminController::className(), admin\SettingsController::className()],
                         /*'matchCallback' => function () {
                             $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                             //Yii::info($roles);
@@ -67,7 +67,7 @@ class AdminController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -81,7 +81,7 @@ class AdminController extends Controller
      */
     public function actionUsersView($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/view', [
             'model' => $this->findModel($id),
         ]);
@@ -95,7 +95,7 @@ class AdminController extends Controller
     public function actionUsersCreate()
     {
         $model = new User();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
@@ -114,7 +114,7 @@ class AdminController extends Controller
     public function actionUsersUpdate($id)
     {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
@@ -141,13 +141,13 @@ class AdminController extends Controller
     }
     
     public function actionSettings() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('settings/index');
     }
     
     public function actionLibrarySettings() {
         $model = $this->findSettingsModel();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
@@ -168,7 +168,7 @@ class AdminController extends Controller
      */
     protected function findModel($id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {

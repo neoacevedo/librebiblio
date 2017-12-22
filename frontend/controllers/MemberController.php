@@ -79,7 +79,7 @@ class MemberController extends Controller {
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
         ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
                     'model' => $model,
                     'dataProvider' => $dataProvider,
@@ -89,7 +89,7 @@ class MemberController extends Controller {
     public function actionAccount() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account', [
                     'model' => $model,
         ]);
@@ -98,7 +98,7 @@ class MemberController extends Controller {
     public function actionUpdate() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['account']);
         } else {
@@ -122,7 +122,7 @@ class MemberController extends Controller {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }

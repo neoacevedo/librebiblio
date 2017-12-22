@@ -7,8 +7,8 @@ use yii\web\AssetBundle;
 /**
  * Main frontend application asset bundle.
  */
-class AppAsset extends AssetBundle
-{
+class AppAsset extends AssetBundle {
+
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
@@ -20,4 +20,16 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function init() {
+        parent::init();
+        $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
+        $css_files = \yii\helpers\FileHelper::findFiles("{$this->basePath}/themes/{$theme->name}/css/");
+        $css_files = str_replace("{$this->basePath}/themes/{$theme->name}/css/", "{$this->baseUrl}/themes/{$theme->name}/css/", $css_files);
+        $this->css = array_merge($this->css, $css_files);
+    }
+
 }

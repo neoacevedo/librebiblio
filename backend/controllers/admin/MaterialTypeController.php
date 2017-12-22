@@ -64,7 +64,7 @@ class MaterialTypeController extends Controller {
     public function actionIndex() {
         $searchModel = new MaterialTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -77,7 +77,7 @@ class MaterialTypeController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id),
         ]);
@@ -90,7 +90,7 @@ class MaterialTypeController extends Controller {
      */
     public function actionCreate() {
         $model = new MaterialType();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {
@@ -117,7 +117,7 @@ class MaterialTypeController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {
@@ -157,7 +157,7 @@ class MaterialTypeController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = MaterialType::findOne($id)) !== null) {
             return $model;
         } else {

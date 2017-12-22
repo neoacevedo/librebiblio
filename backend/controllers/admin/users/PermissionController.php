@@ -69,7 +69,7 @@ class PermissionController extends Controller {
     public function actionIndex() {
         $searchModel = new PermissionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -83,7 +83,7 @@ class PermissionController extends Controller {
      */
     public function actionView($name) {
         $request = Yii::$app->request;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
@@ -110,7 +110,7 @@ class PermissionController extends Controller {
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new Permission(null);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($request->isAjax) {
             /*
              *   Process for ajax request
@@ -167,7 +167,7 @@ class PermissionController extends Controller {
     public function actionUpdate($name) {
         $request = Yii::$app->request;
         $model = $this->findModel($name);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($request->isAjax) {
             /*
              *   Process for ajax request
@@ -226,7 +226,7 @@ class PermissionController extends Controller {
     public function actionDelete($name) {
         $request = Yii::$app->request;
         $this->findModel($name)->delete();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($request->isAjax) {
             /*
              *   Process for ajax request

@@ -86,7 +86,7 @@ class CirculationController extends Controller {
     public function actionIndex() {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -100,7 +100,7 @@ class CirculationController extends Controller {
     public function actionSearch() {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('search', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -115,7 +115,7 @@ class CirculationController extends Controller {
         $searchModel = new \common\models\BiblioCopySearch();
         $searchModel->status_cd = 'crt';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('cart', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -130,7 +130,7 @@ class CirculationController extends Controller {
     public function actionCopySearch() {
         $searchModel = new \common\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->renderAjax('copysearch', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -145,7 +145,7 @@ class CirculationController extends Controller {
         $searchModel = new \common\models\BiblioCopySearch();
         $searchModel->status_cd = 'out';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('checkin', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -170,7 +170,7 @@ class CirculationController extends Controller {
     public function actionCreate($bibid, $copyid, $status, $id) {
 
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($id !== null) {
             $member = $this->findModel($id);
             if ($member->status == $member::STATUS_BLOCKED) {
@@ -262,7 +262,7 @@ class CirculationController extends Controller {
      */
     public function actionMemberUpdate($id) {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
@@ -286,7 +286,7 @@ class CirculationController extends Controller {
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
         ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('member-history', [
                     'model' => $model,
                     'dataProvider' => $dataProvider,
@@ -312,7 +312,7 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionMemberView($id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 // estadísticas del usuario con los tipos de material registrados en la biblioteca
         $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
                     "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
@@ -360,7 +360,7 @@ class CirculationController extends Controller {
      */
     public function actionMemberCreate() {
         $model = new \backend\models\SignupForm();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 $email = \Yii::$app->mailer->compose()
@@ -394,7 +394,7 @@ class CirculationController extends Controller {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
@@ -410,7 +410,7 @@ class CirculationController extends Controller {
         if (($model = \common\models\Biblio::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
@@ -426,7 +426,7 @@ class CirculationController extends Controller {
         if (($model = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid])) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(['es-CO', 'es-ES', 'en-GB']);
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
