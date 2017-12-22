@@ -43,7 +43,8 @@ class Settings extends \yii\db\ActiveRecord {
             [['library_image_url'], 'string', 'max' => 255],
             [['use_image_flg', 'block_checkouts_when_fines_due', 'offline'], 'string', 'max' => 1],
             [['library_phone'], 'string', 'max' => 49],
-            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['imageFile'], 'safe'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
         ];
     }
 
@@ -63,7 +64,7 @@ class Settings extends \yii\db\ActiveRecord {
         return [
             'library_name' => Yii::t('app', 'Library Name'),
             'library_image_url' => Yii::t('app', 'Library Image Url'),
-            'use_image_flg' => Yii::t('app', 'Only Show Image in Header:'),
+            'use_image_flg' => Yii::t('app', 'Only Show Image in Header'),
             'library_hours' => Yii::t('app', 'Library Hours'),
             'lirbrary_phone' => Yii::t('app', 'Lirbrary Phone'),
             'purge_history_after_months' => Yii::t('app', 'Purge History After Months'),
@@ -77,10 +78,11 @@ class Settings extends \yii\db\ActiveRecord {
      * Sube un archivo
      * @return boolean
      */
-     public function upload()
+    public function upload()
     {
         if ($this->validate()) {
-            $this->imageFile->saveAs('@frontend/web/images/logo' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $frontend = Yii::getAlias("@frontend");
+            $this->imageFile->saveAs("$frontend/web/images/logo/" . $this->imageFile->baseName . '.' . $this->imageFile->extension, false);
             return true;
         } else {
             return false;

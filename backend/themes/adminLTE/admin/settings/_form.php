@@ -12,15 +12,15 @@ use yii\widgets\ActiveForm;
 $js = "\$('#file_list').change(function(e) {
         if($(this).val() == 1) {
             $('#file').show();
-            $('#library_image_url').val('');
+            //$('#library_image_url').val('');
         } else {
             $('#file').hide();
-            $('#library_image_url').val($(this).val());
+            //$('#library_image_url').val($(this).val());
         }
     });
-    \$('#file').change(function() {
+    /*\$('#file').change(function() {
         $('#library_image_url').val($(this).val());
-    });";
+    });*/";
 $this->registerJs($js);
 ?>
 
@@ -32,12 +32,14 @@ $this->registerJs($js);
 
     <?= Html::label(Yii::t('app', 'Library Image Url')) ?>
     <?=
-    Html::dropDownList('file_list', $model->library_image_url, $files, ['id' => 'file_list'])
+    Html::dropDownList('file_list', $model->library_image_url, $files, ['id' => 'file_list', 'class' => 'form-control'])
     ?>
 
     <?= Html::fileInput('imageFile', '', ['id' => 'file', 'style' => ['display' => 'none']]) ?>
-
-    <?= $form->field($model, "use_image_flg")->checkbox(['value' => 'Y']) ?>
+    
+    <div class="checkbox">
+        <?= $form->field($model, "use_image_flg")->checkbox(['value' => 'Y']) ?>
+    </div>
 
     <?= $form->field($model, "library_hours")->textInput(['maxlength' => true]) ?>
 
@@ -49,17 +51,14 @@ $this->registerJs($js);
 
     <?= $form->field($model, "hold_max_days")->textInput(['type' => number]) ?>
 
-        <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
+    <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
 
-    <div class="hidden">
-<?= $form->field($model, "library_image_url")->label('')->hiddenInput(['id' => 'library_image_url']) ?>
-    </div>
 
     <div class="form-group">
-<?= Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-primary']) ?>
-    <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

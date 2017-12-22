@@ -13,11 +13,13 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= Html::fileInput('themeFile', '', ['id' => 'file']) ?>
-    <?= $form->field($model, 'frontend')->dropDownList([1 => Yii::t("app", "Frontend"), 0 => Yii::t('app', 'Backend')]) ?>
-
-    <?= $form->field($model, 'active')->dropDownList([1 => Yii::t("app", "Yes"), 0 => Yii::t('app', 'No')]) ?>
+    <div class="row">&nbsp;</div>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Upload'), ['class' => 'btn btn-primary']) ?>
+    </div>
+    <div class="hidden">
+        <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
+        <?= $form->field($model, "active")->label("")->hiddenInput() ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -30,14 +30,14 @@ class SettingsController extends Controller {
                         //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        /*'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
-                            if (array_key_exists("admin", $roles)) {
-                                return true;
-                            }
-                            return false;
-                        },*/
+                    /* 'matchCallback' => function () {
+                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                      //Yii::info($roles);
+                      if (array_key_exists("admin", $roles)) {
+                      return true;
+                      }
+                      return false;
+                      }, */
                     ],
                     [
                         'actions' => ['logout'],
@@ -74,7 +74,7 @@ class SettingsController extends Controller {
     public function actionLibrarySettings() {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg']]);
+        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
         foreach ($files as $file) {
             $file_name = substr($file, strrpos($file, "/") + 1);
@@ -85,9 +85,13 @@ class SettingsController extends Controller {
         // último elemento en el array
         array_push($files_list, Yii::t('app', 'Upload File:'));
         if ($model->load(Yii::$app->request->post())) {
-            if (Yii::$app->request->post('imageFile') !== null) {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                if ($model->upload() && $model->save()) {
+            $model->imageFile = UploadedFile::getInstanceByName('imageFile');
+            if ($model->imageFile) {
+                if ($model->upload()) {
+                    $model->library_image_url = $model->imageFile->name;
+                }
+                
+                if($model->save()) {
                     return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
                 }
             } else {

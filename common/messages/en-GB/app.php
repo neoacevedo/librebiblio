@@ -105,7 +105,7 @@ return [
     'No' => '',
     'Number of copies' => '',
     'Offline' => '',
-    'Only Show Image in Header:' => '',
+    'Only Show Image in Header' => '',
     'Opac Flg' => '',
     'Options' => '',
     'Permissions' => '',

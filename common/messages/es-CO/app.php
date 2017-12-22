@@ -118,7 +118,7 @@ return [
     'New Member' => 'Nuevo Usuario',
     'New password saved.' => 'Nueva contraseña guardada.',
     'Number of copies' => 'Número de copias',
-    'Only Show Image in Header:' => 'Solo mostrar la imagen en el encabezado:',
+    'Only Show Image in Header' => 'Solo mostrar la imagen en el encabezado',
     'Opac Flg' => 'Mostrar en Opac',
     'Options' => 'Opciones',
     'Permissions' => 'Permisos',

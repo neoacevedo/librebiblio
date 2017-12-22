@@ -16,6 +16,11 @@ use Yii;
 class Theme extends \yii\db\ActiveRecord
 {
     /**
+     * @var UploadedFile
+     */
+    public $themeFile;
+    
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -33,6 +38,8 @@ class Theme extends \yii\db\ActiveRecord
             [['frontend', 'active'], 'integer'],
             [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 15],
+            [['themeFile'], 'safe'],
+            [['themeFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'zip'],
         ];
     }
 
@@ -48,5 +55,21 @@ class Theme extends \yii\db\ActiveRecord
             'active' => Yii::t('app/theme', 'Active'),
             'created_at' => Yii::t('app/theme', 'Created At'),
         ];
+    }
+    
+    /**
+     * Sube un archivo
+     * @return boolean
+     */
+    public function upload()
+    {
+        if ($this->validate(['themeFile'])) {
+            $path = Yii::$app->basePath;
+            $this->name = $this->themeFile->baseName;
+            $this->themeFile->saveAs("$path/tmp/" . $this->themeFile->name, false);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
