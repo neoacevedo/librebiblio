@@ -1,21 +1,27 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Theme */
-
-$this->title = Yii::t('app/themes', 'Create Theme');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/themes', 'Themes'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+/* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="theme-create">
+<div class="row">&nbsp;</div>
+<div class="theme-form">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?= Html::fileInput('themeFile', '', ['id' => 'file', 'required' => true]) ?>
+    <div class="row">&nbsp;</div>
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Upload'), ['class' => 'btn btn-primary']) ?>
+    </div>
+    <div class="hidden">
+        <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
+        <?= $form->field($model, "active")->label("")->hiddenInput() ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

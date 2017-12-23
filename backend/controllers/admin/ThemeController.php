@@ -140,13 +140,16 @@ class ThemeController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $current_theme->active = 0;
+            $current_theme->save();
+            return $this->redirect(['index']);
         } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+            return $this->redirect(['index']);
         }
     }
 
@@ -190,6 +193,12 @@ class ThemeController extends Controller {
         }
     }
 
+    /**
+     * Borra un directorio completo.
+     * @link http://php.net/manual/es/function.rmdir.php#110489 rmdir
+     * @param string $dir
+     * @return bool
+     */
     private function delTree($dir) {
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {

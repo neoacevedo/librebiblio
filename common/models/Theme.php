@@ -39,7 +39,7 @@ class Theme extends \yii\db\ActiveRecord
             [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 15],
             [['themeFile'], 'safe'],
-            [['themeFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'zip'],
+            [['themeFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'zip'],
         ];
     }
 
