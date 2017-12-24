@@ -46,7 +46,7 @@ $status = Yii::$app->request->get('status');
                 'template' => '{checkout}',
                 'buttons' => [
                     'checkout' => function ($url, $model) use($status) {
-                    $text = ($status == 'out') ? 'Check Out': 'Place Hold';
+                        $text = ($status == 'out') ? 'Check Out' : 'Place Hold';
                         return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, [
                                     'title' => Yii::t('app', $text),
                         ]);
@@ -59,6 +59,7 @@ $status = Yii::$app->request->get('status');
                     }
                 }],
         ],
+        'options' => ['class' => 'box table-responsive']
     ]);
     ?>
 

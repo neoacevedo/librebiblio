@@ -14,11 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-search">
     <div class="user-index">
         <h1><?= Html::encode($this->title) ?></h1>
-        <div class="col-lg-3 col-md-3 col-sm-3">
-            <?=
-            $this->render('_sidenav');
-            ?>
-        </div>
+        
         <div class="col-lg-9 col-md-9 col-sm-9">
             <?php Pjax::begin(); ?>   <?=
             GridView::widget([
@@ -85,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     ],
                 ],
-                'options' => ['class' => 'table-responsive']
+                'options' => ['class' => 'box table-responsive']
             ]);
             ?>
             <?php Pjax::end(); ?>

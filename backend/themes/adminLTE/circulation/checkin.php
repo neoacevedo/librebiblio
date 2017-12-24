@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use pceuropa\menu\Menu;
-use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioSearch */
@@ -12,17 +11,12 @@ use kartik\sidenav\SideNav;
 $this->title = Yii::t('app', 'Check in');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
 <div class="circulation-index">
     <div class="bibliosearch-index">
         <h1><?= Html::encode($this->title) ?></h1>
-        <div class="col-lg-3 col-md-3 col-sm-3">
-            <?=
-            $this->render('_sidenav');
-            ?>
-        </div>
-        <div class="col-lg-9 col-md-9 col-sm-9">
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <?php
             Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
                     'replace' => false]
@@ -70,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         }],
                 ],
+                'options' => ['class' => 'box table-responsive']
             ]);
             ?>
 
