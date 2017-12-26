@@ -32,6 +32,8 @@ return [
                 '@app/views' => "@app/themes/{$theme->name}",
             ],
         ]);
+        // configurar el tema en la sesión        
+        Yii::$app->session->set('frontend-skin', $theme->skin);
     },
     //'language' => 'es-CO',
     'components' => [

@@ -2,11 +2,11 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use backend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -14,9 +14,19 @@ AppAsset::register($this);
 $settings = \common\models\Settings::find()->one();
 $library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 $library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
+$library_phone = null !== $settings->library_hours ? $settings->library_phone : "N/A";
+$brandLabel = "";
+if ($settings->library_image_url !== null) {
+    $brandLabel .= Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
+}
+
+if ($settings->use_image_flg == 0) {
+    $brandLabel .= "&nbsp;$library_name";
+}
+
+$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "".Yii::$app->session['backend-skin'];
 ?>
 <?php $this->beginPage() ?>
-
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
     <head>
@@ -26,20 +36,14 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-        <style>
-            .navbar-inverse .btn-link:hover,
-            .navbar-inverse .btn-link:focus {
-                color: #333;
-            }
-        </style>
     </head>
-    <body>
+    <body class="<?= $bodyClass ?>">
         <?php $this->beginBody() ?>
 
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' => $library_name,
+                'brandLabel' => $brandLabel,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -47,43 +51,26 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
             ]);
             $menuItems = [
                 ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+                ['label' => 'About', 'url' => ['/site/about']],
+                ['label' => 'Contact', 'url' => ['/site/contact']],
             ];
             if (Yii::$app->user->isGuest) {
+                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
-                $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
-                $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
-                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
-                $isAdmin = false;
-                foreach ($roles as $role) {
-                    if ($role->name == "admin") {
-                        $isAdmin = true;
-                    }
-                }
-                if ($isAdmin) {
-                    $menuItems[] = [
-                        'label' => Yii::$app->user->identity->username,
-                        'items' => [
-                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/admin/settings"]],
-                            ['label' => Yii::t('app', 'Staff'), 'url' => ['/admin/users']],
-                            '<li>'
-                            . Html::beginForm(['/site/logout'], 'post')
-                            . Html::submitButton(
-                                    Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>'
-                    ]];
-                } else {
-                    $menuItems[] = '<li>'
-                            . Html::beginForm(['/site/logout'], 'post')
-                            . Html::submitButton(
-                                    Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>';
-                }
+                $menuItems[] = [
+                    'label' => Yii::$app->user->identity->username,
+                    'items' => [
+                        ['label' => Yii::t('app', 'My Account'), 'url' => ['/member/account']],
+                        ['label' => Yii::t('app', 'History'), 'url' => ['/member/history']],
+                        '<li>'
+                        . Html::beginForm(['/site/logout'], 'post')
+                        . Html::submitButton(
+                                Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>'
+                ]];
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -102,7 +89,7 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
                 <?= $content ?>
             </div>
         </div>
-        
+
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 col-md-12 col-sm-12">

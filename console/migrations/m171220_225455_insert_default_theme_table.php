@@ -13,17 +13,19 @@ class m171220_225455_insert_default_theme_table extends Migration {
     public function safeUp() {
         // backend
         $this->insert('{{%theme}}', [
-            'name' => 'default',
+            'name' => 'AdminLTE',
             'active' => 1,
             'frontend' => 0,
+            'skin' => 'blue',
             'created_at' => date('Y-m-d H:i:s')
         ]);
         
         // frontend
         $this->insert('{{%theme}}', [
-            'name' => 'default',
+            'name' => 'simple',
             'active' => 1,
             'frontend' => 1,
+            'skin' => '',
             'created_at' => date('Y-m-d H:i:s')
         ]);
     }

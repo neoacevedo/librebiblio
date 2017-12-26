@@ -17,6 +17,7 @@ class m171220_223745_create_theme_table extends Migration
             'name' => $this->string(15)->notNull(),
             'frontend' => $this->smallInteger(1)->unsigned()->notNull()->defaultValue(0),
             'active' => $this->smallInteger(1)->unsigned()->notNull()->defaultValue(0),
+            'skin' => $this->string(15),
             'created_at' => $this->dateTime()
         ]);
     }

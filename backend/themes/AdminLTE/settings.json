@@ -1,0 +1,18 @@
+{
+    "name": "AdminLTE",
+    "frontend": 0,
+    "skins": [
+        "blue",
+        "black",
+        "purple",
+        "green",
+        "red",
+        "yelow",
+        "blue-light",
+        "black-light",
+        "purple-light",
+        "green-light",
+        "red-light",
+        "yellow-light"
+    ]
+}

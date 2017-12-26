@@ -11,6 +11,7 @@ use Yii;
  * @property string $name
  * @property integer $frontend
  * @property integer $active
+ * @property string $skin 
  * @property string $created_at
  */
 class Theme extends \yii\db\ActiveRecord
@@ -37,7 +38,7 @@ class Theme extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['frontend', 'active'], 'integer'],
             [['created_at'], 'safe'],
-            [['name'], 'string', 'max' => 15],
+            [['name', 'skin'], 'string', 'max' => 15],
             [['themeFile'], 'safe'],
             [['themeFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'zip'],
         ];
@@ -53,6 +54,7 @@ class Theme extends \yii\db\ActiveRecord
             'name' => Yii::t('app/theme', 'Name'),
             'frontend' => Yii::t('app/theme', 'Frontend'),
             'active' => Yii::t('app/theme', 'Active'),
+            'skin' => Yii::t('app/theme', 'Skin'),
             'created_at' => Yii::t('app/theme', 'Created At'),
         ];
     }

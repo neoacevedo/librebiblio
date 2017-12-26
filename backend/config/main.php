@@ -20,6 +20,8 @@ return [
                 '@app/views' => "@app/themes/{$theme->name}",
             ],
         ]);
+        // configurar el tema en la sesión        
+        Yii::$app->session->set('backend-skin', $theme->skin);
     },
     'modules' => [
         'rbac' => [
