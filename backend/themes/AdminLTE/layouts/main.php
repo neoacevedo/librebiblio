@@ -13,7 +13,7 @@ AppAsset::register($this);
 $settings = \common\models\Settings::find()->one();
 $library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 $library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
-$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "hold-transition sidebar-mini skin-".Yii::$app->session['backend-skin'];
+$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "hold-transition sidebar-mini skin-" . Yii::$app->session['backend-skin'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -155,11 +155,10 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                 $menuItems[] = [
                     'template' => '<a href="{url}" ><i class="fa fa-book"></i><span>{label}</span></a>',
                     'label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
-                if ($isAdmin) {
-                    $menuItems[] = [
-                        'template' => '<a href="{url}" ><i class="fa fa-bar-chart"></i><span>{label}</span></a>',
-                        'label' => Yii::t('app/reports', 'Reports'), 'url' => [""]];
-                }
+                $menuItems[] = [
+                    'template' => '<a href="{url}" ><i class="fa fa-bar-chart"></i><span>{label}</span></a>',
+                    'label' => Yii::t('app/reports', 'Reports'), 'url' => ["admin/report/index"],
+                    'items' => []];
                 ?>
                 <!-- Left side column. contains the logo and sidebar -->
                 <aside class="main-sidebar">
@@ -265,7 +264,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                     </p>
                                 </div>
                                 <!-- /.form-group -->
-                                
+
                                 <div class="form-group">
                                     <?= Html::a(Yii::t('app/settings', 'Member Classify'), yii\helpers\Url::to(['admin/member-classify/index']), ['class' => 'control-sidebar-subheading']) ?>
 
@@ -274,7 +273,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                     </p>
                                 </div>
                                 <!-- /.form-group -->
-                                
+
                                 <div class="form-group">
                                     <?= Html::a(Yii::t('app/settings', 'Checkout Privileges'), yii\helpers\Url::to(['admin/checkout-privs/index']), ['class' => 'control-sidebar-subheading']) ?>
 
@@ -283,7 +282,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                     </p>
                                 </div>
                                 <!-- /.form-group -->
-                                
+
                                 <div class="form-group">
                                     <?= Html::a(Yii::t('app/settings', 'Themes'), yii\helpers\Url::to(['admin/theme/index']), ['class' => 'control-sidebar-subheading']) ?>
 

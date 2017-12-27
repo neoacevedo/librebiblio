@@ -30,7 +30,6 @@ $this->registerJs($js);
 <div class="theme-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-<?php // echo $this->render('_search', ['model' => $searchModel]);    ?>
 
     <div class="col-lg-3 col-md-3 col-sm-3">
         <?=

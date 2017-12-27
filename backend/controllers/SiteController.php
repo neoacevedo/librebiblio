@@ -14,7 +14,7 @@ use backend\models\ResetPasswordForm;
  */
 class SiteController extends Controller {
     
-    public $bodyClass = "hold-transition skin-blue sidebar-mini";
+    public $bodyClass;
 
     /**
      * @inheritdoc
