@@ -30,7 +30,7 @@ class m171228_205458_create_view_acquisitions extends Migration {
      * @inheritdoc
      */
     public function safeDown() {
-        $this->db->createCommand("drop view if exists acquisitions")->execute();
+        $this->db->createCommand("drop view if exists {{%acquisitions}}")->execute();
         return true;
     }
 

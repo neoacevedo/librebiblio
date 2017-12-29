@@ -5,12 +5,12 @@ namespace backend\reports;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\reports\Acquisitions;
+use backend\reports\Copy;
 
 /**
- * AcquisitionsSearch represents the model behind the search form about `backend\reports\Acquisitions`.
+ * CopySearch represents the model behind the search form about `backend\reports\Copy`.
  */
-class AcquisitionsSearch extends Acquisitions
+class CopySearch extends Copy
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class AcquisitionsSearch extends Acquisitions
     public function rules()
     {
         return [
-            [['id', 'Num of Copies'], 'integer'],
-            [['created_at', 'title', 'author', 'collection', 'Material'], 'safe'],
+            [['id'], 'integer'],
+            [['created_at', 'barcode_nmbr', 'callno', 'title', 'author', 'collection'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class AcquisitionsSearch extends Acquisitions
      */
     public function search($params)
     {
-        $query = Acquisitions::find();
+        $query = Copy::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +60,16 @@ class AcquisitionsSearch extends Acquisitions
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            //'Num of Copies' => $this->Num of Copies,
         ]);
         
         $query->andFilterWhere(['>=', 'created_at', $this->created_at,]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
+        $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
+            ->andFilterWhere(['like', 'callno', $this->callno])
+            ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'author', $this->author])
-            ->andFilterWhere(['like', 'collection', $this->collection])
-            ->andFilterWhere(['like', 'Material', $this->Material]);
-        
+            ->andFilterWhere(['like', 'collection', $this->collection]);
+
         return $dataProvider;
     }
 }

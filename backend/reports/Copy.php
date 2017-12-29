@@ -5,57 +5,57 @@ namespace backend\reports;
 use Yii;
 
 /**
- * This is the model class for table "{{%acquisitions}}".
+ * This is the model class for table "{{%copy_search}}".
  *
  * @property integer $id
- * @property string $Call Num
- * @property string $created_at
+ * @property string $created_at 
+ * @property string $barcode_nmbr
+ * @property string $callno
  * @property string $title
  * @property string $author
  * @property string $collection
- * @property string $Material
- * @property integer $Num of Copies
  */
-class Acquisitions extends \yii\db\ActiveRecord
+class Copy extends \yii\db\ActiveRecord
 {
-    
-    public $name = "Acquisition";
+    public $name = "Copy Search";
     public $category = "Cataloging";
-    
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%acquisitions}}';
+        return '{{%copy_search}}';
     }
 
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'Num of Copies'], 'integer'],
+            [['id'], 'integer'],
             [['created_at'], 'safe'],
             [['title', 'author'], 'string'],
-            [['collection', 'Material'], 'string', 'max' => 40],
+            [['barcode_nmbr'], 'string', 'max' => 20],
+            [['status_cd'], 'string', 'max' => 3],
+            [['callno'], 'string', 'max' => 62],
+            [['collection'], 'string', 'max' => 40],
         ];
     }
 
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id' => Yii::t('app/reports', 'ID'),
             'created_at' => Yii::t('app', 'Created At'),
+            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
+            'callno' => Yii::t('app/reports', 'Callno'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),
             'collection' => Yii::t('app', 'Collection'),
-            'Material' => Yii::t('app', 'Material'),
-            'Num of Copies' => Yii::t('app/reports', 'Num Of  Copies'),
         ];
     }
     

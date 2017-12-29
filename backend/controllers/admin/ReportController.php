@@ -81,24 +81,25 @@ class ReportController extends Controller {
     }
 
     public function actionSearch() {
-        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
-        $searchModel = new $classnameSearch;
-        $view = strtolower(Yii::$app->request->get("type"));
-
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render($view, [
-                    'model' => $searchModel,
-        ]);
-    }
-    
-    public function actionResults() {
-        $view = Yii::$app->request->get("type");
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
-        
+        $view = strtolower(Yii::$app->request->get("type"));
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return $this->render($view, [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionResults() {
+        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $searchModel = new $classnameSearch;
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('results', ['dataProvider' => $dataProvider]);
+        return $this->render('results', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider]);
     }
 
     /**

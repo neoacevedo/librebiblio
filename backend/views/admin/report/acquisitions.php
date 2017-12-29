@@ -13,14 +13,20 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), '
 $this->params['breadcrumbs'][] = $this->title;
 
 $materialType = backend\models\MaterialType::find()->all();
+$materials = \yii\helpers\ArrayHelper::map($materialType, 'description', 'description');
+$materials = array_merge([" " => ""], $materials);
+
+
 $collection = \backend\models\Collection::find()->all();
+$collections = \yii\helpers\ArrayHelper::map($collection, 'description', 'description');
+$collections = array_merge([' ' => ''], $collections);
 ?>
 
 <div class="acquisitions-search">
 
     <?php
     $form = ActiveForm::begin([
-                'action' => ['results', 'type' => $model->formName()],
+                'action' => ['results', 'type' => $searchModel->formName()],
                 'method' => 'get',
     ]);
     ?>
@@ -28,14 +34,14 @@ $collection = \backend\models\Collection::find()->all();
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($model, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?= $form->field($searchModel, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($model, 'author') ?>
+            <?= $form->field($searchModel, 'author') ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
@@ -43,7 +49,7 @@ $collection = \backend\models\Collection::find()->all();
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($model, 'collection')->dropDownList(\yii\helpers\ArrayHelper::map($collection, 'id', 'description')) ?>
+            <?= $form->field($searchModel, 'collection')->dropDownList($collections) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
@@ -51,7 +57,7 @@ $collection = \backend\models\Collection::find()->all();
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($model, 'Material')->dropDownList(\yii\helpers\ArrayHelper::map($materialType, 'id', 'description')) ?>
+            <?= $form->field($searchModel, 'Material')->dropDownList($materials) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
