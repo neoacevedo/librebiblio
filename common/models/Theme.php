@@ -50,12 +50,12 @@ class Theme extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app/theme', 'ID'),
-            'name' => Yii::t('app/theme', 'Name'),
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Name'),
             'frontend' => Yii::t('app/theme', 'Frontend'),
-            'active' => Yii::t('app/theme', 'Active'),
+            'active' => Yii::t('app', 'Active'),
             'skin' => Yii::t('app/theme', 'Skin'),
-            'created_at' => Yii::t('app/theme', 'Created At'),
+            'created_at' => Yii::t('app', 'Created At'),
         ];
     }
     

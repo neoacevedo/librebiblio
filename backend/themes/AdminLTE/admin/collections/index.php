@@ -21,19 +21,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <p>
             <?= Html::a(Yii::t('app', 'Create Collection'), ['create'], ['class' => 'btn btn-success']) ?>
         </p>
-        <?=
-        GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'id',
-                'description',
-                'days_due_back',
-                'daily_late_fee',
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]);
-        ?>
+        <div class="box">
+            <div class="box-body">
+                <?=
+                GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        'id',
+                        'description',
+                        'days_due_back',
+                        'daily_late_fee',
+                        ['class' => 'yii\grid\ActionColumn'],
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ]);
+                ?>
+            </div>
+        </div>
     </div>
 </div>

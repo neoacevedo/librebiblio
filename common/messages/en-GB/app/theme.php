@@ -18,8 +18,15 @@
  */
 return [
     'Active' => '',
+    'Could not copy theme files.' => '',
     'Created At' => '',
     'Frontend' => '',
     'ID' => '',
+    'Inactive' => '',
+    'Location' => '',
     'Name' => '',
+    'Skin' => '',
+    'Theme installed successfully.' => '',
+    'Theme uninstalled successfully.' => '',
+    'Theme updated successfully.' => '',
 ];

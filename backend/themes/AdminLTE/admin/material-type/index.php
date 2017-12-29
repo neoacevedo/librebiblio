@@ -14,24 +14,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="material-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
+
     <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
             <?= Html::a(Yii::t('app', 'Create Material Type'), ['create'], ['class' => 'btn btn-success']) ?>
         </p>
-        <?=
-        GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'id',
-                'description',
-                'image_file',
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]);
-        ?>
-
+        <div class="box">
+            <div class="box-body">
+                <?=
+                GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        'id',
+                        'description',
+                        'image_file',
+                        ['class' => 'yii\grid\ActionColumn'],
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ]);
+                ?>
+            </div>
+        </div>
     </div>
 </div>

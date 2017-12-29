@@ -14,62 +14,57 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="col-lg-3 col-md-3 col-sm-3">
-        <?=
-        SideNav::widget([
-            'type' => SideNav::TYPE_DEFAULT,
-            'heading' => Yii::t('app', 'Options'),
-            'headingOptions' => ['class' => 'head-style'],
-            'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
-                ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
-                ['label' => Yii::t('app', 'Permissions'), 'url' => ['admin/users/permission']],
-                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment']]],
-        ]);
-        ?>
-    </div>
+
+    <?= $this->render('_sidebar') ?>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['admin/users-update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?=
-            Html::a(Yii::t('app', 'Delete'), ['admin/users-delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ])
+            <?php
+            if (Yii::$app->user->id !== $model->id) {
+                echo Html::a(Yii::t('app', 'Delete'), ['admin/users-delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                        'method' => 'post',
+                    ],
+                ]);
+            }
             ?>
         </p>
-
-        <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'username',
-                'first_name',
-                'last_name',
-                'address',
-                'email:email',
-                'phone',
-                [
-                    'attribute' => 'status',
-                    'value' => $model::STATUS_ACTIVE ? 'Activo' : 'Bloqueado'
-                ],
-                [
-                    'attribute' => 'created_at',
-                    'value' => function($model) {
-                        return Yii::$app->formatter->asDate($model->created_at, 'php:Y-m-d H:i:s');
-                    }
-                ],
-                [
-                    'attribute' => 'updated_at',
-                    'value' => function($model) {
-                        return Yii::$app->formatter->asDate($model->updated_at, 'php:Y-m-d H:i:s');
-                    }
-                ],
-            ],
-        ])
-        ?>
+        <div class="box">
+            <div class="box-body">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'username',
+                        'first_name',
+                        'last_name',
+                        'address',
+                        'email:email',
+                        'phone',
+                        [
+                            'attribute' => 'status',
+                            'value' => $model::STATUS_ACTIVE ? 'Activo' : 'Bloqueado'
+                        ],
+                        [
+                            'attribute' => 'created_at',
+                            'value' => function($model) {
+                                return Yii::$app->formatter->asDate($model->created_at, 'php:Y-m-d H:i:s');
+                            }
+                        ],
+                        [
+                            'attribute' => 'updated_at',
+                            'value' => function($model) {
+                                return Yii::$app->formatter->asDate($model->updated_at, 'php:Y-m-d H:i:s');
+                            }
+                        ],
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ])
+                ?>
+            </div>
+        </div>
     </div>
 </div>

@@ -17,58 +17,62 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
 
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <?php
-            Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
-                    'replace' => false]
-            ]);
-            ?>
-            <?=
-            GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'id' => 'checkout',
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    'barcode_nmbr',
-                    [
-                        'attribute' => 'biblio',
-                        'value' => 'biblio.title',
-                        'label' => Yii::t('app', 'Title'),
-                    ],
-                    [
-                        'label' => Yii::t('app', 'Author'),
-                        'value' => 'biblio.author'
-                    ],
-                    [
-                        'attribute' => 'material_cd',
-                        'value' => function($model) {
-                            $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
-                            return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
-                        },
-                        'label' => 'Material'
-                    ],
-                    'due_back_dt',
-                    ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{checkin}',
-                        'buttons' => [
-                            'checkin' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
-                                            'title' => Yii::t('app', 'Check in'),
-                                ]);
-                            }
+            <div class="box">
+                <div class="box-body">
+                    <?php
+                    Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
+                            'replace' => false]
+                    ]);
+                    ?>
+                    <?=
+                    GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'filterModel' => $searchModel,
+                        'id' => 'checkout',
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            'barcode_nmbr',
+                            [
+                                'attribute' => 'biblio',
+                                'value' => 'biblio.title',
+                                'label' => Yii::t('app', 'Title'),
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Author'),
+                                'value' => 'biblio.author'
+                            ],
+                            [
+                                'attribute' => 'material_cd',
+                                'value' => function($model) {
+                                    $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
+                                    return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
+                                },
+                                'label' => 'Material'
+                            ],
+                            'due_back_dt',
+                            ['class' => 'yii\grid\ActionColumn',
+                                'template' => '{checkin}',
+                                'buttons' => [
+                                    'checkin' => function ($url, $model) {
+                                        return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
+                                                    'title' => Yii::t('app', 'Check in'),
+                                        ]);
+                                    }
+                                ],
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    if ($action === 'checkin') {
+                                        $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=crt&id=$model->mbr_id&data-pjax=0";
+                                        return $url;
+                                    }
+                                }],
                         ],
-                        'urlCreator' => function ($action, $model, $key, $index) {
-                            if ($action === 'checkin') {
-                                $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=crt&id=$model->mbr_id&data-pjax=0";
-                                return $url;
-                            }
-                        }],
-                ],
-                'options' => ['class' => 'box table-responsive']
-            ]);
-            ?>
+                        'options' => ['class' => 'table table-responsive']
+                    ]);
+                    ?>
 
-            <?php Pjax::end(); ?>
+                    <?php Pjax::end(); ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>

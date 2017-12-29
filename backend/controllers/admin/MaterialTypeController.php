@@ -97,12 +97,17 @@ class MaterialTypeController extends Controller {
                 // file is uploaded successfully
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
                 return $this->render('create', [
                             'model' => $model,
                 ]);
             }
         } else {
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('create', [
                         'model' => $model,
             ]);
@@ -124,13 +129,17 @@ class MaterialTypeController extends Controller {
                 // file is uploaded successfully
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
                 return $this->render('update', [
                             'model' => $model,
                 ]);
             }
         } else {
-            Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+            array_walk_recursive($model->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('update', [
                         'model' => $model,
             ]);

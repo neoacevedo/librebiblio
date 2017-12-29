@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-$this->title = Yii::t('app/report', 'Reports');
+$this->title = Yii::t('app/reports', 'Reports');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <?php
-        echo Yii::t('app/report', 'Choose from one of the following links to run a report.');
+        echo Yii::t('app/reports', 'Choose from one of the following links to run a report.');
 
         foreach ($objects as $object):
             ?>

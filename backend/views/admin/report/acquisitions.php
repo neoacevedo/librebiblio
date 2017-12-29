@@ -23,6 +23,7 @@ $collections = array_merge([' ' => ''], $collections);
 ?>
 
 <div class="acquisitions-search">
+    <h1><?= $this->title ?></h1>
 
     <?php
     $form = ActiveForm::begin([

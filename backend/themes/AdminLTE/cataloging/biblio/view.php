@@ -64,95 +64,105 @@ foreach ($model->biblioFields as $biblioField) {
         ])
         ?>
     </p>
-
-    <?=
-    DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'created_at',
-            'updated_at',
-            [
-                'attribute' => 'user',
-                'value' => $model->user->username,
-                'label' => \Yii::t('app', 'Updated by')
-            ],
-            [
-                'attribute' => 'materialType',
-                'value' => $model->materialType->description,
-                'label' => 'Material'
-            ],
-            [
-                'attribute' => 'collection',
-                'value' => $model->collection->description,
-                'label' => Yii::t('app', 'Collection')
-            ],
-            [
-                'attribute' => 'call_nmbr1',
-                'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
-                'label' => Yii::t('app', 'Call Nmbr1')
-            ],
-            'title:ntext',
-            'title_remainder:ntext',
-            [
-                'attribute' => 'image_file',
-                'value' => function($model) {
-                    return Html::img(Yii::$app->urlManagerFrontend->baseUrl . "/images/covers/{$model->image_file}", ['alt' => $model->title,
-                                'title' => $model->title,
-                                'class' => 'image-thumbnail center-block',
-                                'style' => 'width: 140px']);
-                },
-                'format' => 'raw'
-            ],
-            'responsibility_stmt:ntext',
-            'author:ntext',
-            [
-                'attribute' => 'opac_flg',
-                'value' => function($model) {
-                    return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
-                },
-            ]
-        ],
-    ])
-    ?>
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <h4><?= Yii::t('app', 'Bibliography Copy Information') ?></h4>
+    <div class="box">
+        <div class="box-body">
+            <?=
+            DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    [
+                        'attribute' => 'user',
+                        'value' => $model->user->username,
+                        'label' => \Yii::t('app', 'Updated by')
+                    ],
+                    [
+                        'attribute' => 'materialType',
+                        'value' => $model->materialType->description,
+                        'label' => 'Material'
+                    ],
+                    [
+                        'attribute' => 'collection',
+                        'value' => $model->collection->description,
+                        'label' => Yii::t('app', 'Collection')
+                    ],
+                    [
+                        'attribute' => 'call_nmbr1',
+                        'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
+                        'label' => Yii::t('app', 'Call Nmbr1')
+                    ],
+                    'title:ntext',
+                    'title_remainder:ntext',
+                    [
+                        'attribute' => 'image_file',
+                        'value' => function($model) {
+                            return Html::img(Yii::$app->urlManagerFrontend->baseUrl . "/images/covers/{$model->image_file}", ['alt' => $model->title,
+                                        'title' => $model->title,
+                                        'class' => 'image-thumbnail center-block',
+                                        'style' => 'width: 140px']);
+                        },
+                        'format' => 'raw'
+                    ],
+                    'responsibility_stmt:ntext',
+                    'author:ntext',
+                    [
+                        'attribute' => 'opac_flg',
+                        'value' => function($model) {
+                            return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
+                        },
+                    ]
+                ],
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ])
+            ?>
         </div>
     </div>
-    <?php
-    $biblioCopySearch = new \common\models\BiblioCopySearch();
-    $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
+    <div class="box">
+        <div class="box-header">
+            <h3><?= Yii::t('app', 'Bibliography Copy Information') ?></h3>
+        </div>
+        <div class="box-body">
+            <?php
+            $biblioCopySearch = new \common\models\BiblioCopySearch();
+            $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
 
-    echo GridView::widget([
-        "dataProvider" => $biblioCopy,
-        'summary' => '',
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'barcode_nmbr',
-            'copy_desc',
-            [
-                'attribute' => 'status_cd',
-                'value' => function($model) {
-                    return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
-                },
-                'label' => Yii::t('app', 'Status')
-            ],
-            'status_begin_dt',
-            'due_back_dt',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]);
-    ?>
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <h4><?= Yii::t('app', 'Additional Bibliographic Information') ?></h4>
+            echo GridView::widget([
+                "dataProvider" => $biblioCopy,
+                'summary' => '',
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'barcode_nmbr',
+                    'copy_desc',
+                    [
+                        'attribute' => 'status_cd',
+                        'value' => function($model) {
+                            return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                        },
+                        'label' => Yii::t('app', 'Status')
+                    ],
+                    'status_begin_dt',
+                    'due_back_dt',
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ]);
+            ?>
         </div>
     </div>
-    <?=
-    DetailView::widget([
-        "model" => $model,
-        "attributes" => $usmarc
-    ]);
-    ?>
+    <div class="box">
+        <div class="box-header">
+            <h3><?= Yii::t('app', 'Additional Bibliographic Information') ?></h3>
+        </div>
+        <div class="box-body">
+            <?=
+            DetailView::widget([
+                "model" => $model,
+                "attributes" => $usmarc,
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ]);
+            ?>
+        </div>
+    </div>
 </div>

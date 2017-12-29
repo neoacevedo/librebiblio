@@ -120,7 +120,9 @@ class BiblioController extends Controller {
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                array_walk_recursive($model->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
@@ -172,7 +174,9 @@ class BiblioController extends Controller {
             }
             return true;
         } else {
-            Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+            array_walk_recursive($modelBiblioField->errors, function($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
         }
 
         return false;
@@ -204,7 +208,9 @@ class BiblioController extends Controller {
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                Yii::$app->session->setFlash("error", implode("<br />", $models->errors));
+                array_walk_recursive($model->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,

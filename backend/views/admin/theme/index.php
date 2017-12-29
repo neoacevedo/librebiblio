@@ -57,7 +57,7 @@ $this->registerJs($js);
                 'name',
                 [
                     'attribute' => 'frontend',
-                    'label' => Yii::t('app/theme', 'Location'),
+                    'label' => Yii::t('app/themes', 'Location'),
                     'filter' => [1 => 'Frontend', 0 => 'Backend'],
                     'value' => function($model) {
                         return ($model->frontend == 1) ? 'Frontend' : 'Backend';
@@ -66,7 +66,7 @@ $this->registerJs($js);
                 [
                     'attribute' => 'active',
                     'label' => Yii::t('app', 'Status'),
-                    'filter' => [1 => Yii::t('app/theme', 'Active'), 0 => Yii::t('app/theme', 'Inactive')],
+                    'filter' => [1 => Yii::t('app', 'Active'), 0 => Yii::t('app', 'Inactive')],
                     'format' => 'raw',
                     'value' => function($model) {
                         

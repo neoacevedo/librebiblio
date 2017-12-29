@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="collection-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
+
     <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,17 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ])
             ?>
         </p>
-
-        <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'description',
-                'days_due_back',
-                'daily_late_fee',
-            ],
-        ])
-        ?>
+        <div class="box">
+            <div class="box-body">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'description',
+                        'days_due_back',
+                        'daily_late_fee',
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ])
+                ?>
+            </div>
+        </div>
     </div>
 </div>

@@ -29,9 +29,6 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
     <div class="col-lg-3 col-md-3 col-sm-3">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <?=
-            $this->render('_sidenav');
-            ?>
-            <?=
             SideNav::widget([
                 'type' => SideNav::TYPE_PRIMARY,
                 'heading' => $model->username,
@@ -45,89 +42,94 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
             ?>
         </div>
     </div>
-    <div class="col-xl-9 col-md-9 col-sm-9">
-        <div class="col-xl-6 col-md-6 col-sm-6">
-            <div class="row">&nbsp;</div>
-            <div class="row">&nbsp;</div>
-            <?=
-            DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'username',
-                    'first_name',
-                    'last_name',
-                    [
-                        'attribute' => 'classification',
-                        'value' => Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}} where id = $model->classification_id")->queryOne()['description'],
-                        'title' => Yii::t('app', 'Classification')
-                    ],
-                    'address',
-                    'email:email',
-                    'phone',
-                    [
-                        'attribute' => 'status',
-                        'value' => function($model) {
-                            switch ($model->status) {
-                                case $model::STATUS_ACTIVE:
-                                    return Yii::t('app', 'Active');
-                                case $model::STATUS_BLOCKED:
-                                    return Yii::t('app', 'Blocked');
-                                case $model::STATUS_DELETED:
-                                    return Yii::t('app', 'Deleted');
+    <div class="col-lg-9 col-md-9 col-sm-9">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="box">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'username',
+                        'first_name',
+                        'last_name',
+                        [
+                            'attribute' => 'classification',
+                            'value' => Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}} where id = $model->classification_id")->queryOne()['description'],
+                            'title' => Yii::t('app', 'Classification')
+                        ],
+                        'address',
+                        'email:email',
+                        'phone',
+                        [
+                            'attribute' => 'status',
+                            'value' => function($model) {
+                                switch ($model->status) {
+                                    case $model::STATUS_ACTIVE:
+                                        return Yii::t('app', 'Active');
+                                    case $model::STATUS_BLOCKED:
+                                        return Yii::t('app', 'Blocked');
+                                    case $model::STATUS_DELETED:
+                                        return Yii::t('app', 'Deleted');
+                                }
                             }
-                        }
+                        ],
+                        [
+                            'attribute' => 'created_at',
+                            'value' => date('Y-m-d H:i:s', $model->created_at),
+                            'label' => Yii::t('app', 'Created At')
+                        ],
+                        [
+                            'attribute' => 'updated_at',
+                            'value' => date('Y-m-d H:i:s', $model->created_at),
+                            'label' => Yii::t('app', 'Updated At')
+                        ],
                     ],
-                    [
-                        'attribute' => 'created_at',
-                        'value' => date('Y-m-d H:i:s', $model->created_at),
-                        'label' => Yii::t('app', 'Created At')
-                    ],
-                    [
-                        'attribute' => 'updated_at',
-                        'value' => date('Y-m-d H:i:s', $model->created_at),
-                        'label' => Yii::t('app', 'Updated At')
-                    ],
-                ],
-                'options' => ['class' => 'table table-striped table-bordered detail-view table-responsive']
-            ])
-            ?>
+                    'options' => ['class' => 'table table-striped table-bordered detail-view table-responsive']
+                ])
+                ?>
+            </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6">
-            <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?></h4>
+            <div class="box">
+                <div class="box-header with-border">
+                    <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?></h4>
+                </div>
+                <div class="box-body">
+                    <table class="table table-striped table-bordered detail-view table-responsive">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?></th>
+                                <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?></th>
+                                <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?></th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <?= Yii::t('app', 'Checkout') ?>
+                                </th>
+                                <th>
+                                    <?= Yii::t('app', 'Renewal') ?>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($materialTypeStats as $material):
+                                ?>
+                                <tr>
+                                    <td><?= Html::encode($material['description']) ?></td>
+                                    <td><?= Html::encode($material['row_count']) ?></td>
+                                    <td><?= Html::encode($material['checkout_limit']) ?></td>
+                                    <td><?= Html::encode($material['renewal_limit']) ?></td>
+                                </tr>      
+                                <?php
+                            endforeach;
+                            ?>
 
-            <table class="table table-striped table-bordered detail-view table-responsive">
-                <thead>
-                    <tr>
-                        <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?></th>
-                        <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?></th>
-                        <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?></th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <?= Yii::t('app', 'Checkout') ?>
-                        </th>
-                        <th>
-                            <?= Yii::t('app', 'Renewal') ?>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($materialTypeStats as $material):
-                        ?>
-                        <tr>
-                            <td><?= Html::encode($material['description']) ?></td>
-                            <td><?= Html::encode($material['row_count']) ?></td>
-                            <td><?= Html::encode($material['checkout_limit']) ?></td>
-                            <td><?= Html::encode($material['renewal_limit']) ?></td>
-                        </tr>      
-                        <?php
-                    endforeach;
-                    ?>
-
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12">
             <?=

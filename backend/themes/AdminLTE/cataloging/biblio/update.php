@@ -15,13 +15,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 <div class="biblio-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?=
-    $this->render('_form', [
-        'model' => $model,
-        'modelBiblioFields' => $modelBiblioFields,
-        'usmarc' => $usmarc
-    ])
-    ?>
-
+    <div class="box">
+        <div class="box-body">
+            <?=
+            $this->render('_form', [
+                'model' => $model,
+                'modelBiblioFields' => $modelBiblioFields,
+                'usmarc' => $usmarc
+            ])
+            ?>
+        </div>
+    </div>
 </div>

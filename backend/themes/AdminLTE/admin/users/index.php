@@ -17,67 +17,74 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_sidebar') ?>
-    
-    <div class="col-lg-9 col-md-9 col-sm-9">
-        <?php Pjax::begin(); ?>    <?=
-        GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'id',
-                'username',
-                'first_name',
-                'last_name',
-                'address',
-                // 'auth_key',
-                // 'password_hash',
-                // 'password_reset_token',
-                // 'email:email',
-                // 'phone',
-                // 'status',
-                // 'created_at',
-                // 'updated_at',
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'headerOptions' => ['style' => 'color:#337ab7'],
-                    'template' => '{view}{update}{delete}',
-                    'buttons' => [
-                        'view' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;', $url, [
-                                        'title' => Yii::t('app', 'View'),
-                            ]);
-                        },
-                        'update' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp;', $url, [
-                                        'title' => Yii::t('app', 'Update'),
-                            ]);
-                        },
-                        'delete' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>&nbsp;', $url, [
-                                        'title' => Yii::t('app', 'Delete'),
-                            ]);
-                        }
-                    ],
-                    'urlCreator' => function ($action, $model, $key, $index) {
-                        if ($action === 'view') {
-                            $url = 'index.php?r=admin/users-view&id=' . $model->id;
-                            return $url;
-                        }
 
-                        if ($action === 'update') {
-                            $url = 'index.php?r=admin/users-update&id=' . $model->id;
-                            return $url;
-                        }
-                        if ($action === 'delete') {
-                            $url = 'index.php?r=admin/users-delete&id=' . $model->id;
-                            return $url;
-                        }
-                    }
-                ],
-            ],
-        ]);
-        ?>
-        <?php Pjax::end(); ?>
+    <div class="col-lg-9 col-md-9 col-sm-9">
+        <div class="box">
+            <div class="box-body">
+                <?php Pjax::begin(); ?>    <?=
+                GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        'id',
+                        'username',
+                        'first_name',
+                        'last_name',
+                        'address',
+                        // 'auth_key',
+                        // 'password_hash',
+                        // 'password_reset_token',
+                        // 'email:email',
+                        // 'phone',
+                        // 'status',
+                        // 'created_at',
+                        // 'updated_at',
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'headerOptions' => ['style' => 'color:#337ab7'],
+                            'template' => '{view}{update}{delete}',
+                            'buttons' => [
+                                'view' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;', $url, [
+                                                'title' => Yii::t('app', 'View'),
+                                    ]);
+                                },
+                                'update' => function ($url, $model) {
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp;', $url, [
+                                                'title' => Yii::t('app', 'Update'),
+                                    ]);
+                                },
+                                'delete' => function ($url, $model) {
+                                    if (Yii::$app->user->id !== $model->id) {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>&nbsp;', $url, [
+                                                    'title' => Yii::t('app', 'Delete'),
+                                        ]);
+                                    }
+                                }
+                            ],
+                            'urlCreator' => function ($action, $model, $key, $index) {
+                                if ($action === 'view') {
+                                    $url = 'index.php?r=admin/users-view&id=' . $model->id;
+                                    return $url;
+                                }
+
+                                if ($action === 'update') {
+                                    $url = 'index.php?r=admin/users-update&id=' . $model->id;
+                                    return $url;
+                                }
+                                if ($action === 'delete') {
+                                    $url = 'index.php?r=admin/users-delete&id=' . $model->id;
+                                    return $url;
+                                }
+                            }
+                        ],
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ]);
+                ?>
+                <?php Pjax::end(); ?>
+            </div>
+        </div>
     </div>
 </div>

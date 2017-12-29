@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['action' => \yii\helpers\Url::toRoute(["admin/theme/update", "id" => $model->id])]); ?>
 
-    <?= $form->field($model, 'active')->label('')->dropDownList([1 => Yii::t('app/theme', 'Active'), 0 => Yii::t('app/theme', 'Inactive')], 
+    <?= $form->field($model, 'active')->label('')->dropDownList([1 => Yii::t('app', 'Active'), 0 => Yii::t('app', 'Inactive')], 
             ['class' => 'form-control theme-active', 'data-formid' => "w$model->id"]) ?>
     
     <div class="hidden">

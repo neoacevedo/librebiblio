@@ -1,10 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-$this->title = Yii::t('app/report', 'Reports');
+$this->title = Yii::t('app/reports', 'Reports');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-index">
@@ -17,18 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <?php
-        echo Yii::t('app/report', 'Choose from one of the following links to run a report.');
+        echo Yii::t('app/reports', 'Choose from one of the following links to run a report.');
 
         foreach (array_keys($objects) as $category) :
             ?>
             <ul>
                 <li>
-                    <h5><?= $category ?></h5>
+                    <h5><?= Yii::t('app', $category) ?></h5>
                     <ul>
                         <?php
                         foreach ($objects[$category] as $report) :
                             ?>
-                        <li><?= Html::a(Yii::t('app', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
+                        <li><?= Html::a(Yii::t('app/reports', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
                             <?php
                         endforeach;
                         ?>

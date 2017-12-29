@@ -39,7 +39,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'History');
                     return common\models\Biblio::findOne($model->bibid)->author;
                 }
             ],
-            'status_cd'
+            [
+                'label' => Yii::t('app', 'Status Cd'),
+                'value' => function($model) {
+                    return common\models\BiblioStatusDm::findOne($model->status_cd)->description;
+                }
+            ],
         ]
     ])
     ?>

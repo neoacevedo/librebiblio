@@ -18,28 +18,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <!--<?= Html::a(Yii::t('app', 'Create Biblio Copy'), ['create'], ['class' => 'btn btn-success']) ?>-->
     </p>
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'bibid',
-            'created_at',
-            'updated_at',
-            'copy_desc',
-            // 'barcode_nmbr',
-            // 'status_cd',
-            // 'status_begint_dt',
-            // 'due_back_dt',
-            // 'mbr_id',
-            // 'renewal_count',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-        'options' => [
-            'class' => 'table table-striped table-bordered table-responsive'
-        ],
-    ]);
-    ?>
+    <div class="box">
+        <div class="box-body">
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'id',
+                    'bibid',
+                    'created_at',
+                    'updated_at',
+                    'copy_desc',
+                    // 'barcode_nmbr',
+                    // 'status_cd',
+                    // 'status_begint_dt',
+                    // 'due_back_dt',
+                    // 'mbr_id',
+                    // 'renewal_count',
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+                'options' => [
+                    'class' => 'table table-striped table-bordered table-responsive'
+                ],
+            ]);
+            ?>
+        </div>
+    </div>
 </div>

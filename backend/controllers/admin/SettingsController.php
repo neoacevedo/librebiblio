@@ -96,6 +96,7 @@ class SettingsController extends Controller {
                 }
             } else {
                 if ($model->save()) {
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app/settings', 'Settings changed successfuly.'));
                     return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
                 }
             }

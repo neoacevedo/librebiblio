@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="copy-search">
-
+    <h1><?= $this->title ?></h1>
     <?php
     $form = ActiveForm::begin([
                 'action' => ['results', 'type' => $model->formName()],
