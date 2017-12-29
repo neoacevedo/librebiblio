@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
     $form = ActiveForm::begin([
-                'action' => ['results', 'type' => $searchModel->formName()],
+                'action' => ['results', 'type' => $model->formName()],
                 'method' => 'get',
     ]);
     ?>
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-xs-5">&nbsp;</div>
         <div class="col-xs-2">
-            <?php echo $form->field($searchModel, 'barcode_nmbr')->textInput(['type' => 'number']) ?>
+            <?php echo $form->field($model, 'barcode_nmbr')->textInput(['type' => 'number']) ?>
         </div>
         <div class="col-xs-5">&nbsp;</div>
     </div>
@@ -33,28 +33,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-xs-5">&nbsp;</div>
         <div class="col-xs-2">
-            <?= $form->field($searchModel, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?= $form->field($model, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
         </div>
         <div class="col-xs-5">&nbsp;</div>
     </div>
 
-    <?php // echo $form->field($searchModel, 'status_cd')  ?>
+    <?php // echo $form->field($model, 'status_cd')  ?>
 
-    <?php // echo $form->field($searchModel, 'status_begin_dt')  ?>
+    <?php // echo $form->field($model, 'status_begin_dt')  ?>
 
-    <?php // echo $form->field($searchModel, 'due_back_dt')  ?>
+    <?php // echo $form->field($model, 'due_back_dt')  ?>
 
-    <?php // echo $form->field($searchModel, 'mbr_id')  ?>
+    <?php // echo $form->field($model, 'mbr_id')  ?>
 
-    <?php // echo $form->field($searchModel, 'renewal_count')  ?>
+    <?php // echo $form->field($model, 'renewal_count')  ?>
 
-    <?php // echo $form->field($searchModel, 'callno')  ?>
+    <?php // echo $form->field($model, 'callno')  ?>
 
-    <?php // echo $form->field($searchModel, 'title')  ?>
+    <?php // echo $form->field($model, 'title')  ?>
 
-    <?php // echo $form->field($searchModel, 'author')  ?>
+    <?php // echo $form->field($model, 'author')  ?>
 
-    <?php // echo $form->field($searchModel, 'collection')   ?>
+    <?php // echo $form->field($model, 'collection')   ?>
 
     <div class="form-group">
         <div class="col-xs-5">&nbsp;</div>

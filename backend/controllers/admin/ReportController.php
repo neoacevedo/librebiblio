@@ -75,6 +75,7 @@ class ReportController extends Controller {
             $object = new $classname;
             $objects[$object->category][] = $object;
         }
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'objects' => $objects,
         ]);
@@ -84,11 +85,9 @@ class ReportController extends Controller {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
         $view = strtolower(Yii::$app->request->get("type"));
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render($view, [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+                    'model' => $searchModel,
         ]);
     }
 

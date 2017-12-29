@@ -25,7 +25,11 @@ if (count($model) > 0) {
 <div class="collection-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <div class="row">
+        <div class="col-xs-4 pull-right">
+            <button class="btn btn-default"><i class="glyphicon glyphicon-"></i></button>
+        </div>
+    </div>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,

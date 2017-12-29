@@ -15,8 +15,8 @@ class m171229_175442_create_view_copy_search extends Migration {
                 . "SELECT c.id, c.barcode_nmbr, c.created_at, concat_ws(' ', b.call_nmbr1, b.call_nmbr2, b.call_nmbr3) callno, "
                 . "b.title, b.author, coll.description collection "
                 . "FROM biblio_copy c "
-                . "LEFT JOIN biblio b ON b.id = c.bibid "
-                . "LEFT JOIN collection_dm coll ON coll.id = b.collection_cd;";
+                . "LEFT JOIN {{%biblio}} b ON b.id = c.bibid "
+                . "LEFT JOIN {{%collection_dm}} coll ON coll.id = b.collection_cd;";
         
         $this->db->createCommand($sql)->execute();
     }

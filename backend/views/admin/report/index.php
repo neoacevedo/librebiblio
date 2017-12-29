@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php
                         foreach ($objects[$category] as $report) :
                             ?>
-                        <li><?= Html::a(Yii::t('app/reports', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
+                        <li><?= Html::a(Yii::t('app', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
                             <?php
                         endforeach;
                         ?>

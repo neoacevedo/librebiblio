@@ -26,7 +26,7 @@ $collections = array_merge([' ' => ''], $collections);
 
     <?php
     $form = ActiveForm::begin([
-                'action' => ['results', 'type' => $searchModel->formName()],
+                'action' => ['results', 'type' => $model->formName()],
                 'method' => 'get',
     ]);
     ?>
@@ -34,14 +34,14 @@ $collections = array_merge([' ' => ''], $collections);
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($searchModel, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?= $form->field($model, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($searchModel, 'author') ?>
+            <?= $form->field($model, 'author') ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
@@ -49,7 +49,7 @@ $collections = array_merge([' ' => ''], $collections);
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($searchModel, 'collection')->dropDownList($collections) ?>
+            <?= $form->field($model, 'collection')->dropDownList($collections) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>
@@ -57,7 +57,7 @@ $collections = array_merge([' ' => ''], $collections);
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($searchModel, 'Material')->dropDownList($materials) ?>
+            <?= $form->field($model, 'Material')->dropDownList($materials) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>

@@ -17,10 +17,10 @@ class m171228_205458_create_view_acquisitions extends Migration {
                     b.created_at, b.title, b.author,
                     coll.description as collection, mat.description as Material,
                     (select count(*) from biblio_copy where bibid = b.id) as `Num of Copies`
-                from biblio b
-                left join biblio_copy c on b.id = c.bibid
-                left join material_type_dm mat on mat.id = b.material_cd
-                left join collection_dm coll on coll.id = b.collection_cd
+                from {{%biblio}} b
+                left join {{%biblio_copy}} c on b.id = c.bibid
+                left join {{%material_type_dm}} mat on mat.id = b.material_cd
+                left join {{%collection_dm}} coll on coll.id = b.collection_cd
             ;";
         $this->db->createCommand($sql)->execute();
         
