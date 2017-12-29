@@ -19,21 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         echo Yii::t('app/report', 'Choose from one of the following links to run a report.');
 
-        foreach (array_keys($objects) as $category) :
+        foreach ($objects as $object):
             ?>
             <ul>
-                <li>
-                    <h5><?= $category ?></h5>
-                    <ul>
-                        <?php
-                        foreach ($objects[$category] as $report) :
-                            ?>
-                        <li><?= Html::a(Yii::t('app/reports', $report->title), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
-                            <?php
-                        endforeach;
-                        ?>
-                    </ul>
-                </li>
+                <li><h5><?= $object->category ?></h5></li>
+                <li><ul><li></li></ul></li>
             </ul>
             <?php
         endforeach;

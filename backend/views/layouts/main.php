@@ -55,6 +55,7 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
                 $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
                 $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
                 $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
+                $menuItems[] = ['label' => Yii::t('app/reports', 'Reports'), 'url' => ['admin/report/index'], 'template' => '<a href="{url}"><i class="fa fa-bar-chart"></i><span>{label}</span></a>'];
                 $isAdmin = false;
                 foreach ($roles as $role) {
                     if ($role->name == "admin") {

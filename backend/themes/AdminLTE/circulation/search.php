@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="user-index">
         <h1><?= Html::encode($this->title) ?></h1>
         
-        <div class="col-lg-9 col-md-9 col-sm-9">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <?php Pjax::begin(); ?>   <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,

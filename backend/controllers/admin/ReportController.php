@@ -11,10 +11,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * Directorio con los archivos de reporte (.rpt)
+ * ReportController implements the CRUD actions for Acquisitions model.
  */
-define("REPORT_DEFS_DIR", Yii::$app->basePath . "/reports/");
-
 class ReportController extends Controller {
 
     /**
@@ -34,11 +32,6 @@ class ReportController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                              if (array_key_exists("admin", $roles)) {
-                              return true;
-                              }
-                              return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id); */
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
@@ -68,17 +61,118 @@ class ReportController extends Controller {
         ];
     }
 
+    /**
+     * Lists all Acquisitions models.
+     * @return mixed
+     */
     public function actionIndex() {
-        $files = \yii\helpers\FileHelper::findFiles(REPORT_DEFS_DIR);
+        $directory = Yii::getAlias("@backend") . "/reports/";
         $objects = [];
-        $report_files = str_replace(Yii::getAlias("@backend")."/reports/", "", $files);
+        $files = \yii\helpers\FileHelper::findFiles($directory, ['only' => ['*.php'], 'except' => ['*Search.php']]);
+        $report_files = str_replace("$directory", "", $files);
         foreach ($report_files as $file) {
-            $classname = '\\backend\\reports\\'.substr($file, 0, -4); # remover la extensión
-            $report = new $classname;
-            $objects[$report->category][] = $report;
+            $classname = "backend\\reports\\" . substr($file, 0, -4);
+            $object = new $classname;
+            $objects[$object->category][] = $object;
         }
+        return $this->render('index', [
+                    'objects' => $objects,
+        ]);
+    }
+
+    public function actionSearch() {
+        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $searchModel = new $classnameSearch;
+        $view = strtolower(Yii::$app->request->get("type"));
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('index', ['objects' => $objects]);
+        return $this->render($view, [
+                    'model' => $searchModel,
+        ]);
     }
     
+    public function actionResults() {
+        $view = Yii::$app->request->get("type");
+        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
+        $searchModel = new $classnameSearch;
+        
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('results', ['dataProvider' => $dataProvider]);
+    }
+
+    /**
+     * Displays a single Acquisitions model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id) {
+        return $this->render('view', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Acquisitions model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate() {
+        $model = new Acquisitions();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                        'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing Acquisitions model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id) {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                        'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Acquisitions model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Acquisitions model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Acquisitions the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($model) {
+        $classname = "backend\\reports\\$model";
+        if (($model = $classname::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
 }

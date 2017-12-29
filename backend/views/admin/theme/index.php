@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ThemeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app/themes', 'Themes');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
 $this->params['breadcrumbs'][] = $this->title;
 $js = "
     \$.get('" . yii\helpers\Url::to(["admin/theme/create"]) . "', function(data) {
@@ -77,7 +77,7 @@ $this->registerJs($js);
                 ],
                 'created_at:datetime',
                 ['class' => 'yii\grid\ActionColumn',
-                    'template' => ' {delete}'
+                    'template' => '{update} {delete}'
                 ],
             ],
         ]);

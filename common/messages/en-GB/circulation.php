@@ -24,7 +24,7 @@ return [
     'Item {n, number} is on hold to another member.' => '',
     'Late fee (barcode={n, number})' => '',
     'Member has reached checkout limit for this collection.' => '',
-    'Note: Member has an outstanding account balance of {0, number, currency}.' => '',
+    'Note: Member has an outstanding account balance of {0, number, #,#.0#}' => '',
     'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => '',
     'This item is not checked out or on hold.' => '',
     'This member already has that item checked out -- not placing hold.' => '',

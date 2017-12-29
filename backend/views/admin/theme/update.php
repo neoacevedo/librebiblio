@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = Yii::t('app/themes', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'skins' => $skins
     ]) ?>
 
 </div>

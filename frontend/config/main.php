@@ -25,15 +25,17 @@ return [
     },
     'on beforeAction' => function() {
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
-        Yii::$app->getView()->theme = new \yii\base\Theme([
-            'basePath' => "@app/themes/{$theme->name}",
-            'baseUrl' => "@web/themes/{$theme->name}",
-            'pathMap' => [
-                '@app/views' => "@app/themes/{$theme->name}",
-            ],
-        ]);
-        // configurar el tema en la sesión        
-        Yii::$app->session->set('frontend-skin', $theme->skin);
+        if ($theme) {
+            Yii::$app->getView()->theme = new \yii\base\Theme([
+                'basePath' => "@app/themes/{$theme->name}",
+                'baseUrl' => "@web/themes/{$theme->name}",
+                'pathMap' => [
+                    '@app/views' => "@app/themes/{$theme->name}",
+                ],
+            ]);
+            // configurar el tema en la sesión        
+            Yii::$app->session->set('frontend-skin', $theme->skin);
+        }
     },
     //'language' => 'es-CO',
     'components' => [

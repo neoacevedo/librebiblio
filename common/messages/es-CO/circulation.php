@@ -25,7 +25,7 @@ return [
     'Item {n, number} is on hold to another member.' => 'El artículo {n, número} está reservado por otro miembro.',
     'Late fee (barcode={n, number})' => 'Cargo por demora (barcode={n, number})',
     'Member has reached checkout limit for this collection.' => 'El miembro ha alcanzado el límite de préstamos para esta colección.',
-    'Note: Member has an outstanding account balance of {0, number, currency}.' => 'Nota: El miembro tiene un saldo de cuenta pendiente de {0, number, currency}.',
+    'Note: Member has an outstanding account balance of ${0, number, #,#.0#}' => 'Nota: El miembro tiene un saldo de cuenta pendiente de ${0, number, #,#.0#}.',
     'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => 'La bibliografía con el número de código de barras {barcode} que está intentando registrar tiene una o más solicitudes de bloqueo. <b> Archive esta bibliografía con los elementos que tenga en su lugar en lugar de colocarlos en su carrito de estanterías. </ b> El código de estado de esta bibliografía se ha configurado para que se mantenga.',
     'This item is not checked out or on hold.' => 'Este ítem no se encuentra prestado o reservado.',
     'This member already has that item checked out -- not placing hold.' => 'Este miembro ya tiene en préstamo este ítem -- no se reserva.',
