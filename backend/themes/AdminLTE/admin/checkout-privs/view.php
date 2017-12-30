@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="checkout-privs-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
+
     <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
             <?= Html::a(Yii::t('checkout', 'Update'), ['update', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], ['class' => 'btn btn-primary']) ?>
@@ -29,27 +29,30 @@ $this->params['breadcrumbs'][] = $this->title;
             ])
             ?>
         </p>
-
-        <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                [
-                    'attribute' => 'materialType',
-                    'value' => 'materialType.description',
-                    'label' => 'Material'
-                ],
-                [
-                    'attribute' => 'classification',
-                    'value' => 'classification.description',
-                    'label' => Yii::t('app', 'Classification')
-                ],
-                'checkout_limit',
-                'renewal_limit',
-            ],
-        ])
-        ?>
-
+        <div class="box">
+            <div class="box-body">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        [
+                            'attribute' => 'materialType',
+                            'value' => 'materialType.description',
+                            'label' => 'Material'
+                        ],
+                        [
+                            'attribute' => 'classification',
+                            'value' => 'classification.description',
+                            'label' => Yii::t('app', 'Classification')
+                        ],
+                        'checkout_limit',
+                        'renewal_limit',
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ])
+                ?>
+            </div>
+        </div>
     </div>
 </div>
