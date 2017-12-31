@@ -12,7 +12,6 @@ use kartik\sidenav\SideNav;
 $this->title = Yii::t('app', 'Check in');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
 <div class="circulation-index">
     <div class="bibliosearch-index">
@@ -70,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         }],
                 ],
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
             ]);
             ?>
 

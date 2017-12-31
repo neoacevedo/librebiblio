@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_sidebar') ?>
-    
+
     <div class="col-lg-9 col-md-9 col-sm-9">
         <?php Pjax::begin(); ?>    <?=
         GridView::widget([
@@ -76,6 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
         <?php Pjax::end(); ?>

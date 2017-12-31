@@ -69,7 +69,7 @@ $this->registerJs($js);
                     'filter' => [1 => Yii::t('app', 'Active'), 0 => Yii::t('app', 'Inactive')],
                     'format' => 'raw',
                     'value' => function($model) {
-                        
+
                         return $this->render('_update', ['model' => $model]);
 
                         //return ($model->active == 1) ? Yii::t('app/theme', 'Active') : Yii::t('app/theme', 'Inactive');
@@ -80,7 +80,8 @@ $this->registerJs($js);
                     'template' => '{update} {delete}'
                 ],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
-<?php Pjax::end(); ?>
+        <?php Pjax::end(); ?>
     </div>

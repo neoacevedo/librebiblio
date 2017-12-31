@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'daily_late_fee',
                 ['class' => 'yii\grid\ActionColumn'],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
     </div>

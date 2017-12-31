@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5cdead1978e27e8a58a71f7b987b2b3",
+    "content-hash": "bbf21200ddc14d163a5298f4e343db64",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -832,7 +832,7 @@
         },
         {
             "name": "kartik-v/yii2-mpdf",
-            "version": "v1.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-mpdf.git",
@@ -4305,7 +4305,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pceuropa/yii2-menu": 20
+        "pceuropa/yii2-menu": 20,
+        "kartik-v/yii2-mpdf": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

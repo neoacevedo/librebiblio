@@ -6,7 +6,7 @@ $mailer = require(__DIR__ . '/mail.php');
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'timeZone' => 'America/Bogota', 
+    'timeZone' => 'America/Bogota',
     'components' => [
         'cache' => $cache,
         'db' => $db,
@@ -70,7 +70,6 @@ return [
         'mailer' => $mailer,
     ],
     'modules' => [
-        
         'gridview' => ['class' => 'kartik\grid\Module'],
         // accesos solo administrativos a módulos específicos
         'menu' => [

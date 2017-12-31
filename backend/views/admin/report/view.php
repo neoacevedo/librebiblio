@@ -1,41 +1,60 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\reports\Acquisitions */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/reports', 'Acquisitions'), 'url' => ['index']];
+$this->title = Yii::t('app/reports', 'Results');
+$this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
+
+// take just first model in the list
+$model = $dataProvider->models[0];
+if (count($model) > 0) {
+    $groupBy = Yii::$app->request->get("groupBy");
+    if (null !== $groupBy) {
+        if ($groupBy === "biblio") {
+            $columns = [];
+            foreach ($model->attributes as $key => $value) {
+                if ($key === "barcode_nmbr") {
+                    continue;
+                }
+                
+                $columns[$key] = $value;
+            }
+            $attributes = array_merge([
+                ['class' => 'yii\grid\SerialColumn']], array_keys($columns)
+            );
+        } else {
+            $attributes = array_merge([
+                ['class' => 'yii\grid\SerialColumn']], array_keys($model->attributes)
+            );
+        }
+    } else {
+        $attributes = array_merge([
+            ['class' => 'yii\grid\SerialColumn']], array_keys($model->attributes)
+        );
+    }
+} else {
+    $attributes = array_merge([
+        ['class' => 'yii\grid\SerialColumn']], array_keys($searchModel->attributes)
+    );
+}
+
+$route = Yii::$app->request->queryParams;
+array_shift($route);
+$pdfRoute = array_merge(["admin/report/pdf"], $route);
 ?>
-<div class="acquisitions-view">
+<div class="collection-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app/reports', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app/reports', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app/reports', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'created_at',
-            'title:ntext',
-            'author:ntext',
-            'collection',
-            'Material',
-            'Num of Copies',
-        ],
-    ]) ?>
-
+    <h1><?= Html::encode($this->title) ?><span><a href="<?= yii\helpers\Url::to($pdfRoute) ?>" target="_blank" class="btn btn-lg btn-default pull-right"><?= Yii::t('app/reports', 'Export to PDF') ?></a></span></h1>
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $attributes,
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ])
+            ?>
 </div>

@@ -66,6 +66,9 @@ class Overdue extends \yii\db\ActiveRecord
         ];
     }
     
+    /**
+     * @inheritdoc
+     */
     public static function primaryKey() {
         parent::primaryKey();
         return ['id'];

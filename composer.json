@@ -22,7 +22,8 @@
         "johnitvn/yii2-rbac-plus": "^1.0",
         "pceuropa/yii2-menu": "dev-master",
         "kartik-v/yii2-widget-sidenav": "*",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "kartik-v/yii2-mpdf": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

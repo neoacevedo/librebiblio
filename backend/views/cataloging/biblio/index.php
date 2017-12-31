@@ -79,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'opac_flg',
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'options' => ['class' => 'table table-striped table-bordered table-responsive']
     ]);
     ?>
     <?php Pjax::end(); ?></div>

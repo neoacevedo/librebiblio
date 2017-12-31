@@ -58,6 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'renewal_limit',
                 ['class' => 'yii\grid\ActionColumn'],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
     </div>

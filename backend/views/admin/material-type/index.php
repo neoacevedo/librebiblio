@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'image_file',
                 ['class' => 'yii\grid\ActionColumn'],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
 

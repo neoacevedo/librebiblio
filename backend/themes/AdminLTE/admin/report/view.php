@@ -21,20 +21,27 @@ if (count($model) > 0) {
         ['class' => 'yii\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
 }
+
+$route = Yii::$app->request->queryParams;
+array_shift($route);
+$pdfRoute = array_merge(["admin/report/pdf"], $route);
 ?>
 <div class="collection-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="row">
-        <div class="col-xs-4 pull-right">
-            <button class="btn btn-default"><i class="glyphicon glyphicon-"></i></button>
+    
+    <div class="box">
+        <div class="box-header">
+            <h3><?= $model->name; ?><span><a href="<?= yii\helpers\Url::to($pdfRoute) ?>" target="_blank" class="btn btn-lg btn-default pull-right"><i class="fa fa-file-pdf-o"></i></a></span></h3>
+        </div>
+        <div class="box-body">
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $attributes,
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ]);
+            ?>
         </div>
     </div>
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $attributes,
-        'options' => ['class' => 'table-responsive']
-    ]);
-    ?>
 </div>

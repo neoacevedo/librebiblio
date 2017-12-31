@@ -5,21 +5,22 @@ namespace backend\reports;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\reports\Copy;
+use backend\reports\PopularBiblios;
 
 /**
- * CopySearch represents the model behind the search form about `backend\reports\Copy`.
+ * PopularBibliosSearch represents the model behind the search form about `backend\reports\PopularBiblios`.
  */
-class CopySearch extends Copy
+class PopularBibliosSearch extends PopularBiblios
 {
+    public $groupBy;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['created_at', 'barcode_nmbr', 'callno', 'title', 'author', 'collection'], 'safe'],
+            [['id', 'checkoutCount'], 'integer'],
+            [['barcode_nmbr', 'title', 'author'], 'safe'],
         ];
     }
 
@@ -41,7 +42,7 @@ class CopySearch extends Copy
      */
     public function search($params)
     {
-        $query = Copy::find();
+        $query = PopularBiblios::find();
 
         // add conditions that should always apply here
 
@@ -60,15 +61,21 @@ class CopySearch extends Copy
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'checkoutCount' => $this->checkoutCount,
         ]);
         
-        $query->andFilterWhere(['>=', 'created_at', $this->created_at,]);
+        if($this->groupBy === "copy") {
+            $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr]);
+        }
 
-        $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
-            ->andFilterWhere(['like', 'callno', $this->callno])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'author', $this->author])
-            ->andFilterWhere(['like', 'collection', $this->collection]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'author', $this->author]);
+        
+        if($this->groupBy === "biblio") {
+            $query->groupBy(["id", "title", "author"]);
+        } else {
+            $query->groupBy(["id", "barcode_nmbr", "title", "author"]);
+        }
 
         return $dataProvider;
     }

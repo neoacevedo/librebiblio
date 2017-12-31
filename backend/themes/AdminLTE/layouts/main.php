@@ -123,13 +123,12 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                                             </div>-->
                                             <div class="pull-right">
-                                                <!--<a href="#" class="btn btn-default btn-flat">Sign out</a>-->
                                                 <?php
-                                                Html::beginForm(['/site/logout'], 'post');
-                                                echo Html::submitButton(
+                                                echo Html::beginForm(['/site/logout'], 'post')
+                                                . Html::submitButton(
                                                         Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
-                                                );
-                                                Html::endForm();
+                                                )
+                                                . Html::endForm();
                                                 ?>
                                             </div>
                                         </li>
@@ -211,6 +210,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                 <!-- /.content-wrapper -->
                 <footer>
                     <div class="pull-right hidden-xs">
+                        <div class="row">&nbsp;</div>
                         <div class="main-footer">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">

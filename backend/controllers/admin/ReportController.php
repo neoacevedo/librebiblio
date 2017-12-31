@@ -3,8 +3,6 @@
 namespace backend\controllers\admin;
 
 use Yii;
-use backend\models\Collection;
-use backend\models\CollectionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -91,25 +89,46 @@ class ReportController extends Controller {
         ]);
     }
 
-    public function actionResults() {
-        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
-        $searchModel = new $classnameSearch;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('results', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider]);
-    }
-
     /**
      * Displays a single Acquisitions model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView() {
+        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $searchModel = new $classnameSearch;
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider]);
+    }
+
+    /**
+     * Renderiza en formato PDF los resultados del reporte.
+     * @return mixed
+     */
+    public function actionPdf() {
+        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $searchModel = new $classnameSearch;
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->setSort(false);
+        $dataProvider->setPagination(false);
+        // obtener el html
+        $content = $this->renderPartial('pdf', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider]);
+
+        $pdf = Yii::$app->pdf;
+        $pdf->content = $content;
+        $pdf->options = ['title' => Yii::$app->name];
+        $pdf->methods = [
+            'SetHeader' => [Yii::$app->name],
+            'SetFooter' => ['{PAGENO}'],
+        ];
+        // return the pdf output as per the destination setting
+        return $pdf->render();
     }
 
     /**

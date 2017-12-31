@@ -48,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'max_fines',
                 ['class' => 'yii\grid\ActionColumn'],
             ],
+            'options' => ['class' => 'table table-striped table-bordered table-responsive']
         ]);
         ?>
     </div>

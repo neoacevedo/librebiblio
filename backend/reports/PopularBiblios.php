@@ -5,26 +5,24 @@ namespace backend\reports;
 use Yii;
 
 /**
- * This is the model class for table "{{%copy_search}}".
+ * This is the model class for table "{{%popular_biblios}}".
  *
  * @property integer $id
- * @property string $created_at 
  * @property string $barcode_nmbr
- * @property string $callno
  * @property string $title
  * @property string $author
- * @property string $collection
+ * @property integer $checkoutCount
  */
-class Copy extends \yii\db\ActiveRecord
+class PopularBiblios extends \yii\db\ActiveRecord
 {
-    public $name = "Copy Search";
-    public $category = "Cataloging";
+    public $name = "Most Popular Bibliographies";
+    public $category = "Statistics";
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%copy_search}}';
+        return '{{%popular_biblios}}';
     }
 
     /**
@@ -33,13 +31,9 @@ class Copy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['created_at'], 'safe'],
+            [['id', 'checkoutCount'], 'integer'],
             [['title', 'author'], 'string'],
             [['barcode_nmbr'], 'string', 'max' => 20],
-            [['status_cd'], 'string', 'max' => 3],
-            [['callno'], 'string', 'max' => 62],
-            [['collection'], 'string', 'max' => 40],
         ];
     }
 
@@ -49,18 +43,16 @@ class Copy extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app/reports', 'ID'),
-            'created_at' => Yii::t('app', 'Created At'),
+            'id' => Yii::t('app', 'ID'),
             'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
-            'callno' => Yii::t('app/reports', 'Callno'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),
-            'collection' => Yii::t('app', 'Collection'),
+            'checkoutCount' => Yii::t('app/reports', 'Checkout Count'),
         ];
     }
     
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public static function primaryKey() {
         parent::primaryKey();

@@ -111,6 +111,16 @@ return [
                 ],
             ],
         ],
+        'pdf' => [
+            'class' => kartik\mpdf\Pdf::classname(),
+            'format' => kartik\mpdf\Pdf::FORMAT_A4,
+            'orientation' => kartik\mpdf\Pdf::ORIENT_PORTRAIT,
+            'destination' => kartik\mpdf\Pdf::DEST_BROWSER,
+        // refer settings section for all configuration options
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+        ],
         'urlManagerFrontend' => $urlManagerFrontend,
         'view' => ['theme' => $theme],
     ],

@@ -27,7 +27,7 @@ $collections = array_merge([' ' => ''], $collections);
 
     <?php
     $form = ActiveForm::begin([
-                'action' => ['results', 'type' => $model->formName()],
+                'action' => ['view', 'type' => $model->formName()],
                 'method' => 'get',
     ]);
     ?>
