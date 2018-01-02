@@ -23,10 +23,9 @@ from botocore.exceptions import ClientError
 
 VERSION_LABEL = 'obib2-' + strftime("%Y-%m-%d_%H%M%S")
 BUCKET_KEY = 'obib2' + '/' + VERSION_LABEL + '-bitbucket_builds.zip'
-BUCKET = 'elasticbeanstalk-us-east-1-041824848534'
+BUCKET = 'elasticbeanstalk-us-east-1-122737561131'
 APP_NAME = 'OpenBiblio2'
 ENV = 'obib2'
-
 
 def upload_to_s3(artifact):
     """
