@@ -3,7 +3,8 @@
 $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/params-local.php')
 );
-// definir algún usuario de base de datos que solo pueda hacer un par de operaciones: select, update.
+
+$db = require(__DIR__ . "./database.php");
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
@@ -16,14 +17,7 @@ return [
         ],
     ],
     'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => "mysql:host=localhost;dbname=openbiblio2",
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-            'enableQueryCache' => false
-        ],
+        'db' => $db,
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',

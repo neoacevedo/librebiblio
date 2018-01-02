@@ -60,7 +60,7 @@ class ReportController extends Controller {
     }
 
     /**
-     * Lists all Acquisitions models.
+     * Lista todos los reportes disponibles en el sitio.
      * @return mixed
      */
     public function actionIndex() {
@@ -79,6 +79,10 @@ class ReportController extends Controller {
         ]);
     }
 
+    /**
+     * Permite realizar el reporte de acuerdo a varios filtros disponibles.
+     * @return mixed
+     */
     public function actionSearch() {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
@@ -132,23 +136,6 @@ class ReportController extends Controller {
     }
 
     /**
-     * Creates a new Acquisitions model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate() {
-        $model = new Acquisitions();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                        'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing Acquisitions model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -165,33 +152,4 @@ class ReportController extends Controller {
             ]);
         }
     }
-
-    /**
-     * Deletes an existing Acquisitions model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Acquisitions model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Acquisitions the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($model) {
-        $classname = "backend\\reports\\$model";
-        if (($model = $classname::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-
 }
