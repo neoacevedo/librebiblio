@@ -13,5 +13,5 @@ pipelines:
           - apt-get update # required to install zip
           - apt-get install -y zip # required for packaging up the application
           - pip install boto3==1.3.0
-          - zip -r obib2.zip .ebextensions backend build common console frontend vagrant codeception.yml .bowerrc composer.json composer.lock init Vagrantfile yii -x beanstalk_deploy.py bitbucket-pipelines.yml
+          - zip -r obib2.zip .ebextensions backend build common console environment frontend vagrant codeception.yml .bowerrc composer.json composer.lock init Vagrantfile yii -x beanstalk_deploy.py bitbucket-pipelines.yml
           - python beanstalk_deploy.py # run the deployment script 
