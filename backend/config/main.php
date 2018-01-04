@@ -122,7 +122,6 @@ return [
             'cssInline' => '.kv-heading-1{font-size:18px}',
         ],
         'urlManagerFrontend' => $urlManagerFrontend,
-        'view' => ['theme' => $theme],
     ],
     'params' => $params,
 ];

@@ -32,15 +32,23 @@ class AppAsset extends AssetBundle {
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
         if ($theme) {
             // CSS
-            $css_files = \yii\helpers\FileHelper::findFiles("{$this->basePath}/themes/{$theme->name}/css/", ['only' => ['*.min.css'], 'except' => ['skin-*']]);
-            $css_files = str_replace("{$this->basePath}/themes/{$theme->name}/css/", "{$this->baseUrl}/themes/{$theme->name}/css/", $css_files);
-            natsort($css_files);
-            $this->css = array_merge($this->css, $css_files);
+            try {
+                $css_files = \yii\helpers\FileHelper::findFiles("{$this->basePath}/themes/{$theme->name}/css/", ['only' => ['*.min.css'], 'except' => ['skin-*']]);
+                $css_files = str_replace("{$this->basePath}/themes/{$theme->name}/css/", "{$this->baseUrl}/themes/{$theme->name}/css/", $css_files);
+                natsort($css_files);
+                $this->css = array_merge($this->css, $css_files);
+            } catch (\Exception $ex) {
+                
+            }
             // JS
-            $js_files = \yii\helpers\FileHelper::findFiles("{$this->basePath}/themes/{$theme->name}/js/", ['only' => ['*.min.js']]);
-            $js_files = str_replace("{$this->basePath}/themes/{$theme->name}/js/", "{$this->baseUrl}/themes/{$theme->name}/js/", $js_files);
-            natsort($js_files);
-            $this->js = $js_files;
+            try {
+                $js_files = \yii\helpers\FileHelper::findFiles("{$this->basePath}/themes/{$theme->name}/js/", ['only' => ['*.min.js']]);
+                $js_files = str_replace("{$this->basePath}/themes/{$theme->name}/js/", "{$this->baseUrl}/themes/{$theme->name}/js/", $js_files);
+                natsort($js_files);
+                $this->js = $js_files;
+            } catch (\Exception $ex) {
+                
+            }
         }
     }
 

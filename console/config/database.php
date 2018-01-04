@@ -1,28 +1,9 @@
 <?php
 
-/**
- * En aplicación de consola, no se hará uso de filter_input, sino que directamente se tomarán los valores.
- */
-$connectstr_dbhost = "";
-$connectstr_dbname = "";
-$connectstr_dbusername = "";
-$connectstr_dbpassword = "";
-
-if (!$connectstr_dbhost = getenv("RDS_HOST_NAME")) {
-    $connectstr_dbhost = "localhost";
-}
-
-if (!$connectstr_dbname = getenv("RDS_DB_NAME")) {
-    $connectstr_dbname = "openbiblio2";
-}
-
-if (!$connectstr_dbname = getenv('RDS_USERNAME')) {
-    $connectstr_dbusername = "root";
-}
-
-if (!$connectstr_dbpassword = getenv("RDS_PASSWORD")) {
-    $connectstr_dbpassword = "";
-}
+$connectstr_dbhost = getenv("RDS_HOSTNAME") ?: "localhost";
+$connectstr_dbname = getenv("RDS_DB_NAME") ?: "openbiblio2";
+$connectstr_dbusername = getenv("RDS_USERNAME") ?: "root";
+$connectstr_dbpassword = getenv("RDS_PASSWORD") ?: "";
 
 return [
     'class' => 'yii\db\Connection',

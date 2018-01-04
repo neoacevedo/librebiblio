@@ -11,8 +11,8 @@ use common\widgets\Alert;
 AppAsset::register($this);
 
 $settings = \common\models\Settings::find()->one();
-$library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
-$library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
+$library_name = (null !== $settings->library_name) ? $settings->library_name : "OpenBiblio2";
+$library_hours = (null !== $settings->library_hours) ? $settings->library_hours : "N/A";
 $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "hold-transition sidebar-mini skin-" . Yii::$app->session['backend-skin'];
 ?>
 <?php $this->beginPage() ?>
@@ -185,9 +185,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                     </section>
                     <!--/.sidebar -->
                 </aside>
-                <? = Alert::widget()
-                ?>
-
+                
                 <!-- Content Wrapper. Contains page content -->
                 <div class="content-wrapper">
                     <!-- Content Header (Page header) -->

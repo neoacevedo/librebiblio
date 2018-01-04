@@ -41,9 +41,7 @@ class m170715_020149_insert_demo_user extends Migration {
     }
 
     public function safeDown() {
-        echo "m170715_020149_insert_demo_user cannot be reverted.\n";
-
-        return false;
+        return true;
     }
 
     /*

@@ -4,7 +4,7 @@ $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/params-local.php')
 );
 
-$db = require(__DIR__ . "/../../common/config/database.php");
+$db = require(__DIR__ . "/database.php");
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
@@ -55,8 +55,8 @@ return [
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => 'http://localhost/openbiblio2/backend/web', // reemplazar de manera manual por el dominio para el backend
-            'scriptUrl' => 'http://localhost/openbiblio2/backend/web', // reemplazar de manera manual por el dominio para el backend
+            'baseUrl' => (filter_input(INPUT_SERVER, 'SERVER_NAME') === 'localhost') ? 'http://localhost/openbiblio2/backend/web': filter_input(INPUT_SERVER, 'SERVER_NAME'), // reemplazar de manera manual por el dominio para el backend
+            'scriptUrl' => (filter_input(INPUT_SERVER, 'SERVER_NAME') === 'localhost') ? 'http://localhost/openbiblio2/backend/web': filter_input(INPUT_SERVER, 'SERVER_NAME'), // reemplazar de manera manual por el dominio para el backend
             'enablePrettyUrl' => false,
             'showScriptName' => false,
             'rules' => [
