@@ -4,7 +4,7 @@ $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/params-local.php')
 );
 
-$db = require(__DIR__ . "/database.php");
+$db = require(__DIR__ . "/../../common/config/database.php");
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),

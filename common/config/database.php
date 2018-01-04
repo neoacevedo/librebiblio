@@ -10,7 +10,7 @@ if (!$connectstr_dbhost = filter_input(INPUT_SERVER, "RDS_HOSTNAME")) {
 }
 
 if (!$connectstr_dbname = filter_input(INPUT_SERVER, "RDS_DB_NAME")) {
-    $connectstr_dbname = "openbiblio2";
+    $connectstr_dbname = "openbiblio01";
 }
 
 if (!$connectstr_dbusername = filter_input(INPUT_SERVER, "RDS_USERNAME")) {

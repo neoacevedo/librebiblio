@@ -21,6 +21,7 @@ class m170715_020149_insert_demo_user extends Migration {
             'username' => 'admin',
             'first_name' => 'admin',
             'last_name' => 'admin',
+            'address' => 'Calle Falsa 123',
             'auth_key' => Yii::$app->security->generateRandomString(),
             'password_hash' => $password_hash,
             'email' => 'nestor.acevedo.romero@gmail.com',

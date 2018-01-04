@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `mbr_classify`.
  */
-class m170627_013949_create_mbr_classify_dm_table extends Migration
+class m170626_040242_create_mbr_classify_dm_table extends Migration
 {
     /**
      * Idioma del contenido. Para AWS, se definirá en-US o en-GB
