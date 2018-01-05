@@ -67,7 +67,7 @@ class m170809_043857_create_checkout_privs_table extends Migration
     {
         // drops foreign key for table `mbr_classify_dm`
         $this->dropForeignKey(
-            'ffk-checkout_privs-classification_id',
+            'fk-checkout_privs-classification_id',
             '{{%checkout_privs}}'
         );
 
@@ -79,7 +79,7 @@ class m170809_043857_create_checkout_privs_table extends Migration
         
         // drops foreign key for table `material_type_dm`
         $this->dropForeignKey(
-            'ffk-checkout_privs-material_cd',
+            'fk-checkout_privs-material_cd',
             '{{%checkout_privs}}'
         );
 
