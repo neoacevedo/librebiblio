@@ -10,8 +10,7 @@ pipelines:
   default:
     - step:
         caches:
-            - zip
-            - boto3
+            - pip
         script: # Modify the commands below to build your repository.
           - apt-get update # required to install zip
           - apt-get install -y zip # required for packaging up the application

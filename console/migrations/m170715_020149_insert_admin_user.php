@@ -24,7 +24,7 @@ class m170715_020149_insert_admin_user extends Migration {
             'address' => 'Calle Falsa 123',
             'auth_key' => Yii::$app->security->generateRandomString(),
             'password_hash' => $password_hash,
-            'email' => 'nestor.acevedo.romero@gmail.com',
+            'email' => 'admin@localhost.co',
             'phone' => '+573999999999',
             'status' => 10,
             'created_at' => strtotime("now"),
