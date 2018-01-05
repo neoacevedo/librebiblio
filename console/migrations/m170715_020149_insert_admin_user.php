@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170715_020149_insert_demo_user extends Migration {
+class m170715_020149_insert_admin_user extends Migration {
 
     /**
      * URL para obtener la información de la instancia de Amazon.
