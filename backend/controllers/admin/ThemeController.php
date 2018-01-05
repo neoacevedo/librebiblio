@@ -115,7 +115,7 @@ class ThemeController extends Controller {
                     if ($model->validate() && $model->save()) {
                         Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme installed successfully.'));
                     } else {
-                        array_walk_recursive($model->errors, function($v, $k) {
+                        @array_walk_recursive($model->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                     }
@@ -128,7 +128,7 @@ class ThemeController extends Controller {
             Yii::$app->getSession()->setFlash('warning', $result);
             return $this->redirect(['index']);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->redirect(['index']);
@@ -172,7 +172,7 @@ class ThemeController extends Controller {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                 return $this->redirect(['index']);
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
+                @array_walk_recursive($model->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return $this->render("update", ['model' => $model, 'skins' => $skins]);
@@ -195,7 +195,7 @@ class ThemeController extends Controller {
                 Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                 return $this->redirect(['index']);
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
+                @array_walk_recursive($model->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return $this->render("update", ['model' => $model, 'skins' => $skins]);

@@ -266,7 +266,7 @@ class CirculationController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('member-update', [

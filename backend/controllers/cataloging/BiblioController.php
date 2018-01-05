@@ -120,7 +120,7 @@ class BiblioController extends Controller {
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
+                @array_walk_recursive($model->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return $this->render('create', [
@@ -208,7 +208,7 @@ class BiblioController extends Controller {
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
+                @array_walk_recursive($model->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return $this->render('create', [

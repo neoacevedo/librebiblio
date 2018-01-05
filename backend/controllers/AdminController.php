@@ -118,7 +118,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @@array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('users/update', [
@@ -151,7 +151,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             

@@ -102,7 +102,7 @@ class MemberController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['account']);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('update', [

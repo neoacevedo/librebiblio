@@ -101,7 +101,7 @@ class SettingsController extends Controller {
                 }
             }
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
 

@@ -1,6 +1,8 @@
 <?php
 
 use yii\db\Migration;
+use yii\base\InvalidConfigException;
+use yii\rbac\DbManager;
 
 /**
  * Class m180105_212344_insert_auth_assignment_for_admin_user
@@ -16,7 +18,7 @@ class m180105_212344_insert_auth_assignment_for_admin_user extends Migration
         $this->db = $authManager->db;
         
         $this->insert($authManager->itemTable, [
-            'item_name' => 'admin',
+            'name' => 'admin',
             'type' => 1,
             'description' => 'Administrador de la biblioteca.',
             'created_at' => strtotime("now"),
