@@ -49,7 +49,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, "block_checkouts_when_fines_due")->dropDownList(['Y' => Yii::t('app', 'Yes'), 'N' => Yii::t('app', 'No')]) ?>
 
-    <?= $form->field($model, "hold_max_days")->textInput(['type' => number]) ?>
+    <?= $form->field($model, "hold_max_days")->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
 
