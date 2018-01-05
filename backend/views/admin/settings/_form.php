@@ -45,7 +45,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, "library_phone")->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, "purge_history_after_months")->textInput(['type' => number]) ?>
+    <?= $form->field($model, "purge_history_after_months")->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, "block_checkouts_when_fines_due")->dropDownList(['Y' => Yii::t('app', 'Yes'), 'N' => Yii::t('app', 'No')]) ?>
 
