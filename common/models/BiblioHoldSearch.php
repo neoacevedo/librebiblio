@@ -44,7 +44,7 @@ class BiblioHoldSearch extends BiblioHold {
         $query = BiblioHold::find();
 
         // add conditions that should always apply here
-        $query->joinWith(['biblio', 'biblioCopy']);
+        $query->joinWith(['biblio', 'biblioCopy'], 'LEFT JOIN');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -68,15 +68,17 @@ class BiblioHoldSearch extends BiblioHold {
 
         // grid filtering conditions
         $query->andFilterWhere([
-                    '{{%biblio_copy}}.id' => $this->id,
-                    '{{%biblio_copy}}.bibid' => $this->bibid])
-                ->andFilterWhere(['<=', 'date({{%biblio_copy}}.status_begin_dt)', $this->biblioCopy->status_begin_dt])
-                ->andFilterWhere(['<=', 'date({{%biblio_copy}}.due_back_dt)', $this->biblioCopy->due_back_dt])
-                ->andFilterWhere(['{{%biblio_hold}}.mbr_id' => $this->mbr_id]);
+            '{{%biblio_copy}}.id' => $this->id,
+            '{{%biblio_copy}}.bibid' => $this->bibid]);
+        if (null !== $this->biblioCopy && null !== $this->biblio) {
+            $query->andFilterWhere(['<=', 'date({{%biblio_copy}}.status_begin_dt)', $this->biblioCopy->status_begin_dt])
+                    ->andFilterWhere(['<=', 'date({{%biblio_copy}}.due_back_dt)', $this->biblioCopy->due_back_dt])
+                    ->andFilterWhere(['like', '{{%biblio_copy}}.copy_desc', $this->biblioCopy->copy_desc])
+                    ->andFilterWhere(['like', '{{%biblio_copy}}.barcode_nmbr', $this->biblioCopy->barcode_nmbr])
+                    ->andFilterWhere(['like', '{{%biblio}}.title', $this->biblio->title]);
+        }
 
-        $query->andFilterWhere(['like', '{{%biblio_copy}}.copy_desc', $this->biblioCopy->copy_desc])
-                ->andFilterWhere(['like', '{{%biblio_copy}}.barcode_nmbr', $this->biblioCopy->barcode_nmbr])
-                ->andFilterWhere(['like', '{{%biblio}}.title', $this->biblio]);
+        $query->andFilterWhere(['{{%biblio_hold}}.mbr_id' => $this->mbr_id]);
 
         return $dataProvider;
     }

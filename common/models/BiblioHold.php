@@ -14,6 +14,8 @@ use Yii;
  * @property integer $mbr_id
  *
  * @property Member $mbr
+ * @property BiblioCopy $biblioCopy
+ * @property Biblio $biblio
  */
 class BiblioHold extends \yii\db\ActiveRecord
 {

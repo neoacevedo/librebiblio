@@ -83,7 +83,10 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                             <ul class="nav navbar-nav">
                                 <!-- carrito -->
                                 <li class="task-menu">
-                                    <a href="<?= yii\helpers\Url::to(['/circulation/cart']) ?>"><i class="fa fa-shopping-cart"></i></a>
+                                    <a href="<?= yii\helpers\Url::to(['/circulation/cart']) ?>">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span class="label labe-warning"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt']))  ?></span>
+                                    </a>
                                 </li>
                                 <!-- User Account: style can be found in dropdown.less -->
                                 <li class="dropdown user user-menu">

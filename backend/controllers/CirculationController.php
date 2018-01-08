@@ -171,13 +171,6 @@ class CirculationController extends Controller {
 
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($id !== null) {
-            $member = $this->findModel($id);
-            if ($member->status == $member::STATUS_BLOCKED) {
-                Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
-                return $this->redirect(['member-view', 'id' => $id]);
-            }
-        }
 
         switch ($status) {
             case "crt":
@@ -224,7 +217,7 @@ class CirculationController extends Controller {
             $biblioCopy->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
         }
         if (!$biblioStatusHistory->save()) {
-            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+            @array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
         }
@@ -267,8 +260,8 @@ class CirculationController extends Controller {
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
             @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
             return $this->render('member-update', [
                         'model' => $model,
             ]);
@@ -344,8 +337,13 @@ class CirculationController extends Controller {
         if ($memberDebt > 0) {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of \${0, number, #,#.0#}", $memberDebt));
         }
+
+        $member = $this->findModel($id);
+        if ($member->status == $member::STATUS_BLOCKED) {
+            Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
+        }
         return $this->render('member-view', [
-                    'model' => $this->findModel($id),
+                    'model' => $member,
                     'materialTypeStats' => $materialTypeStats,
                     'biblioCopySearch' => $biblioCopySearch,
                     'biblioCopy' => $biblioCopy,
@@ -461,6 +459,12 @@ class CirculationController extends Controller {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
             return false;
         } else {
+            //
+            $member = $this->findModel($id);
+            if ($member->status == $member::STATUS_BLOCKED) {
+                Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
+                return $this->redirect(['member-view', 'id' => $id]);
+            }
             // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
             $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
             if ($memberDebt > 0) {
@@ -478,7 +482,7 @@ class CirculationController extends Controller {
             $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
 
             if (!$biblioHold->save()) {
-                array_walk_recursive($biblioHold->errors, function($v, $k) {
+                @array_walk_recursive($biblioHold->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return false;
@@ -572,7 +576,7 @@ class CirculationController extends Controller {
         $biblioCopy->status_cd = 'out';
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if (!$biblioCopy->save()) {
-            array_walk_recursive($biblioCopy->errors, function($v, $k) {
+            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return false;
@@ -598,7 +602,8 @@ class CirculationController extends Controller {
         // buscar si ya hay una solicitud de reserva y cambiar el estado de la copia a "en reserva" si hay una reserva.
         if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid])) !== null) {
             $biblioCopy->status_cd = 'hld';
-            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.'));
+            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.', $biblioCopy
+                    ->barcode_nmbr));
         } else {
             $biblioCopy->status_cd = 'crt';
         }
@@ -608,7 +613,7 @@ class CirculationController extends Controller {
         $biblioCopy->due_back_dt = null;
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if (!$biblioCopy->save()) {
-            array_walk_recursive($biblioCopy->errors, function($v, $k) {
+            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return false;
@@ -640,7 +645,7 @@ class CirculationController extends Controller {
                 $late = (new DateTime($biblioCopy->due_back_dt))->diff(new DateTime());
             }
         }
-        
+
         $biblioCopy->due_back_dt = null;
         $biblioCopy->mbr_id = null;
 
@@ -653,7 +658,7 @@ class CirculationController extends Controller {
             $trans->amount = $fee * $late;
             $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
             if (!$trans->save()) {
-                array_walk_recursive($trans->errors, function($v, $k) {
+                @array_walk_recursive($trans->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
                 return false;
