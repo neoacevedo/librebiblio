@@ -81,6 +81,7 @@ return [
     'Home' => '',
     'ID' => '',
     'Image File' => '',
+    'Inactive' => '',
     'Incorrect username or password.' => '',
     'Ind1 Cd' => '',
     'Ind2 Cd' => '',
@@ -167,7 +168,6 @@ return [
     'Renew item' => '@@@@',
     'Status Begint Dt' => '@@@@',
     'Use Image Flg' => '@@@@',
-    'User' => '@@@@',
     'You are not allowed to perform this action.' => '@@@@',
     'barcode_nmbr' => '@@@@',
     'due_back_dt' => '@@@@',
@@ -176,4 +176,5 @@ return [
     'Responsibility Stmt' => 'Statement of responsibility, etc.',
     'This email address has already been taken.' => '@@@@',
     'This username has already been taken.' => '@@@@',
+    'User' => '@@@@',
 ];

@@ -17,8 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Active' => '',
     'Are you sure you want to delete this item?' => '',
     'Delete' => '',
+    'Location' => '',
     'Reset' => '',
     'Search' => '',
     'Themes' => '',

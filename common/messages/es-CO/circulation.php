@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Note: Member has an outstanding account balance of {0, number}' => '',
+    'Checked in {barcode}' => '',
+    'Note: Member has an outstanding account balance of {0, number}' => 'Nota: El miembro tiene un saldo de cuenta pendiente de {0, number}',
     'Note: Member has an outstanding account balance of {total}.' => '@@Nota: El miembro tiene un saldo de cuenta pendiente de {total}@@',
     'Item placed hold.' => 'Ítem reservado.',
     'Item {n, number} has reached its renewal limit.' => 'El elemento {n, número} ha alcanzado su límite de renovación.',

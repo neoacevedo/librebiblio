@@ -58,7 +58,7 @@ class BiblioCopySearch extends BiblioCopy {
         }
 
         // The key is the attribute name on our "TourSearch" instance
-        $dataProvider->sort->attributes['biblioTitle'] = [
+        $dataProvider->sort->attributes['biblio.title'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"
             'asc' => ['{{%biblio}}.title' => SORT_ASC],

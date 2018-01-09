@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checked in {barcode}' => '',
     'Item {n, number} has reached its renewal limit.' => '',
     'Item {n, number} is late and cannot be renewed.' => '',
     'Item {n, number} is on hold to another member.' => '',

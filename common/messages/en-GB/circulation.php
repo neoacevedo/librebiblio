@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Checked in {barcode}' => '',
     'Item placed hold.' => '',
     'Item {n, number} has reached its renewal limit.' => '',
     'Item {n, number} is already checked out to another member.' => '',

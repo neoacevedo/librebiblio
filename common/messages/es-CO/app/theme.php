@@ -17,16 +17,16 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Active' => '',
     'Could not copy theme files.' => '',
-    'Created At' => '',
     'Frontend' => '',
-    'ID' => '',
     'Inactive' => '',
-    'Location' => '',
-    'Name' => '',
     'Skin' => '',
     'Theme installed successfully.' => '',
     'Theme uninstalled successfully.' => '',
     'Theme updated successfully.' => '',
+    'Active' => '@@@@',
+    'Created At' => '@@@@',
+    'ID' => '@@@@',
+    'Location' => '@@@@',
+    'Name' => '@@@@',
 ];

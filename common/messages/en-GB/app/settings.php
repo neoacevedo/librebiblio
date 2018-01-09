@@ -28,5 +28,6 @@ return [
     'Library Settings' => '',
     'Material Types' => '',
     'Member Classify' => '',
+    'Settings changed successfuly.' => '',
     'Themes' => '',
 ];
