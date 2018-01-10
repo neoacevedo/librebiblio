@@ -8,11 +8,6 @@ use yii\db\Migration;
 class m170626_225516_create_biblio_status_dm_table extends Migration
 {
     /**
-     * Idioma del contenido. Para AWS, se definirá en-US o en-GB
-     * @var string 
-     */
-    private $language = "es-CO";
-    /**
      * @inheritdoc
      */
     public function up()
@@ -26,7 +21,8 @@ class m170626_225516_create_biblio_status_dm_table extends Migration
         // add primary keys
         $this->addPrimaryKey('bibliostatusdm_pk', '{{%biblio_status_dm}}', 'code');
         
-        $sql = file_get_contents(__DIR__."/sql/$this->language/biblio_status_dm.sql");
+        $language = str_replace("_", "-", locale_get_default());
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/biblio_status_dm.sql");
         $this->execute($sql);
     }
 

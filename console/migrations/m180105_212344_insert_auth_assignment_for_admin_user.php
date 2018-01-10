@@ -16,15 +16,7 @@ class m180105_212344_insert_auth_assignment_for_admin_user extends Migration
     {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
-        
-        $this->insert($authManager->itemTable, [
-            'name' => 'admin',
-            'type' => 1,
-            'description' => 'Administrador de la biblioteca.',
-            'created_at' => strtotime("now"),
-            'updated_at' => strtotime("now"),
-        ]);
-        
+                
         $this->insert($authManager->assignmentTable, [
             'item_name' => 'admin',
             'user_id' => 1,

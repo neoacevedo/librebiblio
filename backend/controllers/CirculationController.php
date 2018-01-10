@@ -161,7 +161,7 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
+     * Registra un préstamo o rserva de la copia bibliográfica y crea el historial para el miembro.
      * Los estados de la copia pueden ser:
      * <ul>
      * <li><i>crt</i> En el carrito</li>
@@ -176,10 +176,6 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate($bibid, $copyid, $status, $id) {
-
-        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-
         switch ($status) {
             case "crt":
                 // una devolución
@@ -193,11 +189,32 @@ class CirculationController extends Controller {
                 // préstamo
                 $this->checkout($bibid, $copyid, $id);
                 return $this->redirect(['member-view', 'id' => $id]);
-            case "in":
-                // disponible
-                $this->checkin($bibid, $copyid, $id);
-                return $this->redirect(['circulation/reception']);
+            default:
+                break;
+        }
+    }
 
+    /**
+     * Actualiza el estado de la copia bibliográfica y crea el historial para el miembro.
+     * Los estados de la copia pueden ser:
+     * <ul>
+     * <li><i>crt</i> En el carrito</li>
+     * <li><i>hld</i> En reserva</li>
+     * <li><i>out</i> En préstamo</li>
+     * <li><i>in</i> Disponible</li>
+     * </ul>
+     * @param int $bibid
+     * @param int $copyid
+     * @param string $status
+     * @param int $id
+     * @return mixed
+     */
+    public function actionUpdate(int $bibid, int $copyid, string $status, int $id) {
+        switch ($status) {
+            case "crt":
+                // una devolución
+                $this->shelving_cart($bibid, $copyid, $id);
+                return $this->redirect(['circulation/reception']);
             default:
                 break;
         }

@@ -21,7 +21,21 @@
 
 LOCK TABLES {{%auth_item}} WRITE;
 /*!40000 ALTER TABLE `auth_item` DISABLE KEYS */;
-INSERT INTO {{%auth_item}} VALUES ('admin',1,'Administrador de la biblioteca.',NULL,NULL,1498187435,1510242014),('biblio-copy/create',2,'Permisos para crear copias bibliográficas.',NULL,NULL,1510242513,1510242513),('Catalog Manager',1,'Gestor del Catálogo de la Biblioteca',NULL,NULL,1498187505,1510242758),('cataloging/biblio/create',2,'Permiso para registrar nuevo material bibliográfico.',NULL,NULL,1510239732,1510241107),('cataloging/biblio/delete',2,'Permiso para borrar material bibliográfico',NULL,NULL,1510239808,1510241927),('cataloging/biblio/index',2,'Permiso para acceder a la zona de catalogación.',NULL,NULL,1510239975,1510243152),('cataloging/biblio/update',2,'Permiso para actualizar información de material bibliográfico.',NULL,NULL,1510238268,1510241971),('cataloging/biblio/view',2,'Permiso para ver información de material bibliográfico',NULL,NULL,1510242740,1510242740),('Circulation Manager',1,'Gestor de Préstamos',NULL,NULL,1498187454,1510243311),('circulation/cart',2,'Permiso para ver la lista de material en el carrito.',NULL,NULL,1510243292,1510243292),('circulation/create',2,'Permiso para registrar nuevos préstamos',NULL,NULL,1510238262,1510243084),('circulation/delete',2,'Permiso para borrar préstamos o reservas.',NULL,NULL,1510238281,1510243170),('circulation/index',2,'Permiso para acceder a la zona de préstamos.',NULL,NULL,1510243113,1510243113),('circulation/update',2,'Permiso para Actualizar información de préstamos o reservas.',NULL,NULL,1510239900,1510243199),('circulation/view',2,'Permiso para listar/ver usuarios, préstamos o reservas',NULL,NULL,1510238250,1510243184);
+INSERT INTO {{%auth_item}} VALUES ('admin',1,'Administrador de la biblioteca.',NULL,NULL,1498187435,1510242014);
+INSERT INTO {{%auth_item}} VALUES ('biblio-copy/create',2,'Permisos para crear copias bibliográficas.',NULL,NULL,1510242513,1510242513);
+INSERT INTO {{%auth_item}} VALUES ('Catalog Manager',1,'Gestor del Catálogo de la Biblioteca',NULL,NULL,1498187505,1510242758);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio/create',2,'Permiso para registrar nuevo material bibliográfico.',NULL,NULL,1510239732,1510241107);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio/delete',2,'Permiso para borrar material bibliográfico',NULL,NULL,1510239808,1510241927);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio/index',2,'Permiso para acceder a la zona de catalogación.',NULL,NULL,1510239975,1510243152);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio/update',2,'Permiso para actualizar información de material bibliográfico.',NULL,NULL,1510238268,1510241971);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio/view',2,'Permiso para ver información de material bibliográfico',NULL,NULL,1510242740,1510242740);
+INSERT INTO {{%auth_item}} VALUES ('Circulation Manager',1,'Gestor de Préstamos',NULL,NULL,1498187454,1510243311);
+INSERT INTO {{%auth_item}} VALUES ('circulation/cart',2,'Permiso para ver la lista de material en el carrito.',NULL,NULL,1510243292,1510243292);
+INSERT INTO {{%auth_item}} VALUES ('circulation/create',2,'Permiso para registrar movimientos de préstamos.',NULL,NULL,1510238262,1510243084);
+INSERT INTO {{%auth_item}} VALUES ('circulation/delete',2,'Permiso para borrar préstamos o reservas.',NULL,NULL,1510238281,1510243170);
+INSERT INTO {{%auth_item}} VALUES ('circulation/index',2,'Permiso para acceder a la zona de préstamos.',NULL,NULL,1510243113,1510243113);
+INSERT INTO {{%auth_item}} VALUES ('circulation/update',2,'Permiso para Actualizar información de préstamos o reservas.',NULL,NULL,1510239900,1510243199);
+INSERT INTO {{%auth_item}} VALUES ('circulation/view',2,'Permiso para listar/ver usuarios, préstamos o reservas',NULL,NULL,1510238250,1510243184);
 /*!40000 ALTER TABLE `auth_item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

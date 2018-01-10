@@ -134,6 +134,10 @@ class m140506_102106_rbac_init extends \yii\db\Migration
                     END
             END;");
         }
+        
+        $language = str_replace("_", "-", locale_get_default());
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
+        $this->execute($sql);
     }
 
     /**

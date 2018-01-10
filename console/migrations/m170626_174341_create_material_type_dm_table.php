@@ -23,8 +23,8 @@ class m170626_174341_create_material_type_dm_table extends Migration
             'default_flg' => $this->char(1)->notNull(),
             'image_file' => $this->string(128),
         ]);
-        
-        $sql = file_get_contents(__DIR__."/sql/$this->language/material_type_dm.sql");
+        $language = str_replace("_", "-", locale_get_default());
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/material_type_dm.sql");
         $this->execute($sql);
     }
 

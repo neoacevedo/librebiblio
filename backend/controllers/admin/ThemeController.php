@@ -116,8 +116,8 @@ class ThemeController extends Controller {
                         Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme installed successfully.'));
                     } else {
                         @array_walk_recursive($model->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                                    Yii::$app->getSession()->setFlash('error', $v);
+                                });
                     }
 
                     return $this->redirect(['index']);
@@ -129,8 +129,8 @@ class ThemeController extends Controller {
             return $this->redirect(['index']);
         } else {
             @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
             return $this->redirect(['index']);
         }
     }
@@ -144,38 +144,64 @@ class ThemeController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // ahora a modificar el json
-        if ($current_theme->active == 1) {
-            // hay más de un tema.
-            if ($current_theme->frontend == 0) {
-                $theme_skins = json_decode(file_get_contents(Yii::$app->basePath . "/themes/{$current_theme->name}/settings.json"), true);
-            } else {
-                $theme_skins = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$current_theme->name}/settings.json"), true);
-            }
-            $skins = [];
-            if (isset($theme_skins['skins'])) {
-                foreach ($theme_skins['skins'] as $key => $val) {
-                    $skins[$val] = $val;
+        if ($current_theme) {
+            if ($current_theme->active == 1) {
+                // hay más de un tema.
+                if ($current_theme->frontend == 0) {
+                    $theme_skins = json_decode(file_get_contents(Yii::$app->basePath . "/themes/{$current_theme->name}/settings.json"), true);
+                } else {
+                    $theme_skins = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$current_theme->name}/settings.json"), true);
                 }
-            }
-            if ($model->load(Yii::$app->request->post())) {
-                $current_theme->active = 0;
-                if ($current_theme->save() && $model->save()) {
-                    if (isset($model->skin) || $model->skin !== '') {
-                        if ($model->frontend == 0) {
-                            Yii::$app->session->set("backend-skin", $model->skin);
-                        } else {
-                            Yii::$app->session->set("frontend-skin", $model->skin);
-                        }
+                $skins = [];
+                if (isset($theme_skins['skins'])) {
+                    foreach ($theme_skins['skins'] as $key => $val) {
+                        $skins[$val] = $val;
                     }
                 }
-                Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
-                return $this->redirect(['index']);
+                if ($model->load(Yii::$app->request->post())) {
+                    $current_theme->active = 0;
+                    if ($current_theme->save() && $model->save()) {
+                        if (isset($model->skin) || $model->skin !== '') {
+                            if ($model->frontend == 0) {
+                                Yii::$app->session->set("backend-skin", $model->skin);
+                            } else {
+                                Yii::$app->session->set("frontend-skin", $model->skin);
+                            }
+                        }
+                    }
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
+                    return $this->redirect(['index']);
+                } else {
+                    @array_walk_recursive($model->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                    return $this->render("update", ['model' => $model, 'skins' => $skins]);
+                }
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-                return $this->render("update", ['model' => $model, 'skins' => $skins]);
+                // no hay tema activo pero igual se permite actualizar el tema.
+                if ($model->frontend == 0) {
+                    $theme_skins = json_decode(file_get_contents(Yii::$app->basePath . "/themes/{$model->name}/settings.json"), true);
+                } else {
+                    $theme_skins = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$model->name}/settings.json"), true);
+                }
+                $skins = [];
+                if (isset($theme_skins['skins'])) {
+                    foreach ($theme_skins['skins'] as $key => $val) {
+                        $skins[$val] = $val;
+                    }
+                }
+
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
+                    return $this->redirect(['index']);
+                } else {
+                    @array_walk_recursive($model->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                    return $this->render("update", ['model' => $model, 'skins' => $skins]);
+                }
             }
         } else {
             // no hay tema activo pero igual se permite actualizar el tema.
@@ -196,8 +222,8 @@ class ThemeController extends Controller {
                 return $this->redirect(['index']);
             } else {
                 @array_walk_recursive($model->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
                 return $this->render("update", ['model' => $model, 'skins' => $skins]);
             }
         }

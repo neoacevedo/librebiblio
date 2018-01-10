@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 'urlCreator' => function ($action, $model, $key, $index) {
                                     if ($action === 'checkin') {
-                                        $url = "index.php?r=circulation/create&copyid=$model->id&bibid=$model->bibid&status=crt&id=$model->mbr_id&data-pjax=0";
+                                        $url = "index.php?r=circulation/update&copyid=$model->id&bibid=$model->bibid&status=crt&id=$model->mbr_id&data-pjax=0";
                                         return $url;
                                     }
                                 }],

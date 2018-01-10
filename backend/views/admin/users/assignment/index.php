@@ -15,31 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 ?>
 <h1><?= $this->title ?></h1>
-<div class="col-lg-3 col-md-3 col-sm-3">
-    <?php
-    if (YII_ENV_DEV) {
-        echo SideNav::widget([
-            'type' => SideNav::TYPE_DEFAULT,
-            'heading' => Yii::t('app', 'Options'),
-            'headingOptions' => ['class' => 'head-style'],
-            'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
-                ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
-                ['label' => Yii::t('app', 'Rules'), 'url' => ['admin/users/rule']],
-                ['label' => Yii::t('app', 'Permissions'), 'url' => ['admin/users/permission']],
-                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment'], 'options' => ['class' => 'active']]],
-        ]);
-    } else {
-        echo SideNav::widget([
-            'type' => SideNav::TYPE_DEFAULT,
-            'heading' => Yii::t('app', 'Options'),
-            'headingOptions' => ['class' => 'head-style'],
-            'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
-                ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
-                ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment'], 'options' => ['class' => 'active']]],
-        ]);
-    }
-    ?>
-</div>
+<?= $this->render('../_sidebar') ?>
 <div class="col-lg-9 col-md-9 col-sm-9">
     <?php
     echo GridView::widget([

@@ -8,11 +8,6 @@ use yii\db\Migration;
 class m170704_010131_create_usmarc_block_dm_table extends Migration
 {
     /**
-     * Idioma del contenido. Para AWS, se definirá en-US o en-GB
-     * @var string 
-     */
-    private $language = "es-CO";
-    /**
      * @inheritdoc
      */
     public function up()
@@ -23,7 +18,8 @@ class m170704_010131_create_usmarc_block_dm_table extends Migration
             'PRIMARY KEY (block_mbr)'
         ]);
         
-        $sql = file_get_contents(__DIR__."/sql/$this->language/usmarc_block_dm.sql");
+        $language = str_replace("_", "-", locale_get_default());
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_block_dm.sql");
         $this->execute($sql);
     }
 

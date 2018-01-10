@@ -77,11 +77,14 @@ class CheckoutPrivsSearch extends CheckoutPrivs {
 
         // grid filtering conditions
         $query->andFilterWhere([
-                    'id' => $this->id,
-                    'checkout_limit' => $this->checkout_limit,
-                    'renewal_limit' => $this->renewal_limit,
-                ])->andFilterWhere(['like', '{{%material_type_dm}}.description', $this->materialType])
-                ->andFilterWhere(['like', '{{%mbr_classify_dm}}.description', $this->memberClassify->description]);
+            'id' => $this->id,
+            'checkout_limit' => $this->checkout_limit,
+            'renewal_limit' => $this->renewal_limit,
+        ])->andFilterWhere(['like', '{{%material_type_dm}}.description', $this->materialType]);
+        
+        if (null !== $this->memberClassify) {
+            $query->andFilterWhere(['like', '{{%mbr_classify_dm}}.description', $this->memberClassify->description]);
+        }
 
         return $dataProvider;
     }

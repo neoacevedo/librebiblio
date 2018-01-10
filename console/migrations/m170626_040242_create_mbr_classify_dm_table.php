@@ -8,15 +8,11 @@ use yii\db\Migration;
 class m170626_040242_create_mbr_classify_dm_table extends Migration
 {
     /**
-     * Idioma del contenido. Para AWS, se definirá en-US o en-GB
-     * @var string 
-     */
-    private $language = "es-CO";
-    /**
      * @inheritdoc
      */
     public function up()
     {
+        $language = str_replace("_", "-", locale_get_default());
         $this->createTable('{{%mbr_classify_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
@@ -24,7 +20,7 @@ class m170626_040242_create_mbr_classify_dm_table extends Migration
             'max_fines' => $this->decimal(4,2)->notNull(),
         ]);
         
-        $sql = file_get_contents(__DIR__."/sql/$this->language/mbr_classify_dm.sql");
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/mbr_classify_dm.sql");
         $this->execute($sql);
     }
 

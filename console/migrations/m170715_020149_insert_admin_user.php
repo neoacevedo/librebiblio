@@ -36,6 +36,7 @@ class m170715_020149_insert_admin_user extends Migration {
         $session = curl_init($this->curl_url);
         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($session, CURLOPT_TIMEOUT, 15);
         $response = curl_exec($session);
         return $response;
     }

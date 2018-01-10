@@ -8,15 +8,11 @@ use yii\db\Migration;
 class m170626_040304_create_collection_dm_table extends Migration
 {
     /**
-     * Idioma del contenido. Para AWS, se definirá en-US o en-GB
-     * @var string 
-     */
-    private $language = "es-CO";
-    /**
      * @inheritdoc
      */
     public function up()
     {
+        $language = str_replace("_", "-", locale_get_default());
         $this->createTable('{{%collection_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
@@ -25,7 +21,7 @@ class m170626_040304_create_collection_dm_table extends Migration
             'daily_late_fee' => $this->decimal(4,2)->notNull(),
         ]);
         
-        $sql = file_get_contents(__DIR__."/sql/$this->language/collection_dm.sql");
+        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/collection_dm.sql");
         $this->execute($sql);
     }
 
