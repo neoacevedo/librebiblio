@@ -44,10 +44,6 @@ if (count($model) > 0) {
     );
 }
 
-$route = Yii::$app->request->queryParams;
-array_shift($route);
-$pdfRoute = array_merge(["admin/report/pdf"], $route);
-
 $fullExportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns' => $gridColumns,

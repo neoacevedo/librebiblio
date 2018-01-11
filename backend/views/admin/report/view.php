@@ -56,6 +56,7 @@ $fullExportMenu = ExportMenu::widget([
             'showConfirmAlert' => true,
             'target' => ExportMenu::TARGET_BLANK,
             'asDropdown' => true,
+            'deleteAfterSave' => true,
             'exportConfig' => [
                 ExportMenu::FORMAT_HTML => false,
                 ExportMenu::FORMAT_TEXT => false,
@@ -69,7 +70,7 @@ $fullExportMenu = ExportMenu::widget([
         'dataProvider' => $dataProvider,
         'columns' => $gridColumns,
         'panel' => [
-            'heading' => '<h1>'.Html::encode($this->title).'</h1>',
+            'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
         ],
         'toolbar' => [
             $fullExportMenu
