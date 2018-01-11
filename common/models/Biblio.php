@@ -13,6 +13,7 @@ use Yii;
  * @property integer $updated_userid
  * @property integer $material_cd
  * @property integer $collection_cd
+ * @property string $image_file 
  * @property string $call_nmbr1
  * @property string $call_nmbr2
  * @property string $call_nmbr3

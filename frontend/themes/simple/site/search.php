@@ -28,6 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'call_nmbr2',
             // 'call_nmbr3',
             [
+                'attribute' => 'image_file',
+                'value' => function($model) {
+                    return Html::img("@web/images/{$model->image_file}", ['alt' => $model->title,
+                                'title' => $model->title,
+                                'class' => 'image-responsive center-block',
+                                'style' => 'width: 33.333333%']);
+                },
+                'format' => 'raw',
+                'label' => 'Image'
+            ],
+            [
                 'attribute' => 'materialType',
                 'value' => function($model) {
                     return Html::img("@web/images/{$model->materialType->image_file}", ['alt' => $model->materialType->description,

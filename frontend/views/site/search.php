@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php Pjax::begin(); ?>    <?=
+    <?php Pjax::begin(); ?>    
+    <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
@@ -27,6 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'call_nmbr1',
             // 'call_nmbr2',
             // 'call_nmbr3',
+            [
+                'attribute' => 'image_file',
+                'value' => function($model) {
+                    return Html::img("@web/images/{$model->image_file}", ['alt' => $model->title,
+                                'title' => $model->title,
+                                'class' => 'image-responsive center-block',
+                                'style' => 'width: 33.333333%']);
+                },
+                'format' => 'raw',
+                'label' => 'Image'
+            ],
             [
                 'attribute' => 'materialType',
                 'value' => function($model) {
@@ -84,4 +96,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
     ?>
-    <?php Pjax::end(); ?></div>
+    <?php Pjax::end(); ?>
+</div>
