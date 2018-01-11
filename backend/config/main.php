@@ -4,7 +4,7 @@ $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
 );
 
-$urlManagerFrontend = require(__DIR__ . '/../../frontend/config/urlManager.php');
+#$urlManagerFrontend = require(__DIR__ . '/../../frontend/config/urlManager.php');
 
 return [
     'id' => 'app-backend',
@@ -113,7 +113,12 @@ return [
             // any css to be embedded if required
             'cssInline' => '.kv-heading-1{font-size:18px}',
         ],
-        'urlManagerFrontend' => $urlManagerFrontend,
+        'urlManagerFrontend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => "@web/../",
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
     ],
     'params' => $params,
 ];

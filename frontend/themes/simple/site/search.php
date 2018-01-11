@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'image_file',
                 'value' => function($model) {
-                    return Html::img("@web/images/{$model->image_file}", ['alt' => $model->title,
+                    return Html::img("@web/images/covers/{$model->image_file}", ['alt' => $model->title,
                                 'title' => $model->title,
                                 'class' => 'image-responsive center-block',
                                 'style' => 'width: 33.333333%']);

@@ -121,8 +121,8 @@ class BiblioController extends Controller {
                 $materialType->save();
             } else {
                 @array_walk_recursive($model->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
@@ -190,6 +190,7 @@ class BiblioController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $current_image_file = $model->image_file;
 
         $this->fillUsMarc();
 
@@ -202,21 +203,41 @@ class BiblioController extends Controller {
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->save() && $model->upload()) {
-                $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
-                $materialType->default_flg = 'Y';
-                $materialType->save();
+            $image_file = UploadedFile::getInstance($model, 'image_file');
+            if (null !== $image_file) {
+                $model->image_file = $image_file;
+                if ($model->save() && $model->upload()) {
+                    $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                    $materialType->default_flg = 'Y';
+                    $materialType->save();
+                } else {
+                    @array_walk_recursive($model->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                    return $this->render('create', [
+                                'model' => $model,
+                                'modelBiblioFields' => $modelBiblioFields,
+                                'usmarc' => $this->usmarc
+                    ]);
+                }
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-                return $this->render('create', [
-                            'model' => $model,
-                            'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc
-                ]);
+                $model->image_file = $current_image_file;
+                if ($model->save()) {
+                    $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                    $materialType->default_flg = 'Y';
+                    $materialType->save();
+                } else {
+                    @array_walk_recursive($model->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                    return $this->render('create', [
+                                'model' => $model,
+                                'modelBiblioFields' => $modelBiblioFields,
+                                'usmarc' => $this->usmarc
+                    ]);
+                }
             }
+
             // crear la lista con todos los modelos bibliofield
             for ($i = 1; $i < count($this->usmarc); $i++) {
                 $modelBiblioFields[] = new \app\models\BiblioField();
