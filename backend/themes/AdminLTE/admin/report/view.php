@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
@@ -25,57 +25,57 @@ if (count($model) > 0) {
 
                 $columns[$key] = $value;
             }
-            $attributes = array_merge([
-                ['class' => 'yii\grid\SerialColumn']], array_keys($columns)
+            $gridColumns = array_merge([
+                ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
             );
         } else {
-            $attributes = array_merge([
-                ['class' => 'yii\grid\SerialColumn']], array_keys($model[0]->attributes)
+            $gridColumns = array_merge([
+                ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
             );
         }
     } else {
-        $attributes = array_merge([
-            ['class' => 'yii\grid\SerialColumn']], array_keys($model[0]->attributes)
+        $gridColumns = array_merge([
+            ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
         );
     }
 } else {
-    $attributes = array_merge([
-        ['class' => 'yii\grid\SerialColumn']], array_keys($searchModel->attributes)
+    $gridColumns = array_merge([
+        ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
 }
 
 $route = Yii::$app->request->queryParams;
 array_shift($route);
 $pdfRoute = array_merge(["admin/report/pdf"], $route);
+
+$fullExportMenu = ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'showConfirmAlert' => true,
+            'target' => ExportMenu::TARGET_BLANK,
+            'asDropdown' => true,
+            'deleteAfterSave' => true,
+            'exportConfig' => [
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_TEXT => false,
+            ],
+        ]);
 ?>
 <div class="collection-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <div class="box">
-        <div class="box-header">
-            <div class="pull-right">
-                <?php
-                echo ExportMenu::widget([
-                    'dataProvider' => $dataProvider,
-                    'columns' => $attributes
-                ]);
-                ?>
-                <form action="">
-                    <?php
-                    #echo Html::dropDownList("export", NULL, ['pdf' => Yii::t('app/reports', 'Export to PDF')], ['class' => 'form-control', 'data-action' => yii\helpers\Url::to($pdfRoute)]);
-                    ?>
-                </form>
-            </div>
-        </div>
-        <div class="box-body">
-            <?=
-            GridView::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => $attributes,
-                'options' => ['class' => 'table table-striped table-bordered table-responsive']
-            ]);
-            ?>
-        </div>
+        <?php
+        echo GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'panel' => [
+                'headingOptions' => ['class' => 'box-header'],
+                'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
+            ],
+            'toolbar' => [
+                $fullExportMenu
+            ],
+            'containerOptions' => ['class' => 'box-body']
+        ]);
+        ?>
     </div>
 </div>
