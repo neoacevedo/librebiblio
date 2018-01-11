@@ -69,6 +69,13 @@ return [
         ],
         'mailer' => $mailer,
     ],
+    'name' => call_user_func(function() use($db) {
+                array_shift($db);
+                $connection = new \yii\db\Connection($db);
+                $connection->open();
+                $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
+                return $library_name ?: "OpenBiblio2";
+            }, $db),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
         // accesos solo administrativos a módulos específicos

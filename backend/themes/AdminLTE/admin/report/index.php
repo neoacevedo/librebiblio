@@ -17,12 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             <ul>
                 <li>
-                    <h4><?= $category ?></h4>
+                    <h4><?= Yii::t('app', $category) ?></h4>
                     <ul>
                         <?php
                         foreach ($objects[$category] as $report) :
                             ?>
-                            <li><?= Html::a(Yii::t('app', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
+                            <li><?= Html::a(Yii::t('app/reports', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
                             <?php
                         endforeach;
                         ?>

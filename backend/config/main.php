@@ -58,14 +58,6 @@ return [
                 #throw new NotFoundHttpException('The requested page does not exist.');
             },
         ],
-        'reportico' => [
-            'class' => 'reportico\reportico\Module',
-            'controllerMap' => [
-                'reportico' => 'reportico\reportico\controllers\ReporticoController',
-                'mode' => 'reportico\reportico\controllers\ModeController',
-                'ajax' => 'reportico\reportico\controllers\AjaxController',
-            ]
-        ],
     ],
     //'language' => 'es-CO',
     'components' => [
@@ -114,9 +106,9 @@ return [
         'pdf' => [
             'class' => kartik\mpdf\Pdf::classname(),
             'format' => kartik\mpdf\Pdf::FORMAT_A4,
-            'orientation' => kartik\mpdf\Pdf::ORIENT_PORTRAIT,
+            'orientation' => kartik\mpdf\Pdf::ORIENT_LANDSCAPE,
             'destination' => kartik\mpdf\Pdf::DEST_BROWSER,
-        // refer settings section for all configuration options
+            // refer settings section for all configuration options
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
             'cssInline' => '.kv-heading-1{font-size:18px}',

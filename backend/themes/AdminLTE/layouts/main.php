@@ -85,7 +85,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                 <li class="task-menu">
                                     <a href="<?= yii\helpers\Url::to(['/circulation/cart']) ?>">
                                         <i class="fa fa-shopping-cart"></i>
-                                        <span class="label label-warning"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt']))  ?></span>
+                                        <span class="label label-warning"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])) ?></span>
                                     </a>
                                 </li>
                                 <!-- User Account: style can be found in dropdown.less -->
@@ -189,22 +189,26 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                     </section>
                     <!--/.sidebar -->
                 </aside>
-                
+
                 <!-- Content Wrapper. Contains page content -->
                 <div class="content-wrapper">
                     <!-- Content Header (Page header) -->
                     <section class="content-header">
-                        <?php
-                        echo Breadcrumbs::widget([
-                            'options' => ['class' => 'breadcrumb pull-left'],
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                        ]);
-                        ?>
+                        <div class="row">
+                            <?php
+                            echo Breadcrumbs::widget([
+                                'options' => ['class' => 'breadcrumb pull-right'],
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            ]);
+                            ?>
+                        </div>
                     </section>
 
                     <!-- Main content -->
                     <section class="content">
-                        <?= Alert::widget() ?>
+                        <div class="row">
+                            <?= Alert::widget() ?>
+                        </div>
                         <?= $content ?>
                     </section>
                     <!-- /.content -->

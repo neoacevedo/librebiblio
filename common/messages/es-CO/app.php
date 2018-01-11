@@ -142,6 +142,7 @@ return [
     'Settings' => 'Configuraciones',
     'Sorry, we are unable to reset password for the provided email address.' => 'Lo sentimos, no podemos restablecer la contraseña para la dirección de correo electrónico proporcionada.',
     'Staff' => 'Personal',
+    'Statistics' => 'Estadísticas',
     'Status' => 'Estado',
     'Status Begin Dt' => 'Fecha de comienzo de estado',
     'Status Cd' => 'Estado',

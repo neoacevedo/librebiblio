@@ -17,7 +17,7 @@ if (count($model) > 0) {
                 if ($key === "barcode_nmbr") {
                     continue;
                 }
-                
+
                 $columns[$key] = $value;
             }
             $attributes = array_merge([
@@ -38,22 +38,17 @@ if (count($model) > 0) {
         ['class' => 'yii\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
 }
-
-$route = Yii::$app->request->queryParams;
-array_shift($route);
-$pdfRoute = array_merge(["admin/report/pdf"], $route);
-
-$this->title = Yii::t('app/reports', @$model[0]->name);
-
 ?>
-<div class="collection-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $attributes,
-        'options' => ['class' => 'table table-striped table-bordered table-responsive']
-    ])
-    ?>
-</div>
+<?php
+
+$gridView = GridView::begin([
+            'dataProvider' => $dataProvider,
+            'columns' => $attributes,
+        ]);
+
+echo $gridView->renderTableHeader();
+echo $gridView->renderTableBody();
+echo $gridView->renderTableFooter();
+?>
+

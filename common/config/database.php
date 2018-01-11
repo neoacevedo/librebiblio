@@ -11,6 +11,6 @@ return [
     'username' => $connectstr_dbusername,
     'password' => $connectstr_dbpassword,
     'charset' => 'utf8',
-    'enableQueryCache' => false
+    'enableQueryCache' => true
 ];
 

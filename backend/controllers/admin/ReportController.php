@@ -113,7 +113,8 @@ class ReportController extends Controller {
      * @return mixed
      */
     public function actionPdf() {
-        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $report = Yii::$app->request->get("type");
+        $classnameSearch = "backend\\reports\\$report";
         $searchModel = new $classnameSearch;
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -128,11 +129,30 @@ class ReportController extends Controller {
         $pdf->content = $content;
         $pdf->options = ['title' => Yii::$app->name];
         $pdf->methods = [
-            'SetHeader' => [Yii::$app->name],
-            'SetFooter' => ['{PAGENO}'],
+            'SetHeader' => [date('Y-m-d H:i:s')],
+            'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
         ];
         // return the pdf output as per the destination setting
         return $pdf->render();
+    }
+
+    public function actionExcel() {
+        $report = Yii::$app->request->get("type");
+        $classnameSearch = "backend\\reports\\$report";
+        $searchModel = new $classnameSearch;
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->setSort(false);
+        $dataProvider->setPagination(false);
+        // obtener el html
+        $content = $this->renderPartial('excel', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider]);
+
+        $filename = 'Data-' . Date('YmdGis') . '-'. Yii::$app->name .".xlsx";
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header("Content-Disposition: attachment; filename=" . $filename);
+        echo $content;
     }
 
     /**
@@ -152,4 +172,5 @@ class ReportController extends Controller {
             ]);
         }
     }
+
 }
