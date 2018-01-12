@@ -98,7 +98,7 @@ foreach ($model->biblioFields as $biblioField) {
                     [
                         'attribute' => 'image_file',
                         'value' => function($model) {
-                            return Html::img(Yii::$app->urlManagerFrontend->baseUrl . "/images/covers/{$model->image_file}", ['alt' => $model->title,
+                            return Html::img(Yii::$app->params['baseUrlFrontend'] . "/images/covers/{$model->image_file}", ['alt' => $model->title,
                                         'title' => $model->title,
                                         'class' => 'image-thumbnail center-block',
                                         'style' => 'width: 140px']);

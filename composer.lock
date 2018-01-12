@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2270078acfe9cd3144e15ad6c7188c0b",
+    "content-hash": "f20f73ee83aece9a47aa2012fe4e4284",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -674,66 +674,6 @@
             "time": "2017-11-06T16:04:54+00:00"
         },
         {
-            "name": "kartik-v/yii2-dynagrid",
-            "version": "v1.4.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-dynagrid.git",
-                "reference": "1e12d8bf411b314018512e067fafd449f683ce38"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-dynagrid/zipball/1e12d8bf411b314018512e067fafd449f683ce38",
-                "reference": "1e12d8bf411b314018512e067fafd449f683ce38",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-grid": "~3.1",
-                "kartik-v/yii2-sortable": "~1.2",
-                "kartik-v/yii2-widget-activeform": "~1.4",
-                "kartik-v/yii2-widget-select2": "~2.0"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "kartik\\dynagrid\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "Turbo charge the Yii 2 GridView with personalized columns, page size, and themes.",
-            "homepage": "https://github.com/kartik-v/yii2-dynagrid",
-            "keywords": [
-                "columns",
-                "dynamic",
-                "extension",
-                "grid",
-                "hide",
-                "order",
-                "reorder",
-                "show",
-                "sort",
-                "visibility",
-                "widget",
-                "yii2"
-            ],
-            "time": "2017-10-23T14:02:31+00:00"
-        },
-        {
             "name": "kartik-v/yii2-editable",
             "version": "v1.7.6",
             "source": {
@@ -785,67 +725,6 @@
                 "widget"
             ],
             "time": "2017-06-28T05:11:45+00:00"
-        },
-        {
-            "name": "kartik-v/yii2-export",
-            "version": "v1.2.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-export.git",
-                "reference": "42fd901373f03dd983481b8fb2ce537e6fa0577e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-export/zipball/42fd901373f03dd983481b8fb2ce537e6fa0577e",
-                "reference": "42fd901373f03dd983481b8fb2ce537e6fa0577e",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-dialog": "~1.0",
-                "kartik-v/yii2-dynagrid": ">=1.4.5",
-                "kartik-v/yii2-mpdf": "~1.0",
-                "phpoffice/phpexcel": "~1.8"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "kartik\\export\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "A library to export server/db data in various formats (e.g. excel, html, pdf, csv etc.)",
-            "homepage": "https://github.com/kartik-v/yii2-export",
-            "keywords": [
-                "OpenXML",
-                "csv",
-                "export",
-                "extension",
-                "html",
-                "json",
-                "pdf",
-                "spreadsheet",
-                "text",
-                "widget",
-                "xls",
-                "xlsx",
-                "yii2"
-            ],
-            "time": "2017-11-19T18:30:55+00:00"
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -1050,105 +929,6 @@
                 "popover-x"
             ],
             "time": "2017-09-08T04:30:42+00:00"
-        },
-        {
-            "name": "kartik-v/yii2-sortable",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-sortable.git",
-                "reference": "650dfd6876115fbb996eb6eb8f1d5d13ddb69285"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-sortable/zipball/650dfd6876115fbb996eb6eb8f1d5d13ddb69285",
-                "reference": "650dfd6876115fbb996eb6eb8f1d5d13ddb69285",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-krajee-base": "~1.7"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "kartik\\sortable\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "Create sortable lists and grids using HTML5 drag and drop API for Yii 2.0.",
-            "homepage": "https://github.com/kartik-v/yii2-sortable",
-            "keywords": [
-                "bootstrap",
-                "extension",
-                "jquery",
-                "range",
-                "sortable",
-                "widget",
-                "yii2"
-            ],
-            "time": "2015-06-17T17:34:48+00:00"
-        },
-        {
-            "name": "kartik-v/yii2-widget-activeform",
-            "version": "v1.4.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "53c2f877f12ba0b79e8346b6cae50cbba2bcfc69"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/53c2f877f12ba0b79e8346b6cae50cbba2bcfc69",
-                "reference": "53c2f877f12ba0b79e8346b6cae50cbba2bcfc69",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-krajee-base": "~1.7"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "kartik\\form\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "Enhanced Yii2 active-form and active-field with full bootstrap styling support (sub repo split from yii2-widgets).",
-            "homepage": "https://github.com/kartik-v/yii2-widget-activeform",
-            "keywords": [
-                "activefield",
-                "activeform",
-                "extension",
-                "field",
-                "form",
-                "widget",
-                "yii2"
-            ],
-            "time": "2016-04-27T18:38:05+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-select2",
@@ -1412,63 +1192,6 @@
                 "yii2"
             ],
             "time": "2017-01-23T23:42:10+00:00"
-        },
-        {
-            "name": "phpoffice/phpexcel",
-            "version": "1.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
-                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xml": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPExcel": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Maarten Balliauw",
-                    "homepage": "http://blog.maartenballiauw.be"
-                },
-                {
-                    "name": "Mark Baker"
-                },
-                {
-                    "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
-                },
-                {
-                    "name": "Erik Tilt"
-                }
-            ],
-            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
-            "homepage": "http://phpexcel.codeplex.com",
-            "keywords": [
-                "OpenXML",
-                "excel",
-                "php",
-                "spreadsheet",
-                "xls",
-                "xlsx"
-            ],
-            "time": "2015-05-01T07:00:55+00:00"
         },
         {
             "name": "phpspec/php-diff",

@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -38,30 +37,77 @@ if (count($model) > 0) {
             ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
         );
     }
+    $pdfHeader = [
+        'L' => [
+            'content' => Yii::t('app/reports', "Results"),
+            'font-size' => 8,
+            'color' => '#333333',
+        ],
+        'C' => [
+            'content' => Yii::t('app/reports', $model[0]->name),
+            'font-size' => 16,
+            'color' => '#333333',
+        ],
+        'R' => [
+            'content' => Yii::t('app/reports', 'Generated') . ': ' . date('D, d-M-Y g:i a T'),
+            'font-size' => 8,
+            'color' => '#333333',
+        ],
+    ];
+    $pdfFooter = [
+        'L' => [
+            'content' => '© OpenBiblio2',
+            'font-size' => 8,
+            'font-style' => 'B',
+            'color' => '#999999',
+        ],
+        'R' => [
+            'content' => '[ {PAGENO} ]',
+            'font-size' => 10,
+            'font-style' => 'B',
+            'font-family' => 'serif',
+            'color' => '#333333',
+        ],
+        'line' => true,
+    ];
 } else {
     $gridColumns = array_merge([
         ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
+    $pdfHeader = [
+        'L' => [
+            'content' => Yii::t('app/reports', 'Results'),
+            'font-size' => 8,
+            'color' => '#333333',
+        ],
+        /*'C' => [
+            'content' => $title,
+            'font-size' => 16,
+            'color' => '#333333',
+        ],*/
+        'R' => [
+            'content' => Yii::t('app/reports', 'Generated') . ': ' . date('D, d-M-Y g:i a T'),
+            'font-size' => 8,
+            'color' => '#333333',
+        ],
+    ];
+    $pdfFooter = [
+        'L' => [
+            'content' => '© OpenBiblio2',
+            'font-size' => 8,
+            'font-style' => 'B',
+            'color' => '#999999',
+        ],
+        'R' => [
+            'content' => '[ {PAGENO} ]',
+            'font-size' => 10,
+            'font-style' => 'B',
+            'font-family' => 'serif',
+            'color' => '#333333',
+        ],
+        'line' => true,
+    ];
 }
-
-$route = Yii::$app->request->queryParams;
-array_shift($route);
-$pdfRoute = array_merge(["admin/report/pdf"], $route);
-$excelRoute = array_merge(["admin/report/excel"], $route);
-$csvRoute = array_merge(['admin/report/csv'], $route);
-
-$fullExportMenu = ExportMenu::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => $gridColumns,
-            'showConfirmAlert' => true,
-            'target' => ExportMenu::TARGET_BLANK,
-            'asDropdown' => true,
-            'deleteAfterSave' => true,
-            'exportConfig' => [
-                ExportMenu::FORMAT_HTML => false,
-                ExportMenu::FORMAT_TEXT => false,
-            ],
-        ]);
 ?>
 <div class="collection-index">
 
@@ -71,9 +117,26 @@ $fullExportMenu = ExportMenu::widget([
         'columns' => $gridColumns,
         'panel' => [
             'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
+            'footer' => false
+        ],
+        'exportConfig' => [
+            GridView::PDF => [
+                'config' => [
+                    'methods' => [
+                        'SetHeader' => [
+                            ['odd' => $pdfHeader, 'even' => $pdfHeader],
+                        ],
+                        'SetFooter' => [
+                            ['odd' => $pdfFooter, 'even' => $pdfFooter],
+                        ],
+                    ],
+                ]
+            ],
+            GridView::CSV => [],
+            GridView::EXCEL => [],
         ],
         'toolbar' => [
-            $fullExportMenu
+            '{export}'
         ],
     ]);
     ?>

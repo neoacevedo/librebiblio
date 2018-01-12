@@ -4,8 +4,6 @@ $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
 );
 
-#$urlManagerFrontend = require(__DIR__ . '/../../frontend/config/urlManager.php');
-
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -112,12 +110,6 @@ return [
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
             'cssInline' => '.kv-heading-1{font-size:18px}',
-        ],
-        'urlManagerFrontend' => [
-            'class' => 'yii\web\urlManager',
-            'baseUrl' => "@web/../",
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
         ],
     ],
     'params' => $params,
