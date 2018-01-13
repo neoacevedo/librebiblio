@@ -1,9 +1,9 @@
 <?php
 
-$connectstr_dbhost = getenv("RDS_HOSTNAME") ?: "localhost";
-$connectstr_dbname = getenv("RDS_DB_NAME") ?: "openbiblio2";
-$connectstr_dbusername = getenv("RDS_USERNAME") ?: "root";
-$connectstr_dbpassword = getenv("RDS_PASSWORD") ?: "";
+$connectstr_dbhost = getenv("RDS_HOSTNAME");
+$connectstr_dbname = getenv("RDS_DB_NAME");
+$connectstr_dbusername = getenv("RDS_USERNAME");
+$connectstr_dbpassword = getenv("RDS_PASSWORD");
 
 return [
     'class' => 'yii\db\Connection',
