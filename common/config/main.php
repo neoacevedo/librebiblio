@@ -73,7 +73,11 @@ return [
                 array_shift($db);
                 $connection = new \yii\db\Connection($db);
                 $connection->open();
-                $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
+                try {
+                    $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
+                } catch (Exception $ex) {
+                    
+                }
                 return $library_name ?: "OpenBiblio2";
             }, $db),
     'modules' => [

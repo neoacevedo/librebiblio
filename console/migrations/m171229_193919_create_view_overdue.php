@@ -13,7 +13,7 @@ class m171229_193919_create_view_overdue extends Migration
     public function safeUp()
     {
         $sql = "CREATE OR REPLACE VIEW {{%overdue}} AS "
-                . "SELECT c.bibid, c.id, m.id as member_id, c.barcode_nmbr, "
+                . "SELECT c.bibid, c.id, m.id as mbr_id, c.barcode_nmbr, "
                 . "concat_ws(' ', b.call_nmbr1, b.call_nmbr2, b.call_nmbr3) as callno, "
                 . "b.title, b.author, c.status_begin_dt, "
                 . "c.due_back_dt, "

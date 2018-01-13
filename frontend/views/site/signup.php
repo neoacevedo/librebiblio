@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <?= $form->field($model, 'address') ?>
 
-            <?= $form->field($model, 'phone') ?>
+            <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 10000]) ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 

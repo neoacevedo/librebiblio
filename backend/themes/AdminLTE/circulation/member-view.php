@@ -33,6 +33,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                 'type' => SideNav::TYPE_PRIMARY,
                 'heading' => $model->username,
                 'items' => [
+                    ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
                     ['label' => Yii::t('app', 'Update'), 'url' => ['circulation/member-update', 'id' => $model->id]],
                     ['label' => Yii::t('app', 'Delete'), 'url' => ['circulation/member-delete', 'id' => $model->id],
                         'options' => ['id' => 'member_delete']],

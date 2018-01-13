@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $bibid
  * @property integer $id
- * @property integer $member_id
+ * @property integer $mbr_id
  * @property string $barcode_nmbr
  * @property string $callno
  * @property string $title
@@ -37,7 +37,7 @@ class Overdue extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bibid', 'id', 'member_id', 'days_late'], 'integer'],
+            [['bibid', 'id', 'mbr_id', 'days_late'], 'integer'],
             [['title', 'author'], 'string'],
             [['status_begin_dt', 'due_back_dt'], 'safe'],
             [['barcode_nmbr'], 'string', 'max' => 20],
@@ -54,7 +54,7 @@ class Overdue extends \yii\db\ActiveRecord
         return [
             'bibid' => Yii::t('app', 'Bibid'),
             'id' => Yii::t('app', 'ID'),
-            'member_id' => Yii::t('app', 'Member ID'),
+            'mbr_id' => Yii::t('app', 'Member ID'),
             'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
             'callno' => Yii::t('app/reports', 'Callno'),
             'title' => Yii::t('app', 'Title'),

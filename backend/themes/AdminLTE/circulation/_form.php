@@ -12,7 +12,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(['class' => 'box']); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
         <div class="col-xs-4">

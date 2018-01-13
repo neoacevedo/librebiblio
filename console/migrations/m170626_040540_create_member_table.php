@@ -19,7 +19,7 @@ class m170626_040540_create_member_table extends Migration {
             'address' => $this->string()->notNull(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
-            'password_reset_token' => $this->string()->notNull(),
+            'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'phone' => $this->string(32)->notNull(),
