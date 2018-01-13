@@ -1,7 +1,7 @@
 <?php
 
 $params = array_merge(
-        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/params-local.php')
+        require(__DIR__ . '/../../common/config/params.php')
 );
 
 $db = require(__DIR__ . "/database.php");
@@ -55,10 +55,9 @@ return [
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => (filter_input(INPUT_SERVER, 'SERVER_NAME') === 'localhost') ? 'http://localhost/openbiblio2/backend/web' : filter_input(INPUT_SERVER, 'SERVER_NAME'), // reemplazar de manera manual por el dominio para el backend
-            'scriptUrl' => (filter_input(INPUT_SERVER, 'SERVER_NAME') === 'localhost') ? 'http://localhost/openbiblio2/backend/web' : filter_input(INPUT_SERVER, 'SERVER_NAME'), // reemplazar de manera manual por el dominio para el backend
+            'baseUrl' => '//backend.obib2.hyntibasoftware.co', // reemplazar de manera manual por el dominio para el backend
+            'scriptUrl' => "//backend.obib2.hyntibasoftware.co",
             'enablePrettyUrl' => false,
-            'showScriptName' => false,
             'rules' => [
             ],
         ],

@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'headerOptions' => ['style' => 'color:#337ab7'],
-                    'template' => '{view}{update}{delete}',
+                    'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;', $url, [
@@ -54,9 +54,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         },
                         'delete' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>&nbsp;', $url, [
-                                        'title' => Yii::t('app', 'Delete'),
-                            ]);
+                            if ($model->id !== Yii::$app->user->id) {
+                                return Html::a('<span class="glyphicon glyphicon-trash"></span>&nbsp;', $url, [
+                                            'title' => Yii::t('app', 'Delete'),
+                                ]);
+                            }
                         }
                     ],
                     'urlCreator' => function ($action, $model, $key, $index) {
