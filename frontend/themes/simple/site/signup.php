@@ -12,10 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+    <p><?= Yii::t('app', 'Please fill out the following fields to signup:') ?></p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-3 col-md-3 col-sm-3">&nbsp;</div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -43,5 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php ActiveForm::end(); ?>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">&nbsp;</div>
     </div>
 </div>

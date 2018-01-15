@@ -50,37 +50,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['member-view', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'View'),
                                     ]);
                                 },
                                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['member-update', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'Update'),
                                     ]);
                                 },
                                 'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['member-delete', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'Delete'),
+                                                'data' => [
+                                                    'confirm' => Yii::t('circulation', 'Are you absolutely sure? You will lose all the information about this user with this action.'),
+                                                    'pjax' => 0,
+                                                ],
                                     ]);
                                 }
                             ],
-                            'urlCreator' => function ($action, $model, $key, $index) {
-                                if ($action === 'view') {
-                                    $url = 'index.php?r=circulation/member-view&id=' . $model->id;
-                                    return $url;
-                                }
-
-                                if ($action === 'update') {
-                                    $url = 'index.php?r=circulation/member-update&id=' . $model->id;
-                                    return $url;
-                                }
-                                if ($action === 'delete') {
-                                    $url = 'index.php?r=circulation/member-delete&id=' . $model->id;
-                                    return $url;
-                                }
-                            }
-                        ],
+                        ]
                     ],
                     'options' => ['class' => 'table table-responsive']
                 ]);

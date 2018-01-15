@@ -17,14 +17,14 @@ $library_hours = null !== $settings->library_hours ? $settings->library_hours : 
 $library_phone = null !== $settings->library_phone ? $settings->library_phone : "N/A";
 $brandLabel = "";
 if ($settings->library_image_url !== null) {
-    $brandLabel .= Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
+    //$brandLabel .= Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
 }
 
 if ($settings->use_image_flg == 0) {
     $brandLabel .= "&nbsp;$library_name";
 }
 
-$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "".Yii::$app->session['backend-skin'];
+$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "".Yii::$app->session['frontend-skin'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -46,7 +46,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                 'brandLabel' => $brandLabel,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
+                    'class' => 'navbar navbar-top',
                 ],
             ]);
             $menuItems = [

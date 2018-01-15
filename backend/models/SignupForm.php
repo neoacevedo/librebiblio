@@ -86,4 +86,24 @@ class SignupForm extends Model {
         return $randomString;
     }
 
+    public function sendEmail(int $id) {
+        $user = Member::findOne($id);
+
+        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        return \Yii::$app->mailer
+                        ->compose(
+                                ['html' => 'userSignup-html', 'text' => 'userSignup-text'], ['user' => $user]
+                        )
+                        ->setTo($user->email)
+                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
+                        ->setSubject('Signup Confirmation')
+                        ->send();
+    }
+
 }

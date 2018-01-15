@@ -83,17 +83,5 @@ return [
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
         // accesos solo administrativos a módulos específicos
-        'menu' => [
-            'class' => '\pceuropa\menu\Menu',
-            'as access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ]
-                ]
-            ],
-        ],
     ]
 ];

@@ -365,13 +365,7 @@ class CirculationController extends Controller {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                $email = \Yii::$app->mailer->compose()
-                        ->setTo($user->email)
-                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
-                        ->setSubject('Signup Confirmation')
-                        ->setTextBody("")
-                        ->send();
-                if ($email) {
+                if ($model->sendEmail($user->id)) {
                     Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Email sent to user'));
                 } else {
                     Yii::$app->getSession()->setFlash('warning', 'Failed, contact Admin!');
