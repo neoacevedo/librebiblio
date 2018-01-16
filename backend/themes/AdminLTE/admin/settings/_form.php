@@ -26,7 +26,8 @@ $this->registerJs($js);
 
 <div class="settings-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['admin/settings/library-settings-update'],
+        'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, "library_name") ?>
 

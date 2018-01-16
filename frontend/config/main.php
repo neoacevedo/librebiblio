@@ -27,10 +27,10 @@ return [
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
         if ($theme) {
             Yii::$app->getView()->theme = new \yii\base\Theme([
-                'basePath' => "@app/themes/{$theme->name}",
+                'basePath' => "@app/theme/{$theme->name}",
                 'baseUrl' => "@web/themes/{$theme->name}",
                 'pathMap' => [
-                    '@app/views' => "@app/themes/{$theme->name}",
+                    '@app/views' => "@app/theme/{$theme->name}",
                 ],
             ]);
             // configurar el tema en la sesión        

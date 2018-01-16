@@ -84,6 +84,22 @@ class SettingsController extends Controller {
         array_unshift($files_list, Yii::t('app', 'Choose an option'));
         // último elemento en el array
         array_push($files_list, Yii::t('app', 'Upload File:'));
+        return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
+    }
+    
+    public function actionLibrarySettingsUpdate() {
+        $model = $this->findModel();
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
+        $files_list = [];
+        foreach ($files as $file) {
+            $file_name = substr($file, strrpos($file, "/") + 1);
+            $files_list[$file_name] = $file_name;
+        }
+        // primer elemento en el array
+        array_unshift($files_list, Yii::t('app', 'Choose an option'));
+        // último elemento en el array
+        array_push($files_list, Yii::t('app', 'Upload File:'));
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstanceByName('imageFile');
             if ($model->imageFile) {

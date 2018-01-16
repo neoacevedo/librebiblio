@@ -26,7 +26,7 @@ return [
     'Copy Search' => '',
     'Create' => '',
     'Create Acquisitions' => '',
-    'Export to PDF' => '',
+    'Generated' => '',
     'Group By' => '',
     'ID' => '',
     'Most Popular Bibliographies' => '',
@@ -38,4 +38,5 @@ return [
     'Update {modelClass}: ' => '',
     'Are you sure you want to delete this item?' => '@@@@',
     'Delete' => '@@@@',
+    'Export to PDF' => '@@@@',
 ];

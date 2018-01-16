@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\ThemeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/themes', 'Themes');
+$this->title = Yii::t('app/theme', 'Themes');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
 $this->params['breadcrumbs'][] = $this->title;
 $js = "
@@ -57,7 +57,7 @@ $this->registerJs($js);
                 'name',
                 [
                     'attribute' => 'frontend',
-                    'label' => Yii::t('app/themes', 'Location'),
+                    'label' => Yii::t('app/theme', 'Location'),
                     'filter' => [1 => 'Frontend', 0 => 'Backend'],
                     'value' => function($model) {
                         return ($model->frontend == 1) ? 'Frontend' : 'Backend';

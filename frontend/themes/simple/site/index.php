@@ -15,10 +15,10 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
         if ($settings->library_image_url === null) {
             echo "<h1>$this->title</h1>";
         }
-        if ($settings->library_image_url !== null && $settings->use_image_flg == 0) {
-            echo "<h1>" . Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $this->title, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
+        if ($settings->library_image_url !== null && $settings->use_image_flg === 0) {
+            echo "<h1>" . Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $this->title, 'class' => 'img-responsive', 'style' => 'width: 96px; padding: 0 0; display: inline-block']);
             echo "$this->title</h1>";
-        } else if ($settings->library_image_url !== null && $settings->use_image_flg == 1) {
+        } else if ($settings->library_image_url !== null && $settings->use_image_flg === 'Y') {
             echo Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $this->title, 'class' => 'img-responsive', 'style' => 'display: inline-block']);
         }
         ?>

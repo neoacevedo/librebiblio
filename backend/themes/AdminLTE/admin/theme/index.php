@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\ThemeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/themes', 'Themes');
+$this->title = Yii::t('app/theme', 'Themes');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
 $this->params['breadcrumbs'][] = $this->title;
 $js = "
@@ -35,7 +35,7 @@ $this->registerJs($js);
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-xs-12">
-                <button id="create" class="btn btn-success btn-block"><?= Yii::t('app', 'Install') ?></button>
+                <button id="create" class="btn btn-success btn-block"><?= Yii::t('app/theme', 'Install') ?></button>
             </div>
         </div>
         <div class="row">
@@ -55,7 +55,7 @@ $this->registerJs($js);
                         'name',
                         [
                             'attribute' => 'frontend',
-                            'label' => Yii::t('app/themes', 'Location'),
+                            'label' => Yii::t('app/theme', 'Location'),
                             'filter' => [1 => 'Frontend', 0 => 'Backend'],
                             'value' => function($model) {
                                 return ($model->frontend == 1) ? 'Frontend' : 'Backend';
@@ -64,7 +64,7 @@ $this->registerJs($js);
                         [
                             'attribute' => 'active',
                             'label' => Yii::t('app', 'Status'),
-                            'filter' => [1 => Yii::t('app/themes', 'Active'), 0 => Yii::t('app/theme', 'Inactive')],
+                            'filter' => [1 => Yii::t('app', 'Active'), 0 => Yii::t('app', 'Inactive')],
                             'format' => 'raw',
                             'value' => function($model) {
 

@@ -116,6 +116,7 @@ return [
     'Permissions' => '',
     'Place Hold' => '',
     'Please choose your new password' => '',
+    'Please fill out the following fields to signup:' => '',
     'Purge History After Months' => '',
     'Renewal' => '',
     'Renewal Count' => '',

@@ -19,7 +19,7 @@
 return [
     'Add/Edit/Delete Checkout for Library Members.' => '',
     'Checkout Privileges' => '',
-    'Settings changed successfuly.' => '',
+    'Settings changed successfuly.' => 'Configuraciones actualizadas satisfactoriamente.',
     'Add/Edit/Delete Bibliograhical Collections.' => 'Agregar/Editar/Borrar Colecciones Bibliográficas.',
     'Add/Edit/Delete Classification for Library Members.' => 'Agregar/Editar/Borrar Clasificaciones para Miembros de la Biblioteca.',
     'Add/Edit/Delete Material types for Library.' => 'Agregar/Editar/Borrar Tipos de material para la Biblioteca',

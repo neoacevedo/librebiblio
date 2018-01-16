@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Theme */
 
-$this->title = Yii::t('app/themes', 'Update {modelClass}: ', [
+$this->title = Yii::t('app/theme', 'Update {modelClass}: ', [
     'modelClass' => 'Theme',
 ]) . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/themes', 'Themes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/theme', 'Themes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app/themes', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="theme-update">
 

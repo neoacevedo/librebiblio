@@ -17,16 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Could not copy theme files.' => '',
-    'Frontend' => '',
-    'Inactive' => '',
-    'Skin' => '',
-    'Theme installed successfully.' => '',
-    'Theme uninstalled successfully.' => '',
-    'Theme updated successfully.' => '',
-    'Active' => '@@@@',
-    'Created At' => '@@@@',
-    'ID' => '@@@@',
-    'Location' => '@@@@',
-    'Name' => '@@@@',
+    'Could not copy theme files.' => 'No se pudieron copiar los archivos del tema.',
+    'Frontend' => 'Público',
+    'Install' => 'Instalar',
+    'Location' => 'Ubicación',
+    'Skin' => 'Apariencia',
+    'Theme installed successfully.' => 'Tema instalado satisfactoriamente.',
+    'Theme uninstalled successfully.' => 'Tema desinstalado satisfactoriamente',
+    'Theme updated successfully.' => 'Tema actualizado satisfactoriamente',
+    'Themes' => 'Temas',
+    'Update {modelClass}: ' => 'Actualizar {modelClass}:',    
 ];

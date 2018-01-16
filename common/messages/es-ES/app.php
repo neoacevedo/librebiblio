@@ -45,6 +45,7 @@ return [
     'Name' => '',
     'No' => '',
     'Offline' => '',
+    'Please fill out the following fields to signup:' => '',
     'Repeatable Flg' => '',
     'Roles' => '',
     'Rules' => '',

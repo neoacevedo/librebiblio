@@ -19,14 +19,12 @@
 return [
     'Could not copy theme files.' => '',
     'Frontend' => '',
-    'Inactive' => '',
+    'Install' => '',
+    'Location' => '',
     'Skin' => '',
     'Theme installed successfully.' => '',
     'Theme uninstalled successfully.' => '',
     'Theme updated successfully.' => '',
-    'Active' => '@@@@',
-    'Created At' => '@@@@',
-    'ID' => '@@@@',
-    'Location' => '@@@@',
-    'Name' => '@@@@',
+    'Themes' => '',
+    'Update {modelClass}: ' => '',
 ];

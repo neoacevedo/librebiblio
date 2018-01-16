@@ -163,13 +163,15 @@ class ThemeController extends Controller {
                 if ($model->load(Yii::$app->request->post())) {
                     $current_theme->active = 0;
                     if ($current_theme->save() && $model->save()) {
-                        if (isset($model->skin) || $model->skin !== '') {
+                        /*if (isset($model->skin) || $model->skin !== '') {
                             if ($model->frontend == 0) {
+                                Yii::$app->session->remove("backend-skin");
                                 Yii::$app->session->set("backend-skin", $model->skin);
                             } else {
+                                Yii::$app->session->remove("frontend-skin");
                                 Yii::$app->session->set("frontend-skin", $model->skin);
                             }
-                        }
+                        }*/
                     }
                     Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                     return $this->redirect(['index']);
