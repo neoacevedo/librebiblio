@@ -37,7 +37,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' => "OpenBiblio2",
+                'brandLabel' => "",
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar navbar-default navbar-static-top',

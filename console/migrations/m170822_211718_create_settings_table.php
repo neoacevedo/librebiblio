@@ -16,7 +16,7 @@ class m170822_211718_create_settings_table extends Migration
         $this->createTable('{{%settings}}', [
             'library_name' => $this->string(128),
             'library_image_url' => $this->string(255),
-            'use_image_flg' => $this->char(1),
+            'use_image_flg' => $this->smallInteger(1)->unsigned(),
             'library_hours' => $this->string(128)->notNull(),
             'library_phone' => $this->string(49),
             'purge_history_after_months' => $this->smallInteger()->notNull(),

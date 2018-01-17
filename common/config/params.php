@@ -3,7 +3,7 @@
 if ($hash = sprintf("%s", `git describe --all --long | cut -d "-" -f 3`)) {
     $version = "2.18.1.$hash";
 } else {
-    $version = "2.18.1.g4f886e4";
+    $version = "2.18.1.g45a7192";
 }
 return [
     'adminEmail' => getenv('USERNAME'),

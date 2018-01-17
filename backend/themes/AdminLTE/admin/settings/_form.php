@@ -39,7 +39,7 @@ $this->registerJs($js);
     <?= Html::fileInput('imageFile', '', ['id' => 'file', 'style' => ['display' => 'none']]) ?>
     
     <div class="checkbox">
-        <?= $form->field($model, "use_image_flg")->checkbox(['value' => 'Y']) ?>
+        <?= $form->field($model, "use_image_flg")->checkbox(['value' => 1]) ?>
     </div>
 
     <?= $form->field($model, "library_hours")->textInput(['maxlength' => true]) ?>
