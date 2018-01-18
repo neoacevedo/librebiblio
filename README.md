@@ -4,15 +4,9 @@ OpenBiblio2
 OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP. Cuenta con características como Circulación, Catalogación, 
 Administración de personal y usuarios.
 
-OpenBiblio2 está basado en [OpenBiblio](http://obiblio.sourceforge.net/) OpenBiblio, desarrollado por Dave Stevens. 
+OpenBiblio2 está basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave Stevens. 
 
-
-
-Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-developing complex Web applications with multiple tiers.
-
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+Esta aplicación está creada con [Yii 2](http://www.yiiframework.com/) con la plantilla avanzada.
 
 Documentation is at [docs/guide/README.md](docs/guide/README.md).
 
@@ -20,7 +14,7 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-advanced/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
 [![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
 
-DIRECTORY STRUCTURE
+ESTRUCTURA DE DIRECTORIOS
 -------------------
 
 ```
@@ -39,8 +33,11 @@ backend
     assets/              contains application assets such as JavaScript and CSS
     config/              contains backend configurations
     controllers/         contains Web controller classes
+    reports/             contiene clases modelo específicas para la generación de reportes 
     models/              contains backend-specific model classes
     runtime/             contains files generated during runtime
+    themes/              contiene los temas del backend
+    tmp/                 directorio temporal específico para la carga de archivos de tema.
     tests/               contains tests for backend application    
     views/               contains view files for the Web application
     web/                 contains the entry script and Web resources
@@ -50,6 +47,7 @@ frontend
     controllers/         contains Web controller classes
     models/              contains frontend-specific model classes
     runtime/             contains files generated during runtime
+    themes/              contiene los temas del frontend
     tests/               contains tests for frontend application
     views/               contains view files for the Web application
     web/                 contains the entry script and Web resources
