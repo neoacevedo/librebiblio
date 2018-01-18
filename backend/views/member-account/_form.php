@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 
-    <?= $form->field($model, 'create_userid')->textInput() ?>
-
     <?= $form->field($model, 'transaction_type_cd')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
@@ -24,6 +22,10 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('circulation', 'Save'), ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <div class="hidden">
+        <?= $form->field($model, 'create_userid')->hiddenInput(['value' => \Yii::$app->user->id])->label("") ?>
     </div>
 
     <?php ActiveForm::end(); ?>

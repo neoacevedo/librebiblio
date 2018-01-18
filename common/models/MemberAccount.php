@@ -56,4 +56,13 @@ class MemberAccount extends \yii\db\ActiveRecord
         ];
     }
     
+    /**
+     * Devuelve el ID del usuario que modificó la información del material bibliográfico
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(\backend\models\User::className(), ['id' => 'create_userid']);
+    }
+    
 }

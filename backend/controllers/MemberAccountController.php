@@ -12,13 +12,12 @@ use yii\filters\VerbFilter;
 /**
  * MemberAccountController implements the CRUD actions for MemberAccount model.
  */
-class MemberAccountController extends Controller
-{
+class MemberAccountController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +32,13 @@ class MemberAccountController extends Controller
      * Lists all MemberAccount models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new MemberAccountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -51,10 +49,10 @@ class MemberAccountController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $mbr_id)
-    {
+    public function actionView($id, $mbr_id) {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-            'model' => $this->findModel($id, $mbr_id),
+                    'model' => $this->findModel($id, $mbr_id),
         ]);
     }
 
@@ -63,16 +61,15 @@ class MemberAccountController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new MemberAccount();
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         }
 
         return $this->render('create', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -84,16 +81,15 @@ class MemberAccountController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $mbr_id)
-    {
+    public function actionUpdate($id, $mbr_id) {
         $model = $this->findModel($id, $mbr_id);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -105,8 +101,7 @@ class MemberAccountController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id, $mbr_id)
-    {
+    public function actionDelete($id, $mbr_id) {
         $this->findModel($id, $mbr_id)->delete();
 
         return $this->redirect(['index']);
@@ -120,12 +115,12 @@ class MemberAccountController extends Controller
      * @return MemberAccount the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $mbr_id)
-    {
+    protected function findModel($id, $mbr_id) {
         if (($model = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('circulation', 'The requested page does not exist.'));
     }
+
 }
