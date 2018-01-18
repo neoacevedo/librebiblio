@@ -12,4 +12,6 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 't
     <p>Follow the link below to reset your password:</p>
 
     <p><?= Html::a(Html::encode($resetLink), $resetLink) ?></p>
+    
+    <p>This link expires in <?= (Yii::$app->params['user.passwordResetTokenExpire'] / 60 / 60) ?> hour(s)</p>
 </div>

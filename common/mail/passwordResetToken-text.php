@@ -10,3 +10,5 @@ Hello <?= $user->username ?>,
 Follow the link below to reset your password:
 
 <?= $resetLink ?>
+
+This link expires in <?= (Yii::$app->params['user.passwordResetTokenExpire'] / 60 / 60) ?> hour(s)

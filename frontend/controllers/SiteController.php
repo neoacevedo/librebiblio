@@ -206,7 +206,7 @@ class SiteController extends Controller
     {
         $model = new PasswordResetRequestForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        var_dump(Yii::$app->request->post());
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Check your email for further instructions.'));

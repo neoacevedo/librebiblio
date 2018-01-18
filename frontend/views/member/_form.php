@@ -37,7 +37,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
 
     <div class="row">
         <div class="col-xs-4">
-            <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 100000]) ?>
+            <?= $form->field($model, 'phone')->textInput() ?>
         </div>
     </div>
 

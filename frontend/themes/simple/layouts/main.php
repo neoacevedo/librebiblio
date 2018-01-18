@@ -56,7 +56,6 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                     'label' => Yii::$app->user->identity->username,
                     'items' => [
                         ['label' => Yii::t('app', 'My Account'), 'url' => ['/member/account']],
-                        ['label' => Yii::t('app', 'History'), 'url' => ['/member/history']],
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(

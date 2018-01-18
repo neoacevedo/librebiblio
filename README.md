@@ -1,14 +1,18 @@
-Yii 2 Advanced Project Template
+OpenBiblio2
 ===============================
+
+OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP. Cuenta con características como Circulación, Catalogación, 
+Administración de personal y usuarios.
+
+OpenBiblio2 está basado en [OpenBiblio](http://obiblio.sourceforge.net/) OpenBiblio, desarrollado por Dave Stevens. 
+
+
 
 Yii 2 Advanced Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
 developing complex Web applications with multiple tiers.
 
 The template includes three tiers: front end, back end, and console, each of which
 is a separate Yii application.
-
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
 
 Documentation is at [docs/guide/README.md](docs/guide/README.md).
 

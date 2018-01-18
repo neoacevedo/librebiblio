@@ -61,7 +61,6 @@ if ($settings->use_image_flg == 0) {
                     'label' => Yii::$app->user->identity->username,
                     'items' => [
                         ['label' => Yii::t('app', 'My Account'), 'url' => ['/member/account']],
-                        ['label' => Yii::t('app', 'History'), 'url' => ['/member/history']],
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(
