@@ -132,7 +132,7 @@ En nginx:
         listen 80; ## listen for ipv4
         #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
 
-        server_name frontend.test;
+        server_name openbiblio2.tld;
         root        /ruta/al/directorio/de/openbiblio2/frontend/web/;
         index       index.php;
 
@@ -175,7 +175,7 @@ En nginx:
         listen 80; ## listen for ipv4
         #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
     
-        server_name backend.test;
+        server_name backend.openbiblio2.tld;
         root        /ruta/al/directorio/de/openbiblio2/backend/web/;
         index       index.php;
     
