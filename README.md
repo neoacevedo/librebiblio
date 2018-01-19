@@ -97,7 +97,7 @@ En Apache:
     </VirtualHost>
     
     <VirtualHost *:80>
-        ServerName backend.openbiblio.tld
+        ServerName backend.openbiblio2.tld
         DocumentRoot "/ruta/al/directorio/de/openbiblio2/backend/web/"
         
         <Directory "/ruta/al/directorio/de/openbiblio2/backend/web/">
@@ -133,11 +133,11 @@ En nginx:
         #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
 
         server_name frontend.test;
-        root        /path/to/yii-application/frontend/web/;
+        root        /ruta/al/directorio/de/openbiblio2/frontend/web/;
         index       index.php;
 
-        access_log  /path/to/yii-application/log/frontend-access.log;
-        error_log   /path/to/yii-application/log/frontend-error.log;
+        access_log  /ruta/al/directorio/de/openbiblio2/log/frontend-access.log;
+        error_log   /ruta/al/directorio/de/openbiblio2/log/frontend-error.log;
 
         location / {
             # Redirect everything that isn't a real file to index.php
@@ -176,11 +176,11 @@ En nginx:
         #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
     
         server_name backend.test;
-        root        /path/to/yii-application/backend/web/;
+        root        /ruta/al/directorio/de/openbiblio2/backend/web/;
         index       index.php;
     
-        access_log  /path/to/yii-application/log/backend-access.log;
-        error_log   /path/to/yii-application/log/backend-error.log;
+        access_log  /ruta/al/directorio/de/openbiblio2/log/backend-access.log;
+        error_log   /ruta/al/directorio/de/openbiblio2/log/backend-error.log;
     
         location / {
             # Redirect everything that isn't a real file to index.php
@@ -212,6 +212,7 @@ En nginx:
     }
 ```
 
+Hecho esto, puede acceder al backend desde la URL configurada __backend.openbiblio2.tld__ con usuario y contraseña **__admin__**
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------
