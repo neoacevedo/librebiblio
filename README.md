@@ -12,18 +12,20 @@ Además permite el registro de miembros desde la parte administrativa y la públ
 [![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
 
 INSTALACIÓN
------------
-REQUERIMIENTOS
------
+===========
+## Requerimientos
+
 PHP 7
 
-Instalando desde Composer
-___
+## Instalando desde Composer
+
 Primero, se debe comprobar de que se tenga la última versión del plugin [Composer Assets](https://github.com/francoispluchino/composer-asset-plugin): 
-`php composer.phar global require "fxp/composer-asset-plugin:^1.2.0"`
+    
+    php composer.phar global require "fxp/composer-asset-plugin:^1.2.0"
 
 Luego instalar OpenBiblio2 desde Composer:
-`php composer.phar create-project neoacevedo/openbiblio2`
+
+    php composer.phar create-project neoacevedo/openbiblio2
 
 
 
