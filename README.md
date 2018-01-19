@@ -212,7 +212,7 @@ En nginx:
     }
 ```
 
-Hecho esto, puede acceder al backend desde la URL configurada _backend.openbiblio2.tld_ con usuario y contraseña *_admin_*
+Hecho esto, puede acceder al backend desde la URL configurada _backend.openbiblio2.tld_ con usuario y contraseña **_admin_**
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------
