@@ -16,6 +16,7 @@ INSTALACIÓN
 REQUERIMIENTOS
 -----
 PHP 7
+
 Instalando desde Composer
 ___
 Primero, se debe comprobar de que se tenga la última versión del plugin [Composer Assets](https://github.com/francoispluchino/composer-asset-plugin): 
