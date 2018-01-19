@@ -40,14 +40,14 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
     
     php /ruta/al/directorio/de/openbiblio2 init
 
-De manera automatizada se pueden especificar el entorno bajo el que correrá la aplicación:
+    De manera automatizada se pueden especificar el entorno bajo el que correrá la aplicación:
 
     php /ruta/al/directorio/de/openbiblio2/init --env=Production --overwrite=All
 
 2. Si no lo ha hecho, cree una base de datos. Posterior a ello sobreescriba el archivo `common/config/main-local.php`con los de **main.php** 
    y modifique los valores de la configuración de base de datos de acuerdo a su entorno:
 
-```
+    ```
     'db' => [
         'class' => 'yii\db\Connection',
         'dsn' => "mysql:host=your-local-host;dbname=your-database-name",
@@ -56,7 +56,7 @@ De manera automatizada se pueden especificar el entorno bajo el que correrá la 
         'charset' => 'utf8',
         'enableQueryCache' => true
     ],
-```
+    ```
 
 3. De manera predefinida la caché y la sesión se manejan desde **Memcached**. Esto se puede modificar desde el archivo 
 `common/config/cache.php` modificando el valor `$cache['class'] = "yii\caching\MemCache";` por `$cache['class'] = 'yii\caching\FileCache';`
@@ -212,7 +212,7 @@ En nginx:
     }
 ```
 
-Hecho esto, puede acceder al backend desde la URL configurada +backend.openbiblio2.tld+ con usuario y contraseña **+admin+**
+Hecho esto, puede acceder al backend desde la URL configurada _backend.openbiblio2.tld_ con usuario y contraseña *_admin_*
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------
