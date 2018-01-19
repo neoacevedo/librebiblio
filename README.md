@@ -1,18 +1,31 @@
 OpenBiblio2
 ===============================
 
-OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP. Cuenta con características como Circulación, Catalogación, 
-Administración de personal y usuarios.
+OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP, basado en [OpenBiblio](http://obiblio.sourceforge.net/), 
+desarrollado por Dave Stevens y desarrollada con [Yii 2](http://www.yiiframework.com/).
 
-OpenBiblio2 está basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave Stevens. 
-
-Esta aplicación está creada con [Yii 2](http://www.yiiframework.com/) con la plantilla avanzada.
-
-Documentation is at [docs/guide/README.md](docs/guide/README.md).
+Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
+Además permite el registro de miembros desde la parte administrativa y la pública.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-advanced/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-advanced/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
 [![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
+
+INSTALACIÓN
+-----------
+REQUERIMIENTOS
+-----
+PHP 7
+Instalando desde Composer
+___
+Primero, se debe comprobar de que se tenga la última versión del plugin [Composer Assets](https://github.com/francoispluchino/composer-asset-plugin): 
+`php composer.phar global require "fxp/composer-asset-plugin:^1.2.0"`
+
+Luego instalar OpenBiblio2 desde Composer:
+`php composer.phar create-project neoacevedo/openbiblio2`
+
+
+
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------
