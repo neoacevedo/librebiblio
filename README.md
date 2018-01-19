@@ -15,7 +15,8 @@ INSTALACIÓN
 ===========
 ## Requerimientos
 
-PHP 7
++ PHP 7
++ MySQL o MariaDB (Por ahora)
 
 ## Instalando desde Composer
 
@@ -27,7 +28,189 @@ Luego instalar OpenBiblio2 desde Composer:
 
     php composer.phar create-project neoacevedo/openbiblio2
 
+## Desde un archivo comprimido
 
+Descargue el archivo comprimido desde []() y proceda a descomprimirlo en el directorio raiz de su sitio web o en public_html 
+
+## Preparando la aplicación
+
+Al estar desarrollado en Yii2, los comandos para preparar la aplicación son básicamente los mismos. Estos pasos solo los ejecuta una sola vez.
+
+1. Desde la terminal, ejecute el siguiente comando y elija el entorno de acuerdo al que requiera (dev o prod):
+    
+    php /ruta/al/directorio/de/openbiblio2 init
+
+De manera automatizada se pueden especificar el entorno bajo el que correrá la aplicación:
+
+    php /ruta/al/directorio/de/openbiblio2/init --env=Production --overwrite=All
+
+2. Si no lo ha hecho, cree una base de datos. Posterior a ello sobreescriba el archivo `common/config/main-local.php`con los de **main.php** 
+   y modifique los valores de la configuración de base de datos de acuerdo a su entorno:
+
+```
+    'db' => [
+        'class' => 'yii\db\Connection',
+        'dsn' => "mysql:host=your-local-host;dbname=your-database-name",
+        'username' => 'your-username',
+        'password' => 'your-password',
+        'charset' => 'utf8',
+        'enableQueryCache' => true
+    ],
+```
+
+3. De manera predefinida la caché y la sesión se manejan desde **Memcached**. Esto se puede modificar desde el archivo 
+`common/config/cache.php` modificando el valor `$cache['class'] = "yii\caching\MemCache";` por `$cache['class'] = 'yii\caching\FileCache';`
+
+4. Desde la terminal, ejecute las migraciones:
+
+    php /ruta/al/directorio/de/openbiblio2/yii migrate
+
+5. Opcional en desarrollo, OBLIGATORIO EN PRODUCCIÓN. Ajuste los host virtuales.
+
+En Apache:
+
+```
+    <VirtualHost *:80>
+        ServerName openbiblio2.tld
+        DocumentRoot "/ruta/al/directorio/de/openbiblio2/frontend/web/"
+        
+        <Directory "/ruta/al/directorio/de/openbiblio2/frontend/web/">
+            # use mod_rewrite for pretty URL support
+            RewriteEngine on
+            # If a directory or a file exists, use the request directly
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            # Otherwise forward the request to index.php
+            RewriteRule . index.php
+
+            # use index.php as index file
+            DirectoryIndex index.php
+
+            # ...other settings...
+            # Apache 2.4
+            Require all granted
+            
+            ## Apache 2.2
+            # Order allow,deny
+            # Allow from all
+        </Directory>
+    </VirtualHost>
+    
+    <VirtualHost *:80>
+        ServerName backend.openbiblio.tld
+        DocumentRoot "/ruta/al/directorio/de/openbiblio2/backend/web/"
+        
+        <Directory "/ruta/al/directorio/de/openbiblio2/backend/web/">
+            # use mod_rewrite for pretty URL support
+            RewriteEngine on
+            # If a directory or a file exists, use the request directly
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            # Otherwise forward the request to index.php
+            RewriteRule . index.php
+
+            # use index.php as index file
+            DirectoryIndex index.php
+
+            # ...other settings...
+            # Apache 2.4
+            Require all granted
+            
+            ## Apache 2.2
+            # Order allow,deny
+            # Allow from all
+        </Directory>
+    </VirtualHost>
+``` 
+En nginx:
+
+```
+    server {
+        charset utf-8;
+        client_max_body_size 128M;
+
+        listen 80; ## listen for ipv4
+        #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
+
+        server_name frontend.test;
+        root        /path/to/yii-application/frontend/web/;
+        index       index.php;
+
+        access_log  /path/to/yii-application/log/frontend-access.log;
+        error_log   /path/to/yii-application/log/frontend-error.log;
+
+        location / {
+            # Redirect everything that isn't a real file to index.php
+            try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+        # uncomment to avoid processing of calls to non-existing static files by Yii
+        #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+        #    try_files $uri =404;
+        #}
+        #error_page 404 /404.html;
+
+        # deny accessing php files for the /assets directory
+        location ~ ^/assets/.*\.php$ {
+            deny all;
+        }
+
+        location ~ \.php$ {
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_pass 127.0.0.1:9000;
+            #fastcgi_pass unix:/var/run/php5-fpm.sock;
+            try_files $uri =404;
+        }
+    
+        location ~* /\. {
+            deny all;
+        }
+    }
+     
+    server {
+        charset utf-8;
+        client_max_body_size 128M;
+    
+        listen 80; ## listen for ipv4
+        #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
+    
+        server_name backend.test;
+        root        /path/to/yii-application/backend/web/;
+        index       index.php;
+    
+        access_log  /path/to/yii-application/log/backend-access.log;
+        error_log   /path/to/yii-application/log/backend-error.log;
+    
+        location / {
+            # Redirect everything that isn't a real file to index.php
+            try_files $uri $uri/ /index.php$is_args$args;
+        }
+    
+        # uncomment to avoid processing of calls to non-existing static files by Yii
+        #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+        #    try_files $uri =404;
+        #}
+        #error_page 404 /404.html;
+
+        # deny accessing php files for the /assets directory
+        location ~ ^/assets/.*\.php$ {
+            deny all;
+        }
+
+        location ~ \.php$ {
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_pass 127.0.0.1:9000;
+            #fastcgi_pass unix:/var/run/php5-fpm.sock;
+            try_files $uri =404;
+        }
+    
+        location ~* /\. {
+            deny all;
+        }
+    }
+```
 
 
 ESTRUCTURA DE DIRECTORIOS
