@@ -35,7 +35,7 @@ Luego instalar OpenBiblio2 desde Composer:
 
 ## Desde un archivo comprimido
 
-Descargue el archivo comprimido desde []() y proceda a descomprimirlo en el directorio raiz de su sitio web o en public_html 
+Descargue el archivo comprimido desde [Github](https://github.com/neoacevedo/openbiblio2/archive/2.18.1.zip) y proceda a descomprimirlo en el directorio raiz de su sitio web o en public_html 
 
 ## Preparando la aplicación
 
@@ -49,8 +49,8 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
 
     php /ruta/al/directorio/de/openbiblio2/init --env=Production --overwrite=All
 
-2. Si no lo ha hecho, cree una base de datos. Posterior a ello sobreescriba el archivo `common/config/main-local.php`con los de **main.php** 
-   y modifique los valores de la configuración de base de datos de acuerdo a su entorno:
+2. Si no lo ha hecho, cree una base de datos. Posterior a ello modifique los parámetros de conexión en el archivo `common/config/database.php`
+   de acuerdo a su entorno:
 
     ```
     'db' => [
