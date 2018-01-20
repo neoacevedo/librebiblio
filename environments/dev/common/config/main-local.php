@@ -98,9 +98,9 @@ return [
                 try {
                     $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
                 } catch (Exception $ex) {
-                    
+                    $library_name = "OpenBiblio2";
                 }
-                return $library_name ?: "OpenBiblio2";
+                return $library_name;
             }),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],

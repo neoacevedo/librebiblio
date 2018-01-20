@@ -55,7 +55,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                 $menuItems[] = [
                     'label' => Yii::$app->user->identity->username,
                     'items' => [
-                        ['label' => Yii::t('app', 'My Account'), 'url' => ['/member/account']],
+                        ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(

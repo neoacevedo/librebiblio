@@ -36,7 +36,7 @@ class MemberController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['history', 'account', 'update'],
+                        'actions' => ['history', 'profile', 'account', 'update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -86,15 +86,36 @@ class MemberController extends Controller {
         ]);
     }
 
-    public function actionAccount() {
+    /**
+     * Muestra el perfil del miembro.
+     * @return mixed
+     */
+    public function actionProfile() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('account', [
+        return $this->render('profile', [
+                    'model' => $model,
+        ]);
+    }
+    
+    /**
+     * Muestra la cuenta actual del miembro.
+     * @return mixed
+     */
+    public function actionAccountView() {
+        $id = Yii::$app->user->id;
+        $model = $this->findModel($id);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return $this->render('account-view', [
                     'model' => $model,
         ]);
     }
 
+    /**
+     * Actualiza la información del miembro.
+     * @return mixed
+     */
     public function actionUpdate() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);

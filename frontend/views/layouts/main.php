@@ -60,7 +60,7 @@ if ($settings->use_image_flg == 0) {
                 $menuItems[] = [
                     'label' => Yii::$app->user->identity->username,
                     'items' => [
-                        ['label' => Yii::t('app', 'My Account'), 'url' => ['/member/account']],
+                        ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(

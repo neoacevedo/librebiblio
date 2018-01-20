@@ -31,7 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'mbr_id',
             'created_at',
-            'create_userid',
+            [
+                'attribute' => 'user',
+                'value' => 'user.username',
+                'label' => \Yii::t('app', 'Updated by')
+            ],
             'transaction_type_cd',
             'amount',
             'description',
