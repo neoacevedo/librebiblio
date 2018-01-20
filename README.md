@@ -7,9 +7,14 @@ desarrollado por Dave Stevens y desarrollada con [Yii 2](http://www.yiiframework
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-advanced/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-advanced/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
+[![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
+
+[![Latest Stable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/stable)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![Total Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/downloads)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![Latest Unstable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/unstable)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![License](https://poser.pugx.org/neoacevedo/openbiblio2/license)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![Monthly Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/d/monthly)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![Daily Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/d/daily)](https://packagist.org/packages/neoacevedo/openbiblio2)
 
 INSTALACIÓN
 ===========
