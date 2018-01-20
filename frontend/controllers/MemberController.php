@@ -100,33 +100,35 @@ class MemberController extends Controller {
                     'model' => $model,
         ]);
     }
-    
+
     /**
      * Muestra la cuenta actual del miembro.
      * @return mixed
      */
     public function actionAccount() {
-        
+
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        
+
         $searchModel = new MemberAccountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account', [
+                    'model' => $model,
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
     }
-    
+
     public function actionAccountView($id, $mbr_id) {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account-view', [
-                    'model' => MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]),
+                    'model' => $model,
+                    'memberAccount' => MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]),
         ]);
     }
 
@@ -142,8 +144,8 @@ class MemberController extends Controller {
             return $this->redirect(['account']);
         } else {
             @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
             return $this->render('update', [
                         'model' => $model,
             ]);

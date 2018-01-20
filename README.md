@@ -1,8 +1,8 @@
 OpenBiblio2
 ===============================
 
-OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP, basado en [OpenBiblio](http://obiblio.sourceforge.net/), 
-desarrollado por Dave Stevens y desarrollada con [Yii 2](http://www.yiiframework.com/).
+OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP con [Yii 2](http://www.yiiframework.com/), 
+basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave Stevens.
 
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
@@ -31,7 +31,7 @@ Primero, se debe comprobar de que se tenga la última versión del plugin [Compo
 
 Luego instalar OpenBiblio2 desde Composer:
 
-    php composer.phar create-project neoacevedo/openbiblio2
+    php composer.phar create-project --prefer-dist neoacevedo/openbiblio2
 
 ## Desde un archivo comprimido
 
