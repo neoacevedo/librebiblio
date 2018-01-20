@@ -17,10 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
-    <p>
-        <?= Html::a(Yii::t('circulation', 'Create Member Account'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
@@ -28,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-            'mbr_id',
             'created_at',
             //'create_userid',
             [
@@ -39,7 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'transaction_type_cd',
             //'amount',
             //'description',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'
+            ],
         ],
     ]);
     ?>

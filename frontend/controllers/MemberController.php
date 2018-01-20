@@ -11,6 +11,8 @@ namespace frontend\controllers;
 use Yii;
 use DateTime;
 use common\models\Member;
+use common\models\MemberAccount;
+use common\models\MemberAccountSearch;
 use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -103,12 +105,28 @@ class MemberController extends Controller {
      * Muestra la cuenta actual del miembro.
      * @return mixed
      */
-    public function actionAccountView() {
+    public function actionAccount() {
+        
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
+        
+        $searchModel = new MemberAccountSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return $this->render('account', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    public function actionAccountView($id, $mbr_id) {
+        $id = Yii::$app->user->id;
+        $model = $this->findModel($id);
+        
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account-view', [
-                    'model' => $model,
+                    'model' => MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]),
         ]);
     }
 

@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-            'mbr_id',
             'created_at',
             //'create_userid',
             [
@@ -35,7 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'transaction_type_cd',
             //'amount',
             //'description',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'
+            ],
         ],
     ]);
     ?>
