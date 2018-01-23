@@ -18,6 +18,7 @@ $this->title = Yii::t('app', 'Profile');
                 'username',
                 'first_name',
                 'last_name',
+                'pin',
                 [
                     'attribute' => 'classification',
                     'value' => Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}} where id = $model->classification_id")->queryOne()['description'],

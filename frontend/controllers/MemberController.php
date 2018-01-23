@@ -141,6 +141,7 @@ class MemberController extends Controller {
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['account']);
         } else {
             @array_walk_recursive($model->errors, function($v, $k) {

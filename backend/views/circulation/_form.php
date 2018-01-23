@@ -22,12 +22,14 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
             <?= $form->field($model, 'last_name')->textInput() ?>
         </div>
     </div>
+    
+    <?= $form->field($model, 'pin')->input('number', ['min' => 1]) ?>
 
     <?= $form->field($model, 'address') ?>
 
     <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 100000]) ?>
+    <?= $form->field($model, 'phone')->textInput() ?>
 
     <?= $form->field($model, 'classification_id')->label(Yii::t('app', 'Classification'))->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
 

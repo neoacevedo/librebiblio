@@ -22,6 +22,12 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
             <?= $form->field($model, 'last_name')->textInput() ?>
         </div>
     </div>
+    
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <?= $form->field($model, 'pin')->input('number', ['readonly' => true]) ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-4 col-xs-6">

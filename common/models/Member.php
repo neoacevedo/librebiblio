@@ -15,6 +15,7 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @propoerty string $first_name
  * @propoerty string $last_name
+ * @property double $pin
  * @property string phone
  * @property string $password_hash
  * @property string $password_reset_token
@@ -60,6 +61,8 @@ class Member extends ActiveRecord implements IdentityInterface {
             ['last_name', 'trim'],
             ['last_name', 'required'],
             ['last_name', 'string', 'min' => 4, 'max' => 255],
+            ['pin', 'number'],
+            ['pin', 'required'],
             ['phone', 'trim'],
             ['phone', 'required'],
             ['phone', 'string', 'min' => 4, 'max' => 32],
