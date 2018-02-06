@@ -19,7 +19,9 @@ class m170704_010737_create_usmarc_indicator_dm_table extends Migration
             'description' => $this->string(80)->notNull(),
             'PRIMARY KEY (tag, indicator_nmbr, indicator_cd)'
         ]);
-        
+    }
+    
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_indicator_dm.sql");
         $this->execute($sql);

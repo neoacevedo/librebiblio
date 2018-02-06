@@ -12,7 +12,6 @@ class m170626_040304_create_collection_dm_table extends Migration
      */
     public function up()
     {
-        $language = str_replace("_", "-", locale_get_default());
         $this->createTable('{{%collection_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
@@ -20,7 +19,10 @@ class m170626_040304_create_collection_dm_table extends Migration
             'days_due_back' => $this->smallInteger()->unsigned()->notNull(),
             'daily_late_fee' => $this->decimal(4,2)->notNull(),
         ]);
-        
+    }
+    
+    public function safeUp() {
+        $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/collection_dm.sql");
         $this->execute($sql);
     }

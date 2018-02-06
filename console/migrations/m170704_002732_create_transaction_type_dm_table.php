@@ -18,7 +18,9 @@ class m170704_002732_create_transaction_type_dm_table extends Migration
             'default_flg' => $this->char(1)->notNull(),
             'PRIMARY KEY (code)'
         ]);
-        
+    }
+    
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/transaction_type_dm.sql");
         $this->execute($sql);

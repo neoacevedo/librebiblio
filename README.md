@@ -1,13 +1,14 @@
 OpenBiblio2
 ===============================
 
-OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC desarrollado en PHP con [Yii 2](http://www.yiiframework.com/), 
+OpenBiblio2 es un sistema automatizado de gestión bibliotecaria y OPAC, [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/), 
 basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave Stevens.
 
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
 
-[![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/neoacevedo)
+
 
 [![Latest Stable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/stable)](https://packagist.org/packages/neoacevedo/openbiblio2)
 [![Total Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/downloads)](https://packagist.org/packages/neoacevedo/openbiblio2)

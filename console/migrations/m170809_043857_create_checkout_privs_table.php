@@ -58,7 +58,9 @@ class m170809_043857_create_checkout_privs_table extends Migration
             'id',
             'CASCADE'
         );
-        
+    }
+    
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/checkout_privs.sql");
         $this->execute($sql);

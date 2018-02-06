@@ -17,7 +17,9 @@ class m170704_010131_create_usmarc_block_dm_table extends Migration
             'description' => $this->string(80)->notNull(),
             'PRIMARY KEY (block_mbr)'
         ]);
-        
+    }
+    
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_block_dm.sql");
         $this->execute($sql);

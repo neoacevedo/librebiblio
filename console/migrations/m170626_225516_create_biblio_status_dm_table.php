@@ -20,7 +20,9 @@ class m170626_225516_create_biblio_status_dm_table extends Migration
         
         // add primary keys
         $this->addPrimaryKey('bibliostatusdm_pk', '{{%biblio_status_dm}}', 'code');
-        
+    }
+    
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/biblio_status_dm.sql");
         $this->execute($sql);

@@ -94,4 +94,8 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
 
         $this->dropTable('{{%biblio_status_hist}}');
     }
+    
+    protected function isPostgreSQL() {
+        return $this->db->driverName === 'pgsql';
+    }
 }
