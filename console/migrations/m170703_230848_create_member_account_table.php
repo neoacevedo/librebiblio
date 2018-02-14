@@ -13,7 +13,7 @@ class m170703_230848_create_member_account_table extends Migration
     public function up()
     {
         $this->createTable('{{%member_account}}', [
-            'id' => $this->integer()->notNull().' AUTO_INCREMENT',
+            'id' => $this->integer()->notNull()." AUTO_INCREMENT",
             'mbr_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull(),
             'create_userid' => $this->integer()->notNull(),
@@ -31,4 +31,5 @@ class m170703_230848_create_member_account_table extends Migration
     {
         $this->dropTable('{{%member_account}}');
     }
+    
 }

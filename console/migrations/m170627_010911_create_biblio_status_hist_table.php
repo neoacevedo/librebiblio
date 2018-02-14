@@ -81,10 +81,10 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
         );
 
         // drops foreign key for table `biblio_copy`
-        $this->dropForeignKey(
+        /*$this->dropForeignKey(
             'fk-biblio_status_hist-copyid',
             '{{%biblio_status_hist}}'
-        );
+        );*/
 
         // drops index for column `copyid`
         $this->dropIndex(

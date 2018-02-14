@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
 use yii\base\InvalidConfigException;
 use yii\rbac\DbManager;
 
@@ -14,14 +14,15 @@ use yii\rbac\DbManager;
  * @author Alexander Kochetov <creocoder@gmail.com>
  * @since 2.0
  */
-class m140506_102106_rbac_init extends \yii\db\Migration
-{
+class m140506_102106_rbac_init extends \yii\db\Migration {
+
+    protected $sql = '';
+
     /**
      * @throws yii\base\InvalidConfigException
      * @return DbManager
      */
-    protected function getAuthManager()
-    {
+    protected function getAuthManager() {
         $authManager = Yii::$app->getAuthManager();
         if (!$authManager instanceof DbManager) {
             throw new InvalidConfigException('You should configure "authManager" component to use database before executing this migration.');
@@ -33,21 +34,18 @@ class m140506_102106_rbac_init extends \yii\db\Migration
     /**
      * @return bool
      */
-    protected function isMSSQL()
-    {
+    protected function isMSSQL() {
         return $this->db->driverName === 'mssql' || $this->db->driverName === 'sqlsrv' || $this->db->driverName === 'dblib';
     }
 
-    protected function isOracle()
-    {
+    protected function isOracle() {
         return $this->db->driverName === 'oci';
     }
 
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
@@ -63,7 +61,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer(),
             'PRIMARY KEY ([[name]])',
-        ], $tableOptions);
+                ], $tableOptions);
 
         $this->createTable($authManager->itemTable, [
             'name' => $this->string(64)->notNull(),
@@ -75,8 +73,8 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             'updated_at' => $this->integer(),
             'PRIMARY KEY ([[name]])',
             'FOREIGN KEY ([[rule_name]]) REFERENCES ' . $authManager->ruleTable . ' ([[name]])' .
-                $this->buildFkClause('ON DELETE SET NULL', 'ON UPDATE CASCADE'),
-        ], $tableOptions);
+            $this->buildFkClause('ON DELETE SET NULL', 'ON UPDATE CASCADE'),
+                ], $tableOptions);
         $this->createIndex('idx-auth_item-type', $authManager->itemTable, 'type');
 
         $this->createTable($authManager->itemChildTable, [
@@ -84,10 +82,10 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             'child' => $this->string(64)->notNull(),
             'PRIMARY KEY ([[parent]], [[child]])',
             'FOREIGN KEY ([[parent]]) REFERENCES ' . $authManager->itemTable . ' ([[name]])' .
-                $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
+            $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
             'FOREIGN KEY ([[child]]) REFERENCES ' . $authManager->itemTable . ' ([[name]])' .
-                $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
-        ], $tableOptions);
+            $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
+                ], $tableOptions);
 
         $this->createTable($authManager->assignmentTable, [
             'item_name' => $this->string(64)->notNull(),
@@ -95,8 +93,8 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             'created_at' => $this->integer(),
             'PRIMARY KEY ([[item_name]], [[user_id]])',
             'FOREIGN KEY ([[item_name]]) REFERENCES ' . $authManager->itemTable . ' ([[name]])' .
-                $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
-        ], $tableOptions);
+            $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
+                ], $tableOptions);
 
         if ($this->isMSSQL()) {
             $this->execute("CREATE TRIGGER dbo.trigger_auth_item_child
@@ -135,18 +133,11 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             END;");
         }
     }
-    
-    public function safeUp() {
-        $language = str_replace("_", "-", locale_get_default());
-        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
-        $this->execute($sql);
-    }
 
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
@@ -160,8 +151,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
         $this->dropTable($authManager->ruleTable);
     }
 
-    protected function buildFkClause($delete = '', $update = '')
-    {
+    protected function buildFkClause($delete = '', $update = '') {
         if ($this->isMSSQL()) {
             return '';
         }
@@ -172,4 +162,5 @@ class m140506_102106_rbac_init extends \yii\db\Migration
 
         return implode(' ', ['', $delete, $update]);
     }
+
 }

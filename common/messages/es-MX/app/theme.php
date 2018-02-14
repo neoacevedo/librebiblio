@@ -26,5 +26,5 @@ return [
     'Theme uninstalled successfully.' => 'Tema desinstalado satisfactoriamente',
     'Theme updated successfully.' => 'Tema actualizado satisfactoriamente',
     'Themes' => 'Temas',
-    'Update {modelClass}: ' => 'Actualizar {modelClass}:',    
+    'Update {modelClass}: ' => 'Actualizar {modelClass}:',   
 ];

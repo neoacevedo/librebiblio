@@ -73,4 +73,20 @@ class Overdue extends \yii\db\ActiveRecord
         parent::primaryKey();
         return ['id'];
     }
+    
+    /**
+     * Devuelve el nombre del reporte traducido.
+     * @return string
+     */
+    public function getName() {
+        return Yii::t("app/reports", $this->name);
+    }
+    
+    /**
+     * Devuelve el nombre de la categoría traducida.
+     * @return string
+     */
+    public function getCategory() {
+        return Yii::t("app/reports", $this->category);
+    }
 }

@@ -65,17 +65,17 @@ class ReportController extends Controller {
      */
     public function actionIndex() {
         $directory = Yii::getAlias("@backend") . "/reports/";
-        $objects = [];
+        $reports = [];
         $files = \yii\helpers\FileHelper::findFiles($directory, ['only' => ['*.php'], 'except' => ['*Search.php']]);
         $report_files = str_replace("$directory", "", $files);
         foreach ($report_files as $file) {
             $classname = "backend\\reports\\" . substr($file, 0, -4);
             $object = new $classname;
-            $objects[$object->category][] = $object;
+            $reports[$object->category][] = $object;
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'objects' => $objects,
+                    'reports' => $reports,
         ]);
     }
 
@@ -106,53 +106,6 @@ class ReportController extends Controller {
         return $this->render('view', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider]);
-    }
-
-    /**
-     * Renderiza en formato PDF los resultados del reporte.
-     * @return mixed
-     */
-    public function actionPdf() {
-        $report = Yii::$app->request->get("type");
-        $classnameSearch = "backend\\reports\\$report";
-        $searchModel = new $classnameSearch;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->setSort(false);
-        $dataProvider->setPagination(false);
-        // obtener el html
-        $content = $this->renderPartial('pdf', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider]);
-
-        $pdf = Yii::$app->pdf;
-        $pdf->content = $content;
-        $pdf->options = ['title' => Yii::$app->name];
-        $pdf->methods = [
-            'SetHeader' => [date('Y-m-d H:i:s')],
-            'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
-        ];
-        // return the pdf output as per the destination setting
-        return $pdf->render();
-    }
-
-    public function actionExcel() {
-        $report = Yii::$app->request->get("type");
-        $classnameSearch = "backend\\reports\\$report";
-        $searchModel = new $classnameSearch;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->setSort(false);
-        $dataProvider->setPagination(false);
-        // obtener el html
-        $content = $this->renderPartial('excel', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider]);
-
-        $filename = 'Data-' . Date('YmdGis') . '-'. Yii::$app->name .".xlsx";
-        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        header("Content-Disposition: attachment; filename=" . $filename);
-        echo $content;
     }
 
     /**

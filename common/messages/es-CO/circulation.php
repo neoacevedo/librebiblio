@@ -24,6 +24,7 @@ return [
     'Create Member Account' => '',
     'Delete' => '',
     'Member Accounts' => '',
+    'Member updated successfully' => '',
     'Reset' => '',
     'Save' => '',
     'Search' => '',

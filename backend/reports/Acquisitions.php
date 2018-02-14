@@ -23,7 +23,7 @@ class Acquisitions extends \yii\db\ActiveRecord
     public $category = "Cataloging";
     
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -31,7 +31,7 @@ class Acquisitions extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public function rules()
     {
@@ -44,7 +44,7 @@ class Acquisitions extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -60,10 +60,26 @@ class Acquisitions extends \yii\db\ActiveRecord
     }
     
     /**
-     * {@inheritdoc }
+     * @inheritdoc
      */
     public static function primaryKey() {
         parent::primaryKey();
         return ['id'];
+    }
+    
+    /**
+     * Devuelve el nombre del reporte traducido.
+     * @return string
+     */
+    public function getName() {
+        return Yii::t("app/reports", $this->name);
+    }
+    
+    /**
+     * Devuelve el nombre de la categoría traducida.
+     * @return string
+     */
+    public function getCategory() {
+        return Yii::t("app/reports", $this->category);
     }
 }

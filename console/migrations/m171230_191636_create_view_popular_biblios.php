@@ -18,8 +18,7 @@ class m171230_191636_create_view_popular_biblios extends Migration
                 . "FROM {{%biblio_status_hist}} h "
                 . "LEFT JOIN {{%biblio_copy}} c ON h.bibid = c.bibid AND h.copyid = c.id "
                 . "LEFT JOIN {{%biblio}} b ON h.bibid = b.id "
-                . "WHERE h.status_cd = 'out';";
-        
+                . "WHERE h.status_cd = 'out';";        
         $this->db->createCommand($sql)->execute();
     }
 

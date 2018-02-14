@@ -31,6 +31,7 @@ return [
     'Late fee (barcode={n, number})' => '',
     'Member Accounts' => '',
     'Member has reached checkout limit for this collection.' => '',
+    'Member updated successfully' => '',
     'Note: Member has an outstanding account balance of ${0, number, #,#.0#}' => '',
     'Note: Member has an outstanding account balance of {0, number}' => '',
     'Reset' => '',

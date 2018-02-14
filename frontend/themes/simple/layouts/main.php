@@ -92,7 +92,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?>. <?= 'v'.Yii::$app->params['version'] ?></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v'.Yii::$app->params['version'] ?></div>
                     <div class="col-lg-4 col-md-4 col-sm-4"><?= Yii::powered() ?></div>
                 </div>
                 <p>&nbsp;</p>

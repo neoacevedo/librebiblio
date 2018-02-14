@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 $this->title = Yii::t('app/reports', 'Reports');
 $this->params['breadcrumbs'][] = $this->title;
+$i = 0;
 ?>
 <div class="report-index">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -13,16 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         echo Yii::t('app/reports', 'Choose from one of the following links to run a report.');
         echo '<div class="box box-primary">';
-        foreach (array_keys($objects) as $category) :
+        foreach (array_keys($reports) as $category) :
             ?>
             <ul>
                 <li>
-                    <h4><?= Yii::t('app', $category) ?></h4>
+                    <h4><?= Yii::t('app/reports', $category) ?></h4>
                     <ul>
                         <?php
-                        foreach ($objects[$category] as $report) :
+                        foreach ($reports[$category] as $report) :
                             ?>
-                            <li><?= Html::a(Yii::t('app/reports', $report->name), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
+                            <li><?= Html::a($report->getName(), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
                             <?php
                         endforeach;
                         ?>
