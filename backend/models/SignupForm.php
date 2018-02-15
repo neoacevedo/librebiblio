@@ -13,6 +13,7 @@ class SignupForm extends Model {
     public $username;
     public $first_name;
     public $last_name;
+    public $pin;
     public $phone;
     public $email;
     public $address;
@@ -30,9 +31,11 @@ class SignupForm extends Model {
             ['last_name', 'trim'],
             ['last_name', 'required'],
             ['last_name', 'string', 'min' => 4, 'max' => 255],
+            ['pin', 'number'],
+            ['pin', 'required'],
             ['phone', 'trim'],
             ['phone', 'required'],
-            ['phone', 'number', 'min' => 4, 'max' => 3999999999],
+            ['phone', 'string', 'min' => 4, 'max' => 32],
             ['username', 'trim'],
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This username has already been taken.'],
@@ -66,6 +69,7 @@ class SignupForm extends Model {
         $user->username = $this->username;
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
+        $user->pin = $this->pin;
         $user->phone = $this->phone;
         $user->email = $this->email;
         $user->address = $this->address;

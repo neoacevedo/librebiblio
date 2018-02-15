@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
             <div class="col-lg-12 col-md-12 col-sm-12">
+                <a href="<?= \yii\helpers\Url::to(["circulation/members-print"]) ?>" class="btn btn-block">Generar QR</a>
                 <?php Pjax::begin(); ?>   <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,

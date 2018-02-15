@@ -380,6 +380,37 @@ class CirculationController extends Controller {
         ]);
     }
 
+    public function actionMembersPrint() {
+        $searchModel = new MemberSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        /*return $this->render('members-print', [
+            'dataProvider' => $dataProvider,
+        ]);*/
+        $html = $this->renderPartial('members-print', [
+            'dataProvider' => $dataProvider,
+        ]);
+        $pdf = Yii::$app->pdf;
+        $pdf->content = $html;
+        $pdf->options = ['margin_left' => 20,
+            'margin_right' => 15,
+            'margin_top' => 25,
+            'margin_bottom' => 25,
+            'margin_header' => 10,
+            'margin_footer' => 10,
+            'showBarcodeNumbers' => FALSE];
+        $pdf->methods = [
+            'SetHeader' => [date('Y-m-d H:i:s')],
+            'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
+        ];
+
+        try {
+            return $pdf->render();
+        } catch (\Exception $e) {
+            return ($e->getMessage());
+        }
+    }
+
     /**
      * Finds the Member model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
