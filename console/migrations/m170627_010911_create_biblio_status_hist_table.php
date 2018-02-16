@@ -52,14 +52,14 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
         );
 
         // add foreign key for table `biblio_copy`
-        $this->addForeignKey(
+        /*$this->addForeignKey(
             'fk-biblio_status_hist-copyid',
             '{{%biblio_status_hist}}',
             'copyid',
             '{{%biblio_copy}}',
             'id',
             'CASCADE'
-        );
+        );*/
 
     }
 
@@ -93,9 +93,5 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
         );
 
         $this->dropTable('{{%biblio_status_hist}}');
-    }
-    
-    protected function isPostgreSQL() {
-        return $this->db->driverName === 'pgsql';
     }
 }

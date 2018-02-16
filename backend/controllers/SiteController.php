@@ -81,8 +81,9 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
+        $copy_count = \common\models\BiblioCopy::find()->where(['status_cd' => 'out'])->count();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('index');
+        return $this->render('index', ['checkouts' => $copy_count]);
     }
 
     /**

@@ -16,7 +16,7 @@ class m170627_000312_create_biblio_hold_table extends Migration
     public function up()
     {
         $this->createTable('{{%biblio_hold}}', [
-            'id' => ($this->isPostgreSQL()) ? "SERIAL": $this->integer()->notNull()." AUTO_INCREMENT",
+            'id' => $this->integer()->notNull(),
             'bibid' => $this->integer()->notNull(),
             'copyid' => $this->integer()->notNull(),
             'hold_begin_dt' => $this->dateTime()->notNull(),
@@ -27,7 +27,7 @@ class m170627_000312_create_biblio_hold_table extends Migration
         $this->addPrimaryKey('bibliohold_pk', '{{%biblio_hold}}', ['id', 'bibid', 'copyid']);
         
         // alter id to autoincrement
-        #$this->alterColumn('{{%biblio_hold}}', 'id', $this->integer().' SET NOT NULL AUTO_INCREMENT');
+        $this->alterColumn('{{%biblio_hold}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `mbr_id`
         $this->createIndex(

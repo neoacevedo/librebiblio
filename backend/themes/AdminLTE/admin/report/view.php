@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $model = $dataProvider->models;
 if (count($model) > 0) {
     $groupBy = Yii::$app->request->get("groupBy");
+    $filename = $model[0]->name;
     if (null !== $groupBy) {
         if ($groupBy === "biblio") {
             $columns = [];
@@ -42,6 +43,8 @@ if (count($model) > 0) {
     $gridColumns = array_merge([
         ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
+    
+    $filename = str_replace("Search", "", Yii::$app->request->queryParams['type']);
 }
 
 $fullExportMenu = ExportMenu::widget([
@@ -57,7 +60,7 @@ $fullExportMenu = ExportMenu::widget([
                 ExportMenu::FORMAT_EXCEL => false
             ],
             'stream' => true,
-            'filename' => $model[0]->name,
+            'filename' => $filename,
         ]);
 ?>
 <div class="collection-index">

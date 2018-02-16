@@ -12,7 +12,7 @@ class m170627_005605_create_biblio_copy_table extends Migration {
      */
     public function up() {
         $this->createTable('{{%biblio_copy}}', [
-            'id' => $this->integer()->notNull()." AUTO_INCREMENT",
+            'id' => $this->integer()->notNull(),
             'bibid' => $this->integer()->notNull(),
             'created_at' => $this->dateTime(),
             'updated_at' => $this->dateTime(),
@@ -27,6 +27,9 @@ class m170627_005605_create_biblio_copy_table extends Migration {
 
         // add primary keys
         $this->addPrimaryKey('bibliocopy_pk', '{{%biblio_copy}}', ['id', 'bibid']);
+        
+        // alter id to autoincrement
+        $this->alterColumn('{{%biblio_copy}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
         
         // creates index for column `barcode_mbr`
         $this->createIndex(
