@@ -2,17 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model backend\reports\CheckoutsSearch */
+/* @var $model backend\reports\CheckoutStatsSearch */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = Yii::t('app/reports', 'Bibliography Checkout Listing');
+$this->title = Yii::t('app/reports', 'Periodic Checkout Count');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="checkouts-search">
+<div class="checkout-stats-search">
     <h1><?= $this->title ?></h1>
     <div class="box">
         <div class="box-body">
@@ -26,19 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>
 
-            <?php // echo $form->field($model, 'barcode_nmbr') ?>
+            <div class="form-group">
+                <?= Html::label(Yii::t('app/reports', 'Time Span')) ?>
+                <?php
+                echo Html::dropDownList("timespan", NULL, ['w' => Yii::t('app/reports', 'Week'), 'm' => Yii::t('app/reports', 'Month')], ['class' => 'form-control'])
+                ?>
+            </div>
+            <?php // echo $form->field($model, 'id') ?>
 
-            <?php // echo $form->field($model, 'title') ?>
+            <?php // echo $form->field($model, 'created_at') ?>
 
-            <?php // echo $form->field($model, 'author') ?>
-
-            <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
-
-            <?php echo $form->field($model, 'status_begin_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
-
-            <?php // echo $form->field($model, 'pin') ?>
-
-            <?php // echo $form->field($model, 'name')  ?>
+            <?php // echo $form->field($model, 'checkoutCount') ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

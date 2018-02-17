@@ -2,17 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model backend\reports\CheckoutsSearch */
+/* @var $model backend\reports\ItemHistorySearch */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = Yii::t('app/reports', 'Bibliography Checkout Listing');
+$this->title = Yii::t('app/reports', 'Item Checkout History');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="checkouts-search">
+<div class="item-history-search">
     <h1><?= $this->title ?></h1>
     <div class="box">
         <div class="box-body">
@@ -26,19 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>
 
-            <?php // echo $form->field($model, 'barcode_nmbr') ?>
+            <?= $form->field($model, 'call_num') ?>
 
-            <?php // echo $form->field($model, 'title') ?>
+            <?= $form->field($model, 'title') ?>
 
-            <?php // echo $form->field($model, 'author') ?>
+            <?= $form->field($model, 'author') ?>
 
-            <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?php // echo $form->field($model, 'member') ?>
 
-            <?php echo $form->field($model, 'status_begin_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?php // echo $form->field($model, 'checkout') ?>
 
-            <?php // echo $form->field($model, 'pin') ?>
-
-            <?php // echo $form->field($model, 'name')  ?>
+            <?php // echo $form->field($model, 'due')  ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

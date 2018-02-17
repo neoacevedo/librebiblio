@@ -23,7 +23,6 @@ if (count($model) > 0) {
                 if ($key === "barcode_nmbr") {
                     continue;
                 }
-
                 $columns[$key] = $value;
             }
             $gridColumns = array_merge([
@@ -43,7 +42,7 @@ if (count($model) > 0) {
     $gridColumns = array_merge([
         ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
     );
-    
+
     $filename = str_replace("Search", "", Yii::$app->request->queryParams['type']);
 }
 

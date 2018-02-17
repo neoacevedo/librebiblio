@@ -7,7 +7,7 @@ use yii\jui\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\reports\CheckoutsSearch */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = Yii::t('app/reports', 'Item Checkout History');
+$this->title = Yii::t('app/reports', 'Bibliography Checkout Listing');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

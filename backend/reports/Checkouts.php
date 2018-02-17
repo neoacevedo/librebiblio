@@ -20,7 +20,7 @@ use Yii;
  */
 class Checkouts extends \yii\db\ActiveRecord
 {
-    public $name = "Item Checkout History";
+    public $name = "Bibliography Checkout Listing";
     public $category = "Circulation";
     /**
      * @inheritdoc

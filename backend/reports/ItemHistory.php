@@ -5,26 +5,27 @@ namespace backend\reports;
 use Yii;
 
 /**
- * This is the model class for table "{{%copy_search}}".
+ * This is the model class for table "{{%item_history}}".
  *
- * @property integer $id
- * @property string $created_at 
- * @property string $barcode_nmbr
- * @property string $callno
+ * @property int $id
+ * @property string $call_num
  * @property string $title
  * @property string $author
- * @property string $collection
+ * @property int $mbr_id
+ * @property string $member
+ * @property string $checkout
+ * @property string $due
  */
-class Copy extends \yii\db\ActiveRecord
+class ItemHistory extends \yii\db\ActiveRecord
 {
-    public $name = "Copy Search";
-    public $category = "Cataloging";
+    public $name = "Item Checkout History";
+    public $category = "Circulation";
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%copy_search}}';
+        return '{{%item_history}}';
     }
 
     /**
@@ -33,13 +34,11 @@ class Copy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['created_at'], 'safe'],
+            [['id', 'mbr_id'], 'integer'],
             [['title', 'author'], 'string'],
-            [['barcode_nmbr'], 'string', 'max' => 20],
-            [['status_cd'], 'string', 'max' => 3],
-            [['callno'], 'string', 'max' => 62],
-            [['collection'], 'string', 'max' => 40],
+            [['checkout', 'due'], 'safe'],
+            [['call_num'], 'string', 'max' => 62],
+            [['member'], 'string', 'max' => 512],
         ];
     }
 
@@ -50,12 +49,13 @@ class Copy extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app/reports', 'ID'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
-            'callno' => Yii::t('app/reports', 'Callno'),
+            'call_num' => Yii::t('app/reports', 'Call Num'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),
-            'collection' => Yii::t('app', 'Collection'),
+            'mbr_id' => Yii::t('app/reports', 'Mbr ID'),
+            'member' => Yii::t('app', 'Member'),
+            'checkout' => Yii::t('app/reports', 'Checkout'),
+            'due' => Yii::t('app/reports', 'Due'),
         ];
     }
     

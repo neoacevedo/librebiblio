@@ -13,7 +13,7 @@ use backend\models\ResetPasswordForm;
  * Site controller
  */
 class SiteController extends Controller {
-    
+
     public $bodyClass;
 
     /**
@@ -37,15 +37,15 @@ class SiteController extends Controller {
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
-                        /*'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
-                            if (array_key_exists('admin', $roles) || array_key_exists('staff', $roles)) {
-                                return true;
-                            }
-                            
-                            return false;
-                        },*/
+                    /* 'matchCallback' => function () {
+                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                      //Yii::info($roles);
+                      if (array_key_exists('admin', $roles) || array_key_exists('staff', $roles)) {
+                      return true;
+                      }
+
+                      return false;
+                      }, */
                     ],
                     [
                         'actions' => ['logout'],
@@ -82,8 +82,14 @@ class SiteController extends Controller {
      */
     public function actionIndex() {
         $copy_count = \common\models\BiblioCopy::find()->where(['status_cd' => 'out'])->count();
+        $bills = \common\models\MemberAccount::find()->where(["transaction_type_cd" => "+c"])->sum('amount');
+        $new_members_count = \common\models\Member::find()->where(['>=', 'created_at', date('Y-m-d')])->count();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('index', ['checkouts' => $copy_count]);
+        return $this->render('index', [
+                    'checkouts' => $copy_count,
+                    'bills' => $bills,
+                    'new_members' => $new_members_count
+        ]);
     }
 
     /**
@@ -118,7 +124,7 @@ class SiteController extends Controller {
 
         return $this->goHome();
     }
-    
+
     /**
      * Resets password.
      *
@@ -126,8 +132,7 @@ class SiteController extends Controller {
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
+    public function actionResetPassword($token) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);
@@ -142,7 +147,7 @@ class SiteController extends Controller {
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
