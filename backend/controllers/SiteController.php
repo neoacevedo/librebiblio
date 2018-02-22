@@ -89,7 +89,8 @@ class SiteController extends Controller {
                 ->select(["created_at", "count(*) as checkoutCount"])
                 ->from("{{%biblio_status_hist}}")
                 ->where(['status_cd' => 'out'])
-                ->andWhere(['>=', 'created_at', date('Y-m-d')])
+                ->andWhere(['<=', 'created_at', date('Y-m-d')])
+                ->groupBy(['created_at'])
                 ->limit(5)
                 ->all();
         /*$checkout_stats = \common\models\BiblioStatusHistory::find()->where([">=", "created_at", date('Y-m-d')])
