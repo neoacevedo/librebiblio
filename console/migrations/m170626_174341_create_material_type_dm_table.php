@@ -5,18 +5,18 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `material_type_dm`.
  */
-class m170626_174341_create_material_type_dm_table extends Migration
-{
+class m170626_174341_create_material_type_dm_table extends Migration {
+
     /**
      * Idioma del contenido. Para AWS, se definirá en-US o en-GB
      * @var string 
      */
     private $language = "es-CO";
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->createTable('{{%material_type_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
@@ -24,18 +24,12 @@ class m170626_174341_create_material_type_dm_table extends Migration
             'image_file' => $this->string(128),
         ]);
     }
-    
-    public function safeUp() {
-        $language = str_replace("_", "-", locale_get_default());
-        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/material_type_dm.sql");
-        $this->execute($sql);
-    }
 
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->dropTable('{{%material_type_dm}}');
     }
+
 }

@@ -84,11 +84,23 @@ class SiteController extends Controller {
         $copy_count = \common\models\BiblioCopy::find()->where(['status_cd' => 'out'])->count();
         $bills = \common\models\MemberAccount::find()->where(["transaction_type_cd" => "+c"])->sum('amount');
         $new_members_count = \common\models\Member::find()->where(['>=', 'created_at', date('Y-m-d')])->count();
+        // gráfica
+        $checkout_stats = (new \yii\db\Query())
+                ->select(["created_at", "count(*) as checkoutCount"])
+                ->from("{{%biblio_status_hist}}")
+                ->where(['status_cd' => 'out'])
+                ->andWhere(['>=', 'created_at', date('Y-m-d')])
+                ->limit(5)
+                ->all();
+        /*$checkout_stats = \common\models\BiblioStatusHistory::find()->where([">=", "created_at", date('Y-m-d')])
+                ->andWhere(['status_cd' => 'out'])->groupBy(['created_at'])
+                ->limit(5)->all();*/
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'checkouts' => $copy_count,
                     'bills' => $bills,
-                    'new_members' => $new_members_count
+                    'new_members' => $new_members_count,
+                    'checkout_stats' => $checkout_stats
         ]);
     }
 

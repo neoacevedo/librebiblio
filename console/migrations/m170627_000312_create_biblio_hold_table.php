@@ -66,8 +66,4 @@ class m170627_000312_create_biblio_hold_table extends Migration
 
         $this->dropTable('{{%biblio_hold}}');
     }
-    
-    protected function isPostgreSQL() {
-        return $this->db->driverName === 'pgsql';
-    }
 }

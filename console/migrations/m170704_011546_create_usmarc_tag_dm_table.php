@@ -21,12 +21,6 @@ class m170704_011546_create_usmarc_tag_dm_table extends Migration {
             'PRIMARY KEY(block_nmbr,tag)'
         ]);
     }
-    
-    public function safeUp() {
-        $language = str_replace("_", "-", locale_get_default());
-        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_tag_dm.sql");
-        $this->execute($sql);
-    }
 
     /**
      * @inheritdoc

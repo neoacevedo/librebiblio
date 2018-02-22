@@ -77,7 +77,14 @@ class SignupForm extends Model {
         $user->generateAuthKey();
         $user->classification_id = $this->classification_id;
         //
-        return $user->save() ? $user : null;
+        if ($user->save()) {
+            return $user;
+        } else {
+            @array_walk_recursive($user->errors, function($v, $k) {
+                        \Yii::$app->getSession()->setFlash('error', $v);
+                    });
+            return null;
+        }
     }
 
     /**

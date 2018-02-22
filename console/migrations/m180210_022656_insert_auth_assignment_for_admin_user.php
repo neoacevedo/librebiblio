@@ -12,7 +12,11 @@ class m180210_022656_insert_auth_assignment_for_admin_user extends Migration {
      */
     public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
-        $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
+        try {
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
+        } catch (Exception $ex) {
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/auth_item.sql");
+        }
         $this->execute($sql);
         $this->insert('{{%auth_assignment}}', [
             'item_name' => 'admin',

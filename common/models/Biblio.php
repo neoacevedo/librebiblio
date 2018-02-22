@@ -30,21 +30,19 @@ use Yii;
  *
  * @property User $updatedUser
  */
-class Biblio extends \yii\db\ActiveRecord
-{
+class Biblio extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%biblio}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
@@ -60,8 +58,7 @@ class Biblio extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -90,11 +87,10 @@ class Biblio extends \yii\db\ActiveRecord
      * Devuelve el ID del usuario que modificó la información del material bibliográfico
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->hasOne(\backend\models\User::className(), ['id' => 'updated_userid']);
     }
-    
+
     /**
      * 
      * @return \yii\db\ActiveQuery
@@ -102,7 +98,7 @@ class Biblio extends \yii\db\ActiveRecord
     public function getMaterialType() {
         return $this->hasOne(\backend\models\MaterialType::className(), ['id' => 'material_cd']);
     }
-    
+
     /**
      * 
      * @return \yii\db\ActiveQuery
@@ -110,23 +106,24 @@ class Biblio extends \yii\db\ActiveRecord
     public function getCollection() {
         return $this->hasOne(\backend\models\Collection::className(), ['id' => 'collection_cd']);
     }
-    
+
     public function getBiblioFields() {
         return $this->hasMany(\app\models\BiblioField::className(), ['bibid' => 'id']);
     }
-    
+
     /**
      * Sube el archivo de imagen.
      * @return boolean
      */
-    public function upload()
-    {
+    public function upload() {
         if ($this->validate()) {
-            $this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            if (null !== $this->image_file) {
+                $this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            }
             return true;
         } else {
             return false;
         }
-    } 
-    
+    }
+
 }

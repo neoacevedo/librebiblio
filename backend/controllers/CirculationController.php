@@ -372,7 +372,7 @@ class CirculationController extends Controller {
                     Yii::$app->getSession()->setFlash('warning', 'Failed, contact Admin!');
                 }
                 return $this->redirect(['circulation/index']);
-            }
+            } 
         }
 
         return $this->render('signup', [
@@ -384,9 +384,9 @@ class CirculationController extends Controller {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        /*return $this->render('members-print', [
-            'dataProvider' => $dataProvider,
-        ]);*/
+        /* return $this->render('members-print', [
+          'dataProvider' => $dataProvider,
+          ]); */
         $html = $this->renderPartial('members-print', [
             'dataProvider' => $dataProvider,
         ]);
