@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <!--<?= Html::a(Yii::t('app', 'Create Biblio Copy'), ['create'], ['class' => 'btn btn-success']) ?>-->
+        <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
     </p>
     <?=
     GridView::widget([

@@ -19,7 +19,7 @@ class BiblioCopySearch extends BiblioCopy {
      */
     public function rules() {
         return [
-            [['id', 'bibid', 'mbr_id', 'renewal_count'], 'integer'],
+            [['id', 'barcode_nmbr', 'bibid', 'mbr_id', 'renewal_count'], 'integer'],
             [['created_at', 'mbr_id', 'biblio', 'updated_at', 'copy_desc', 'barcode_nmbr', 'status_cd', 'status_begin_dt', 'due_back_dt'], 'safe'],
         ];
     }

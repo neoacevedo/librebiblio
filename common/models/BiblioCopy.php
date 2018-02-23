@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "{{%biblio_copy}}".
  *
  * @property integer $id
+ * @property string  $barcode_nmbr
  * @property integer $bibid
  * @property string $created_at
  * @property string $updated_at

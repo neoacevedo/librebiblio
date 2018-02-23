@@ -47,6 +47,15 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'cataloging*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'cataloging' => 'cataloging.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
                 'circulation*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',

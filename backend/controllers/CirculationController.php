@@ -380,6 +380,10 @@ class CirculationController extends Controller {
         ]);
     }
 
+    /**
+     * Genera un PDF con un diseño básico con la información de los miembros de la biblioteca.
+     * @return mixed
+     */
     public function actionMembersPrint() {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

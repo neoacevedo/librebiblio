@@ -148,6 +148,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                     </nav>
                 </header>
                 <?php
+                // circulación
                 $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ["#"],
                     'options' => ['class' => 'treeview menu'],
                     'template' => '<a href="{url}" ><i class="fa fa-address-book-o"></i><span>{label}</span></a>',
@@ -156,9 +157,15 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                         ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/member-create']],
                         ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/reception']]
                 ]];
-                $menuItems[] = [
+                // catalogación
+                $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ["#"],
+                    'options' => ['class' => 'treeview menu'],
                     'template' => '<a href="{url}" ><i class="fa fa-book"></i><span>{label}</span></a>',
-                    'label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
+                    'items' => [
+                        ['label' => Yii::t('app', 'Home'), 'url' => ['/cataloging/biblio']],
+                        ['label' => Yii::t('app', 'Create Biblio'), 'url' => ['/cataloging/biblio/create']]
+                ]];
+                // reportes
                 $menuItems[] = [
                     'template' => '<a href="{url}" ><i class="fa fa-bar-chart"></i><span>{label}</span></a>',
                     'label' => Yii::t('app/reports', 'Reports'), 'url' => ["admin/report/index"],
@@ -227,7 +234,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v'.Yii::$app->params['version'] ?></div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v' . Yii::$app->params['version'] ?></div>
                                     <div class="col-lg-4 col-md-4 col-sm-4"><?= Yii::powered() ?></div>
                                 </div>
                             </div>
