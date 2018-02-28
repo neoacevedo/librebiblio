@@ -5,7 +5,7 @@ use dosamigos\chartjs\ChartJs;
 /* @var $this yii\web\View */
 
 $settings = \common\models\Settings::find()->one();
-$this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$this->title = null !== Yii::$app->name ? Yii::$app->name: "OpenBiblio2";#$settings->library_name ? $settings->library_name : "OpenBiblio2";
 $totales = [];
 $fechas = [];
 
@@ -55,7 +55,7 @@ $totales[] = "";
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3><?= Yii::$app->formatter->asCurrency($bills) ?></h3>
+                    <h3><?= Yii::$app->formatter->asCurrency($bills ?: 0) ?></h3>
                     <p>Deudas de Miembros</p>
                 </div>
                 <div class="icon">
