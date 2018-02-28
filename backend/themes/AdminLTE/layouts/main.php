@@ -82,6 +82,13 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
 
                         <div class="navbar-custom-menu">
                             <ul class="nav navbar-nav">
+                                <!-- Solicitudes de reserva. -->
+                                <li class="task-menu">
+                                    <a href="#">
+                                        <i class="fa fa-bell"></i>
+                                        <span class="label label-default"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])) ?></span>
+                                    </a>
+                                </li>
                                 <!-- carrito -->
                                 <li class="task-menu">
                                     <a href="<?= yii\helpers\Url::to(['/circulation/cart']) ?>">
