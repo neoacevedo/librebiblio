@@ -63,14 +63,19 @@ class MemberAccountController extends Controller {
      */
     public function actionCreate() {
         $model = new MemberAccount();
+        $transactionType = \common\models\TransactionType::find()->all();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
+        } else {
+            @array_walk_recursive($model->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
+            return $this->render('create', [
+                        'model' => $model,
+                        'transactionType' => $transactionType
+            ]);
         }
-
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
     }
 
     /**

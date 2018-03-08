@@ -7,9 +7,6 @@ basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave S
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/neoacevedo)
-
-
 [![Latest Stable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/stable)](https://packagist.org/packages/neoacevedo/openbiblio2)
 [![Total Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/downloads)](https://packagist.org/packages/neoacevedo/openbiblio2)
 [![Latest Unstable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/unstable)](https://packagist.org/packages/neoacevedo/openbiblio2)

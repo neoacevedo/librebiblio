@@ -27,17 +27,17 @@ $this->registerJs($js);
 <div class="settings-form">
 
     <?php $form = ActiveForm::begin(['action' => ['admin/settings/library-settings-update'],
-        'options' => ['enctype' => 'multipart/form-data']]); ?>
+                'options' => ['enctype' => 'multipart/form-data']]);
+    ?>
 
     <?= $form->field($model, "library_name") ?>
 
-    <?= Html::label(Yii::t('app', 'Library Image Url')) ?>
     <?=
-    Html::dropDownList('file_list', $model->library_image_url, $files, ['id' => 'file_list', 'class' => 'form-control'])
+    $form->field($model, 'library_image_url')->dropDownList($files, ['id' => 'file_list', 'class' => 'form-control'])
     ?>
 
     <?= Html::fileInput('imageFile', '', ['id' => 'file', 'style' => ['display' => 'none']]) ?>
-    
+
     <div class="checkbox">
         <?= $form->field($model, "use_image_flg")->checkbox(['value' => 1]) ?>
     </div>

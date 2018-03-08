@@ -15,8 +15,12 @@ use common\models\MemberAccount;
 use common\models\MemberAccountSearch;
 use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use macklus\payments\Payment;
+use macklus\payments\models\Payment as PaymentModel;
+use yii\helpers\Html;
 
 /**
  * Description of MemberController
@@ -38,7 +42,7 @@ class MemberController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['history', 'profile', 'account', 'update'],
+                        'actions' => ['history', 'profile', 'account', 'account-view', 'account-print', 'update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -121,15 +125,56 @@ class MemberController extends Controller {
         ]);
     }
 
+    /**
+     * Muestra los detalles de la cuenta actual del miembro.
+     * @param type $id
+     * @param type $mbr_id
+     * @return mixed
+     */
     public function actionAccountView($id, $mbr_id) {
-        $id = Yii::$app->user->id;
-        $model = $this->findModel($id);
-
+        $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
+        
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('account-view', [
-                    'model' => $model,
-                    'memberAccount' => MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]),
+        return $this->renderAjax('account-view', [
+                    'memberAccount' => $memberAccount,
         ]);
+    }
+
+    /**
+     * Convierte a PDF los detalles de la cuenta (multa, pago, etc) del miembro.
+     * @param int $id
+     * @param int $mbr_id
+     * @return mixed
+     */
+    public function actionAccountPrint($id, $mbr_id) {
+        $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
+        
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $html = $this->renderPartial('account-view', [
+                    'memberAccount' => $memberAccount,
+        ]);
+        
+        $html = str_replace('<div class="row">', '<div class="hidden">', $html);
+        
+        $pdf = Yii::$app->pdf;
+        $pdf->content = $html;
+        $pdf->options = ['margin_left' => 20,
+            'margin_right' => 15,
+            'margin_top' => 25,
+            'margin_bottom' => 25,
+            'margin_header' => 10,
+            'margin_footer' => 10,
+            'showBarcodeNumbers' => FALSE];
+        $pdf->methods = [
+            'SetHeader' => [date('Y-m-d H:i:s')],
+            'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
+        ];
+
+        try {
+            return $pdf->render();
+        } catch (\Exception $e) {
+            return ($e->getMessage());
+        }
     }
 
     /**

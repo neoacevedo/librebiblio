@@ -11,6 +11,13 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('circulation', 'Member Accounts');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Profile'), 'url' => 'profile'];
 $this->params['breadcrumbs'][] = $this->title;
+//
+$this->registerJs("$('.account-view').click(function(e) {"
+        . "e.preventDefault();"
+        . "$('#account-view').modal('show')"
+        . ".find('#modalContent')"
+        . ".load($(this).attr('href'));"
+        . "});");
 ?>
 <div class="member-account-index">
 
@@ -30,18 +37,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'created_at',
-                //'create_userid',
                 [
-                    'attribute' => 'user',
-                    'value' => 'user.username',
-                    'label' => \Yii::t('app', 'Updated by')
+                    'attribute' => 'transaction_type_cd',
+                    'value' => function($model) {
+                        $value = '';
+                        switch ($model->transaction_type_cd) {
+                            case '+c':
+                                $value = Yii::t('circulation', 'Charge');
+                                break;
+                            case '+p':
+                                $value = Yii::t('circulation', 'Payment');
+                                break;
+                            case '-c':
+                                $value = Yii::t('circulation', 'Credit');
+                                break;
+                        }
+
+                        return $value;
+                    }
                 ],
-                'transaction_type_cd',
                 //'amount',
                 //'description',
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}'
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['account-view', 'id' => $model->id, 'mbr_id' => $model->mbr_id], [
+                                        'title' => Yii::t('app', 'View'), 'class' => 'account-view'
+                            ]);
+                        },
+                    ]
                 ],
             ],
         ]);
@@ -49,3 +75,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php Pjax::end(); ?>
     </div>
 </div>
+<?php
+// modal checkout
+yii\bootstrap\Modal::begin([
+    'header' => '<h3>'.Yii::t('circulation', 'Details').'</h3>',
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'account-view',
+    'size' => 'modal-lg',
+    'closeButton' => ['class' => 'close'],
+    //keeps from closing modal with esc key or by clicking out of the modal.
+    // user must click cancel or X to close
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => false]
+]);
+#Pjax::begin(['id' => 'pjax', 'timeout' => 500]);
+echo "<div id='modalContent'></div>";
+#Pjax::end();
+yii\bootstrap\Modal::end();
+?>

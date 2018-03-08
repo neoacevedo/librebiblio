@@ -50,8 +50,8 @@ class MemberAccount extends \yii\db\ActiveRecord
             'mbr_id' => Yii::t('app', 'Mbr ID'),
             'created_at' => Yii::t('app', 'Created At'),
             'create_userid' => Yii::t('app', 'Create Userid'),
-            'transaction_type_cd' => Yii::t('app', 'Transaction Type Cd'),
-            'amount' => Yii::t('app', 'Amount'),
+            'transaction_type_cd' => Yii::t('circulation', 'Transaction Type Cd'),
+            'amount' => Yii::t('circulation', 'Amount'),
             'description' => Yii::t('app', 'Description'),
         ];
     }
