@@ -83,11 +83,32 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                         <div class="navbar-custom-menu">
                             <ul class="nav navbar-nav">
                                 <!-- Solicitudes de reserva. -->
-                                <li class="task-menu">
-                                    <a href="#">
+                                <li class="dropdown notifications-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-bell"></i>
-                                        <span class="label label-default"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])) ?></span>
+                                        <span class="label label-default"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'hld'])) ?></span>
                                     </a>
+                                    <ul class="dropdown-menu">
+                                        <?php
+                                        $hldCopies = common\models\BiblioCopy::find()->where(['status_cd' => 'hld'])->limit(5)->all();
+                                        if ($hldCopies):
+                                            foreach ($hldCopies as $hld):
+                                                $mbr = \common\models\Member::findOne($hld->mbr_id);
+                                                ?>
+                                                <li><?php $mbr->last_name . ", " . $mbr->first_name . " " . Yii::t("circulation", "Has reserved") . " " . $hld->barcode_nmbr; ?></li>
+                                                <?php
+                                            endforeach;
+                                            ?>
+                                            <li class="footer"><?= Yii::t('app', 'See all') ?></li>
+                                            <?php
+                                        else:
+                                            ?>
+                                            <li class="header"><?= Yii::t('circulation', 'No new holds') ?></li>
+                                            <li>&nbsp;</li>
+                                        <?php
+                                        endif;
+                                        ?>
+                                    </ul>
                                 </li>
                                 <!-- carrito -->
                                 <li class="task-menu">
