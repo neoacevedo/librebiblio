@@ -157,7 +157,6 @@ SetEnvIfNoCase User-Agent “^Wget” bad_bot
     RewriteCond %{HTTP_USER_AGENT} ^Zeus [OR]
     RewriteCond %{HTTP_USER_AGENT} ^Zeus\.*Webster [OR]
     RewriteCond %{HTTP_USER_AGENT} ^ZmEu [OR]
-    RewriteCond %{HTTP_USER_AGENT} ZyBorg [OR]
-    RewriteCond %{HTTP_REFERER} ^http://.*facebook\.com/
+    RewriteCond %{HTTP_USER_AGENT} ZyBorg
     RewriteRule ^.* - [F,L]
 </IfModule>
