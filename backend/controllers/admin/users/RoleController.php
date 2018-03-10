@@ -93,8 +93,8 @@ class RoleController extends Controller {
                 'content' => $this->renderPartial('view', [
                     'model' => $this->findModel($name),
                 ]),
-                'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                Html::a(Yii::t('rbac', 'Edit'), ['update', 'name' => $name], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                Html::a(Yii::t('app/rbac', 'Edit'), ['update', 'name' => $name], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
             ];
         } else {
             return $this->render('view', [
@@ -120,30 +120,30 @@ class RoleController extends Controller {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => Yii::t('rbac', "Create new {0}", ["Role"]),
+                    'title' => Yii::t('app/rbac', "Create new {0}", ["Role"]),
                     'content' => $this->renderPartial('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::button(Yii::t('rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             } else if ($model->load($request->post()) && $model->save()) {
 //                \johnitvn\userplus\Helper::dump($model);
                 return [
                     'forceReload' => 'true',
-                    'title' => Yii::t('rbac', "Create new {0}", ["Role"]),
-                    'content' => '<span class="text-success">' . Yii::t('rbac', "Have been create new {0} success", ["Role"]) . '</span>',
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::a(Yii::t('rbac', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    'title' => Yii::t('app/rbac', "Create new {0}", ["Role"]),
+                    'content' => '<span class="text-success">' . Yii::t('app/rbac', "Have been create new {0} success", ["Role"]) . '</span>',
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::a(Yii::t('app/rbac', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                 ];
             } else {
                 return [
-                    'title' => Yii::t('rbac', "Create new {0}", ["Role"]),
+                    'title' => Yii::t('app/rbac', "Create new {0}", ["Role"]),
                     'content' => $this->renderPartial('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::button(Yii::t('rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             }
         } else {
@@ -178,12 +178,12 @@ class RoleController extends Controller {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => Yii::t('rbac', "Update {0}", ['"' . $name . '" Role']),
+                    'title' => Yii::t('app/rbac', "Update {0}", ['"' . $name . '" Role']),
                     'content' => $this->renderPartial('update', [
                         'model' => $this->findModel($name),
                     ]),
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::button(Yii::t('rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             } else if ($model->load($request->post()) && $model->save()) {
                 return [
@@ -192,17 +192,17 @@ class RoleController extends Controller {
                     'content' => $this->renderPartial('view', [
                         'model' => $this->findModel($name),
                     ]),
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::a(Yii::t('rbac', 'Edit'), ['update', 'name' => $name], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::a(Yii::t('app/rbac', 'Edit'), ['update', 'name' => $name], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                 ];
             } else {
                 return [
-                    'title' => Yii::t('rbac', "Update {0}", ['"' . $name . '" Role']),
+                    'title' => Yii::t('app/rbac', "Update {0}", ['"' . $name . '" Role']),
                     'content' => $this->renderPartial('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::button(Yii::t('rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
+                    'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
             }
         } else {
@@ -255,7 +255,7 @@ class RoleController extends Controller {
         if (($model = Role::find($name)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException(Yii::t('rbac', 'The requested page does not exist.'));
+            throw new NotFoundHttpException(Yii::t('app/rbac', 'The requested page does not exist.'));
         }
     }
 

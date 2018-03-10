@@ -93,7 +93,7 @@ class Rule extends Model {
         }
 
         if ($message !== null) {
-            $this->addError('className', Yii::t('rbac', $message, ['className' => $this->className]));
+            $this->addError('className', Yii::t('app/rbac', $message, ['className' => $this->className]));
         }
     }
 
@@ -102,8 +102,8 @@ class Rule extends Model {
      */
     public function attributeLabels() {
         return [
-            'name' => Yii::t('rbac', 'Rule Name'),
-            'className' => Yii::t('rbac', 'Class Name'),
+            'name' => Yii::t('app/rbac', 'Rule Name'),
+            'className' => Yii::t('app/rbac', 'Class Name'),
         ];
     }
 

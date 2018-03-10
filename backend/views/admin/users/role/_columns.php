@@ -20,7 +20,7 @@ return [
         'label' => $searchModel->attributeLabels()['ruleName'],
         'width' => '140px',
         'value' => function($model) {
-            return $model->ruleName == null ? Yii::t('rbac', '(not use)') : $model->ruleName;
+            return $model->ruleName == null ? Yii::t('app/rbac', '(not use)') : $model->ruleName;
         }
     ],
     [
@@ -30,16 +30,16 @@ return [
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action, 'name' => $key]);
         },
-        'viewOptions' => ['role' => 'modal-remote', 'title' => Yii::t('rbac', 'View'), 'data-toggle' => 'tooltip'],
-        'updateOptions' => ['role' => 'modal-remote', 'title' => Yii::t('rbac', 'Update'), 'data-toggle' => 'tooltip'],
-        'deleteOptions' => ['role' => 'modal-remote', 'title' => Yii::t('rbac', 'Delete'),
+        'viewOptions' => ['role' => 'modal-remote', 'title' => Yii::t('app/rbac', 'View'), 'data-toggle' => 'tooltip'],
+        'updateOptions' => ['role' => 'modal-remote', 'title' => Yii::t('app/rbac', 'Update'), 'data-toggle' => 'tooltip'],
+        'deleteOptions' => ['role' => 'modal-remote', 'title' => Yii::t('app/rbac', 'Delete'),
             'data-confirm' => false, 'data-method' => false, // for overide yii data api
             'data-request-method' => 'post',
             'data-toggle' => 'tooltip',
-            'data-comfirm-ok' => Yii::t('rbac', 'Ok'),
-            'data-comfirm-cancel' => Yii::t('rbac', 'Cancel'),
-            'data-confirm-title' => Yii::t('rbac', 'Are you sure?'),
-            'data-confirm-message' => Yii::t('rbac', 'Are you sure want to delete this item')],
+            'data-comfirm-ok' => Yii::t('app/rbac', 'Ok'),
+            'data-comfirm-cancel' => Yii::t('app/rbac', 'Cancel'),
+            'data-confirm-title' => Yii::t('app/rbac', 'Are you sure?'),
+            'data-confirm-message' => Yii::t('app/rbac', 'Are you sure want to delete this item')],
     ],
 ];
         

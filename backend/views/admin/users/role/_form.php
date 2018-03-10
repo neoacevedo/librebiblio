@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 $rules = Yii::$app->authManager->getRules();
 $rulesNames = array_keys($rules);
-$rulesDatas = array_merge(['' => Yii::t('rbac', '(not use)')], array_combine($rulesNames, $rulesNames));
+$rulesDatas = array_merge(['' => Yii::t('app/rbac', '(not use)')], array_combine($rulesNames, $rulesNames));
 
 $authManager = Yii::$app->authManager;   
 $permissions = $authManager->getPermissions();
@@ -51,7 +51,7 @@ $permissions = $authManager->getPermissions();
 
     <?php if (!Yii::$app->request->isAjax) { ?>
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('rbac', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton(Yii::t('app/rbac', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     <?php } ?>
 

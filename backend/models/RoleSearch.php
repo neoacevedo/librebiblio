@@ -20,8 +20,8 @@ class RoleSearch extends AuthItemSearch {
      */
     public function attributeLabels() {
         $labels = parent::attributeLabels();
-        $labels['name'] = Yii::t('rbac', 'Role name');
-        $labels['permissions'] = Yii::t('rbac', 'Permissions');
+        $labels['name'] = Yii::t('app/rbac', 'Role name');
+        $labels['permissions'] = Yii::t('app/rbac', 'Permissions');
         return $labels;
     }
 

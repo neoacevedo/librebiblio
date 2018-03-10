@@ -42,7 +42,7 @@ abstract class AuthItem extends Model {
         return [
             [['ruleName'], 'in',
                 'range' => array_keys(Yii::$app->authManager->getRules()),
-                'message' => Yii::t('rbac', 'Rule not exists')],
+                'message' => Yii::t('app/rbac', 'Rule not exists')],
             ['name', 'required'],
             ['name', 'string', 'max' => 64],
             ['name', function() {
@@ -69,10 +69,10 @@ abstract class AuthItem extends Model {
      */
     public function attributeLabels() {
         return [
-            'name' => Yii::t('rbac', 'Name'),
-            'description' => Yii::t('rbac', 'Description'),
-            'ruleName' => Yii::t('rbac', 'Rule Name'),
-            'data' => Yii::t('rbac', 'Data'),
+            'name' => Yii::t('app/rbac', 'Name'),
+            'description' => Yii::t('app/rbac', 'Description'),
+            'ruleName' => Yii::t('app/rbac', 'Rule Name'),
+            'data' => Yii::t('app/rbac', 'Data'),
         ];
     }
 

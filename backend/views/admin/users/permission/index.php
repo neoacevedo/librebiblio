@@ -10,7 +10,7 @@ use kartik\sidenav\SideNav;
 /* @var $searchModel johnitvn\rbacplus\models\AuthItemSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('rbac', 'Permissions Manager');
+$this->title = Yii::t('app/rbac', 'Permissions Manager');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Staff'), 'url' => ['admin/users']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -32,20 +32,20 @@ CrudAsset::register($this);
                     'all' => [
                         'icon' => 'resize-full',
                         'class' => 'btn btn-default',
-                        'label' => Yii::t('rbac', 'All'),
-                        'title' => Yii::t('rbac', 'Show all data')
+                        'label' => Yii::t('app/rbac', 'All'),
+                        'title' => Yii::t('app/rbac', 'Show all data')
                     ],
                     'page' => [
                         'icon' => 'resize-small',
                         'class' => 'btn btn-default',
-                        'label' => Yii::t('rbac', 'Page'),
-                        'title' => Yii::t('rbac', 'Show first page data')
+                        'label' => Yii::t('app/rbac', 'Page'),
+                        'title' => Yii::t('app/rbac', 'Show first page data')
                     ],
                 ],
                 'toolbar' => [
                     ['content' =>
-                        Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'], ['role' => 'modal-remote', 'title' => Yii::t('rbac', 'Create new rule'), 'class' => 'btn btn-default']) .
-                        Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''], ['data-pjax' => 1, 'class' => 'btn btn-default', 'title' => Yii::t('rbac', 'Reload Grid')]) .
+                        Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'], ['role' => 'modal-remote', 'title' => Yii::t('app/rbac', 'Create new rule'), 'class' => 'btn btn-default']) .
+                        Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''], ['data-pjax' => 1, 'class' => 'btn btn-default', 'title' => Yii::t('app/rbac', 'Reload Grid')]) .
                         '{toggleData}' .
                         '{export}'
                     ],
@@ -56,7 +56,7 @@ CrudAsset::register($this);
                 'panel' => [
                     'type' => 'primary',
                     'heading' => '<i class="glyphicon glyphicon-list"></i> ' . $this->title,
-                    'before' => '<em>' . Yii::t('rbac', '* Resize table columns just like a spreadsheet by dragging the column edges.') . '</em>',
+                    'before' => '<em>' . Yii::t('app/rbac', '* Resize table columns just like a spreadsheet by dragging the column edges.') . '</em>',
                     'after' => false,
                 ]
             ])

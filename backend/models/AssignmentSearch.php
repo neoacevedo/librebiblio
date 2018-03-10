@@ -52,7 +52,7 @@ class AssignmentSearch extends \yii\base\Model {
      */
     public function attributeLabels() {
         return [
-            'id' => Yii::t('rbac', 'ID'),
+            'id' => Yii::t('app/rbac', 'ID'),
             'login' => $this->rbacModule->userModelLoginFieldLabel,
         ];
     }

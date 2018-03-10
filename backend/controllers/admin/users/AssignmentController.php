@@ -117,7 +117,7 @@ class AssignmentController extends Controller {
                     'model' => $model,
                     'formModel' => $formModel,
                 ]),
-                'footer' => Html::button(Yii::t('rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
                 Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
             ];
         } else {

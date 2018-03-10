@@ -37,7 +37,7 @@ $authManager = Yii::$app->authManager;
     </table>
     <?php if (!Yii::$app->request->isAjax) { ?>
     <div class="form-group">
-    <?= Html::submitButton(Yii::t('rbac', 'Save'), ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
     <?php } ?>
 <?php ActiveForm::end(); ?>

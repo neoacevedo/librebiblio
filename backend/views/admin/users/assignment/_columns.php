@@ -43,13 +43,13 @@ if ($extraColums !== null) {
 $columns[] = [
     'class' => 'kartik\grid\ActionColumn',
     'template' => '{update}',
-    'header' => Yii::t('rbac', 'Assignment'),
+    'header' => Yii::t('app/rbac', 'Assignment'),
     'dropdown' => false,
     'vAlign' => 'middle',
     'urlCreator' => function($action, $model, $key, $index) {
         return Url::to(['assignment', 'id' => $key]);
     },
-            'updateOptions' => ['role' => 'modal-remote', 'title' => Yii::t('rbac', 'Update'), 'data-toggle' => 'tooltip'],
+            'updateOptions' => ['role' => 'modal-remote', 'title' => Yii::t('app/rbac', 'Update'), 'data-toggle' => 'tooltip'],
         ];
         return $columns;
 

@@ -19,7 +19,7 @@ class Permission extends AuthItem {
 
     public function attributeLabels() {
         $labels = parent::attributeLabels();
-        $labels['name'] = Yii::t('rbac', 'Permission name');
+        $labels['name'] = Yii::t('app/rbac', 'Permission name');
         return $labels;
     }
 
