@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'last_name')->textInput() ?>
                 </div>
             </div>
+            
+            <?= $form->field($model, 'pin')->input('number', ['min' => 1]) ?>
 
             <?= $form->field($model, 'email') ?>
             

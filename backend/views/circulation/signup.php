@@ -42,6 +42,8 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
             </div>
         </div>
         
+        <?= $form->field($model, 'pin')->input('number', ['min' => 1]) ?>
+        
         <?= $form->field($model, 'address') ?>
 
         <?= $form->field($model, 'email') ?>
