@@ -75,6 +75,7 @@ return [
     'Circulation' => 'Circulación',
     'Classification' => 'Clasificación',
     'Code' => 'Código',
+    'Contact' => 'Contacto',
     'Collection' => 'Colección',
     'Collections' => 'Colecciones',
     'Copy Desc' => 'Descripción de la Copia',

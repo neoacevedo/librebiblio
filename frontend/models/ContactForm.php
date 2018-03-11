@@ -8,20 +8,18 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class ContactForm extends Model
-{
+class ContactForm extends Model {
+
     public $name;
     public $email;
     public $subject;
     public $body;
     public $verifyCode;
 
-
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             // name, email, subject and body are required
             [['name', 'email', 'subject', 'body'], 'required'],
@@ -35,8 +33,7 @@ class ContactForm extends Model
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'verifyCode' => 'Verification Code',
         ];
@@ -48,13 +45,13 @@ class ContactForm extends Model
      * @param string $email the target email address
      * @return bool whether the email was sent
      */
-    public function sendEmail($email)
-    {
+    public function sendEmail($email) {
         return Yii::$app->mailer->compose()
-            ->setFrom([$this->email => $this->name])
-            ->setTo($email)
-            ->setSubject($this->subject)
-            ->setTextBody($this->body)
-            ->send();
+                        ->setTo($email)
+                        ->setFrom([$this->email => $this->name])
+                        ->setSubject($this->subject)
+                        ->setTextBody($this->body)
+                        ->send();
     }
+
 }

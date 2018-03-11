@@ -48,6 +48,7 @@ return [
     'Circulation' => '',
     'Classification' => '',
     'Code' => '',
+    'Contact' => '',
     'Collection' => '',
     'Collection Cd' => '',
     'Collections' => '',

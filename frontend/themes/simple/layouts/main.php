@@ -46,10 +46,10 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
             $menuItems = [
                 ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
                 /*['label' => 'About', 'url' => ['/site/about']],*/
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
             ];
             if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+                $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
                 $menuItems[] = [

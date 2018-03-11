@@ -89,13 +89,9 @@ class SiteController extends Controller {
                 ->select(["created_at", "count(*) as checkoutCount"])
                 ->from("{{%biblio_status_hist}}")
                 ->where(['status_cd' => 'out'])
-                ->andWhere(['<=', 'created_at', date('Y-m-d')])
+                ->andWhere(['between', 'created_at', new \yii\db\Expression('(NOW() - INTERVAL 1 WEEK)'), new \yii\db\Expression('NOW()')])
                 ->groupBy(['created_at'])
-                ->limit(5)
                 ->all();
-        /*$checkout_stats = \common\models\BiblioStatusHistory::find()->where([">=", "created_at", date('Y-m-d')])
-                ->andWhere(['status_cd' => 'out'])->groupBy(['created_at'])
-                ->limit(5)->all();*/
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'checkouts' => $copy_count,

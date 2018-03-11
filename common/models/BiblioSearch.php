@@ -23,6 +23,7 @@ class BiblioSearch extends Biblio {
     public function rules() {
         return [
             [['id'], 'integer'],
+            [['title', 'author'], 'required'],
             [['user', 'image_file', 'materialType', 'collection', 'created_at', 'updated_at', 'call_nmbr1', 'call_nmbr2', 'call_nmbr3',
             'title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'opac_flg', 'biblioFields'], 'safe'],
         ];

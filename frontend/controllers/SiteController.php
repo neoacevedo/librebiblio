@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -17,22 +18,29 @@ use common\models\BiblioSearch;
 /**
  * Site controller
  */
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
                 'rules' => [
+                    [
+                        'actions' => ['login', 'error', 'index'],
+                        'allow' => true,
+                    ],
                     [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['search'],
+                        'allow' => true,
+                        'roles' => ['?', '@']
                     ],
                     [
                         'actions' => ['logout'],
@@ -53,8 +61,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -66,7 +73,7 @@ class SiteController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Establece la página para el modo mantenimiento del sitio.
      * @param string $message
@@ -82,9 +89,8 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new \common\models\BiblioSearch();        
+    public function actionIndex() {
+        $searchModel = new \common\models\BiblioSearch();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', ['searchModel' => $searchModel]);
     }
@@ -94,8 +100,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -106,7 +111,7 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             return $this->render('login', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -116,8 +121,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -128,8 +132,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -142,7 +145,7 @@ class SiteController extends Controller
             return $this->refresh();
         } else {
             return $this->render('contact', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -152,8 +155,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
 
@@ -162,8 +164,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
+    public function actionSignup() {
         $model = new \common\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
@@ -172,17 +173,21 @@ class SiteController extends Controller
                     return $this->goHome();
                 }
             } else {
-                 @array_walk_recursive($model->errors, function($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+                @array_walk_recursive($model->errors, function($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
             }
+        } else {
+            @array_walk_recursive($model->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
         }
 
         return $this->render('signup', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
-    
+
     /**
      * Lists all Biblio models.
      * @return mixed
@@ -192,8 +197,8 @@ class SiteController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('search', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -202,11 +207,10 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequestPasswordReset()
-    {
+    public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Check your email for further instructions.'));
@@ -218,7 +222,7 @@ class SiteController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -229,8 +233,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
+    public function actionResetPassword($token) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);
@@ -241,11 +244,12 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'New password saved.'));
 
-            return $this->redirect(['site/login']);#$this->goHome();
+            return $this->redirect(['site/login']); #$this->goHome();
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
+
 }
