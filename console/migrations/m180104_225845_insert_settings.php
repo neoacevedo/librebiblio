@@ -14,7 +14,7 @@ class m180104_225845_insert_settings extends Migration
     {
         $this->insert("{{%settings}}", [
             'library_name' => 'OpenBiblio2', 
-            'library_image_url' => 'sampleLogo.png',
+            'library_image_url' => 'openbiblio2.png',
             'use_image_flg' => 1,
             'library_hours' => 'L-V 08:00 - 16:30',
             'library_phone' => '+571 4157818',

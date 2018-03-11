@@ -6,6 +6,11 @@ use yii\widgets\ActiveForm;
 
 $settings = \common\models\Settings::find()->one();
 $this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$this->registerJs(""
+        . "\$('.biblio').click(function() {
+                    \$('#input_search').attr('name', \$(this).val());
+                    \$('#search').submit();
+                });");
 ?>
 <div class="site-index">
 
@@ -27,7 +32,7 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
         $form = ActiveForm::begin([
                     'action' => ['search'],
                     'method' => 'get',
-                    'options' => ['class' => 'form-inline']
+                    'options' => ['class' => 'form-inline', 'id' => 'search']
         ]);
         ?>
         <div class="row">&nbsp;</div>
@@ -48,58 +53,13 @@ $this->title = null !== $settings->library_name ? $settings->library_name : "Ope
         <div class="row">
             <div class="col-xs-4">&nbsp;</div>
             <div class="col-xs-4">
-                <button type="button" name="search_opt" title="" value="BiblioSearch[title]" class="btn btn-sm btn-default biblio" onclick="javascript:changeName(this.value);document.forms[0].submit();"> <?= Yii::t('app', 'Title') ?></button>
-                <button type="button" name="search_opt" value="BiblioSearch[author]" class="btn btn-sm btn-default biblio" onclick="javascript:changeName(this.value);document.forms[0].submit();"> <?= Yii::t('app', 'Author') ?></button>
+                <button type="button" name="search_opt" title="" value="BiblioSearch[title]" class="btn btn-sm btn-default biblio"> <?= Yii::t('app', 'Title') ?></button>
+                <button type="button" name="search_opt" value="BiblioSearch[author]" class="btn btn-sm btn-default biblio"> <?= Yii::t('app', 'Author') ?></button>
             </div>
             <div class="col-xs-4">&nbsp;</div>
-            <script>
-                function changeName(name) {
-                    search = document.getElementById('input_search');
-                    search.name = name;
-                }
-            </script>
         </div>
         <?php
         ActiveForm::end();
         ?>
     </div>
-
-
-    <div class="body-content">
-        <!--
-                <div class="row">
-                    <div class="col-lg-4">
-                        <h2>Heading</h2>
-        
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                            fugiat nulla pariatur.</p>
-        
-                        <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-                    </div>
-                    <div class="col-lg-4">
-                        <h2>Heading</h2>
-        
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                            fugiat nulla pariatur.</p>
-        
-                        <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-                    </div>
-                    <div class="col-lg-4">
-                        <h2>Heading</h2>
-        
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                            fugiat nulla pariatur.</p>
-        
-                        <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-                    </div>
-                </div>
-        
-            </div>
-        -->
-    </div>
+</div>
