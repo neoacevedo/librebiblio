@@ -11,7 +11,6 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\BiblioSearch;
 
@@ -29,7 +28,7 @@ class SiteController extends Controller {
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'index', 'contact'],
+                        'actions' => ['login', 'error', 'index', 'contact', 'captcha'],
                         'allow' => true,
                     ],
                     [

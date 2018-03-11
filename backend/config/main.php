@@ -101,6 +101,15 @@ return [
                 ],
             ],
         ],
+        'urlManagerFrontend' => [
+            'class' => 'yii\web\UrlManager',
+            'baseUrl' => '//obib2.hyntibasoftware.co', // se deberá cambiar por @web para producción
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'enableStrictParsing' => false,
+            'rules' => [
+            ],
+        ]
     ],
     'params' => $params,
 ];
