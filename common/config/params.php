@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'adminEmail' => getenv('USERNAME'),
-    'supportEmail' => getenv('USERNAME'),
+    'adminEmail' => getenv('adminEmail'),
+    'supportEmail' => getenv('supportEmail'),
     // caducidad del token de renovación de la contraseña.
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO', 'en-US'],
