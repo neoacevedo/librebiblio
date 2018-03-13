@@ -20,7 +20,6 @@ class AdminController extends Controller {
     public function actionRequestPasswordReset(string $email) {
         $model = new PasswordResetRequest;
         $model->email = $email;
-        var_dump(Yii::$app->params);
         if ($model->validate()) {
             if ($model->sendEmail()) {
                 echo $this->ansiFormat("Email sent.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
