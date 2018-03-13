@@ -43,7 +43,11 @@ endif;
 
     <?= $form->field($model, 'image_file')->fileInput() ?>
     <?=
-    Html::img(Yii::$app->params['baseUrlFrontend'] . "/images/covers/{$model->image_file}", ['alt' => $model->title,
+    /* Html::img(Yii::$app->params['baseUrlFrontend'] . "/images/covers/{$model->image_file}", ['alt' => $model->title,
+      'title' => $model->title,
+      'class' => 'image-thumbnail center-block',
+      'style' => 'width: 140px']) */
+    Html::img(Yii::$app->urlManagerFrontend->createUrl("/images/covers/{$model->image_file}"), ['alt' => $model->title,
         'title' => $model->title,
         'class' => 'image-thumbnail center-block',
         'style' => 'width: 140px'])

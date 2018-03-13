@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Library hours' => '@@Horario de la Biblioteca@@',
     'Date' => 'Fecha',
     'Library Hours' => 'Horario de la Biblioteca',
     'Library Phone' => 'Teléfono de la Biblioteca',

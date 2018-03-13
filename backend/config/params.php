@@ -1,5 +1,4 @@
 <?php
-
 return [
-    //'adminEmail' => 'admin@example.com',
+    'baseUrlFrontend' => "//localhost/openbiblio2/frontend/web",
 ];
