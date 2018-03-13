@@ -362,7 +362,7 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionMemberCreate() {
-        $model = new \backend\models\SignupForm();
+        $model = new \common\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -372,7 +372,11 @@ class CirculationController extends Controller {
                     Yii::$app->getSession()->setFlash('warning', 'Failed, contact Admin!');
                 }
                 return $this->redirect(['circulation/index']);
-            } 
+            }
+        } else {
+            @array_walk_recursive($model->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
         }
 
         return $this->render('signup', [

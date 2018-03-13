@@ -103,7 +103,7 @@ return [
         ],
         'urlManagerFrontend' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => '//obib2.hyntibasoftware.co', // se deberá cambiar por @web para producción
+            'baseUrl' => '//obib2.hyntibasoftware.co', // se deberá cambiar por la URL del frontend
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,

@@ -18,6 +18,7 @@ class SignupForm extends Model {
     public $address;
     public $email;
     public $password;
+    public $classification_id;
 
     /**
      * @inheritdoc
@@ -73,9 +74,16 @@ class SignupForm extends Model {
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->status = 10;
-        $user->classification_id = 1;
+        $user->classification_id = $this->classification_id ?: 1;
 
-        return $user->save() ? $user : null;
+        if ($user->save()) {
+            return $user;
+        } else {
+            @array_walk_recursive($user->errors, function($v, $k) {
+                        \Yii::$app->getSession()->setFlash('error', $v);
+                    });
+            return null;
+        }
     }
 
     /**
@@ -86,6 +94,27 @@ class SignupForm extends Model {
     public function generateUniqueRandomString($length = 32) {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
+    }
+    
+    
+    public function sendEmail(int $id) {
+        $user = Member::findOne($id);
+
+        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        return \Yii::$app->mailer
+                        ->compose(
+                                ['html' => 'userSignup-html', 'text' => 'userSignup-text'], ['user' => $user]
+                        )
+                        ->setTo($user->email)
+                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
+                        ->setSubject('Signup Confirmation')
+                        ->send();
     }
 
 }

@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use yii\base\Model;
-use common\models\Member;
+use backend\models\User;
 
 /**
  * Signup form
@@ -13,12 +13,11 @@ class SignupForm extends Model {
     public $username;
     public $first_name;
     public $last_name;
-    public $pin;
     public $phone;
     public $email;
     public $address;
     public $password;
-    public $classification_id;
+    public $status;
 
     /**
      * @inheritdoc
@@ -31,8 +30,6 @@ class SignupForm extends Model {
             ['last_name', 'trim'],
             ['last_name', 'required'],
             ['last_name', 'string', 'min' => 4, 'max' => 255],
-            ['pin', 'number'],
-            ['pin', 'required'],
             ['phone', 'trim'],
             ['phone', 'required'],
             ['phone', 'string', 'min' => 4, 'max' => 32],
@@ -50,8 +47,7 @@ class SignupForm extends Model {
             ['address', 'string', 'min' => 4, 'max' => 255],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            ['classification_id', 'required'],
-            ['classification_id', 'integer']
+            ['status', 'required']
         ];
     }
 
@@ -65,17 +61,16 @@ class SignupForm extends Model {
             return null;
         }
 
-        $user = new Member();
+        $user = new User();
         $user->username = $this->username;
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
-        $user->pin = $this->pin;
         $user->phone = $this->phone;
         $user->email = $this->email;
         $user->address = $this->address;
         $user->setPassword($this->password);
+        $user->status = $this->status;
         $user->generateAuthKey();
-        $user->classification_id = $this->classification_id;
         //
         if ($user->save()) {
             return $user;
@@ -95,26 +90,6 @@ class SignupForm extends Model {
     public function generateUniqueRandomString($length = 32) {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
-    }
-
-    public function sendEmail(int $id) {
-        $user = Member::findOne($id);
-
-        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
-            }
-        }
-
-        return \Yii::$app->mailer
-                        ->compose(
-                                ['html' => 'userSignup-html', 'text' => 'userSignup-text'], ['user' => $user]
-                        )
-                        ->setTo($user->email)
-                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
-                        ->setSubject('Signup Confirmation')
-                        ->send();
     }
 
 }

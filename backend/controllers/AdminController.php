@@ -13,13 +13,12 @@ use yii\filters\AccessControl;
 /**
  * AdminController implements the CRUD actions for User model.
  */
-class AdminController extends Controller
-{
+class AdminController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -29,19 +28,19 @@ class AdminController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['users', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
+                        'actions' => ['users', 'users-create', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        //'controllers' => [AdminController::className(), admin\SettingsController::className()],
-                        /*'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
-                            if (array_key_exists("admin", $roles)) {
-                                return true;
-                            }
-                            
-                            return false;
-                        },*/
+                    //'controllers' => [AdminController::className(), admin\SettingsController::className()],
+                    /* 'matchCallback' => function () {
+                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                      //Yii::info($roles);
+                      if (array_key_exists("admin", $roles)) {
+                      return true;
+                      }
+
+                      return false;
+                      }, */
                     ],
                     [
                         'actions' => ['logout'],
@@ -63,14 +62,13 @@ class AdminController extends Controller
      * Lists all User models.
      * @return mixed
      */
-    public function actionUsers()
-    {
+    public function actionUsers() {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -79,11 +77,10 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersView($id)
-    {
+    public function actionUsersView($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -92,15 +89,27 @@ class AdminController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionUsersCreate()
-    {
-        $model = new User();
+    public function actionUsersCreate() {
+        $model = new \backend\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['admin/users-view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'User registered'));
+                return $this->redirect(['admin/users-view', 'id' => $user->id]);
+            } else {
+                @array_walk_recursive($model->errors, function($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
+                return $this->render('users/create', [
+                            'model' => $model,
+                ]);
+            }
         } else {
+            @array_walk_recursive($model->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
             return $this->render('users/create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -111,18 +120,17 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersUpdate($id)
-    {
+    public function actionUsersUpdate($id) {
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
-            @@array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+            @array_walk_recursive($model->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
             return $this->render('users/update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -133,18 +141,17 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersDelete($id)
-    {
+    public function actionUsersDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
-    
+
     public function actionSettings() {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('settings/index');
     }
-    
+
     public function actionLibrarySettings() {
         $model = $this->findSettingsModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -152,11 +159,11 @@ class AdminController extends Controller
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
             @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
+
             return $this->render('settings/library_settings', ['model' => $model]);
-        }    
+        }
     }
 
     /**
@@ -166,8 +173,7 @@ class AdminController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = User::findOne($id)) !== null) {
             return $model;
@@ -175,7 +181,7 @@ class AdminController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
-    
+
     private function findSettingsModel() {
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
@@ -184,4 +190,5 @@ class AdminController extends Controller
             return $model;
         }
     }
+
 }
