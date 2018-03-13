@@ -57,6 +57,19 @@ class CollectionsController extends Controller
             ],
         ];
     }
+    
+    /**
+     * Gestión de errores
+     * @return mixed
+     */
+    public function actions() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
 
     /**
      * Lists all Collection models.

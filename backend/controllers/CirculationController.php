@@ -72,6 +72,7 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actions() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
