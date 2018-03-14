@@ -1,4 +1,4 @@
 <?php
 return [
-    'baseUrlFrontend' => "//localhost/openbiblio2/frontend/web",
+    //'baseUrlFrontend' => "//localhost/openbiblio2/frontend/web",
 ];

@@ -71,6 +71,15 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
 
 5. Seguir las instrucciones para [configurar un servidor web en Yii2](http://www.yiiframework.com/doc-2.0/guide-start-installation.html#configuring-web-servers).
 
+6. En el archivo **backend/config/main.php** modificar la línea del componente _urlManagerFrontend_ reemplazando el valor de baseUrl con la URL del dominio del frontend:
+
+    ```
+    ...
+    'baseUrl' => '//obib2.hyntibasoftware.co', // se debe cambiar por la URL del frontend
+    ...
+    ```
+    _urlManagerFrontend_ genera las rutas de las imágenes en el frontend que se suben desde el backend.
+
 Hecho esto, puede acceder al backend desde la URL configurada - por ejemplo, _backend.openbiblio2.tld_ - con usuario y contraseña **_admin_**
 
 ESTRUCTURA DE DIRECTORIOS

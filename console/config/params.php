@@ -1,7 +1,7 @@
 <?php
 return [
-    'adminEmail' => 'nestor.acevedo.romero@gmail.com',
-    'supportEmail' => 'nestor.acevedo.romero@gmail.com',
+    'adminEmail' => getenv('adminEmail'),
+    'supportEmail' => getenv('supportEmail'),
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO', 'en-US']
 ];
