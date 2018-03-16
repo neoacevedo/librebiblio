@@ -75,7 +75,7 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
 
     ```
     ...
-    'baseUrl' => '//obib2.hyntibasoftware.co', // se debe cambiar por la URL del frontend
+        'baseUrl' => '//obib2.hyntibasoftware.co', // se debe cambiar por la URL del frontend
     ...
     ```
     _urlManagerFrontend_ genera las rutas de las imágenes en el frontend que se suben desde el backend.

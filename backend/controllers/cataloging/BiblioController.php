@@ -67,7 +67,7 @@ class BiblioController extends Controller {
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
@@ -104,7 +104,6 @@ class BiblioController extends Controller {
      */
     public function actionView($id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-
         return $this->render('view', [
                     'model' => $this->findModel($id),
         ]);

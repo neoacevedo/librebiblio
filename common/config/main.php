@@ -3,6 +3,7 @@
 $cache = require(__DIR__ . '/cache.php');
 $db = require(__DIR__ . '/database.php');
 $mailer = require(__DIR__ . '/mail.php');
+$fs = require(__DIR__.'/filesystem.php');
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -87,6 +88,7 @@ return [
             'cssInline' => '.kv-heading-1{font-size:18px}',
         ],
         'mailer' => $mailer,
+        'storage' => $fs        
     ],
     'name' => call_user_func(function() use($db) {
                 array_shift($db);
@@ -101,6 +103,6 @@ return [
             }, $db),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
-        // accesos solo administrativos a módulos específicos
+    // accesos solo administrativos a módulos específicos
     ]
 ];
