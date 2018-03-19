@@ -70,6 +70,7 @@ endif;
     <!-- biblio fields -->
     <h4><?= Yii::t('app', "USMarc Fields:") ?></h4>
     <?php
+    var_dump($modelBiblioFields);
     foreach ($modelBiblioFields as $index => $biblioField) :
         // se deberá establecer el  número máximo del campo repetible.
         if ($usmarc[$index]->tag == 520) {

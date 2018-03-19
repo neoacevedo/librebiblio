@@ -3,7 +3,7 @@
 $cache = require(__DIR__ . '/cache.php');
 $db = require(__DIR__ . '/database.php');
 $mailer = require(__DIR__ . '/mail.php');
-$fs = require(__DIR__.'/filesystem.php');
+$fs = require(__DIR__.'/storage.php');
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',

@@ -118,7 +118,8 @@ class Biblio extends \yii\db\ActiveRecord {
     public function upload() {
         if ($this->validate()) {
             if (null !== $this->image_file) {
-                $this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+                #$this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+                Yii::$app->storage->saveAs($this->image_file);
             }
             return true;
         } else {
