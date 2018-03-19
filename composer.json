@@ -43,12 +43,12 @@
                 "npm-asset-library": "vendor/npm",
                 "bower-asset-library": "vendor/bower"
             }
+        },
+        "bitbucket-oauth": {
+            "bitbucket.org": {
+                "consumer-key": "myKey",
+                "consumer-secret": "mySecret"
+            }
         }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://nacevedo@bitbucket.org/nacevedo/openbiblio2.git"
-        }
-    ]
+    }
 }
