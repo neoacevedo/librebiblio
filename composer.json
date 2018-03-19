@@ -44,5 +44,11 @@
                 "bower-asset-library": "vendor/bower"
             }
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://nacevedo@bitbucket.org/nacevedo/openbiblio2.git"
+        }
+    ]
 }
