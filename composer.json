@@ -11,6 +11,12 @@
         "source": "https://github.com/neoacevedo/openbiblio2"
     },
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "http://nacevedo@bitbucket.org/nacevedo/openbiblio2.git"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "yiisoft/yii2": "~2.0.6",
@@ -42,12 +48,6 @@
             "installer-paths": {
                 "npm-asset-library": "vendor/npm",
                 "bower-asset-library": "vendor/bower"
-            }
-        },
-        "bitbucket-oauth": {
-            "bitbucket.org": {
-                "consumer-key": "myKey",
-                "consumer-secret": "mySecret"
             }
         }
     }
