@@ -28,7 +28,7 @@ class SiteController extends Controller {
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'index', 'contact', 'captcha'],
+                        'actions' => ['login', 'error', 'index', 'contact', 'captcha', 'request-password-reset', 'reset-password'],
                         'allow' => true,
                     ],
                     [

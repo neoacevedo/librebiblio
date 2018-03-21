@@ -97,10 +97,10 @@ foreach ($model->biblioFields as $biblioField) {
             [
                 'attribute' => 'image_file',
                 'value' => function($model) {
-                    return Html::img(Yii::$app->urlManagerFrontend->createUrl("/images/covers/{$model->image_file}"), ['alt' => $model->title,
-                                'title' => $model->title,
-                                'class' => 'image-thumbnail center-block',
-                                'style' => 'width: 140px']);
+                    return Html::img(Yii::$app->storage->getUrl("images/covers/{$model->image_file}"), ['alt' => $model->title,
+                                        'title' => $model->title,
+                                        'class' => 'image-thumbnail center-block',
+                                        'style' => 'width: 140px']);
                 },
                 'format' => 'raw'
             ],

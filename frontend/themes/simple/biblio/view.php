@@ -106,19 +106,24 @@ foreach ($model->biblioFields as $biblioField) {
 //            'status_begin_dt',
 //            'due_back_dt',
             ['class' => 'yii\grid\ActionColumn',
-                'template' => '{placehold}',
+                'template' => '{placehold}&nbsp;&nbsp;{checkout}',
                 'buttons' => [
                     'placehold' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, [
                                     'title' => Yii::t('app', 'Place Hold'),
                         ]);
+                    },
+                    'checkout' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-ok-sign"></span>', $url, [
+                                    'title' => Yii::t('app', 'Check out'),
+                        ]);
                     }
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
-                    if ($action === 'placehold') {
-                        //$url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=hld";
-                        return \yii\helpers\Url::to(["circulation/create", "id" => Yii::$app->user->id, "copyid" => $model->id, "bibid" => $model->bibid]);
-                    }
+                    return \yii\helpers\Url::to(["circulation/$action", "id" => Yii::$app->user->id, "copyid" => $model->id, "bibid" => $model->bibid]);
+                    /*if ($action === 'placehold') {
+                        return \yii\helpers\Url::to(["circulation/placehold", "id" => Yii::$app->user->id, "copyid" => $model->id, "bibid" => $model->bibid]);
+                    }*/ 
                 }],
         ],
     ]);

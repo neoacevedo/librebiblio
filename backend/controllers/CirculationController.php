@@ -341,7 +341,7 @@ class CirculationController extends Controller {
 // deudas
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of \${0, number, #,#.0#}", $memberDebt));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
         }
 
         $member = $this->findModel($id);
@@ -507,7 +507,7 @@ class CirculationController extends Controller {
             // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
             $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
             if ($memberDebt > 0) {
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number}", Yii::$app->formatter->asCurrency($memberDebt)));
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
                 // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
                 if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                     return false;
@@ -545,12 +545,12 @@ class CirculationController extends Controller {
      * @return boolean false si el miembro tiene una deuda, el material ya ha sido prestado o si el tipo de material ya ha alcanzado 
      * el límite de préstamos por parte del usuario.
      */
-    protected function checkout($bibid, $copyid, $id) {
+    protected function checkout(int $bibid, int $copyid, int $id) {
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
         // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number}", Yii::$app->formatter->asCurrency($memberDebt)));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
             if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                 return false;

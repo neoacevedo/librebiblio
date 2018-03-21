@@ -13,7 +13,7 @@
     "minimum-stability": "stable",
     "repositories": [
         {
-            "type": "git",
+            "type": "vcs",
             "url": "https://nacevedo@bitbucket.org/nacevedo/openbiblio2.git"
         }
     ],

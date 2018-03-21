@@ -42,7 +42,7 @@ class CirculationController extends Controller {
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             //throw new \Exception('You are not allowed to access this page');
-                            if ($action->id == "create") {
+                            if ($action->id === "placehold" || $action->id === 'checkout-cart' || $action->id === 'checkout') {
                                 $model = $this->findModel(Yii::$app->user->id);
                                 if ($model->status == $model::STATUS_BLOCKED) {
                                     \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -73,7 +73,7 @@ class CirculationController extends Controller {
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
@@ -113,13 +113,13 @@ class CirculationController extends Controller {
      * @param string $status
      * @return mixed
      */
-    public function actionCreate($bibid, $copyid, $id) {
+    public function actionPlacehold(int $bibid, int $copyid, int $id) {
         $this->updateMemberAccount($id);
-        
+
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number}", Yii::$app->formatter->asCurrency($memberDebt)));
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
             if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                 return $this->redirect(Yii::$app->request->referrer);
@@ -127,7 +127,7 @@ class CirculationController extends Controller {
         }
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-        
+
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
@@ -162,6 +162,113 @@ class CirculationController extends Controller {
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionCheckout(int $bibid, int $copyid, int $id) {
+        $this->updateMemberAccount($id);
+
+        $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
+        if ($memberDebt > 0) {
+            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
+            // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
+            if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+        //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
+        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
+        $collection = \backend\models\Collection::findOne(\common\models\Biblio::findOne($bibid)->collection_cd);
+
+        if ($biblioCopy->status_cd === 'hld') {
+            if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) !== null) {
+                // el miembro fue quien reservó el material
+                $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
+                $datetime1 = new DateTime($hold->created_at);
+                $datetime2 = new DateTime('now');
+                $interval = $datetime1->diff($datetime2);
+                $diff = (int) $interval->format('%r%a');
+                if ($holdMaxDays > 0 && $diff > $holdMaxDays) {
+                    $tooOld = true;
+                } else {
+                    $tooOld = false;
+                }
+                if ($tooOld || $hold->mbr_id == $id) {
+                    $hold->delete();
+                } else {
+                    // si otro miembro reservó antes el material
+                    Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+            } else {
+                // si otro miembro reservó antes el material
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
+        if ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id === $id) {
+
+            // el miembro tiene el material. Buscar si ya alcanzó el límite de renovaciones.
+            if ($biblioCopy->hasReachedRenewalLimit(Member::findOne($id)->classification_id)) {
+                // el miembro ya alcanzó el límite de renovaciones
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} has reached its renewal limit.", ['n' => $biblioCopy->barcode_nmbr]));
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+
+            if ($biblioCopy->due_back_dt < date('Y-m-d', strtotime('now'))) {
+                // el material no ha sido devuelto en el tiempo establecido.
+                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is late and cannot be renewed.", ['n' => $biblioCopy->barcode_nmbr]));
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
+            $biblioCopy->updated_at = date('Y-m-d H:i:s');
+            // la fecha de devolución se amplía basado en la fecha de devolución inicial.
+            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $collection->days_due_back);
+        } elseif ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id !== $id) {
+            // si otro miembro tiene el material
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is already checked out to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+            return $this->redirect(Yii::$app->request->referrer);
+        } elseif ($biblioCopy->status_cd === 'in') {
+            // nadie tiene el material. Se puede prestar.
+            $biblioCopy->status_begin_dt = date('Y-m-d H:i:s');
+            $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime("now +{$collection->days_due_back} days"));
+        }
+
+        // verificar si el miembro ya alcanzó el límite de pŕestamos.
+        if ($biblioCopy->hasReachedCheckoutLimit($id, Member::findOne($id)->classification_id)) {
+            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
+            return $this->redirect('member/profile');
+        }
+
+        $biblioCopy->mbr_id = $id;
+        $biblioCopy->status_cd = 'out';
+        $biblioCopy->updated_at = date('Y-m-d H:i:s');
+        if (!$biblioCopy->save()) {
+            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
+        } else {
+            // crear el historial para el miembro
+            $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+            $biblioStatusHistory->bibid = $bibid;
+            $biblioStatusHistory->copyid = $copyid;
+            $biblioStatusHistory->mbr_id = $id;
+            $biblioStatusHistory->status_cd = 'out';
+            $biblioStatusHistory->created_at = date('Y-m-d H:i:s');
+            $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
+
+            if (!$biblioStatusHistory->save()) {
+                @array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
+            } else {
+                \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+                Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
+            }
+        }
+
+        return $this->redirect(['/member/profile']);
     }
 
     /**
