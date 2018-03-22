@@ -85,6 +85,17 @@ class MemberController extends Controller {
         $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
+            'sort' => [
+                'attributes' => [
+                    'copy.barcode_nmbr',
+                    'bib.title',
+                    'bib.author',
+                    'copy.status_cd',
+                    'created_at',
+                    'due_back_dt',
+                    'copy.renewal_count'
+                ]
+            ]
         ]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
@@ -116,7 +127,8 @@ class MemberController extends Controller {
         $model = $this->findModel($id);
 
         $searchModel = new MemberAccountSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->mbr_id = $id;
+        $dataProvider = $searchModel->search([]);
 
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account', [
@@ -134,7 +146,7 @@ class MemberController extends Controller {
      */
     public function actionAccountView($id, $mbr_id) {
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
-        
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->renderAjax('account-view', [
                     'memberAccount' => $memberAccount,
@@ -149,14 +161,14 @@ class MemberController extends Controller {
      */
     public function actionAccountPrint($id, $mbr_id) {
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
-        
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $html = $this->renderPartial('account-view', [
-                    'memberAccount' => $memberAccount,
+            'memberAccount' => $memberAccount,
         ]);
-        
+
         $html = str_replace('<div class="row">', '<div class="hidden">', $html);
-        
+
         $pdf = Yii::$app->pdf;
         $pdf->content = $html;
         $pdf->options = ['margin_left' => 20,

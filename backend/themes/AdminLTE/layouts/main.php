@@ -86,25 +86,43 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                 <li class="dropdown notifications-menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-bell"></i>
-                                        <span class="label label-default"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'hld'])) ?></span>
+                                        <span class="label label-default"><?= count(common\models\BiblioHold::find()->all()) ?></span>
                                     </a>
                                     <ul class="dropdown-menu">
+                                        <li class="header"><?= Yii::t('app', 'Bibliographies Currently On Hold') ?></li>
                                         <?php
-                                        $hldCopies = common\models\BiblioCopy::find()->where(['status_cd' => 'hld'])->limit(5)->all();
+                                        $hldCopies = common\models\BiblioHold::find()->limit(5)->all();
                                         if ($hldCopies):
-                                            foreach ($hldCopies as $hld):
-                                                $mbr = \common\models\Member::findOne($hld->mbr_id);
-                                                ?>
-                                                <li><?php $mbr->last_name . ", " . $mbr->first_name . " " . Yii::t("circulation", "Has reserved") . " " . $hld->barcode_nmbr; ?></li>
-                                                <?php
-                                            endforeach;
                                             ?>
-                                            <li class="footer"><?= Yii::t('app', 'See all') ?></li>
+                                            <li>
+                                                <!-- data -->
+                                                <ul class="menu">
+                                                    <?php
+                                                    foreach ($hldCopies as $hld):
+                                                        $mbr = \common\models\Member::findOne($hld->mbr_id);
+                                                        $copy = \common\models\BiblioCopy::findOne($hld->copyid);
+                                                        ?>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fa fa-user-circle-o"></i><?php echo $mbr->last_name . ", " . $mbr->first_name . " " . Yii::t("circulation", "Has reserved copy") . " " . $copy->barcode_nmbr; ?>
+                                                            </a>
+                                                        </li>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>
+                                                </ul>
+                                            </li>
+                                            <li class="footer"><a href="#"><?= Yii::t('app', 'See all') ?></a></li>
                                             <?php
                                         else:
                                             ?>
-                                            <li class="header"><?= Yii::t('circulation', 'No new holds') ?></li>
-                                            <li>&nbsp;</li>
+                                            <li>
+                                                <!-- data -->
+                                                <ul class="menu">
+                                                    <li><?= Yii::t('circulation', 'No new holds') ?></li>
+                                                </ul>
+                                            </li>
+                                            <li class="footer">&nbsp;</li>
                                         <?php
                                         endif;
                                         ?>
@@ -206,7 +224,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                         <!-- Sidebar user panel -->
                         <div class="user-panel">
                             <div class="pull-left image">
-                                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjA4NGU1YWZiMCB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2MDg0ZTVhZmIwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQxLjUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" class="img-circle" alt="" />
+                                <img src="<?= Yii::$app->urlManager->baseUrl ?>/themes/AdminLTE/img/user1-300px.png" class="img-circle" alt="" />
                             </div>
                             <div class="pull-left info">
                                 <p><?= Yii::$app->user->identity->username ?></p>

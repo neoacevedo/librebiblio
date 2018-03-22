@@ -20,7 +20,7 @@ class MemberAccountSearch extends MemberAccount {
     public function rules() {
         return [
             [['id', 'mbr_id'], 'integer'],
-            [['user', 'created_at', 'transaction_type_cd', 'description'], 'safe'],
+            [['mbr_id', 'user', 'created_at', 'transaction_type_cd', 'description'], 'safe'],
             [['amount'], 'number'],
         ];
     }

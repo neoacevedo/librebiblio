@@ -21,6 +21,13 @@ body {
     padding-top: 20px;
 }
 
+/**
+ * Arreglo para la plantilla AdminLTE
+ */
+li.footer { 
+    padding-top: 0 !important; 
+}
+
 .jumbotron {
     text-align: center;
     background-color: transparent;

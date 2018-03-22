@@ -128,13 +128,13 @@ class CirculationController extends Controller {
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
 
-        if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
+        if ($biblioCopy->status_cd !== "out" && $biblioCopy->status_cd !== "hld") {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
+        if ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id === $id) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
         }
@@ -164,6 +164,13 @@ class CirculationController extends Controller {
         return $this->redirect(Yii::$app->request->referrer);
     }
 
+    /**
+     * Solicita el préstamo de una copia bibliográfica.
+     * @param int $bibid
+     * @param int $copyid
+     * @param int $id
+     * @return mixed
+     */
     public function actionCheckout(int $bibid, int $copyid, int $id) {
         $this->updateMemberAccount($id);
 
@@ -301,13 +308,14 @@ class CirculationController extends Controller {
             $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
             // encontrar el cargo por día de retraso
             $fee = $biblio->getCollection()->one()->daily_late_fee;
+            $dueBack = strtotime($biblioCopy->due_back_dt);
 
             if (null !== $biblioCopy->due_back_dt) {
-                if (strtotime($biblioCopy->due_back_dt) !== false && strtotime($biblioCopy->due_back_dt) !== -1) {
+                if (false !== $dueBack && $dueBack !== -1) {
                     $dt = new DateTime($biblioCopy->due_back_dt);
                     $now = new DateTime("now");
-                    $dtdiff = $dt->diff($now);
-                    $late = $dtdiff->format("%a");
+                    $dtdiff = $dt->diff($now, false);
+                    $late = (int) $dtdiff->format('%r%a');
                 }
             }
 

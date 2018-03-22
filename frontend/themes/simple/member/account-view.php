@@ -12,7 +12,7 @@ use yii\widgets\DetailView;
         'model' => $memberAccount,
         'attributes' => [
             'id',
-            'mbr_id',
+            //'mbr_id',
             'created_at',
             [
                 'attribute' => 'transaction_type_cd',

@@ -26,23 +26,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 [
                     'label' => Yii::t('app', 'Barcode Nmbr'),
-                    'value' => function($model) {
-                        return common\models\BiblioCopy::findOne($model->copyid)->barcode_nmbr;
-                    }
+                    'attribute' => 'copy.barcode_nmbr',
+                /* 'value' => function($model) {
+                  return $model->copy->barcode_nmbr;
+                  } */
                 ],
                 [
                     'label' => Yii::t('app', 'Title'),
-                    'value' => function($model) {
-                        return common\models\Biblio::findOne($model->bibid)->title;
-                    }
+                    'attribute' => 'bib.title',
+                    /* 'value' => function($model) {
+                      return common\models\Biblio::findOne($model->bibid)->title;
+                      }, */
+                    'enableSorting' => TRUE
                 ],
                 [
                     'label' => Yii::t('app', 'Author'),
-                    'value' => function($model) {
-                        return common\models\Biblio::findOne($model->bibid)->author;
-                    }
+                    'attribute' => 'bib.author'
+                /* 'value' => function($model) {
+                  return common\models\Biblio::findOne($model->bibid)->author;
+                  } */
                 ],
-                'status_cd'
+                [
+                    'attribute' => 'copy.status_cd',
+                    'value' => function($model) {
+                        return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                    },
+                    'label' => Yii::t('app', 'Status')
+                ],
+                'created_at',
+                'due_back_dt',
+                'copy.renewal_count'
             ]
         ])
         ?>

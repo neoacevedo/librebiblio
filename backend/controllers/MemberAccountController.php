@@ -47,7 +47,8 @@ class MemberAccountController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new MemberAccountSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->mbr_id = Yii::$app->request->get('mbr_id');
+        $dataProvider = $searchModel->search([]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
