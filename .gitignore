@@ -40,3 +40,6 @@ phpunit.phar
 # cover images
 /frontend/web/images/covers/
 
+# EB Extensions
+.ebextensions
+
