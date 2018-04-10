@@ -1,0 +1,14 @@
+{
+    "packages": {
+        "nacevedo/openbiblio2": {
+            "master": {
+                "name": "nacevedo/openbiblio2",
+                "version": "2.18.4.3",
+                "source": {
+                    "url": "https://bitbucket.org/nacevedo/openbiblio2.git",
+                    "type": "vcs"
+                }   
+            }
+        }
+    }
+}

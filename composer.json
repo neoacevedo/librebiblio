@@ -11,12 +11,6 @@
         "source": "https://github.com/neoacevedo/openbiblio2"
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://bitbucket.org/nacevedo/openbiblio2.git"
-        }
-    ],
     "require": {
         "php": ">=7.0",
         "yiisoft/yii2": "~2.0.6",
