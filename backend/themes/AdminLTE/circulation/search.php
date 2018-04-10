@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <a href="<?= \yii\helpers\Url::to(["circulation/members-print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('circulation', 'Print QR') ?></a>
+                <a href="<?= \yii\helpers\Url::to(["member/print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('circulation', 'Print QR') ?></a>
                 <?php Pjax::begin(); ?>   <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -51,17 +51,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['member-view', 'id' => $model->id], [
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['member/view', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'View'),
                                     ]);
                                 },
                                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['member-update', 'id' => $model->id], [
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['member/update', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'Update'),
                                     ]);
                                 },
                                 'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['member-delete', 'id' => $model->id], [
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['member/delete', 'id' => $model->id], [
                                                 'title' => Yii::t('app', 'Delete'),
                                                 'data' => [
                                                     'confirm' => Yii::t('circulation', 'Are you absolutely sure? You will lose all the information about this user with this action.'),

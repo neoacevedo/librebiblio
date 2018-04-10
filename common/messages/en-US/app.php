@@ -41,6 +41,7 @@ return [
     'Cataloging' => '',
     'Check Out' => '',
     'Check in' => '',
+    'Check out' => '',
     'Check your email for further instructions.' => '',
     'Checkout' => '',
     'Checkout Stats' => '',

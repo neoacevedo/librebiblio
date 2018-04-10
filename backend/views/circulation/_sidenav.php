@@ -7,7 +7,7 @@ echo SideNav::widget([
     'heading' => Yii::t('app', 'Circulation'),
     'items' => [
         ['label' => Yii::t('app', 'Home'), 'url' => ['circulation/index']],
-        ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/member-create']],
-        ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/reception']]
+        ['label' => Yii::t('app', 'New Member'), 'url' => ['member/create']],
+        ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/checkin']]
     ]
 ]);

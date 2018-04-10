@@ -22,6 +22,7 @@ return [
     'Call Nmbr2' => '',
     'Call Nmbr3' => '',
     'Check Out' => '',
+    'Check out' => '',
     'Checkout' => '',
     'Checkout Stats' => '',
     'Collection Cd' => '',

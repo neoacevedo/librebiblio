@@ -63,7 +63,7 @@ use yii\widgets\Pjax;
                         return $url;
                     }
                 },
-                'template' => '{view}{delete}'],
+                'template' => '{view}&nbsp;{delete}'],
         ],
     ]);
     ?>

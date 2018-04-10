@@ -200,7 +200,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                     'template' => '<a href="{url}" ><i class="fa fa-address-book-o"></i><span>{label}</span></a>',
                     'items' => [
                         ['label' => Yii::t('app', 'Home'), 'url' => ['circulation/index']],
-                        ['label' => Yii::t('app', 'New Member'), 'url' => ['circulation/member-create']],
+                        ['label' => Yii::t('app', 'New Member'), 'url' => ['member/create']],
                         ['label' => Yii::t('app', 'Check in'), 'url' => ['circulation/reception']]
                 ]];
                 // catalogación

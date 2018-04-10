@@ -34,10 +34,10 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                 'heading' => $model->username,
                 'items' => [
                     ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
-                    ['label' => Yii::t('app', 'Update'), 'url' => ['circulation/member-update', 'id' => $model->id]],
-                    ['label' => Yii::t('app', 'Delete'), 'url' => ['circulation/member-delete', 'id' => $model->id],
+                    ['label' => Yii::t('app', 'Update'), 'url' => ['member/member-update', 'id' => $model->id]],
+                    ['label' => Yii::t('app', 'Delete'), 'url' => ['member/member-delete', 'id' => $model->id],
                         'options' => ['id' => 'member_delete']],
-                    ['label' => Yii::t('app', 'History'), 'url' => ['circulation/member-history', 'id' => $model->id]],
+                    ['label' => Yii::t('app', 'History'), 'url' => ['member/member-history', 'id' => $model->id]],
                 ]
             ]);
             ?>

@@ -13,12 +13,45 @@ use yii\filters\VerbFilter;
  * MemberAccountController implements the CRUD actions for MemberAccount model.
  */
 class MemberAccountController extends Controller {
+    
 
     /**
      * @inheritdoc
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        //'actions' => $actions,
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            $action = Yii::$app->controller->action->id;
+                            $controller = Yii::$app->controller->id;
+                            $route = "$controller/$action";
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            if (array_key_exists("admin", $roles)) {
+                                return true;
+                            }
+                            //$post = Yii::$app->request->post();
+                            if (\Yii::$app->user->can($route)) {
+                                return true;
+                            }
+                        },
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
