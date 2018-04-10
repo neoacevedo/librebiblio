@@ -37,3 +37,6 @@ phpunit.phar
 # build (phpDocumentor)
 /build
 
+# cover images
+/frontend/web/images/covers/
+
