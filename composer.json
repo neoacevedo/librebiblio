@@ -1,13 +1,13 @@
 {
-    "name": "nacevedo/openbiblio2",
+    "name": "neoacevedo/openbiblio2",
     "description": "Sistema automatizado de gestión bibliotecaria y OPAC.",
     "keywords": ["yii2", "opac", "openbiblio2", "online library project"],
-    "homepage": "https://www.hyntibasoftware.co/",
+    "homepage": "https://www.neoacevedo.co/openbiblio2",
     "type": "project",
     "license": "GPL-3.0-or-later",
     "support": {
         "issues": "https://github.com/neoacevedo/openbiblio2/issues",
-        "forum": "http://soporte.hyntibasoftware.co",
+        "forum": "https://www.neoacevedo.co/support",
         "source": "https://github.com/neoacevedo/openbiblio2"
     },
     "minimum-stability": "stable",
