@@ -1,10 +1,12 @@
 <?php
+
 $params = array_merge(
         require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php'), require(__DIR__ . '/../../common/config/i18n.php')
 );
 
 $urlManager = require(__DIR__ . '/urlManager.php');
-$config = [
+
+return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'db'],
@@ -77,32 +79,7 @@ $config = [
                 ],
             ],
         ],
-        'urlManager' => [
-            'class' => 'yii\web\UrlManager',
-            'baseUrl' => '@web', // se deberá cambiar por @web para producción
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'enableStrictParsing' => false,
-            'rules' => [
-            ],
-        ],
-    ],
-    'modules' => [
+        'urlManager' => $urlManager,
     ],
     'params' => $params,
 ];
-
-if (!YII_ENV_TEST) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-    ];
-
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-    ];
-}
-
-return $config;
