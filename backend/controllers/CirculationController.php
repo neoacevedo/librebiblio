@@ -176,7 +176,7 @@ class CirculationController extends Controller {
      * @param int $id
      * @return mixed
      */
-    public function actionCreate($bibid, $copyid, $status, $id) {
+    public function actionCreate(int $bibid, int $copyid, string $status, int $id) {
         switch ($status) {
             case "crt":
                 // una devolución
@@ -243,7 +243,7 @@ class CirculationController extends Controller {
      * @param int $mbr_id
      * @return mixed
      */
-    public function actionHoldDelete($id, $mbr_id) {
+    public function actionHoldDelete(int $id, int $mbr_id) {
         $biblioHold = \common\models\BiblioHold::findOne($id);
         $biblioCopy = $this->findCopyModel($biblioHold->bibid, $biblioHold->copyid);
         $biblioHold->delete();
@@ -259,7 +259,7 @@ class CirculationController extends Controller {
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
@@ -275,7 +275,7 @@ class CirculationController extends Controller {
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findBiblioModel($id) {
+    protected function findBiblioModel(int $id) {
         if (($model = \common\models\Biblio::findOne($id)) !== null) {
             return $model;
         } else {
@@ -291,7 +291,7 @@ class CirculationController extends Controller {
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findCopyModel($bibid, $copyid) {
+    protected function findCopyModel(int $bibid, int $copyid) {
         if (($model = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid])) !== null) {
             return $model;
         } else {
@@ -310,7 +310,7 @@ class CirculationController extends Controller {
      * @param int $id
      * @return boolean
      */
-    protected function hold($bibid, $copyid, $id) {
+    protected function hold(int $bibid, int $copyid, int $id) {
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
         // si no está en préstamo o no está reservado (la reserva se debería buscar en la tabla biblio_hold)
         if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
@@ -502,7 +502,7 @@ class CirculationController extends Controller {
      * @param int $id
      * @return boolean
      */
-    protected function shelving_cart($bibid, $copyid, $id) {
+    protected function shelving_cart(int $bibid, int $copyid, int $id) {
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
 
         // buscar si ya hay una solicitud de reserva y cambiar el estado de la copia a "en reserva" si hay una reserva.
@@ -557,7 +557,7 @@ class CirculationController extends Controller {
      * @param int $id
      * @return boolean
      */
-    protected function checkin($bibid, $copyid, $id) {
+    protected function checkin(int $bibid, int $copyid, int $id) {
         $late = $fee = 0; // se definen estas dos variables de tipo entero
         $biblio = $this->findBiblioModel($bibid);
         // encontrar el cargo por día de retraso

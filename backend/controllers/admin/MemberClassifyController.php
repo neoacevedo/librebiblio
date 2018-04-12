@@ -89,7 +89,7 @@ class MemberClassifyController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id),
@@ -122,7 +122,7 @@ class MemberClassifyController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate(int $id) {
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -143,7 +143,7 @@ class MemberClassifyController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete(int $id) {
         $model = $this->findModel($id);
         if (!@$model->delete()) {
             @array_walk_recursive($model->errors, function($v, $k) {
@@ -161,7 +161,7 @@ class MemberClassifyController extends Controller {
      * @return MemberClassify the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = MemberClassify::findOne($id)) !== null) {
             return $model;

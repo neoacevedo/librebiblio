@@ -41,8 +41,6 @@ return [
     'Pay' => '@@@@',
     'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => 'La bibliografía con el número de código de barras {barcode} que está intentando registrar tiene una o más solicitudes de bloqueo. <b> Archive esta bibliografía con los elementos que tenga en su lugar en lugar de colocarlos en su carrito de estanterías. </ b> El código de estado de esta bibliografía se ha configurado para que se mantenga.',
     'This item is already checked out or on hold.' => '@@@@',
-    'This member already has that item checked out -- not checking out.' => '@@Este miembro ya tiene en préstamos este ítem -- no se presta.@@',
-    'This member already has that item placed hold -- not checking out.' => '@@Este miembro ya tiene en reserva este ítem -- no se presta.@@',
     'Amount' => 'Monto',
     'Details' => 'Detalles',
     'Item placed hold.' => 'Ítem reservado.',

@@ -15,10 +15,10 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-3 col-xs-4">
+        <div class="col-md-6 col-xs-6">
             <?= $form->field($model, 'first_name')->textInput() ?>
         </div>
-        <div class="col-md-3 col-xs-4">
+        <div class="col-md-6 col-xs-6">
             <?= $form->field($model, 'last_name')->textInput() ?>
         </div>
     </div>
@@ -30,25 +30,25 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
     </div>
 
     <div class="row">
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-12 col-xs-12">
             <?= $form->field($model, 'address') ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-12 col-xs-12">
             <?= $form->field($model, 'email') ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-12 col-xs-12">
             <?= $form->field($model, 'phone')->textInput() ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-12 col-xs-12">
             <?= $form->field($model, 'password')->passwordInput() ?>
         </div>
     </div>

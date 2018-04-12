@@ -102,7 +102,7 @@ class BiblioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id),
@@ -169,7 +169,7 @@ class BiblioController extends Controller {
      * @param mixed $models
      * @return boolean
      */
-    private function createBiblioField($bibid, $models) {
+    private function createBiblioField(int $bibid, int $models) {
         $i = 1; // fieldid
         $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
         if (count($modelBiblioField) > 0) {
@@ -200,7 +200,7 @@ class BiblioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate(int $id) {
         $model = $this->findModel($id);
         $current_image_file = $model->image_file;
 
@@ -291,7 +291,7 @@ class BiblioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete(int $id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -320,7 +320,7 @@ class BiblioController extends Controller {
      * @return Biblio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {

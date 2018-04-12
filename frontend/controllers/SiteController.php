@@ -78,7 +78,7 @@ class SiteController extends Controller {
      * @param string $message
      * @return mixed
      */
-    public function actionMaintenance($message) {
+    public function actionMaintenance(string $message) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('error', ['message' => $message]);
     }
@@ -232,7 +232,7 @@ class SiteController extends Controller {
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token) {
+    public function actionResetPassword(string $token) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);

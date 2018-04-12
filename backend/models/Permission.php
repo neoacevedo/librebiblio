@@ -17,13 +17,21 @@ class Permission extends AuthItem {
         return Item::TYPE_PERMISSION;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels() {
         $labels = parent::attributeLabels();
         $labels['name'] = Yii::t('app/rbac', 'Permission name');
         return $labels;
     }
 
-    public static function find($name) {
+    /**
+     * 
+     * @param string $name
+     * @return \self
+     */
+    public static function find(string $name) {
         $authManager = Yii::$app->authManager;
         $item = $authManager->getPermission($name);
         return new self($item);

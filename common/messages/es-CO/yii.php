@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'You are not allowed to perform this action.' => '@@No está autorizado para realizar esta acción.@@',
+    'You are not allowed to perform this action.' => 'No está autorizado para realizar esta acción.',
     '(not set)' => '(sin establecer)',
     '{attribute} "{value}" has already been taken.' => '{attribute} "{value}" ya ha sido tomado.',
 ];

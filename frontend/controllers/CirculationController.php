@@ -277,6 +277,28 @@ class CirculationController extends Controller {
 
         return $this->redirect(['/member/profile']);
     }
+    
+    /**
+     * Borra una reserva de un usuario dado.
+     * Cuando borra la reserva, el material pasa al carrito.
+     * @param int $id
+     * @param int $mbr_id
+     * @return mixed
+     */
+    public function actionHoldDelete(int $hld_id) {
+        $biblioHold = \common\models\BiblioHold::findOne($hld_id);
+        $biblioCopy = \common\models\BiblioCopy::findOne(['bibid' => $biblioHold->bibid, 'id' => $biblioHold->copyid]);
+        $biblioHold->delete();
+        $biblioCopy->status_cd = "crt";
+        if($biblioCopy->save()) {
+            Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
+        } else {
+             @array_walk_recursive($biblioCopy->errors, function($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
+        }
+        return $this->redirect(['member/profile']);
+    }
 
     /**
      * Finds the Member model based on its primary key value.
@@ -295,7 +317,8 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Actualiza o crea una nueva deuda.
+     * Actualiza la deuda del usuario.
+     * 
      * @param int $mbrid
      */
     protected function updateMemberAccount(int $mbrid) {

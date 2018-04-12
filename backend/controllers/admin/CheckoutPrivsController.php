@@ -91,7 +91,7 @@ class CheckoutPrivsController extends Controller {
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionView($id, $material_cd, $classification_id) {
+    public function actionView(int $id, int $material_cd, int $classification_id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id, $material_cd, $classification_id),
@@ -126,7 +126,7 @@ class CheckoutPrivsController extends Controller {
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionUpdate($id, $material_cd, $classification_id) {
+    public function actionUpdate(int $id, int $material_cd, int $classification_id) {
         $model = $this->findModel($id, $material_cd, $classification_id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -149,7 +149,7 @@ class CheckoutPrivsController extends Controller {
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionDelete($id, $material_cd, $classification_id) {
+    public function actionDelete(int $id, int $material_cd, int $classification_id) {
         $this->findModel($id, $material_cd, $classification_id)->delete();
 
         return $this->redirect(['index']);
@@ -164,7 +164,7 @@ class CheckoutPrivsController extends Controller {
      * @return CheckoutPrivs the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $material_cd, $classification_id) {
+    protected function findModel(int $id, int $material_cd, int $classification_id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = CheckoutPrivs::findOne(['id' => $id, 'material_cd' => $material_cd, 'classification_id' => $classification_id])) !== null) {
             return $model;

@@ -42,7 +42,7 @@ use yii\widgets\DetailView;
         <div class="col-xs-12" style="text-align: center;">
             <div class="col-xs-4">&nbsp;</div>
             <div class="col-xs-4">
-                <a href="<?= \yii\helpers\Url::to(["member/account-print", 'id' => $memberAccount->id, "mbr_id" => $memberAccount->mbr_id]) ?>" target="_blank" class="btn btn-block btn-primary">
+                <a href="<?= \yii\helpers\Url::to(["member/account-print", 'account_id' => $memberAccount->id]) ?>" target="_blank" class="btn btn-block btn-primary">
                     <i class="glyphicon glyphicon-print"></i>
                     <?= Yii::t('app', 'Print') ?>
                 </a>

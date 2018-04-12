@@ -154,7 +154,7 @@ class ThemeController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate(int $id) {
         $model = $this->findModel($id);
         $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -250,7 +250,7 @@ class ThemeController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete(int $id) {
         $model = $this->findModel($id);
         $path = Yii::$app->basePath;
         if ($model->frontend == 1) {
@@ -276,7 +276,7 @@ class ThemeController extends Controller {
      * @return Theme the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         if (($model = Theme::findOne($id)) !== null) {
             return $model;
         } else {
@@ -290,7 +290,7 @@ class ThemeController extends Controller {
      * @param string $dir
      * @return bool
      */
-    private function delTree($dir) {
+    private function delTree(string $dir) {
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");

@@ -9,11 +9,9 @@
 namespace frontend\controllers;
 
 use Yii;
-use DateTime;
 use common\models\Member;
 use common\models\MemberAccount;
 use common\models\MemberAccountSearch;
-use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,7 +40,7 @@ class MemberController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['history', 'profile', 'account', 'account-view', 'account-print', 'update'],
+                        'actions' => ['history', 'profile', 'account', 'account-view', 'account-print', 'placeholds', 'update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -119,6 +117,15 @@ class MemberController extends Controller {
 
     /**
      * Muestra la cuenta actual del miembro.
+     * 
+     * La lista muestra todos los tipos de cuenta creados para el usuario.
+     * 
+     * Los tipos de cuenta son:
+     * <ul>
+     *     <li>Cargo</li>
+     *     <li>Pago</li>
+     *     <li>Crédito.</li>
+     * </ul>
      * @return mixed
      */
     public function actionAccount() {
@@ -140,12 +147,12 @@ class MemberController extends Controller {
 
     /**
      * Muestra los detalles de la cuenta actual del miembro.
-     * @param type $id
-     * @param type $mbr_id
+     * @param integer $account_id
      * @return mixed
      */
-    public function actionAccountView($id, $mbr_id) {
-        $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
+    public function actionAccountView(int $account_id) {
+        $id = Yii::$app->user->id;
+        $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->renderAjax('account-view', [
@@ -159,8 +166,9 @@ class MemberController extends Controller {
      * @param int $mbr_id
      * @return mixed
      */
-    public function actionAccountPrint($id, $mbr_id) {
-        $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
+    public function actionAccountPrint(int $account_id) {
+        $id = Yii::$app->user->id;
+        $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $html = $this->renderPartial('account-view', [
@@ -189,6 +197,25 @@ class MemberController extends Controller {
             return ($e->getMessage());
         }
     }
+    
+    /**
+     * Muestra todas las reservas del miembro.
+     * @return mixed
+     */
+    public function actionPlaceholds() {
+        $id = Yii::$app->user->id;
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $biblioCopySearch = new \common\models\BiblioHoldSearch();
+        $biblioCopySearch->mbr_id = $id;
+        $biblioCopy = $biblioCopySearch->search([]);
+        
+        return $this->render('placeholds', [
+                    'model' => $this->findModel($id),
+                    'searchModel' => $biblioCopySearch,
+                    'dataProvider' => $biblioCopy
+        ]);
+    }
+
 
     /**
      * Actualiza la información del miembro.

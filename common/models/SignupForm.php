@@ -91,7 +91,7 @@ class SignupForm extends Model {
      * @param int $length
      * @return string
      */
-    public function generateUniqueRandomString($length = 32) {
+    public function generateUniqueRandomString(int $length = 32) {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
     }

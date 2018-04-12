@@ -26,8 +26,8 @@ return [
             'translations' => [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-//                    'basePath' => '@common/messages',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
@@ -35,8 +35,8 @@ return [
                 ],
                 'rbac*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-//                    'basePath' => '@common/messages',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'rbac' => 'rbac.php',
                         'app/error' => 'error.php',
@@ -44,8 +44,8 @@ return [
                 ],
                 'library*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-//                    'basePath' => '@common/messages',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'library' => 'library.php',
                         'app/error' => 'error.php',
@@ -53,8 +53,8 @@ return [
                 ],
                 'circulation*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-//                    'basePath' => '@common/messages',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'circulation' => 'circulation.php',
                         'app/error' => 'error.php',
@@ -62,8 +62,8 @@ return [
                 ],
                 'checkout*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-//                    'basePath' => '@common/messages',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'checkout' => 'checkout.php',
                         'app/error' => 'error.php',

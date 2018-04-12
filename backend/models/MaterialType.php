@@ -66,7 +66,8 @@ class MaterialType extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            $this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            #$this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            Yii::$app->storage->saveAs($this->image_file);
             return true;
         } else {
             return false;

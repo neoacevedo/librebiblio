@@ -96,7 +96,7 @@ class MemberAccountController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $mbr_id) {
+    public function actionView(int $id, int $mbr_id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id, $mbr_id),
@@ -133,7 +133,7 @@ class MemberAccountController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $mbr_id) {
+    public function actionUpdate(int $id, int $mbr_id) {
         $model = $this->findModel($id, $mbr_id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -153,7 +153,7 @@ class MemberAccountController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id, $mbr_id) {
+    public function actionDelete(int $id, int $mbr_id) {
         $this->findModel($id, $mbr_id)->delete();
 
         return $this->redirect(['index']);
@@ -167,7 +167,7 @@ class MemberAccountController extends Controller {
      * @return MemberAccount the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $mbr_id) {
+    protected function findModel(int $id, int $mbr_id) {
         if (($model = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id])) !== null) {
             return $model;
         }

@@ -48,7 +48,7 @@ return [
     'Roles' => '',
     'Subfield Cd' => '',
     'Updated Userid' => '',
-    'You are not allowed to perform this action.' => '@@No está autorizado para realizar esta acción.@@',
+    'You are not allowed to perform this action.' => 'No está autorizado para realizar esta acción.',
     'Active' => 'Activo',
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',

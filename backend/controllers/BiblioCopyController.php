@@ -99,7 +99,7 @@ class BiblioCopyController extends Controller {
      * @param integer $bibid
      * @return mixed
      */
-    public function actionView($id, $bibid) {
+    public function actionView(int $id, int $bibid) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id, $bibid),
@@ -133,7 +133,7 @@ class BiblioCopyController extends Controller {
      * @param integer $bibid
      * @return mixed
      */
-    public function actionUpdate($id, $bibid) {
+    public function actionUpdate(int $id, int $bibid) {
         $model = $this->findModel($id, $bibid);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -155,7 +155,7 @@ class BiblioCopyController extends Controller {
      * @param integer $bibid
      * @return mixed
      */
-    public function actionDelete($id, $bibid) {
+    public function actionDelete(int $id, int $bibid) {
         $this->findModel($id, $bibid)->delete();
 
         return $this->redirect(['cataloging/biblio/index']);
@@ -202,7 +202,7 @@ class BiblioCopyController extends Controller {
      * @return BiblioCopy the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $bibid) {
+    protected function findModel(int $id, int $bibid) {
         if (($model = BiblioCopy::findOne(['id' => $id, 'bibid' => $bibid])) !== null) {
             return $model;
         } else {

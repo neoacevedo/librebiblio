@@ -63,7 +63,7 @@ $this->registerJs("$('.account-view').click(function(e) {"
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['account-view', 'id' => $model->id, 'mbr_id' => $model->mbr_id], [
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['account-view', 'account_id' => $model->id], [
                                         'title' => Yii::t('app', 'View'), 'class' => 'account-view'
                             ]);
                         },

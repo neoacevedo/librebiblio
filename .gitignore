@@ -43,3 +43,9 @@ phpunit.phar
 # EB Extensions
 .ebextensions
 
+# pipelines
+bitbucket-pipelines.yml
+beanstalk_deploy.py
+
+# output de phpDoc
+output

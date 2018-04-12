@@ -20,7 +20,7 @@ class AssignmentForm extends Model {
      * @param mixed $userId The id of user use for assign
      * @param array $config 
      */
-    public function __construct($userId, $config = array()) {
+    public function __construct(int $userId, $config = array()) {
         parent::__construct($config);
         $this->userId = $userId;
         $this->authManager = Yii::$app->authManager;

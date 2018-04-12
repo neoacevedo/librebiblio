@@ -115,7 +115,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
      * @param int $classification_id
      * @return boolean
      */
-    public function hasReachedCheckoutLimit($mbr_id, $classification_id) {
+    public function hasReachedCheckoutLimit(int $mbr_id, int $classification_id) {
         $checkoutPrivs = \common\models\CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
         if($checkoutPrivs->checkout_limit == 0) {
             return false; // ilimitado

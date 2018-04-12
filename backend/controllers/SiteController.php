@@ -142,7 +142,7 @@ class SiteController extends Controller {
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token) {
+    public function actionResetPassword(string $token) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);

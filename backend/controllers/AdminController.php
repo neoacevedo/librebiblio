@@ -90,7 +90,7 @@ class AdminController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersView($id) {
+    public function actionUsersView(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/view', [
                     'model' => $this->findModel($id),
@@ -133,7 +133,7 @@ class AdminController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersUpdate($id) {
+    public function actionUsersUpdate(int $id) {
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -154,7 +154,7 @@ class AdminController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersDelete($id) {
+    public function actionUsersDelete(int $id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -186,7 +186,7 @@ class AdminController extends Controller {
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = User::findOne($id)) !== null) {
             return $model;

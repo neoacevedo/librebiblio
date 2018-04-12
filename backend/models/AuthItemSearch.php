@@ -20,7 +20,7 @@ abstract class AuthItemSearch extends AuthItem {
         ];
     }
 
-    public static function find($name) {
+    public static function find(string $name) {
         throw new \yii\base\Exception('Not support find() method in this object');
     }
 

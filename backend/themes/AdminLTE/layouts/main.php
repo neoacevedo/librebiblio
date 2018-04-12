@@ -104,7 +104,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                                         ?>
                                                         <li>
                                                             <a href="#">
-                                                                <i class="fa fa-user-circle-o"></i><?php echo $mbr->last_name . ", " . $mbr->first_name . " " . Yii::t("circulation", "Has reserved copy") . " " . $copy->barcode_nmbr; ?>
+                                                                <i class="fa fa-user-circle-o"></i><?php echo "{$mbr->username} " . Yii::t("circulation", "placed hold copy") . " " . $copy->barcode_nmbr; ?>
                                                             </a>
                                                         </li>
                                                         <?php

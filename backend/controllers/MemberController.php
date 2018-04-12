@@ -267,7 +267,7 @@ class MemberController extends Controller {
             return ($e->getMessage());
         }
     }
-
+    
     /**
      * Actualiza la información del miembro.
      * @param integer $id

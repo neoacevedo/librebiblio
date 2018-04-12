@@ -8,14 +8,13 @@ use yii\console\Controller;
 use console\models\PasswordResetRequest;
 
 /**
- * AdminController implements the CRUD actions for User model.
+ * AdminController implements the Request Password Reset for User model.
  */
 class AdminController extends Controller {
 
     /**
      * Requests password reset.
      * @param string $email
-     * @return mixed
      */
     public function actionRequestPasswordReset(string $email) {
         $model = new PasswordResetRequest;
