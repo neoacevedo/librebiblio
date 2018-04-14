@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
+
 namespace backend\reports;
 
 use Yii;
@@ -44,6 +50,9 @@ class CheckoutStats extends \yii\db\ActiveRecord {
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function fields() {
         return [
             'id',

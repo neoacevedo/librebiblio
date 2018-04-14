@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 namespace backend\controllers;
 
 use Yii;

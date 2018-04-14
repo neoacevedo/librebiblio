@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 namespace common\models;
 
 use Yii;
@@ -89,7 +93,7 @@ class Member extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public static function findIdentity(int $id) {
+    public static function findIdentity($id) {
         //return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
         return static::findOne(['id' => $id, 'status' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED]]);
     }
@@ -172,7 +176,7 @@ class Member extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public function validateAuthKey(string $authKey) {
+    public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
     }
 

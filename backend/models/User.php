@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 namespace backend\models;
 
 use Yii;
@@ -83,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public static function findIdentity(int $id) {
+    public static function findIdentity($id) {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -154,7 +158,7 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public function validateAuthKey(string $authKey) {
+    public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
     }
 

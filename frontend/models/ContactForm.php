@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 namespace frontend\models;
 
 use Yii;
@@ -46,7 +50,7 @@ class ContactForm extends Model {
      * @return bool whether the email was sent
      */
     public function sendEmail(string $email) {
-        return \Yii::$app
+        return Yii::$app
                         ->mailer
                         ->compose()
                         ->setTo($email)

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 namespace common\components;
 
 use \yii\web\HttpException;
@@ -32,6 +36,9 @@ class Storage extends \yii\base\BaseObject {
     private $clientService;
     private $bucket;
 
+    /**
+     * @inheritdoc
+     */
     public function __construct($config = array()) {
         parent::__construct($config);
         switch ($this->service) {
