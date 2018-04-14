@@ -21,6 +21,9 @@ use Yii;
  * @property string $block_checkouts_when_fines_due
  * @property integer $hold_max_days
  * @property integer $offline
+ * @property integer $items_per_page
+ * @property datetime $created_at
+ * @property datetime $updated_at
  */
 class Settings extends \yii\db\ActiveRecord {
     
@@ -42,23 +45,15 @@ class Settings extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['library_hours', 'purge_history_after_months', 'block_checkouts_when_fines_due', 'hold_max_days'], 'required'],
-            [['purge_history_after_months', 'hold_max_days', 'offline'], 'integer'],
+            [['purge_history_after_months', 'hold_max_days', 'offline', 'items_per_page'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
             [['library_name', 'library_hours'], 'string', 'max' => 128],
             [['library_image_url'], 'string', 'max' => 255],
-            [['use_image_flg', 'block_checkouts_when_fines_due', 'offline'], 'string', 'max' => 1],
             [['library_phone'], 'string', 'max' => 49],
+            [['block_checkouts_when_fines_due'], 'string', 'max' => 1],
             [['imageFile'], 'safe'],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
         ];
-    }
-
-    /**
-     * Sobreescribiendo el método primaryKey.
-     * @inheritdoc
-     * @return mixed
-     */
-    public static function primaryKey() {
-        return ['library_name'];
     }
 
     /**
@@ -74,7 +69,8 @@ class Settings extends \yii\db\ActiveRecord {
             'purge_history_after_months' => Yii::t('app', 'Purge History After Months'),
             'block_checkouts_when_fines_due' => Yii::t('app', 'Block Checkouts When Fines Due'),
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),
-            'offline' => Yii::t('app', 'Offline')
+            'offline' => Yii::t('app', 'Offline'),
+            'items_per_page'=> Yii::t('app', 'Items per page')
         ];
     }
     

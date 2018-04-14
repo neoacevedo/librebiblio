@@ -21,7 +21,8 @@ class m180104_225845_insert_settings extends Migration
             'purge_history_after_months' => 6,
             'block_checkouts_when_fines_due' => 1,
             'hold_max_days' => 14,
-            'offline' => 0
+            'offline' => 0,
+            'items_per_page' => 20
         ]);
     }
 

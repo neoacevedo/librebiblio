@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <div class="box">
         <div class="box-body">
-<?php echo $this->render('_form', ['model' => $model, 'files' => $files]); ?>
+            <?php echo $this->render('_form', ['model' => $model, 'files' => $files]); ?>
         </div>
     </div>
 </div>

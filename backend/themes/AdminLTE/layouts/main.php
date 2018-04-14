@@ -10,10 +10,10 @@ use common\widgets\Alert;
 
 AppAsset::register($this);
 
-$settings = \common\models\Settings::find()->one();
-$library_name = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
-$library_hours = null !== $settings->library_hours ? $settings->library_hours : "N/A";
-$library_phone = null !== $settings->library_phone ? $settings->library_phone : "N/A";
+#$settings = \common\models\Settings::find()->one();
+$library_name = Yii::$app->name;#null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$library_hours = \common\models\Settings::find()->one()->library_hours;#null !== $settings->library_hours ? $settings->library_hours : "N/A";
+$library_phone = \common\models\Settings::find()->one()->library_phone;#null !== $settings->library_phone ? $settings->library_phone : "N/A";
 $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "hold-transition sidebar-mini skin-" . Yii::$app->session['backend-skin'];
 ?>
 <?php $this->beginPage() ?>

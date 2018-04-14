@@ -10,7 +10,6 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use backend\models\LoginForm;
 use yii\web\UploadedFile;
 
 /**
@@ -140,8 +139,7 @@ class SettingsController extends Controller {
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
         } else {
-            $model = new \common\models\Settings;
-            return $model;
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
 

@@ -51,6 +51,8 @@ $this->registerJs($js);
     <?= $form->field($model, "block_checkouts_when_fines_due")->dropDownList(['Y' => Yii::t('app', 'Yes'), 'N' => Yii::t('app', 'No')]) ?>
 
     <?= $form->field($model, "hold_max_days")->textInput(['type' => 'number']) ?>
+    
+    <?= $form->field($model, "items_per_page")->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
 
@@ -58,6 +60,11 @@ $this->registerJs($js);
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
+    </div>
+    
+    <div class="hidden">
+        <?= $form->field($model, 'created_at')->label('')->hiddenInput(['value' => ($model->created_at === null) ? date('Y-m-d H:i:s') : $model->created_at]) ?>
+        <?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => date("Y-m-d H:i:s")]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
