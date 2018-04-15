@@ -8,4 +8,3 @@ insert into {{%usmarc_block_dm}} values (6,'Subject access fields');
 insert into {{%usmarc_block_dm}} values (7,'Added entries other than subject or series, linking fields');
 insert into {{%usmarc_block_dm}} values (8,'Series added entries: location, and alternate graphics');
 insert into {{%usmarc_block_dm}} values (9,'Reserved for local implementation');
-

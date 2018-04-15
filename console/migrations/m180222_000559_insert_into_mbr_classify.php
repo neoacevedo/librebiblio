@@ -5,8 +5,8 @@ use yii\db\Migration;
 /**
  * Class m180222_000559_insert_into_mbr_classify
  */
-class m180222_000559_insert_into_mbr_classify extends Migration
-{
+class m180222_000559_insert_into_mbr_classify extends Migration {
+
     /**
      * {@inheritdoc}
      */
@@ -18,29 +18,35 @@ class m180222_000559_insert_into_mbr_classify extends Migration
         } catch (Exception $ex) {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/mbr_classify_dm.sql");
         }
-        $this->execute($sql);
+        if ($this->db->driverName === "mysql") {
+            $this->db->createCommand($sql)->execute();
+        } else if ($this->db->driverName === "pgsql") {
+            $sql_array = explode(";", $sql);
+            foreach ($sql_array as $sql) {
+                $this->db->createCommand($sql)->execute();
+            }
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
-    {
+    public function safeDown() {
         return true;
     }
 
     /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
+      // Use up()/down() to run migration code without a transaction.
+      public function up()
+      {
 
-    }
+      }
 
-    public function down()
-    {
-        echo "m180222_000559_insert_into_mbr_classify cannot be reverted.\n";
+      public function down()
+      {
+      echo "m180222_000559_insert_into_mbr_classify cannot be reverted.\n";
 
-        return false;
-    }
-    */
+      return false;
+      }
+     */
 }

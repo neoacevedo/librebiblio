@@ -17,7 +17,14 @@ class m180222_002155_insert_into_transaction_type extends Migration
         } catch (Exception $ex) {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/transaction_type_dm.sql");
         }
-        $this->execute($sql);
+        if ($this->db->driverName === "mysql") {
+            $this->db->createCommand($sql)->execute();
+        } else if ($this->db->driverName === "pgsql") {
+            $sql_array = explode(";", $sql);
+            foreach ($sql_array as $sql) {
+                $this->db->createCommand($sql)->execute();
+            }
+        }
     }
 
     /**

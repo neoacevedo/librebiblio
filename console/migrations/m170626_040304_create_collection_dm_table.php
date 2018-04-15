@@ -10,7 +10,7 @@ class m170626_040304_create_collection_dm_table extends Migration {
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function safeUp() {
         $this->createTable('{{%collection_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),

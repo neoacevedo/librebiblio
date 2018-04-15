@@ -14,7 +14,7 @@ class m170704_011244_create_usmarc_subfield_dm_table extends Migration {
         $this->createTable('{{%usmarc_subfield_dm}}', [
             'tag' => $this->smallInteger()->notNull(),
             'subfield_cd' => $this->char(1)->notNull(),
-            'description' => $this->string(80)->notNull(),
+            'description' => $this->string(255)->notNull(),
             'repeatable_flg' => $this->char(1)->notNull(),
             'PRIMARY KEY (tag, subfield_cd)'
         ]);

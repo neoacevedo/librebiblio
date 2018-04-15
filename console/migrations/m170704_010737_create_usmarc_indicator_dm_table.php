@@ -15,7 +15,7 @@ class m170704_010737_create_usmarc_indicator_dm_table extends Migration {
             'tag' => $this->smallInteger()->notNull(),
             'indicator_nmbr' => $this->smallInteger()->notNull(),
             'indicator_cd' => $this->char(1)->notNull(),
-            'description' => $this->string(80)->notNull(),
+            'description' => $this->string(255)->notNull(),
             'PRIMARY KEY (tag, indicator_nmbr, indicator_cd)'
         ]);
     }

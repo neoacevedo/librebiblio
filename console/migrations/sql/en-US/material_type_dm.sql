@@ -6,4 +6,3 @@ insert into {{%material_type_dm}} values (5,'equipment','N','case.gif');
 insert into {{%material_type_dm}} values (6,'magazines','N','mag.gif');
 insert into {{%material_type_dm}} values (7,'maps','N','map.gif');
 insert into {{%material_type_dm}} values (8,'video/dvd','N','camera.gif');
-

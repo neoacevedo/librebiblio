@@ -27,10 +27,15 @@ class m170627_005605_create_biblio_copy_table extends Migration {
 
         // add primary keys
         $this->addPrimaryKey('bibliocopy_pk', '{{%biblio_copy}}', ['id', 'bibid']);
-        
+
         // alter id to autoincrement
-        $this->alterColumn('{{%biblio_copy}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
-        
+        if ($this->db->driverName === 'mysql') {
+            $this->alterColumn('{{%biblio_copy}}', 'id', $this->integer() . ' NOT NULL AUTO_INCREMENT');
+        } else if ($this->db->driverName === 'pgsql') {
+            $this->db->createCommand("CREATE SEQUENCE IF NOT EXISTS biblio_copy_id_seq;")->execute();
+            $this->alterColumn('{{%biblio_copy}}', 'id', "SET DEFAULT nextval('biblio_copy_id_seq')");
+        }
+
         // creates index for column `barcode_mbr`
         $this->createIndex(
                 'idx-barcode_nmbr', '{{%biblio_copy}}', 'barcode_nmbr'
@@ -53,10 +58,14 @@ class m170627_005605_create_biblio_copy_table extends Migration {
     public function down() {
         // drops foreign key for table `biblio`
         $this->dropForeignKey(
-            'fk-biblio_copy-biblio',
-            '{{%biblio_copy}}'
+                'fk-biblio_copy-biblio', '{{%biblio_copy}}'
         );
+        
+        /*if ($this->db->driverName === 'pgsql') {
+            $this->db->createCommand("DROP SEQUENCE biblio_copy_id_seq;")->execute();
+        }*/
+        
         $this->dropTable('{{%biblio_copy}}');
     }
-    
+
 }

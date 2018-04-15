@@ -11,14 +11,23 @@ class m180216_232457_create_view_checkoutStats extends Migration {
      * @inheritdoc
      */
     public function safeUp() {
-        $sql = "CREATE OR REPLACE VIEW {{%checkoutStats}} AS "
-                . "SELECT c.id, h.created_at, "
-                . "COUNT(*) checkoutCount "
-                . "FROM {{%biblio_copy}} c, {{%biblio_status_hist}} h "
-                . "WHERE c.bibid = h.bibid "
-                . "AND c.id = h.copyid "
-                . "AND h.status_cd = 'out' "
-                . "GROUP BY h.created_at;";
+        if ($this->db->driverName === 'mysql') {
+            $sql = "CREATE OR REPLACE VIEW {{%checkoutStats}} AS "
+                    . "SELECT c.id, h.created_at, "
+                    . "COUNT(*) checkoutCount "
+                    . "FROM {{%biblio_copy}} c, {{%biblio_status_hist}} h "
+                    . "WHERE c.bibid = h.bibid "
+                    . "AND c.id = h.copyid "
+                    . "AND h.status_cd = 'out';";
+        } else if ($this->db->driverName === 'pgsql') {
+            $sql = "CREATE OR REPLACE VIEW {{%checkoutStats}} AS "
+                    . "SELECT c.id, h.created_at, "
+                    . "(SELECT COUNT(h.created_at) FROM {{%biblio_status_hist}} h WHERE h.copyid = c.id) checkoutCount "
+                    . "FROM {{%biblio_copy}} c "
+                    . "LEFT JOIN {{%biblio_status_hist}} h ON c.id = h.copyid "
+                    . "AND c.bibid = h.bibid "
+                    . "AND h.status_cd = 'out';";
+        }
         $this->db->createCommand($sql)->execute();
     }
 

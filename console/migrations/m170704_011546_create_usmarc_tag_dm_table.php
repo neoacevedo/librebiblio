@@ -14,9 +14,9 @@ class m170704_011546_create_usmarc_tag_dm_table extends Migration {
         $this->createTable('{{%usmarc_tag_dm}}', [
             'block_nmbr' => $this->smallInteger()->notNull(),
             'tag' => $this->smallInteger()->notNull(),
-            'description' => $this->string(80)->notNull(),
-            'ind1_description' => $this->string(80)->notNull(),
-            'ind2_description' => $this->string(80)->notNull(),
+            'description' => $this->string(255)->notNull(),
+            'ind1_description' => $this->string(255)->notNull(),
+            'ind2_description' => $this->string(255)->notNull(),
             'repeatable_flg' => $this->char(1)->notNull(),
             'PRIMARY KEY(block_nmbr,tag)'
         ]);
