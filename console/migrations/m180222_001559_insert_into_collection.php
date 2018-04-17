@@ -23,6 +23,8 @@ class m180222_001559_insert_into_collection extends Migration {
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
                 $this->db->createCommand($sql)->execute();
+                // incrementar la secuencia MANUALMENTE
+                $this->db->createCommand("SELECT setval('collection_dm_id_seq', (SELECT MAX(id) from {{%collection_dm}}));")->execute();
             }
         }
     }

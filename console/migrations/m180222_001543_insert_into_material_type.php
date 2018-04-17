@@ -23,6 +23,8 @@ class m180222_001543_insert_into_material_type extends Migration
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
                 $this->db->createCommand($sql)->execute();
+                // incrementar la secuencia MANUALMENTE
+                $this->db->createCommand("SELECT setval('material_type_dm_id_seq', (SELECT MAX(id) from {{%material_type_dm}}));")->execute();
             }
         }
     }

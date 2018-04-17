@@ -11,7 +11,6 @@ class m180222_000559_insert_into_mbr_classify extends Migration {
      * {@inheritdoc}
      */
     public function safeUp() {
-        echo "Mbr Classify\n";
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/mbr_classify_dm.sql");
@@ -24,6 +23,8 @@ class m180222_000559_insert_into_mbr_classify extends Migration {
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
                 $this->db->createCommand($sql)->execute();
+                // incrementar la secuencia MANUALMENTE
+                $this->db->createCommand("SELECT setval('mbr_classify_dm_id_seq', (SELECT MAX(id) from {{%mbr_classify_dm}}));")->execute();
             }
         }
     }

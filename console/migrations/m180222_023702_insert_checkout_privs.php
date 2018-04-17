@@ -23,6 +23,8 @@ class m180222_023702_insert_checkout_privs extends Migration
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
                 $this->db->createCommand($sql)->execute();
+                // incrementar la secuencia MANUALMENTE
+                $this->db->createCommand("SELECT setval('checkout_privs_id_seq', (SELECT MAX(id) from {{%checkout_privs}}));")->execute();
             }
         }
     }

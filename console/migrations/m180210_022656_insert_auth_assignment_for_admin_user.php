@@ -10,7 +10,7 @@ class m180210_022656_insert_auth_assignment_for_admin_user extends Migration {
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function safeUp() {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
@@ -22,7 +22,7 @@ class m180210_022656_insert_auth_assignment_for_admin_user extends Migration {
         } else if ($this->db->driverName === "pgsql") {
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
-                $this->db->createCommand($sql)->execute();
+                $this->db->createCommand($sql)->execute();;
             }
         }
         $this->insert('{{%auth_assignment}}', [

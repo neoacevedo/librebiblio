@@ -10,7 +10,7 @@ class m170626_040242_create_mbr_classify_dm_table extends Migration {
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function safeUp() {
         $this->createTable('{{%mbr_classify_dm}}', [
             'id' => $this->primaryKey(),
             'description' => $this->string(40)->notNull(),
@@ -22,7 +22,7 @@ class m170626_040242_create_mbr_classify_dm_table extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function safeDown() {
         $this->dropTable('{{%mbr_classify_dm}}');
     }
 

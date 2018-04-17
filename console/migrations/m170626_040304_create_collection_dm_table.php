@@ -23,7 +23,7 @@ class m170626_040304_create_collection_dm_table extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function safeDown() {
         $this->dropTable('{{%collection_dm}}');
     }
 

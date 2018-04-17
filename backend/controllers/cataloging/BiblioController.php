@@ -173,7 +173,7 @@ class BiblioController extends Controller {
      * @param mixed $models
      * @return boolean
      */
-    private function createBiblioField(int $bibid, int $models) {
+    private function createBiblioField(int $bibid, $models) {
         $i = 1; // fieldid
         $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
         if (count($modelBiblioField) > 0) {
