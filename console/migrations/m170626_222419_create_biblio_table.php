@@ -10,7 +10,7 @@ class m170626_222419_create_biblio_table extends Migration
     /**
      * @inheritdoc
      */
-    public function up()
+    public function safeUp()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -98,7 +98,7 @@ class m170626_222419_create_biblio_table extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
+    public function safeDown()
     {
         // drops foreign key for table `biblio`
         $this->dropForeignKey(

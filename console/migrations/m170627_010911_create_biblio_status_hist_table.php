@@ -15,7 +15,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
     /**
      * @inheritdoc
      */
-    public function up()
+    public function safeUp()
     {
         $this->createTable('{{%biblio_status_hist}}', [
             'bibid' => $this->integer()->notNull(),
@@ -66,7 +66,7 @@ class m170627_010911_create_biblio_status_hist_table extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
+    public function safeDown()
     {
         // drops foreign key for table `biblio`
         $this->dropForeignKey(

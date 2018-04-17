@@ -112,7 +112,7 @@ class BiblioSearch extends Biblio {
                 ->andFilterWhere(['like', 'topic3', $this->topic3])
                 ->andFilterWhere(['like', 'topic4', $this->topic4])
                 ->andFilterWhere(['like', 'topic5', $this->topic5])
-                ->andFilterWhere(['like', 'opac_flg', $this->opac_flg])
+                ->andFilterWhere(['{{%biblio}}.opac_flg' => $this->opac_flg])
                 ->andFilterWhere(['like', '{{%user}}.username', $this->user])
                 ->andFilterWhere(['like', '{{%material_type_dm}}.description', $this->materialType])
                 ->andFilterWhere(['like', '{{%collection_dm}}.description', $this->collection]);

@@ -1,19 +1,20 @@
 <?php
 
 $cache = require(__DIR__ . '/cache.php');
+$connectionArray = [
+    'class' => 'yii\db\Connection',
+    'dsn' => "pgsql:host=localhost;dbname=openbiblio2",
+    'username' => 'postgres',
+    'password' => '',
+    'charset' => 'utf8',
+    'enableQueryCache' => false
+];
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'America/Bogota',
     'components' => [
         'cache' => $cache,
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => "mysql:host=localhost;dbname=openbiblio2",
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-            'enableQueryCache' => true
-        ],
+        'db' => $connectionArray,
         'session' => [
             'class' => 'yii\web\CacheSession',
             'cache' => 'cache',
@@ -85,17 +86,10 @@ return [
             ],
         ],
     ],
-    'name' => call_user_func(function() {
-                $db = [
-                    'dsn' => "mysql:host=localhost;dbname=openbiblio2",
-                    'username' => 'root',
-                    'password' => '',
-                    'charset' => 'utf8',
-                    'enableQueryCache' => true
-                ];
-                $connection = new \yii\db\Connection($db);
-                $connection->open();
+    'name' => call_user_func(function() use($connectionArray) {
                 try {
+                    $connection = new \yii\db\Connection(array_shift($connectionArray));
+                    $connection->open();
                     $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
                 } catch (Exception $ex) {
                     $library_name = "OpenBiblio2";

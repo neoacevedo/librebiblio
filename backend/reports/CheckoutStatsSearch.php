@@ -51,6 +51,9 @@ class CheckoutStatsSearch extends CheckoutStats
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['pagination']
+            ]
         ]);
 
         $this->load($params);

@@ -122,7 +122,7 @@ class Member extends ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken(string $token) {
+    public static function findByPasswordResetToken($token) {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
@@ -139,7 +139,7 @@ class Member extends ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return bool
      */
-    public static function isPasswordResetTokenValid(string $token) {
+    public static function isPasswordResetTokenValid($token) {
         if (empty($token)) {
             return false;
         }

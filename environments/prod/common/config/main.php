@@ -100,7 +100,7 @@ return [
                     $library_name = "OpenBiblio2";
                 }
                 return $library_name;
-            }, $db),
+            }),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
     // accesos solo administrativos a módulos específicos

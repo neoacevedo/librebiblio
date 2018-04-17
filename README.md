@@ -19,7 +19,7 @@ INSTALACIÓN
 ## Requerimientos
 
 + PHP 7
-+ MySQL o MariaDB (Por ahora)
++ MySQL, MariaDB, PostgresSQL (Por ahora)
 + PHP7 bcmath
 
 ## Instalando desde Composer

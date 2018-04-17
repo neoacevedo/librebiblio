@@ -38,7 +38,6 @@ class MaterialType extends \yii\db\ActiveRecord
             [['description'], 'string', 'max' => 40],
             [['default_flg'], 'string', 'max' => 1],
             [['image_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg'],
-            #[['image_file'], 'string', 'max' => 128],
         ];
     }
 
