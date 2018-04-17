@@ -48,7 +48,7 @@ class UserSearch extends User {
         /*$query->joinWith(['auth_assignment' => function($query) {
             $query->onCondition(['user.id' => 'auth_assignment.user_id']);
         }]);*/
-        $query->join('LEFT JOIN', 'auth_assignment', 'user.id = auth_assignment.user_id');
+        $query->join('LEFT JOIN', '{{%auth_assignment}}', '{{%user}}.id = {{%auth_assignment}}.user_id');
 
         // add conditions that should always apply here
 

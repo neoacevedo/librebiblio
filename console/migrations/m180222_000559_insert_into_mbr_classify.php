@@ -35,19 +35,4 @@ class m180222_000559_insert_into_mbr_classify extends Migration {
     public function safeDown() {
         return true;
     }
-
-    /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
-
-      }
-
-      public function down()
-      {
-      echo "m180222_000559_insert_into_mbr_classify cannot be reverted.\n";
-
-      return false;
-      }
-     */
 }
