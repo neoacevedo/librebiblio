@@ -64,8 +64,8 @@ class BiblioCopy extends \yii\db\ActiveRecord {
             'bibid' => Yii::t('app', 'Bibid'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
-            'copy_desc' => Yii::t('app', 'Copy Desc'),
-            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
+            'copy_desc' => Yii::t('biblio', 'Copy Desc'),
+            'barcode_nmbr' => Yii::t('biblio', 'Barcode Nmbr'),
             'status_cd' => Yii::t('app', 'Status Cd'),
             'status_begin_dt' => Yii::t('app', 'Status Begin Dt'),
             'due_back_dt' => Yii::t('app', 'Due Back Dt'),
@@ -127,8 +127,10 @@ class BiblioCopy extends \yii\db\ActiveRecord {
         
         $count = (new \yii\db\Query)
                 ->select("*")
-                ->from(['{{%biblio_copy}}', '{{%biblio}}'])
-                ->where(['{{%biblio_copy}}.bibid' => '{{%biblio}}.id', '{{%biblio_copy}}.mbr_id' => $mbr_id, '{{%biblio}}.material_cd' => $checkoutPrivs->material_cd])
+                ->from('{{%biblio_copy}} c')
+                ->leftJoin('{{%biblio}} b', 'c.bibid = b.id')
+                ->where(['c.mbr_id' => $mbr_id])
+                ->andWhere(['b.material_cd' => $checkoutPrivs->material_cd])
                 ->count();
         
         if($count >= $checkoutPrivs->checkout_limit) {

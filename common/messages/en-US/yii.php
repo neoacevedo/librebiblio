@@ -18,5 +18,5 @@
  */
 return [
     '(not set)' => '',
-    '{attribute} "{value}" has already been taken.' => '',
+    '{attribute} "{value}" has already been taken.' => '@@@@',
 ];

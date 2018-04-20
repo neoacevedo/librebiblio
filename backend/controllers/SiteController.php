@@ -95,7 +95,7 @@ class SiteController extends Controller {
         // gráfica
         if (Yii::$app->db->driverName === "mysql") {
             $checkout_stats = (new \yii\db\Query())
-                    ->select(["created_at", "count(*) as checkoutCount"])
+                    ->select(["created_at", 'count(*) as checkoutCount'])
                     ->from("{{%biblio_status_hist}}")
                     ->where(['status_cd' => 'out'])
                     ->andWhere([">=", "created_at", new \yii\db\Expression('(NOW() - INTERVAL 1 WEEK)')])
@@ -103,7 +103,7 @@ class SiteController extends Controller {
                     ->all();
         } else if (Yii::$app->db->driverName === "pgsql") {
             $checkout_stats = (new \yii\db\Query())
-                    ->select(["created_at", "count(*) as checkoutCount"])
+                    ->select(["created_at", 'count(*) as "checkoutCount"'])
                     ->from("{{%biblio_status_hist}}")
                     ->where(['status_cd' => 'out'])
                     ->andWhere([">=", "created_at", new \yii\db\Expression("(NOW() - INTERVAL '1 WEEK')")])

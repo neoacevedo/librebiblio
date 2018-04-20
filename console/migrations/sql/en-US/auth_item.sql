@@ -12,4 +12,8 @@ INSERT INTO {{%auth_item}} VALUES ('circulation/create',2,'Permission to record 
 INSERT INTO {{%auth_item}} VALUES ('circulation/delete',2,'Permission to delete checkouts or reserves.',NULL,NULL,1510238281,1510243170);
 INSERT INTO {{%auth_item}} VALUES ('circulation/index',2,'Permission to access the circulation area.',NULL,NULL,1510243113,1510243113);
 INSERT INTO {{%auth_item}} VALUES ('circulation/update',2,'Permission to update check out or reserve information.',NULL,NULL,1510239900,1510243199);
-INSERT INTO {{%auth_item}} VALUES ('circulation/view',2,'Permission to list/view users, checkouts or reservations',NULL,NULL,1510238250,1510243184);
+INSERT INTO {{%auth_item}} VALUES ('circulation/view',2,'Permission to list/view users, checkouts or reservations.',NULL,NULL,1510238250,1510243184);
+INSERT INTO {{%auth_item}} VALUES ('member/index', 2, 'Permission to list library members.', NULL, NULL, 1524156313, 1524156313);
+INSERT INTO {{%auth_item}} VALUES ('member/create', 2, 'Permission to register members in the library.', NULL, NULL, 1524156333, 1524156333);
+INSERT INTO {{%auth_item}} VALUES ('member/update', 2, 'Permission to update member information.', NULL, NULL, 1524156378, 1524156378);
+INSERT INTO {{%auth_item}} VALUES ('member/delete', 2, 'Permission to delete members from the library.', NULL, NULL, 1524156287, 1524156287);

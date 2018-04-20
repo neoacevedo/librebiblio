@@ -12,4 +12,8 @@ INSERT INTO {{%auth_item}} VALUES ('circulation/create',2,'Permiso para registra
 INSERT INTO {{%auth_item}} VALUES ('circulation/delete',2,'Permiso para borrar préstamos o reservas.',NULL,NULL,1510238281,1510243170);
 INSERT INTO {{%auth_item}} VALUES ('circulation/index',2,'Permiso para acceder a la zona de préstamos.',NULL,NULL,1510243113,1510243113);
 INSERT INTO {{%auth_item}} VALUES ('circulation/update',2,'Permiso para Actualizar información de préstamos o reservas.',NULL,NULL,1510239900,1510243199);
-INSERT INTO {{%auth_item}} VALUES ('circulation/view',2,'Permiso para listar/ver usuarios, préstamos o reservas',NULL,NULL,1510238250,1510243184);
+INSERT INTO {{%auth_item}} VALUES ('circulation/view',2,'Permiso para listar/ver usuarios, préstamos o reservas.',NULL,NULL,1510238250,1510243184);
+INSERT INTO {{%auth_item}} VALUES ('member/index', 2, 'Permiso para listar miembros de la biblioteca.', NULL, NULL, 1524156313, 1524156313);
+INSERT INTO {{%auth_item}} VALUES ('member/create', 2, 'Permiso para registrar miembros en la biblioteca.', NULL, NULL, 1524156333, 1524156333);
+INSERT INTO {{%auth_item}} VALUES ('member/update', 2, 'Permiso para actualizar información del miembro de la bibliteca.', NULL, NULL, 1524156378, 1524156378);
+INSERT INTO {{%auth_item}} VALUES ('member/delete', 2, 'Permiso para borrar miembros de la biblioteca.', NULL, NULL, 1524156287, 1524156287);

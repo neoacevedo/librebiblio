@@ -15,27 +15,27 @@ $usmarc = [
     [
         'attribute' => 'topic1',
         'value' => $model->topic1,
-        'label' => \Yii::t('app', 'Topic1')
+        'label' => \Yii::t('biblio', 'Topic1')
     ],
     [
         'attribute' => 'topic2',
         'value' => $model->topic2,
-        'label' => \Yii::t('app', 'Topic2')
+        'label' => \Yii::t('biblio', 'Topic2')
     ],
     [
         'attribute' => 'topic3',
         'value' => $model->topic3,
-        'label' => \Yii::t('app', 'Topic3')
+        'label' => \Yii::t('biblio', 'Topic3')
     ],
     [
         'attribute' => 'topic4',
         'value' => $model->topic4,
-        'label' => \Yii::t('app', 'Topic4')
+        'label' => \Yii::t('biblio', 'Topic4')
     ],
     [
         'attribute' => 'topic5',
         'value' => $model->topic5,
-        'label' => \Yii::t('app', 'Topic5')
+        'label' => \Yii::t('biblio', 'Topic5')
     ]
 ];
 foreach ($model->biblioFields as $biblioField) {
@@ -91,7 +91,7 @@ foreach ($model->biblioFields as $biblioField) {
                     [
                         'attribute' => 'call_nmbr1',
                         'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
-                        'label' => Yii::t('app', 'Call Nmbr1')
+                        'label' => Yii::t('biblio', 'Call Nmbr1')
                     ],
                     'title:ntext',
                     'title_remainder:ntext',

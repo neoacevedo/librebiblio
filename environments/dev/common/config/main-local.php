@@ -34,6 +34,15 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'biblio*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'biblio' => 'biblio.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
                 'rbac*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',

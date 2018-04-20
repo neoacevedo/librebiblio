@@ -68,7 +68,7 @@ endif;
     <?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
 
     <!-- biblio fields -->
-    <h4><?= Yii::t('app', "USMarc Fields:") ?></h4>
+    <h4><?= Yii::t('biblio', "USMarc Fields:") ?></h4>
     <?php
     #var_dump($modelBiblioFields);
     foreach ($modelBiblioFields as $index => $biblioField) :

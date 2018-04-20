@@ -15,7 +15,6 @@ AppAsset::register($this);
 $library_name = Yii::$app->name;#null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
 $library_hours = \common\models\Settings::find()->one()->library_hours;#null !== $settings->library_hours ? $settings->library_hours : "N/A";
 $library_phone = \common\models\Settings::find()->one()->library_phone;#null !== $settings->library_phone ? $settings->library_phone : "N/A";
-
 $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "".Yii::$app->session['frontend-skin'];
 ?>
 <?php $this->beginPage() ?>
@@ -51,6 +50,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                 $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
             } else {
+                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
                 $menuItems[] = [
                     'label' => Yii::$app->user->identity->username,
                     'items' => [
