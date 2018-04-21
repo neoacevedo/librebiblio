@@ -132,7 +132,7 @@ class CirculationController extends Controller {
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item added to cart."));
             } else {
                 $copy = \common\models\BiblioCopy::findOne($copyid);
-                Yii::$app->getSession()->setFlash('warning', Yii::t("circulation", "The item {barcode} is already on cart", ['barcode' => $copy->barcode_nmbr]));
+                Yii::$app->getSession()->setFlash('warning', Yii::t("circulation", "The item is already on cart"));
             }
         } catch (Exception $ex) {
             Yii::$app->getSession()->setFlash('error', $ex->getMessage());
@@ -224,20 +224,23 @@ class CirculationController extends Controller {
 
         return $this->redirect(Yii::$app->request->referrer);
     }
-    
-    public function actionTmp() {
-        $selection = \Yii::$app->request->post('selection');//typecasting
-        print_r($selection);
-    }
 
     /**
-     * Solicita el préstamo de las copias bibliográficas.
+     * Solicita el préstamo de las copias bibliográficas seleccionadas.
+     * 
+     * El método tiene una iteración interna por cada copia bibliográfica seleccionada. <br />
+     * Después de esto actualiza la lista de las copias en el carrito.
      * @return mixed
      */
     public function actionCheckout() {
         $id = Yii::$app->user->id;
+        // array temporal para guardar los id del array del carro seleccionado (los de la sesión).
+        $copy_array = [];
+        // los checkbox seleccionados
+        $selection = \Yii::$app->request->post('selection'); 
+
         $this->updateMemberAccount($id);
-        $selection = \Yii::$app->request->post('selection');//typecasting
+                
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -331,11 +334,17 @@ class CirculationController extends Controller {
                             });
                 } else {
                     \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-                    Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item checked out."));
+                    Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item {barcode} checked out.", ['barcode' => $biblioCopy->barcode_nmbr]));
+                    $copies = array_column(\Yii::$app->session['cart'], "copyid");
+                    $key = array_search((int) $copyid, $copies, true);
+                    $copy_array[$key] = \Yii::$app->session['cart'][$key];
                 }
             }
         }
 
+        foreach ($copy_array as $key => $value) {
+            unset($_SESSION['cart'][$key]);
+        }
         return $this->redirect(['/member/profile']);
     }
 
