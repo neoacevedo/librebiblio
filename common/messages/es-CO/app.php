@@ -18,10 +18,10 @@
  */
 return [
     'Account' => '',
-    'Author' => '',
+    'Author' => 'Autor',
     'Barcode Nmbr' => '',
     'Bibid' => '',
-    'Biblio Copies' => '',
+    'Biblio Copies' => 'Copias Bibliográficas',
     'Call Nmbr1' => '',
     'Check Out' => '',
     'Check out' => '',

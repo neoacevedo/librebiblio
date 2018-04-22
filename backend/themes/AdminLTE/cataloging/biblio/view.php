@@ -144,7 +144,31 @@ foreach ($model->biblioFields as $biblioField) {
                     ],
                     'status_begin_dt',
                     'due_back_dt',
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['biblio-copy/view', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                            'title' => Yii::t('app', 'View'),
+                                ]);
+                            },
+                            'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                            'title' => Yii::t('app', 'Update'),
+                                ]);
+                            },
+                            'delete' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                            'title' => Yii::t('app', 'Delete'),
+                                            'data' => [
+                                                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                                'pjax' => 0,
+                                            ],
+                                ]);
+                            }
+                        ],
+                    ],
                 ],
                 'options' => ['class' => 'table table-striped table-bordered table-responsive']
             ]);
