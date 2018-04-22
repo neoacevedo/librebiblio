@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,8 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 // take just first model in the list
 $model = $dataProvider->models;
 if (count($model) > 0) {
-    $filename = $model[0]->name;
     $groupBy = Yii::$app->request->get("groupBy");
+    $filename = $model[0]->name;
     if (null !== $groupBy) {
         if ($groupBy === "biblio") {
             $columns = [];
@@ -22,7 +23,6 @@ if (count($model) > 0) {
                 if ($key === "barcode_nmbr") {
                     continue;
                 }
-
                 $columns[$key] = $value;
             }
             $gridColumns = array_merge([
@@ -34,16 +34,20 @@ if (count($model) > 0) {
             );
         }
     } else {
+        $columns = $searchModel->attributes;
         $gridColumns = array_merge([
-            ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
+            ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
         );
     }
 } else {
+    $columns = $searchModel->attributes;
     $gridColumns = array_merge([
-        ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
+        ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
     );
+
     $filename = str_replace("Search", "", Yii::$app->request->queryParams['type']);
 }
+
 $fullExportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns' => $gridColumns,
@@ -61,17 +65,20 @@ $fullExportMenu = ExportMenu::widget([
         ]);
 ?>
 <div class="collection-index">
-    <?php
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $gridColumns,
-        'panel' => [
-            'headingOptions' => ['class' => 'box-header'],
-            'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
-        ],
-        'toolbar' => [
-            $fullExportMenu
-        ],
-    ]);
-    ?>
+    <div class="box">
+        <?php
+        echo GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'panel' => [
+                'headingOptions' => ['class' => 'box-header'],
+                'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
+            ],
+            'toolbar' => [
+                $fullExportMenu
+            ],
+            'containerOptions' => ['class' => 'box-body']
+        ]);
+        ?>
+    </div>
 </div>

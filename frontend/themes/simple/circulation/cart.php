@@ -8,6 +8,17 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = Yii::t('app', 'Cart');
 $this->params['breadcrumbs'][] = $this->title;
+$js = "\$('#cart').submit(function(e) { "
+        . "e.preventDefault();"
+        . "var ok = confirm('" . Yii::t('circulation', 'Before proceed, please be sure your address is correct. Is your address correct?') . "');"
+        . "if(ok) {"
+        . "    $(this).submit();"
+        . "} else {"
+        . "     window.location.href = '" . yii\helpers\Url::to(['/member/profile']) . "';"
+        . "}"
+        . "});";
+
+$this->registerJs($js, \yii\web\View::POS_END);
 ?>
 <section class="content">
     <div class="circulation-index">
@@ -17,11 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $this->render('_sidenav', ['model' => $model]) ?>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
-                <?= Html::beginForm(['circulation/checkout'], 'post') ?>
+                <?= Html::beginForm(['circulation/checkout'], 'post', ['id' => 'cart']) ?>
                 <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'id' => 'cart',
                     'columns' => [
                         ['class' => 'yii\grid\CheckboxColumn',
                             'checkboxOptions' => function($model) {

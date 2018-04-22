@@ -12,10 +12,10 @@ $fechas = [];
 $fechas[] = "";
 $totales[] = "";
 foreach($checkout_stats as $checkout) {
-    $fechas[] = date('Y-m-d', strtotime($checkout['created_at']));
+    $fechas[] = $checkout['checkoutsPerDay'];
     $totales[] = $checkout['checkoutCount'];
 }
-$fechas[] = date('Y-m-d');
+$fechas[] = date('Y-m-d', strtotime('+1 day'));
 $fechas[] = "";
 $totales[] = "";
 ?>
@@ -42,7 +42,7 @@ $totales[] = "";
                 <div class="inner">
                     <h3><?= $new_members ?></h3>
 
-                    <p>Registered Members</p>
+                    <p>New Registered Members</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>

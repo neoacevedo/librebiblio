@@ -11,41 +11,6 @@ $this->title = Yii::t('app/reports', 'Results');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 
-// take just first model in the list
-$model = $dataProvider->models;
-if (count($model) > 0) {
-    $groupBy = Yii::$app->request->get("groupBy");
-    $filename = $model[0]->name;
-    if (null !== $groupBy) {
-        if ($groupBy === "biblio") {
-            $columns = [];
-            foreach ($model[0]->attributes as $key => $value) {
-                if ($key === "barcode_nmbr") {
-                    continue;
-                }
-                $columns[$key] = $value;
-            }
-            $gridColumns = array_merge([
-                ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
-            );
-        } else {
-            $gridColumns = array_merge([
-                ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
-            );
-        }
-    } else {
-        $gridColumns = array_merge([
-            ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
-        );
-    }
-} else {
-    $gridColumns = array_merge([
-        ['class' => 'kartik\grid\SerialColumn']], array_keys($searchModel->attributes)
-    );
-
-    $filename = str_replace("Search", "", Yii::$app->request->queryParams['type']);
-}
-
 $fullExportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns' => $gridColumns,
@@ -67,7 +32,20 @@ $fullExportMenu = ExportMenu::widget([
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
-            'columns' => $gridColumns,
+            'columns' => [
+                'id',
+                [
+                    'attribute' => 'created_at',
+                    'label' => Yii::t('app/reports', 'Cycle'),
+                    'value' => function($model) {
+                        if (Yii::$app->request->queryParams['timespan'] == 'w') {
+                            return strftime("%x %V", strtotime($model->created_at));
+                        } else if (Yii::$app->request->queryParams['timespan'] == 'w') {
+                            return strftime("%Y %m", strtotime($model->created_at));
+                        }
+                    }
+                ]
+            ],
             'panel' => [
                 'headingOptions' => ['class' => 'box-header'],
                 'heading' => '<h1>' . Html::encode($this->title) . '</h1>',

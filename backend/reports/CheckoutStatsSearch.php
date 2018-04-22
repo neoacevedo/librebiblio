@@ -23,7 +23,7 @@ class CheckoutStatsSearch extends CheckoutStats
     {
         return [
             [['id', 'checkoutCount'], 'integer'],
-            [['created_at'], 'safe'],
+            [['created_at'], 'string'],
         ];
     }
 
@@ -56,6 +56,7 @@ class CheckoutStatsSearch extends CheckoutStats
             ]
         ]);
 
+        
         $this->load($params);
 
         if (!$this->validate()) {
@@ -63,7 +64,7 @@ class CheckoutStatsSearch extends CheckoutStats
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

@@ -38,19 +38,4 @@ class m180216_232457_create_view_checkoutStats extends Migration {
         $this->db->createCommand("drop view if exists {{%checkoutStats}}")->execute();
         return true;
     }
-
-    /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
-
-      }
-
-      public function down()
-      {
-      echo "m180216_232457_create_view_checkoutStats cannot be reverted.\n";
-
-      return false;
-      }
-     */
 }

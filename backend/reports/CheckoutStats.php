@@ -35,7 +35,7 @@ class CheckoutStats extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['id', 'checkoutCount'], 'integer'],
-            [['created_at'], 'safe'],
+            [['created_at'], 'string'],
         ];
     }
 
@@ -47,29 +47,6 @@ class CheckoutStats extends \yii\db\ActiveRecord {
             'id' => Yii::t('app/reports', 'ID'),
             'created_at' => Yii::t('app/reports', 'Cycle'),
             'checkoutCount' => Yii::t('app/reports', 'Checkout Count'),
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function fields() {
-        return [
-            'id',
-            'checkoutCount',
-            'created_at' => function() {
-                /**
-                 * Lo siguiente es para dar el formato de fecha de acuerdo al parámetro timespan.
-                 * Esto es válido
-                 */
-                #if (isset(Yii::$app->request->queryString['timespan'])) {
-                if (Yii::$app->request->queryString['timespan'] == 'w') {
-                    return strftime("%x %V", strtotime($this->created_at));
-                } else if (Yii::$app->request->queryString['timespan'] == 'w') {
-                    return strftime("%Y %m", strtotime($this->created_at));
-                }
-                #} else {
-            }
         ];
     }
 

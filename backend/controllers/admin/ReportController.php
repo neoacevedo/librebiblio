@@ -117,10 +117,11 @@ class ReportController extends Controller {
      */
     public function actionView() {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
+        $viewName = Yii::$app->request->get("type");
         $searchModel = new $classnameSearch;
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('view', [
+        return $this->render("$viewName/view", [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider]);
     }
