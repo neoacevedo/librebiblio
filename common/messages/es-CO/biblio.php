@@ -17,11 +17,14 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Call Nmbr2' => '',
+    'Call Nmbr3' => '',
+    'Bibid' => '@@@@',
+    'Biblio Copies' => '@@Copias Bibliográficas@@',
+    'Copyid' => '@@@@',
     'Author' => 'Autor',
     'Barcode Nmbr' => 'Código de copia',
     'Call Nmbr1' => 'Número de entrada',
-    'Call Nmbr2' => '',
-    'Call Nmbr3' => '',
     'Copy Desc' => 'Descripción de la Copia',
     'Topic1' => 'Termino temático o nombre geográfico como elemento de entrada',
     'Topic2' => 'Termino temático o nombre geográfico como elemento de entrada',
@@ -29,7 +32,4 @@ return [
     'Topic4' => 'Termino temático o nombre geográfico como elemento de entrada',
     'Topic5' => 'Termino temático o nombre geográfico como elemento de entrada',
     'USMarc Fields:' => 'Campos USMarc',
-    'Bibid' => '@@@@',
-    'Biblio Copies' => 'Copias Bibliográficas',
-    'Copyid' => '@@@@',
 ];

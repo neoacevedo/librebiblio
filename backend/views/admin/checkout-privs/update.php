@@ -11,7 +11,7 @@ $this->title = Yii::t('checkout', 'Update {modelClass}: ', [
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Collections'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('checkout', 'Checkout Privs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->materialType->description, 'url' => ['view', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id]];
-$this->params['breadcrumbs'][] = Yii::t('checkout', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="checkout-privs-update">
 

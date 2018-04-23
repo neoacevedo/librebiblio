@@ -17,18 +17,18 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure you want to delete this item?' => '¿Está seguro(a) que desea borrar este ítem?',
     'Checkout Limit' => '',
     'Checkout Privs' => '',
     'Classification ID' => '',
-    'Create' => 'Crear',
     'Create Checkout Privs' => '',
-    'Delete' => '',
     'ID' => '',
     'Material Cd' => '',
+    'Are you sure you want to delete this item?' => '@@¿Está seguro(a) que desea borrar este ítem?@@',
+    'Delete' => '@@@@',
+    'Reset' => '@@Restablecer@@',
+    'Search' => '@@Buscar@@',
+    'Create' => 'Crear',
     'Renewal Limit' => 'Límite de Renovación',
-    'Reset' => 'Restablecer',
-    'Search' => 'Buscar',
     'Update' => 'Actualizar',
     'Update {modelClass}: ' => 'Actualizar {modelClass}: ',
 ];

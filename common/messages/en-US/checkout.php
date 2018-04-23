@@ -17,18 +17,18 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure you want to delete this item?' => '',
     'Checkout Limit' => '',
     'Checkout Privs' => '',
     'Classification ID' => '',
     'Create' => '',
     'Create Checkout Privs' => '',
-    'Delete' => '',
     'ID' => '',
     'Material Cd' => '',
     'Renewal Limit' => '',
-    'Reset' => '',
-    'Search' => '',
     'Update' => '',
     'Update {modelClass}: ' => '',
+    'Are you sure you want to delete this item?' => '@@@@',
+    'Delete' => '@@@@',
+    'Reset' => '@@@@',
+    'Search' => '@@@@',
 ];

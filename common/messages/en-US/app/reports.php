@@ -46,6 +46,7 @@ return [
     'Over Due Member List' => '',
     'Periodic Checkout Count' => '',
     'Pin' => '',
+    'Quarter' => '',
     'Reports' => '',
     'Results' => '',
     'Status Begin Dt' => '',

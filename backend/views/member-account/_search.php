@@ -33,8 +33,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'description') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('circulation', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('circulation', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

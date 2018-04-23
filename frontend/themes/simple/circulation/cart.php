@@ -83,7 +83,7 @@ $this->registerJs($js, \yii\web\View::POS_END);
                     ],
                 ],
             ]);
-            echo Yii::t('circulation', 'Before proceed, please be sure your address is correct. Is your address correct?');
+            echo Yii::t('circulation', 'Before proceed, please be sure your address is correct. {address}<br /> Is your address correct?', ['address' => $model->address]);
             Dialog::end();
             ?>
         </div>
