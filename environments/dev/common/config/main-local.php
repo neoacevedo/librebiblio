@@ -1,20 +1,19 @@
 <?php
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 
 $cache = require(__DIR__ . '/cache.php');
-$connectionArray = [
-    'class' => 'yii\db\Connection',
-    'dsn' => "pgsql:host=localhost;dbname=openbiblio2",
-    'username' => 'postgres',
-    'password' => '',
-    'charset' => 'utf8',
-    'enableQueryCache' => false
-];
+$db = require(__DIR__ . '/database-local.php');
+
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'America/Bogota',
     'components' => [
         'cache' => $cache,
-        'db' => $connectionArray,
+        'db' => $db,
         'session' => [
             'class' => 'yii\web\CacheSession',
             'cache' => 'cache',
@@ -95,9 +94,10 @@ return [
             ],
         ],
     ],
-    'name' => call_user_func(function() use($connectionArray) {
+    'name' => call_user_func(function() use($db) {
                 try {
-                    $connection = new \yii\db\Connection(array_shift($connectionArray));
+                    array_shift($db);
+                    $connection = new \yii\db\Connection($db);
                     $connection->open();
                     $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
                 } catch (Exception $ex) {

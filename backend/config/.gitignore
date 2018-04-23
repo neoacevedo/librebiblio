@@ -1,5 +1,6 @@
 main-local.php
 params-local.php
+database-local.php
 test-local.php
 main.php
 params.php

@@ -12,10 +12,10 @@ use common\widgets\Alert;
 AppAsset::register($this);
 
 #$settings = \common\models\Settings::find()->one();
-$library_name = Yii::$app->name;#null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
-$library_hours = \common\models\Settings::find()->one()->library_hours;#null !== $settings->library_hours ? $settings->library_hours : "N/A";
-$library_phone = \common\models\Settings::find()->one()->library_phone;#null !== $settings->library_phone ? $settings->library_phone : "N/A";
-$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "".Yii::$app->session['frontend-skin'];
+$library_name = Yii::$app->name; #null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$library_hours = \common\models\Settings::find()->one()->library_hours; #null !== $settings->library_hours ? $settings->library_hours : "N/A";
+$library_phone = \common\models\Settings::find()->one()->library_phone; #null !== $settings->library_phone ? $settings->library_phone : "N/A";
+$bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "" . Yii::$app->session['frontend-skin'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -43,7 +43,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
             ]);
             $menuItems = [
                 ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
-                /*['label' => 'About', 'url' => ['/site/about']],*/
+                /* ['label' => 'About', 'url' => ['/site/about']], */
                 ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
             ];
             if (Yii::$app->user->isGuest) {
@@ -91,7 +91,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v'.Yii::$app->params['version'] ?></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v' . Yii::$app->params['version'] ?></div>
                     <div class="col-lg-4 col-md-4 col-sm-4"><?= Yii::powered() ?></div>
                 </div>
                 <p>&nbsp;</p>
