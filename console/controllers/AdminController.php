@@ -58,11 +58,15 @@ class AdminController extends Controller {
             $accessToken = \Yii::$app->params['accessToken'];
             $shell_exec = shell_exec("git pull https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git");
             echo $this->ansiFormat($shell_exec . "\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);
-            echo $this->ansiFormat("copying params.php...");
+            echo $this->ansiFormat("copying params.php...\n");
             if (YII_ENV_PROD) {
-                copy(__DIR__ . '/../../environments/prod/common/config/params.php', __DIR__ . '/../../common/config/params.php');
-            } else if (YII_ENV_PROD) {
-                copy(__DIR__ . '/../../environments/dev/common/config/params-local.php', __DIR__ . '/../../common/config/params-local.php');
+                if(!copy(__DIR__ . '/../../environments/prod/common/config/params.php', __DIR__ . '/../../common/config/params.php')) {
+                    echo $this->ansiFormat("Cannot copy params.php. This does not affect your current environment.\n");
+                }
+            } else if (YII_ENV_DEV) {
+                if(!copy(__DIR__ . '/../../environments/dev/common/config/params-local.php', __DIR__ . '/../../common/config/params-local.php')) {
+                    echo $this->ansiFormat("Cannot copy params-local.php. This does not affect your current environment.\n");
+                }
             }
         } else {
             echo $this->ansiFormat("shell_exec is currently dissabled.\n", Console::BG_RED, Console::BOLD);
