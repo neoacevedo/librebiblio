@@ -131,7 +131,6 @@ class CirculationController extends Controller {
                 \Yii::$app->session['cart'] = array_merge(\Yii::$app->session['cart'], [$count => ['copyid' => $copyid, 'bibid' => $bibid, 'status' => $status]]);
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item added to cart."));
             } else {
-                $copy = \common\models\BiblioCopy::findOne($copyid);
                 Yii::$app->getSession()->setFlash('warning', Yii::t("circulation", "The item is already on cart"));
             }
         } catch (Exception $ex) {
