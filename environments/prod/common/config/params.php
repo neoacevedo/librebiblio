@@ -6,5 +6,5 @@ return [
     // caducidad del token de renovación de la contraseña.
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO', 'en-US'],
-    'version' => '2.18.4.32'
+    'version' => '2.18.4.40'
 ];
