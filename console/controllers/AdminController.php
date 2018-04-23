@@ -57,11 +57,16 @@ class AdminController extends Controller {
             print_r(\Yii::$app->params);
             $accessToken = \Yii::$app->params['accessToken'];
             $shell_exec = shell_exec("git pull https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git");
-            echo $this->ansiFormat($shell_exec."\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);
+            echo $this->ansiFormat($shell_exec . "\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);
+            echo $this->ansiFormat("copying params.php...");
+            if (YII_ENV_PROD) {
+                copy(__DIR__ . '/../../environments/prod/common/config/params.php', __DIR__ . '/../../common/config/params.php');
+            } else if (YII_ENV_PROD) {
+                copy(__DIR__ . '/../../environments/dev/common/config/params-local.php', __DIR__ . '/../../common/config/params-local.php');
+            }
         } else {
             echo $this->ansiFormat("shell_exec is currently dissabled.\n", Console::BG_RED, Console::BOLD);
         }
-        
     }
 
     /**
