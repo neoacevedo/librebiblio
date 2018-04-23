@@ -54,8 +54,8 @@ return [
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => 'http://backend.obib2.hyntibasoftware.co', // reemplazar de manera manual por el dominio para el backend
-            'scriptUrl' => "http://backend.obib2.hyntibasoftware.co", // reemplazar de manera manual por el dominio para el backend
+            'baseUrl' => 'http://backend.obib2.co', // reemplazar de manera manual por el dominio para el backend
+            'scriptUrl' => "http://backend.obib2.co", // reemplazar de manera manual por el dominio para el backend
             'enablePrettyUrl' => false,
             'rules' => [
             ],
