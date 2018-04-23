@@ -51,6 +51,9 @@ class AdminController extends Controller {
      * Ejecuta la actualización de la aplicación.
      * 
      * La actualización se hace basada en un token de autorización desde <strong>BitBucket</strong>.
+     * 
+     * Adicional a ello se copia el archivo <i>params.php</i> (Producción) / <i>params-local.php</i> (Desarrollo) 
+     * dependiendo del entorno en el que se esté ejecutando.
      */
     public function actionUpdate() {
         if ($this->isEnabled('shell_exec')) {
