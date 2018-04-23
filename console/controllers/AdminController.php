@@ -54,6 +54,7 @@ class AdminController extends Controller {
      */
     public function actionUpdate() {
         if ($this->isEnabled('shell_exec')) {
+            print_r(\Yii::$app->params);
             $accessToken = \Yii::$app->params['accessToken'];
             $shell_exec = shell_exec("git pull https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git");
             echo $this->ansiFormat($shell_exec."\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);

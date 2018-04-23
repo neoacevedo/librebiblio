@@ -10,5 +10,5 @@ return [
     // caducidad del token de renovación de la contraseña.
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO', 'en-US'],
-    'accessToken' => 'uZsNf0XCM84FvgIaNKkVF8lcZ8MpxUXUtBXtOKneCCX97Dm9f9_V02JUqxQBdxuZtVmj2_NF_e-4ktp-1sQ%3D'
+    'accessToken' => 'E4SR1oD2zLS_4BThLBDUwlPYmPQBoiN8wm_OrD58KknIBmddtuacLQDfeHuWe8wrY4qSJ7vGLJcAODPPJMA%3D'
 ];
