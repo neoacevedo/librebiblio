@@ -1,10 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-$db = require(__DIR__ . '/database-local.php');
+$db = require(__DIR__ . '/../../common/config/database-local.php');
 return [
     'pagination' => call_user_func(function() use($db) {
                 try {

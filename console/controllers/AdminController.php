@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace console\controllers;
 
 use yii\helpers\Console;
@@ -41,7 +43,35 @@ class AdminController extends Controller {
                 echo $this->ansiFormat("Sorry, we are unable to reset password for the provided email address.\n", Console::BG_RED, Console::BOLD);
             }
         } else {
-            echo $this->ansiFormat($model->errors()."\n", Console::BG_RED, Console::BOLD);
+            echo $this->ansiFormat($model->errors() . "\n", Console::BG_RED, Console::BOLD);
         }
     }
+
+    /**
+     * Ejecuta la actualización de la aplicación.
+     * 
+     * La actualización se hace basada en un token de autorización desde <strong>BitBucket</strong>.
+     */
+    public function actionUpdate() {
+        if ($this->isEnabled('shell_exec')) {
+            $accessToken = \Yii::$app->params['accessToken'];
+            $shell_exec = shell_exec("git pull https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git");
+            echo $this->ansiFormat($shell_exec."\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);
+        } else {
+            echo $this->ansiFormat("shell_exec is currently dissabled.\n", Console::BG_RED, Console::BOLD);
+        }
+        
+    }
+
+    /**
+     * Verifica si una función PHP está habilitada.
+     * 
+     * @access private
+     * @param string $func
+     * @return bool
+     */
+    private function isEnabled(string $func) {
+        return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
+    }
+
 }
