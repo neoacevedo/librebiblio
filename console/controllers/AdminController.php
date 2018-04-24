@@ -38,9 +38,9 @@ class AdminController extends Controller {
         $model->email = $email;
         if ($model->validate()) {
             if ($model->sendEmail()) {
-                echo $this->ansiFormat("Email sent.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
+                echo $this->ansiFormat("Coreo enviado al usuario.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
             } else {
-                echo $this->ansiFormat("Sorry, we are unable to reset password for the provided email address.\n", Console::BG_RED, Console::BOLD);
+                echo $this->ansiFormat("Lo sentimos, no podemos restablecer la contraseña para la dirección de correo electrónico proporcionada.\n", Console::BG_RED, Console::BOLD);
             }
         } else {
             echo $this->ansiFormat($model->errors() . "\n", Console::BG_RED, Console::BOLD);

@@ -9,6 +9,5 @@ return [
     'adminEmail' => getenv('adminEmail'),
     'supportEmail' => getenv('supportEmail'),
     'user.passwordResetTokenExpire' => 3600,
-    'preferredLanguages' => ['es-CO', 'en-US'],
-    'accessToken' => 'E4SR1oD2zLS_4BThLBDUwlPYmPQBoiN8wm_OrD58KknIBmddtuacLQDfeHuWe8wrY4qSJ7vGLJcAODPPJMA%3D'
+    'preferredLanguages' => ['es-CO', 'en-US']
 ];

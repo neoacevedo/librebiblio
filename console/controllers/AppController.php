@@ -24,30 +24,33 @@ class AppController extends Controller {
      * La actualización se hace como un comando de Yii:
      * 
      * ```
-     * php yii app/update
+     * php yii app/update <token>
      * ```
      * 
      * Si se ha implementado o modificado parte del código fuente las actualizaciones pueden sobreescribir esos cambios.
      * <br />
-     * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios.
+     * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios. 
+     * @param string $token Token de autorización.
      */
-    public function actionUpdate() {
+    public function actionUpdate(string $token) {
+        echo $this->ansiFormat("Antes de continuar, verifique que haya hecho un respaldo del sitio web (archivos y base de datos).\n"
+                . "Proceda luego con la actualización y ejecute una nueva migración de BD.\n", Console::BLINK, Console::BG_GREEN, Console::BOLD);
+        echo $this->prompt("Presione una tecla cuando esté listo.\n");
         if ($this->isEnabled('shell_exec')) {
-            $accessToken = \Yii::$app->params['accessToken'];
-            $shell_exec = shell_exec("git pull https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git");
+            $shell_exec = shell_exec("git pull https://x-token-auth:$token@bitbucket.org/nacevedo/openbiblio2.git");
             echo $this->ansiFormat($shell_exec . "\n", Console::BG_GREEN, \yii\helpers\Console::NORMAL);
-            echo $this->ansiFormat("copying params.php...\n");
+            echo $this->ansiFormat("copiando params.php...\n");
             if (YII_ENV_PROD) {
                 if (!copy(__DIR__ . '/../../environments/prod/common/config/params.php', __DIR__ . '/../../common/config/params.php')) {
-                    echo $this->ansiFormat("Cannot copy params.php. This does not affect your current environment.\n");
+                    echo $this->ansiFormat("No se puede copiar params.php. Esto no afecta su entorno actual.\n");
                 }
             } else if (YII_ENV_DEV) {
                 if (!copy(__DIR__ . '/../../environments/dev/common/config/params-local.php', __DIR__ . '/../../common/config/params-local.php')) {
-                    echo $this->ansiFormat("Cannot copy params-local.php. This does not affect your current environment.\n");
+                    echo $this->ansiFormat("No se puede copiar params-local.php. Esto no afecta su entorno actual.\n");
                 }
             }
         } else {
-            echo $this->ansiFormat("shell_exec is currently dissabled.\n", Console::BG_RED, Console::BOLD);
+            echo $this->ansiFormat("shell_exec no está habilitado. Por favor solicite una actualización por medio de un correo electrónico.\n", Console::BG_RED, Console::BOLD);
         }
     }
 
