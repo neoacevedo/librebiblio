@@ -27,13 +27,14 @@ class AppController extends Controller {
      * php yii app/update <token>
      * ```
      * 
-     * Si se ha implementado o modificado parte del código fuente las actualizaciones pueden sobreescribir esos cambios.
+     * Si se ha implementado o modificado parte del código fuente las actualizaciones sobreescribirán esos cambios.
      * <br />
-     * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios. 
+     * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios 
+     * (Repositorios privados, archivos comprimidos en almacenamiento privado, etc).
      * @param string $token Token de autorización.
      */
     public function actionUpdate(string $token) {
-        $cmd = "git init && git remote add origin master https://x-token-auth:$token@bitbucket.org/nacevedo/openbiblio2.git && "
+        $cmd = "git init && git remote add origin https://x-token-auth:$token@bitbucket.org/nacevedo/openbiblio2.git && "
                 . "git fetch --all && git reset --hard origin/master";
 
         echo $this->ansiFormat("Antes de continuar, verifique que haya hecho un respaldo del sitio web (archivos y base de datos).\n"
