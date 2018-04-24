@@ -46,5 +46,20 @@ class AdminController extends Controller {
             echo $this->ansiFormat($model->errors() . "\n", Console::BG_RED, Console::BOLD);
         }
     }
+    
+    /**
+     * Verifica si hay copias bibliográficas reservadas y cambia su estado si estas exceden el tiempo límite.
+     * 
+     * La ejecución se hace como un comando de Yii:
+     * 
+     * ```
+     * php yii app/remove-placeholds
+     * ```
+     * 
+     * 
+     */
+    public function actionRemovePlaceholds() {
+        
+    }
 
 }
