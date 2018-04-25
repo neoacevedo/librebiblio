@@ -16,7 +16,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * CirculationController implements the CRUD actions for User model.
+ * CirculationController implementa las acciones CRUD para el préstamo o reserva de materiales bibliográficos.
  */
 class CirculationController extends Controller {
 

@@ -50,3 +50,6 @@ beanstalk_deploy.py
 
 # output de phpDoc
 output
+
+# apidoc config
+/apidoc.json

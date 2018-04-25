@@ -11,19 +11,16 @@ namespace frontend\controllers;
 use Yii;
 use DateTime;
 use common\models\Member;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\Biblio;
 use common\models\BiblioSearch;
 
 /**
- * Description of CirculationController
- *
- * @author nestor
+ * CirculationController implementa la lógica para los préstamos y reservas de materiales bibliográficos.
+ * 
+ * Incluye el listado del carrito con los materiales que se pretenden solicitar en préstamo.
  */
 class CirculationController extends Controller {
     //put your code here
