@@ -46,7 +46,7 @@ class AdminController extends Controller {
             echo $this->ansiFormat($model->errors() . "\n", Console::BG_RED, Console::BOLD);
         }
     }
-    
+
     /**
      * Verifica si hay copias bibliográficas reservadas y cambia su estado si estas exceden el tiempo límite.
      * 
@@ -56,10 +56,32 @@ class AdminController extends Controller {
      * php yii app/remove-placeholds
      * ```
      * 
-     * 
+     * Busca cada copia y verifica si el número de días en reserva ha superado el establecido y procede a 
+     * eliminar las reservas que coincidan con ese límite.
      */
     public function actionRemovePlaceholds() {
-        
+        $copies = \common\models\BiblioCopy::findAll(['status_cd' => 'hld']);
+        $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
+        foreach ($copies as $copy) {
+            $hold = \common\models\BiblioHold::findOne(['copyid' => $copy->id]);
+            $datetime1 = new DateTime($hold->created_at);
+            $datetime2 = new DateTime('now');
+            $interval = $datetime1->diff($datetime2);
+            $diff = (int) $interval->format('%r%a');
+            if ($holdMaxDays > 0 && $diff > $holdMaxDays) {
+                $tooOld = true;
+            } else {
+                $tooOld = false;
+            }
+
+            if ($tooOld) {
+                $hold->delete();
+                $copy->status_cd = 'in';
+                $copy->status_begin_dt = date('Y-m-d H:i:s');
+                $copy->save();
+                $this->ansiFormat("Copia {$copy->barcode_nmbr} disponible para préstamo.\n");
+            }
+        }
     }
 
 }

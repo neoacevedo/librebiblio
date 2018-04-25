@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 
-#$bibliofield = app\models\BiblioField::
+#$bibliofield = backend\models\BiblioField::
 $materialType = backend\models\MaterialType::find()->all();
 $collection = \backend\models\Collection::find()->all();
 ?>

@@ -123,9 +123,9 @@ class BiblioController extends Controller {
         // este método es solo para crear los campos en el formulario
         $this->fillUsMarc();
 
-        $modelBiblioFields[] = new \app\models\BiblioField();
+        $modelBiblioFields[] = new \backend\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
-            $modelBiblioFields[] = new \app\models\BiblioField();
+            $modelBiblioFields[] = new \backend\models\BiblioField();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
@@ -175,9 +175,9 @@ class BiblioController extends Controller {
      */
     private function createBiblioField(int $bibid, $models) {
         $i = 1; // fieldid
-        $modelBiblioField = \app\models\BiblioField::findAll(['bibid' => $bibid]);
+        $modelBiblioField = \backend\models\BiblioField::findAll(['bibid' => $bibid]);
         if (count($modelBiblioField) > 0) {
-            \app\models\BiblioField::deleteAll(['bibid' => $bibid]);
+            \backend\models\BiblioField::deleteAll(['bibid' => $bibid]);
         }
         if (\yii\base\Model::loadMultiple($models, Yii::$app->request->post())) {
             foreach ($models as $model) {
@@ -210,7 +210,7 @@ class BiblioController extends Controller {
 
         $this->fillUsMarc();
 
-        $modelBiblioFields[] = new \app\models\BiblioField();
+        $modelBiblioFields[] = new \backend\models\BiblioField();
 
         $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
         if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
@@ -256,7 +256,7 @@ class BiblioController extends Controller {
 
             // crear la lista con todos los modelos bibliofield
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $modelBiblioFields[] = new \app\models\BiblioField();
+                $modelBiblioFields[] = new \backend\models\BiblioField();
             }
             #$posts = Yii::$app->request->post('BiblioField', []);
 
@@ -274,11 +274,11 @@ class BiblioController extends Controller {
         } else {
             //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $biblioField = \app\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
+                $biblioField = \backend\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
                 if ($biblioField !== null) {
                     $modelBiblioFields[] = $biblioField;
                 } else {
-                    $modelBiblioFields[] = new \app\models\BiblioField();
+                    $modelBiblioFields[] = new \backend\models\BiblioField();
                 }
             }
             return $this->render('update', [
