@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\MemberClassifySearch */
+/* @var $searchModel backend\models\MemberClassifySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Member Classifies');

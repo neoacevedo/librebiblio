@@ -7,8 +7,8 @@
 namespace backend\controllers\admin;
 
 use Yii;
-use app\models\MemberClassify;
-use app\models\MemberClassifySearch;
+use backend\models\MemberClassify;
+use backend\models\MemberClassifySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

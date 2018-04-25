@@ -4,15 +4,15 @@
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\MemberClassify;
+use backend\models\MemberClassify;
 
 /**
- * MemberClassifySearch represents the model behind the search form about `app\models\MemberClassify`.
+ * MemberClassifySearch represents the model behind the search form about `backend\models\MemberClassify`.
  */
 class MemberClassifySearch extends MemberClassify
 {
