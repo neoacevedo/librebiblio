@@ -11,6 +11,7 @@ namespace console\controllers;
 use yii\helpers\Console;
 use yii\console\Controller;
 use console\models\PasswordResetRequest;
+use DateTime;
 
 /**
  * AdminController implements the Request Password Reset for User model.
@@ -64,7 +65,7 @@ class AdminController extends Controller {
         $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
         foreach ($copies as $copy) {
             $hold = \common\models\BiblioHold::findOne(['copyid' => $copy->id]);
-            $datetime1 = new DateTime($hold->created_at);
+            $datetime1 = new DateTime($hold->hold_begin_dt);
             $datetime2 = new DateTime('now');
             $interval = $datetime1->diff($datetime2);
             $diff = (int) $interval->format('%r%a');

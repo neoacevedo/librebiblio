@@ -255,7 +255,7 @@ class CirculationController extends Controller {
                 if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $biblioCopy->bibid, 'mbr_id' => $id])) !== null) {
                     // el miembro fue quien reservó el material
                     $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
-                    $datetime1 = new DateTime($hold->created_at);
+                    $datetime1 = new DateTime($hold->hold_begin_dt);
                     $datetime2 = new DateTime('now');
                     $interval = $datetime1->diff($datetime2);
                     $diff = (int) $interval->format('%r%a');
