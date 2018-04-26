@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\reports;
 
 use Yii;
@@ -17,23 +19,26 @@ use Yii;
  * @property string $author
  * @property integer $checkoutCount
  */
-class PopularBiblios extends \yii\db\ActiveRecord
-{
+class PopularBiblios extends \yii\db\ActiveRecord {
+
     public $name = "Most Popular Bibliographies";
     public $category = "Statistics";
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
-        return '{{%popular_biblios}}';
+    public static function tableName() {
+        if (Yii::$app->request->queryParams['groupBy'] === 'biblio') {
+            return '{{%popular_biblios_by_id}}';
+        } else if (Yii::$app->request->queryParams['groupBy'] === 'copy') {
+            return '{{%popular_biblios_by_barcode}}';
+        }
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'checkoutCount'], 'integer'],
             [['title', 'author'], 'string'],
@@ -44,17 +49,16 @@ class PopularBiblios extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
-            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
+            'barcode_nmbr' => Yii::t('biblio', 'Barcode Nmbr'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),
             'checkoutCount' => Yii::t('app/reports', 'Checkout Count'),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -62,7 +66,7 @@ class PopularBiblios extends \yii\db\ActiveRecord
         parent::primaryKey();
         return ['id'];
     }
-    
+
     /**
      * Devuelve el nombre del reporte traducido.
      * @return string
@@ -70,7 +74,7 @@ class PopularBiblios extends \yii\db\ActiveRecord
     public function getName() {
         return Yii::t("app/reports", $this->name);
     }
-    
+
     /**
      * Devuelve el nombre de la categoría traducida.
      * @return string
@@ -78,4 +82,5 @@ class PopularBiblios extends \yii\db\ActiveRecord
     public function getCategory() {
         return Yii::t("app/reports", $this->category);
     }
+
 }

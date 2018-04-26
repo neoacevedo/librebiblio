@@ -18,7 +18,8 @@ class m180216_232457_create_view_checkoutStats extends Migration {
                     . "FROM {{%biblio_copy}} c, {{%biblio_status_hist}} h "
                     . "WHERE c.bibid = h.bibid "
                     . "AND c.id = h.copyid "
-                    . "AND h.status_cd = 'out';";
+                    . "AND h.status_cd = 'out' "
+                    . "GROUP BY h.created_at;";
         } else if ($this->db->driverName === 'pgsql') {
             $sql = "CREATE OR REPLACE VIEW {{%checkoutStats}} AS "
                     . "SELECT c.id, h.created_at, "
@@ -26,7 +27,8 @@ class m180216_232457_create_view_checkoutStats extends Migration {
                     . "FROM {{%biblio_copy}} c "
                     . "LEFT JOIN {{%biblio_status_hist}} h ON c.id = h.copyid "
                     . "AND c.bibid = h.bibid "
-                    . "AND h.status_cd = 'out';";
+                    . "AND h.status_cd = 'out' "
+                    . "GROUP BY c.id, h.created_at;";
         }
         $this->db->createCommand($sql)->execute();
     }

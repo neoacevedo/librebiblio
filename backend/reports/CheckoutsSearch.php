@@ -22,7 +22,7 @@ class CheckoutsSearch extends Checkouts {
     public function rules() {
         return [
             [['bibid', 'id', 'mbr_id'], 'integer'],
-            [['barcode_nmbr', 'title', 'author', 'status_begin_dt', 'due_back_dt', 'name'], 'safe'],
+            [['barcode_nmbr', 'title', 'author', 'status_begin_dt', 'due_back_dt', 'member_name'], 'safe'],
             [['pin'], 'number'],
         ];
     }
@@ -75,7 +75,7 @@ class CheckoutsSearch extends Checkouts {
                 ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
                 ->andFilterWhere(['like', 'title', $this->title])
                 ->andFilterWhere(['like', 'author', $this->author])
-                ->andFilterWhere(['like', 'name', $this->name]);
+                ->andFilterWhere(['like', 'member_name', $this->member_name]);
 
         return $dataProvider;
     }

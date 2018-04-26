@@ -14,7 +14,8 @@ use console\models\PasswordResetRequest;
 use DateTime;
 
 /**
- * AdminController implements the Request Password Reset for User model.
+ * AdminController implementa el restablecimiento de contraseñas para el modelo User.<br />
+ * Implementa también la eliminación de reservas bibliográficas.
  * 
  * Console environment.
  */

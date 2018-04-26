@@ -14,14 +14,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use macklus\payments\Payment;
-use macklus\payments\models\Payment as PaymentModel;
-use yii\helpers\Html;
 
 /**
- * Description of MemberController
- *
- * @author nestor
+ * MemberController implementa las operaciones CRUD para el modelo Member
  */
 class MemberController extends Controller {
 
@@ -120,9 +115,9 @@ class MemberController extends Controller {
      * 
      * Los tipos de cuenta son:
      * <ul>
-     *     <li>Cargo</li>
-     *     <li>Pago</li>
-     *     <li>Crédito.</li>
+     *   <li>Cargo</li>
+     *   <li>Pago</li>
+     *   <li>Crédito.</li>
      * </ul>
      * @return mixed
      */
@@ -160,8 +155,8 @@ class MemberController extends Controller {
 
     /**
      * Convierte a PDF los detalles de la cuenta (multa, pago, etc) del miembro.
-     * @param int $id
-     * @param int $mbr_id
+     * 
+     * @param int $account_id
      * @return mixed
      */
     public function actionAccountPrint(int $account_id) {

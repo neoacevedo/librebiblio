@@ -55,7 +55,7 @@ class Copy extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app/reports', 'ID'),
             'created_at' => Yii::t('app', 'Created At'),
-            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
+            'barcode_nmbr' => Yii::t('biblio', 'Barcode Nmbr'),
             'callno' => Yii::t('app/reports', 'Callno'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),

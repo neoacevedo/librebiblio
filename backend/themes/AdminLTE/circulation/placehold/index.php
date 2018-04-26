@@ -21,7 +21,7 @@ use yii\widgets\Pjax;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'label' => Yii::t('app', 'Barcode Nmbr'),
+                'label' => Yii::t('biblio', 'Barcode Nmbr'),
                 'value' => 'biblioCopy.barcode_nmbr'
             ],
             [

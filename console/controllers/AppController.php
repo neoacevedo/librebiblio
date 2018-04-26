@@ -12,7 +12,7 @@ use yii\helpers\Console;
 use yii\console\Controller;
 
 /**
- * ApplicationController implementa la actualización de la aplicación.
+ * AppController implementa la actualización de la aplicación.
  *
  * @author Néstor Acevedo
  */
@@ -27,7 +27,7 @@ class AppController extends Controller {
      * php yii app/update <token>
      * ```
      * 
-     * Si se ha implementado o modificado parte del código fuente las actualizaciones sobreescribirán esos cambios.
+     * Si se ha implementado o modificado parte del código fuente, las actualizaciones sobreescribirán esos cambios.
      * <br />
      * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios 
      * (Repositorios privados, archivos comprimidos en almacenamiento privado, etc).

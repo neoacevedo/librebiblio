@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
@@ -121,11 +123,9 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return boolean
      */
     public function upload($imageFile) {
-        if ($this->validate()) {
-            if (null !== $imageFile) {
-                #$this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
-                Yii::$app->storage->saveAs($imageFile);
-            }
+        if (null !== $imageFile) {
+            #$this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
+            Yii::$app->storage->saveAs($imageFile);
             return true;
         } else {
             return false;

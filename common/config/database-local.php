@@ -10,12 +10,12 @@
  */
 $connectstr_dbhost = "localhost";
 $connectstr_dbname = "openbiblio2";
-$connectstr_dbusername = "root";
+$connectstr_dbusername = "postgres";
 $connectstr_dbpassword = "";
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "mysql:host=$connectstr_dbhost;dbname=$connectstr_dbname",
+    'dsn' => "pgsql:host=$connectstr_dbhost;dbname=$connectstr_dbname",
     'username' => $connectstr_dbusername,
     'password' => $connectstr_dbpassword,
     'charset' => 'utf8',

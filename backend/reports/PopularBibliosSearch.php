@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\reports;
 
 use Yii;
@@ -14,14 +16,14 @@ use backend\reports\PopularBiblios;
 /**
  * PopularBibliosSearch represents the model behind the search form about `backend\reports\PopularBiblios`.
  */
-class PopularBibliosSearch extends PopularBiblios
-{
+class PopularBibliosSearch extends PopularBiblios {
+
     public $groupBy;
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'checkoutCount'], 'integer'],
             [['barcode_nmbr', 'title', 'author'], 'safe'],
@@ -31,8 +33,7 @@ class PopularBibliosSearch extends PopularBiblios
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -44,8 +45,7 @@ class PopularBibliosSearch extends PopularBiblios
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = PopularBiblios::find();
 
         // add conditions that should always apply here
@@ -70,20 +70,15 @@ class PopularBibliosSearch extends PopularBiblios
             'id' => $this->id,
             'checkoutCount' => $this->checkoutCount,
         ]);
-        
-        if($this->groupBy === "copy") {
-            $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr]);
-        }
+
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'author', $this->author]);
-        
-        if($this->groupBy === "biblio") {
-            $query->groupBy(["id", "title", "author"]);
-        } else {
-            $query->groupBy(["id", "barcode_nmbr", "title", "author"]);
+                ->andFilterWhere(['like', 'author', $this->author]);
+        if ($params['groupBy'] === "copy") {
+            $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr]);
         }
 
         return $dataProvider;
     }
+
 }

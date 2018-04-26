@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers;
 
 use Yii;
@@ -19,9 +21,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * Description of MemberController
+ * MemberController implementa las operaciones CRUD para el modelo Member
  *
- * @author nestor
  */
 class MemberController extends Controller {
 
@@ -190,17 +191,33 @@ class MemberController extends Controller {
     public function actionView(int $id) {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 // estadísticas del usuario con los tipos de material registrados en la biblioteca
-        $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
-                    "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
-                ])->from("{{%material_type_dm}} mat")
-                ->join('join', '{{%member}}')
-                ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
-                ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
-                        . 'from biblio_copy c, biblio b '
-                        . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
-                ->where('{{%member}}.id = :id', [":id" => $id])
-                ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
-                ->all();
+        if (Yii::$app->db->driverName === "mysql") {
+            $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
+                        "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+                    ])->from("{{%material_type_dm}} mat")
+                    ->join('join', '{{%member}}')
+                    ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
+                    ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
+                            . 'from biblio_copy c, biblio b '
+                            . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                    ->where('{{%member}}.id = :id', [":id" => $id])
+                    ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
+                    ->all();
+        } else if (Yii::$app->db->driverName === "pgsql") {
+            
+            $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
+                        "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+                    ])->from("{{%material_type_dm}} mat")
+                    ->join('cross join', '{{%member}}')
+                    ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id = {{%member}}.classification_id')
+                    ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
+                            . 'from {{%biblio_copy}} c, biblio b '
+                            . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                    ->where('{{%member}}.id = :id', [":id" => $id])
+                    ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
+                    ->orderBy('mat.id')
+                    ->all();
+        }
 
 
 // status: checkout
@@ -271,7 +288,7 @@ class MemberController extends Controller {
             return ($e->getMessage());
         }
     }
-    
+
     /**
      * Actualiza la información del miembro.
      * @param integer $id

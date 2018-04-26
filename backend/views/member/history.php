@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'History');
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'label' => Yii::t('app', 'Barcode Nmbr'),
+                        'label' => Yii::t('biblio', 'Barcode Nmbr'),
                         'value' => function($model) {
                             return common\models\BiblioCopy::findOne($model->copyid)->barcode_nmbr;
                         }

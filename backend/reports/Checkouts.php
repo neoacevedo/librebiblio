@@ -20,7 +20,7 @@ use Yii;
  * @property string $status_begin_dt
  * @property string $due_back_dt
  * @property double $pin
- * @property string $name
+ * @property string $member_name
  */
 class Checkouts extends \yii\db\ActiveRecord
 {
@@ -45,7 +45,7 @@ class Checkouts extends \yii\db\ActiveRecord
             [['status_begin_dt', 'due_back_dt'], 'safe'],
             [['pin'], 'number'],
             [['barcode_nmbr'], 'string', 'max' => 20],
-            [['name'], 'string', 'max' => 512],
+            [['member_name'], 'string', 'max' => 512],
         ];
     }
 
@@ -61,10 +61,10 @@ class Checkouts extends \yii\db\ActiveRecord
             'barcode_nmbr' => Yii::t('app/reports', 'Barcode Nmbr'),
             'title' => Yii::t('app/reports', 'Title'),
             'author' => Yii::t('app/reports', 'Author'),
-            'status_begin_dt' => Yii::t('app/reports', 'Status Begin Dt'),
-            'due_back_dt' => Yii::t('app/reports', 'Due Back Dt'),
+            'status_begin_dt' => Yii::t('app', 'Status Begin Dt'),
+            'due_back_dt' => Yii::t('app', 'Due Back Dt'),
             'pin' => Yii::t('app/reports', 'Pin'),
-            'name' => Yii::t('app/reports', 'Name'),
+            'member_name' => Yii::t('app', 'Member'),
         ];
     }
     

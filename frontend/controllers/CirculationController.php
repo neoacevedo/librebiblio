@@ -337,7 +337,19 @@ class CirculationController extends Controller {
                 }
             }
         }
-
+        
+        // enviar correo.
+        Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'memberCheckouts-html', 'text' => 'memberCheckouts-text'],
+                ['member' => $this->findModel($id), 'copies' => $copy_array]
+            )
+            ->setFrom([Yii::$app->params['adminEmail'] => \common\models\Settings::find()->one()->library_name])
+            ->setTo(Yii::$app->params['supportEmail'])
+            ->setSubject('New Member Checkout')
+            ->send();
+        
         foreach ($copy_array as $key => $value) {
             unset($_SESSION['cart'][$key]);
         }

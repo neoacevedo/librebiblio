@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'label' => Yii::t('app', 'Barcode Nmbr'),
+                    'label' => Yii::t('biblio', 'Barcode Nmbr'),
                     'attribute' => 'copy.barcode_nmbr',
                 /* 'value' => function($model) {
                   return $model->copy->barcode_nmbr;

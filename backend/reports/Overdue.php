@@ -59,7 +59,7 @@ class Overdue extends \yii\db\ActiveRecord
             'bibid' => Yii::t('app', 'Bibid'),
             'id' => Yii::t('app', 'ID'),
             'mbr_id' => Yii::t('app', 'Member ID'),
-            'barcode_nmbr' => Yii::t('app', 'Barcode Nmbr'),
+            'barcode_nmbr' => Yii::t('biblio', 'Barcode Nmbr'),
             'callno' => Yii::t('app/reports', 'Callno'),
             'title' => Yii::t('app', 'Title'),
             'author' => Yii::t('app', 'Author'),

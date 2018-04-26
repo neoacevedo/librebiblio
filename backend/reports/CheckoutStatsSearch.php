@@ -72,8 +72,6 @@ class CheckoutStatsSearch extends CheckoutStats
             'checkoutCount' => $this->checkoutCount,
         ]);
         
-        $query->groupBy(['created_at']);
-        
         return $dataProvider;
     }
 }
