@@ -63,7 +63,6 @@ class AdminController extends Controller {
     public function actionRemovePlaceholds() {
         $copies = \common\models\BiblioCopy::findAll(['status_cd' => 'hld']);
         $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
-        print_r($copies);
         foreach ($copies as $copy) {
             $hold = \common\models\BiblioHold::findOne(['copyid' => $copy->id]);
             $datetime1 = new DateTime($hold->hold_begin_dt);
@@ -81,7 +80,7 @@ class AdminController extends Controller {
                 $copy->status_cd = 'in';
                 $copy->status_begin_dt = date('Y-m-d H:i:s');
                 $copy->save();
-                $this->ansiFormat("Copia {$copy->barcode_nmbr} disponible para préstamo.\n");
+                echo $this->ansiFormat("Copia {$copy->barcode_nmbr} disponible para préstamo.\n");
             }
         }
     }
