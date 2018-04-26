@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\MemberClassify */
+/* @var $model common\models\MemberClassify */
 
 $this->title = Yii::t('app', 'Create Member Classify');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Member Classifies'), 'url' => ['index']];

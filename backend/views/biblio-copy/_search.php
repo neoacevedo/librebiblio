@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\BiblioCopySearch */
+/* @var $model common\models\BiblioCopySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

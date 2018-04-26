@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\MemberClassify */
+/* @var $model backend\models\MemberClassify */
 
 $this->title = $model->description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];

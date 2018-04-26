@@ -164,11 +164,21 @@ class AdminController extends Controller {
         return $this->redirect(['index']);
     }
 
+    /**
+     * Describe las configuraciones disponibles de la biblioteca.
+     * @return mixed
+     */
     public function actionSettings() {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('settings/index');
     }
 
+    /**
+     * Carga/guarda las configuraciones de la biblioteca.
+     * 
+     * Algunas configuraciones específicas de la plataforma se crean/guardan desde los diferentes archivos de configuración.
+     * @return mixed
+     */
     public function actionLibrarySettings() {
         $model = $this->findSettingsModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);

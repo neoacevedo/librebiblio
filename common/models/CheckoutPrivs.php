@@ -7,7 +7,7 @@
 namespace common\models;
 
 use Yii;
-use \app\models\MemberClassify;
+use \common\models\MemberClassify;
 use \backend\models\MaterialType;
 /**
  * This is the model class for table "{{%checkout_privs}}".

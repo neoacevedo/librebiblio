@@ -6,7 +6,7 @@ use kartik\sidenav\SideNav;
 //use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\BiblioCopySearch */
+/* @var $searchModel common\models\BiblioCopySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Settings');

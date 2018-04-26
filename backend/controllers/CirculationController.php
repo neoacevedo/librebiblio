@@ -161,7 +161,7 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Registra un préstamo o rserva de la copia bibliográfica y crea el historial para el miembro.
+     * Registra un préstamo o reserva de la copia bibliográfica y crea el historial para el miembro.
      * Los estados de la copia pueden ser:
      * <ul>
      * <li><i>crt</i> En el carrito</li>
@@ -493,12 +493,14 @@ class CirculationController extends Controller {
     }
 
     /**
-     * Cambia el estado de la copia bibliográfica.
+     * Pone el material bibliográfico en el carrito y Cambia el estado de la copia bibliográfica.
      * El estado de la copia puede ser: 
-     * <i>crt</i> En el carrito
-     * <i>hld</i> Rservado
+     * <ul>
+     *  <li><i>crt</i>: En el carrito</li>
+     *  <li><i>hld</i>: Rservado</li>
+     * </ul>
      * Este es el paso previo a devolverlo a la estantería, prestarlo o marcarlo con algún otro estado diferente 
-     * dependiendo de las coneiciones en que haya sido devuelto el material bibliográfico.
+     * dependiendo de las condiciones en que haya sido devuelto el material bibliográfico.
      * @param int $bibid
      * @param int $copyid
      * @param int $id
@@ -551,9 +553,8 @@ class CirculationController extends Controller {
     /**
      * Cambia el estado del material bibliográfico a disponible.
      * 
-     * Se evalúa si el miembro que devuelve el libro lo devuelve en una fecha <br />
-     * posterior a la establecida, genera la multa correspondiente y bloquea la <br />
-     * cuenta del usuario para nuevos préstamos externos.
+     * Se evalúa si el miembro que devuelve el libro lo devuelve en una fecha posterior a la establecida, 
+     * genera la multa correspondiente y bloquea la cuenta del usuario para nuevos préstamos externos.
      * @param int $bibid
      * @param int $copyid
      * @param int $id
