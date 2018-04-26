@@ -17,7 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Pin' => '',
+    'This PIN number has already registered.' => '',
     'This email address has already been taken.' => '',
     'This username has already been taken.' => '',
-    'This PIN number has already registered.' => 'Este PIN ya se encuentra registrado.',
 ];

@@ -1,12 +1,13 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-
 $cache = require(__DIR__ . '/cache.php');
 $db = require(__DIR__ . '/database-local.php');
+$fs = require(__DIR__ . '/storage-local.php');
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -51,12 +52,12 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
-                'library*' => [
+                'cataloging*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
                     'sourceLanguage' => 'en-US',
                     'fileMap' => [
-                        'library' => 'library.php',
+                        'cataloging' => 'cataloging.php',
                         'app/error' => 'error.php',
                     ],
                 ],
@@ -78,6 +79,29 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'library*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'library' => 'library.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+                'member*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'library' => 'member.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                ]
             ],
         ],
         'mailer' => [
@@ -93,6 +117,7 @@ return [
                 'encryption' => 'tls', // It is often used, check your provider or mail server specs
             ],
         ],
+        'storage' => $fs
     ],
     'name' => call_user_func(function() use($db) {
                 try {

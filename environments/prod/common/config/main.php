@@ -48,15 +48,6 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
-                'library*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/messages',
-                    'sourceLanguage' => 'en-US',
-                    'fileMap' => [
-                        'library' => 'library.php',
-                        'app/error' => 'error.php',
-                    ],
-                ],
                 'cataloging*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
@@ -84,6 +75,29 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'library*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'library' => 'library.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+                'member*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'library' => 'member.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'sourceLanguage' => 'en-US',
+                ]
             ],
         ],
         'pdf' => [

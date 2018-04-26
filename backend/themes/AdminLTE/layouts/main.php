@@ -112,17 +112,17 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                                     ?>
                                                 </ul>
                                             </li>
-                                            <li class="footer"><a href="#"><?= Yii::t('app', 'See all') ?></a></li>
+                                            <li class="footer"><a href="#">&nbsp;</a></li>
                                             <?php
                                         else:
                                             ?>
                                             <li>
                                                 <!-- data -->
                                                 <ul class="menu">
-                                                    <li><?= Yii::t('circulation', 'No new holds') ?></li>
+                                                    <li class="fa fa-circle-thin"><?= Yii::t('circulation', 'No new holds') ?></li>
                                                 </ul>
                                             </li>
-                                            <li class="footer">&nbsp;</li>
+                                            <li class="footer"><a href="#">&nbsp;</a></li>
                                         <?php
                                         endif;
                                         ?>

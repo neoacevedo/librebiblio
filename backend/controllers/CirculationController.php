@@ -37,11 +37,6 @@ class CirculationController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                              if (array_key_exists("admin", $roles)) {
-                              return true;
-                              }
-                              return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id); */
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
@@ -181,22 +176,25 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate(int $bibid, int $copyid, string $status, int $id) {
-        switch ($status) {
-            case "crt":
-                // una devolución
+        if($status === "crt") {
+            // una devolución
                 $this->shelving_cart($bibid, $copyid, $id);
                 return $this->redirect(['circulation/reception']);
+        }
+        switch ($status) {                
             case "hld":
                 // reserva
                 $this->hold($bibid, $copyid, $id);
-                $this->redirect(['member-view', 'id' => $id]);
+                break;
             case "out":
                 // préstamo
                 $this->checkout($bibid, $copyid, $id);
-                return $this->redirect(['member-view', 'id' => $id]);
+                break;
             default:
                 break;
         }
+        
+        $this->redirect(['member/view', 'id' => $id]);
     }
 
     /**
@@ -253,7 +251,7 @@ class CirculationController extends Controller {
         $biblioHold->delete();
         $biblioCopy->status_cd = "crt";
         $biblioCopy->save();
-        return $this->redirect(['member-view', 'id' => $mbr_id]);
+        return $this->redirect(['member/view', 'id' => $mbr_id]);
     }
 
     /**
@@ -306,7 +304,7 @@ class CirculationController extends Controller {
 
     /**
      * Pone en reserva un material bibliográfico.
-     * Valida si el material está en préstamo y si el material lo tiene otro miembro para proceder a la reserva.
+     * Valida si el material está en préstamo y si el material lo tiene otro miembro para proceder a la reserva.<br />
      * También verifica si al miembro al que se le vaa reservar el material tiene alguna deuda; si la tiene,
      * no se realiza la reserva.
      * @param int $bibid
@@ -317,7 +315,7 @@ class CirculationController extends Controller {
     protected function hold(int $bibid, int $copyid, int $id) {
         $biblioCopy = $this->findCopyModel($bibid, $copyid);
         // si no está en préstamo o no está reservado (la reserva se debería buscar en la tabla biblio_hold)
-        if ($biblioCopy->status_cd != "out" && $biblioCopy->status_cd != "hld") {
+        if ($biblioCopy->status_cd !== "out" && $biblioCopy->status_cd !== "hld") {
             // el material debe tener el estado "out" o "hld" para realizar una reserva
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return false;
@@ -338,7 +336,7 @@ class CirculationController extends Controller {
             $member = $this->findModel($id);
             if ($member->status == $member::STATUS_BLOCKED) {
                 Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
-                return $this->redirect(['member-view', 'id' => $id]);
+                return $this->redirect(['member/view', 'id' => $id]);
             }
             // Revisar si no tiene deuda. "+c" puede ser llamada de alguna constante o buscada de la tabla transaction_type_dm
             $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id])->sum('amount');
@@ -453,7 +451,7 @@ class CirculationController extends Controller {
         // verificar si el miembro ya alcanzó el límite de pŕestamos.
         if ($biblioCopy->hasReachedCheckoutLimit($id, Member::findOne($id)->classification_id)) {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
-            return $this->redirect(['member-view', 'id' => $id]);
+            return $this->redirect(['member/view', 'id' => $id]);
         }
         $biblioCopy->mbr_id = $id;
         $biblioCopy->status_cd = 'out';

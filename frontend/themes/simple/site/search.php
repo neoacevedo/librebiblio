@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'image_file',
                 'value' => function($model) {
-                    return Html::img("@web/images/covers/{$model->image_file}", ['alt' => $model->title,
+                    return Html::img($model->image_file, ['alt' => $model->title,
                                 'title' => $model->title,
                                 'class' => 'image-responsive center-block',
                                 'style' => 'width: 33.333333%']);
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'materialType',
                 'value' => function($model) {
-                    return Html::img("@web/images/{$model->materialType->image_file}", ['alt' => $model->materialType->description,
+                    return Html::img($model->materialType->image_file, ['alt' => $model->materialType->description,
                                 'title' => $model->materialType->description,
                                 'class' => 'image-responsive center-block',
                                 'style' => 'width: 33.333333%']);

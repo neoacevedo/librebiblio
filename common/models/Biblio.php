@@ -117,13 +117,14 @@ class Biblio extends \yii\db\ActiveRecord {
 
     /**
      * Sube el archivo de imagen.
+     * @param \yii\web\UploadedFile $imageFile
      * @return boolean
      */
-    public function upload() {
+    public function upload($imageFile) {
         if ($this->validate()) {
-            if (null !== $this->image_file) {
+            if (null !== $imageFile) {
                 #$this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
-                Yii::$app->storage->saveAs($this->image_file);
+                Yii::$app->storage->saveAs($imageFile);
             }
             return true;
         } else {

@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers\cataloging;
 
 use Yii;
@@ -122,15 +124,18 @@ class BiblioController extends Controller {
         $model = new Biblio();
         // este método es solo para crear los campos en el formulario
         $this->fillUsMarc();
-
+        // Uploaded file instance.
+        $imageFile = UploadedFile::getInstance($model, 'image_file');
         $modelBiblioFields[] = new \backend\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \backend\models\BiblioField();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->save() && $model->upload()) {
+            if ($model->upload($imageFile)) {
+                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            }
+            if ($model->save()) {
                 // file is uploaded successfully
                 $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
                 $materialType->default_flg = 'Y';
@@ -207,6 +212,8 @@ class BiblioController extends Controller {
     public function actionUpdate(int $id) {
         $model = $this->findModel($id);
         $current_image_file = $model->image_file;
+        // Uploaded file instance.
+        $imageFile = UploadedFile::getInstance($model, 'image_file');
 
         $this->fillUsMarc();
 
@@ -219,10 +226,11 @@ class BiblioController extends Controller {
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $image_file = UploadedFile::getInstance($model, 'image_file');
-            if (null !== $image_file) {
-                $model->image_file = $image_file;
-                if ($model->save() && $model->upload()) {
+
+            if (null !== $imageFile) {
+                $model->upload($imageFile);
+                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+                if ($model->save()) {
                     $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
                     $materialType->default_flg = 'Y';
                     $materialType->save();

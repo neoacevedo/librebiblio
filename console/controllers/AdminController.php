@@ -63,6 +63,7 @@ class AdminController extends Controller {
     public function actionRemovePlaceholds() {
         $copies = \common\models\BiblioCopy::findAll(['status_cd' => 'hld']);
         $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
+        print_r($copies);
         foreach ($copies as $copy) {
             $hold = \common\models\BiblioHold::findOne(['copyid' => $copy->id]);
             $datetime1 = new DateTime($hold->hold_begin_dt);

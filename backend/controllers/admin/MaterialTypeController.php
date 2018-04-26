@@ -107,8 +107,13 @@ class MaterialTypeController extends Controller {
      */
     public function actionCreate() {
         $model = new MaterialType();
+        // Uploaded file instance.
+        $imageFile = UploadedFile::getInstance($model, 'image_file');
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->upload($imageFile)) {
+                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            }
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->save() && $model->upload()) {
                 // file is uploaded successfully
@@ -139,10 +144,14 @@ class MaterialTypeController extends Controller {
      */
     public function actionUpdate(int $id) {
         $model = $this->findModel($id);
+        // Uploaded file instance.
+        $imageFile = UploadedFile::getInstance($model, 'image_file');
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->save() && $model->upload()) {
+            if ($model->upload($imageFile)) {
+                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            }
+            if ($model->save()) {
                 // file is uploaded successfully
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {

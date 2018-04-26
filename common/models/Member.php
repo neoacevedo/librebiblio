@@ -67,13 +67,13 @@ class Member extends ActiveRecord implements IdentityInterface {
             ['last_name', 'string', 'min' => 4, 'max' => 255],
             ['pin', 'number'],
             ['pin', 'required'],
-            ['pin', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('app/member', 'This PIN number has already registered.')],
+            ['pin', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This PIN number has already registered.')],
             ['phone', 'trim'],
             ['phone', 'required'],
             ['phone', 'string', 'min' => 4, 'max' => 32],
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('app/member', 'This username has already been taken.')],
+            ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This username has already been taken.')],
             ['username', 'string', 'min' => 4, 'max' => 255],
             ['address', 'trim'],
             ['address', 'required'],
@@ -82,11 +82,28 @@ class Member extends ActiveRecord implements IdentityInterface {
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('app/member', 'This email address has already been taken.')],
+            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This email address has already been taken.')],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
             ['classification_id', 'required'],
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'first_name' => Yii::t('app', 'First Name'),
+            'last_name' => Yii::t('app', 'Last Name'),
+            'pin' => Yii::t('member', 'Pin'),
+            'phone' => Yii::t('app', 'Phone'),
+            'email' => Yii::t('app', 'Email'),
+            'status' => Yii::t('app', 'Status')
         ];
     }
 
