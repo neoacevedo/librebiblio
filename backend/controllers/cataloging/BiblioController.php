@@ -22,6 +22,10 @@ use yii\web\UploadedFile;
  */
 class BiblioController extends Controller {
 
+    /**
+     *
+     * @var \common\models\UsmarcSubfield 
+     */
     private $usmarc = null;
 
     /**
@@ -217,7 +221,7 @@ class BiblioController extends Controller {
 
         $this->fillUsMarc();
 
-        $modelBiblioFields[] = new \backend\models\BiblioField();
+        $modelBiblioFields[] = new \common\models\BiblioField();
 
         $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
         if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
@@ -264,7 +268,7 @@ class BiblioController extends Controller {
 
             // crear la lista con todos los modelos bibliofield
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $modelBiblioFields[] = new \backend\models\BiblioField();
+                $modelBiblioFields[] = new \common\models\BiblioField();
             }
             #$posts = Yii::$app->request->post('BiblioField', []);
 
@@ -282,11 +286,11 @@ class BiblioController extends Controller {
         } else {
             //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $biblioField = \backend\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
+                $biblioField = \common\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
                 if ($biblioField !== null) {
                     $modelBiblioFields[] = $biblioField;
                 } else {
-                    $modelBiblioFields[] = new \backend\models\BiblioField();
+                    $modelBiblioFields[] = new \common\models\BiblioField();
                 }
             }
             return $this->render('update', [
@@ -308,27 +312,15 @@ class BiblioController extends Controller {
 
         return $this->redirect(['index']);
     }
-    
-// USMarc
-    
-    public function actionCreateUsmarc(int $id) {
-        
-    }
-    
-    public function actionUsmarcList() {
-        
-    }
-    
-    public function actionUsmarcBiblio(int $id) {
-        $model = $this->findModel($id);
-        return $this->render("usmarc-biblio", [
-            'model' => $model
-        ]);
-    }
 
+    /**
+     * Llena el atributo @usmarc del controlador.
+     * 
+     * Estos son los datos adicionales "básicos" de la bibliografía.
+     */
     private function fillUsMarc() {
         $this->usmarc = null;
-        $this->usmarc = \backend\models\UsmarcSubfield::find()
+        $this->usmarc = \common\models\UsmarcSubfield::find()
                         ->where(["tag" => 100, "subfield_cd" => "a"])
                         ->orWhere(["tag" => 650, "subfield_cd" => "a"])
                         ->orWhere(["tag" => 250, "subfield_cd" => "a"])

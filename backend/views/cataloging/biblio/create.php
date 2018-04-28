@@ -12,13 +12,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="biblio-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?=
-    $this->render('_form', [
-        'model' => $model,
-        'modelBiblioFields' => $modelBiblioFields,
-        'usmarc' => $usmarc
-    ])
-    ?>
-
+    <div class="box">
+        <div class="box-body">
+            <?=
+            $this->render('_form', [
+                'model' => $model,
+                'modelBiblioFields' => $modelBiblioFields,
+                'usmarc' => $usmarc
+            ])
+            ?>
+        </div>
+    </div>
 </div>

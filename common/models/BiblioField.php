@@ -54,10 +54,10 @@ class BiblioField extends \yii\db\ActiveRecord
             'bibid' => Yii::t('app', 'Bibid'),
             'fieldid' => Yii::t('app', 'Fieldid'),
             'tag' => Yii::t('app', 'Tag'),
-            'ind1_cd' => Yii::t('app', 'Ind1 Cd'),
-            'ind2_cd' => Yii::t('app', 'Ind2 Cd'),
-            'subfield_cd' => Yii::t('app', 'Subfield Cd'),
-            'field_data' => Yii::t('app', 'Field Data'),
+            'ind1_cd' => Yii::t('cataloging', 'Ind1 Cd'),
+            'ind2_cd' => Yii::t('cataloging', 'Ind2 Cd'),
+            'subfield_cd' => Yii::t('cataloging', 'Subfield Cd'),
+            'field_data' => Yii::t('cataloging', 'Field Data'),
         ];
     }
 

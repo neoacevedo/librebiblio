@@ -74,8 +74,8 @@ $this->registerJs($js);
                                 'options' => ['id' => 'copy_delete']
                             ],
                             ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
-                            ['label' => Yii::t('app', 'View'), 'url' => ['usmarc-biblio', 'id' => $model->id]],
-                            ['label' => Yii::t('app', 'New'), 'url' => ['create-usmarc', 'id' => $model->id]],
+                            ['label' => Yii::t('app', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
+                            ['label' => Yii::t('app', 'New'), 'url' => ['cataloging/biblio-field/create', 'bibid' => $model->id]],
                         ]
                     ]);
                     ?>
