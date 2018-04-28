@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers;
 
 use Yii;
@@ -176,12 +178,12 @@ class CirculationController extends Controller {
      * @return mixed
      */
     public function actionCreate(int $bibid, int $copyid, string $status, int $id) {
-        if($status === "crt") {
+        if ($status === "crt") {
             // una devolución
-                $this->shelving_cart($bibid, $copyid, $id);
-                return $this->redirect(['circulation/reception']);
+            $this->shelving_cart($bibid, $copyid, $id);
+            return $this->redirect(['circulation/reception']);
         }
-        switch ($status) {                
+        switch ($status) {
             case "hld":
                 // reserva
                 $this->hold($bibid, $copyid, $id);
@@ -193,7 +195,7 @@ class CirculationController extends Controller {
             default:
                 break;
         }
-        
+
         $this->redirect(['member/view', 'id' => $id]);
     }
 
@@ -249,8 +251,11 @@ class CirculationController extends Controller {
         $biblioHold = \common\models\BiblioHold::findOne($id);
         $biblioCopy = $this->findCopyModel($biblioHold->bibid, $biblioHold->copyid);
         $biblioHold->delete();
-        $biblioCopy->status_cd = "crt";
-        $biblioCopy->save();
+        if ($biblioCopy->status_cd === "hld") {
+            $biblioCopy->status_cd = "in";
+            $biblioCopy->status_begin_dt = date('Y-m-d H:i:s');
+            $biblioCopy->save();
+        }
         return $this->redirect(['member/view', 'id' => $mbr_id]);
     }
 
@@ -512,8 +517,7 @@ class CirculationController extends Controller {
         // buscar si ya hay una solicitud de reserva y cambiar el estado de la copia a "en reserva" si hay una reserva.
         if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid])) !== null) {
             $biblioCopy->status_cd = 'hld';
-            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.',
-                            ['barcode' => $biblioCopy->barcode_nmbr]));
+            Yii::$app->getSession()->setFlash('info', Yii::t('circulation', 'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.', ['barcode' => $biblioCopy->barcode_nmbr]));
 //            return false;
         } else {
             $biblioCopy->status_cd = 'crt';

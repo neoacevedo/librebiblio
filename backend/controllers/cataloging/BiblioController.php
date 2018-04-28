@@ -308,6 +308,23 @@ class BiblioController extends Controller {
 
         return $this->redirect(['index']);
     }
+    
+// USMarc
+    
+    public function actionCreateUsmarc(int $id) {
+        
+    }
+    
+    public function actionUsmarcList() {
+        
+    }
+    
+    public function actionUsmarcBiblio(int $id) {
+        $model = $this->findModel($id);
+        return $this->render("usmarc-biblio", [
+            'model' => $model
+        ]);
+    }
 
     private function fillUsMarc() {
         $this->usmarc = null;

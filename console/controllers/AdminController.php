@@ -8,6 +8,7 @@
 
 namespace console\controllers;
 
+use Yii;
 use yii\helpers\Console;
 use yii\console\Controller;
 use console\models\PasswordResetRequest;
@@ -62,26 +63,27 @@ class AdminController extends Controller {
      * eliminar las reservas que coincidan con ese límite.
      */
     public function actionRemovePlaceholds() {
-        $copies = \common\models\BiblioCopy::findAll(['status_cd' => 'hld']);
+        $holds = \common\models\BiblioHold::find()->all();
         $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
-        foreach ($copies as $copy) {
-            $hold = \common\models\BiblioHold::findOne(['copyid' => $copy->id]);
+        if (count($holds) === 0) {
+            echo $this->ansiFormat("No hay copias reservadas.\n");
+        }
+        foreach ($holds as $hold) {
+            $copy = \common\models\BiblioCopy::findOne($hold->copyid);
             $datetime1 = new DateTime($hold->hold_begin_dt);
             $datetime2 = new DateTime('now');
             $interval = $datetime1->diff($datetime2);
             $diff = (int) $interval->format('%r%a');
             if ($holdMaxDays > 0 && $diff > $holdMaxDays) {
-                $tooOld = true;
-            } else {
-                $tooOld = false;
-            }
-
-            if ($tooOld) {
                 $hold->delete();
-                $copy->status_cd = 'in';
-                $copy->status_begin_dt = date('Y-m-d H:i:s');
-                $copy->save();
+                if ($copy->status_cd === 'hld') {
+                    $copy->status_cd = 'in';
+                    $copy->status_begin_dt = date('Y-m-d H:i:s');
+                    $copy->save();
+                }
                 echo $this->ansiFormat("Copia {$copy->barcode_nmbr} disponible para préstamo.\n");
+            } else {
+                echo $this->ansiFormat("Las reservas aún no alcanzan el tiempo de expiración.\n");
             }
         }
     }

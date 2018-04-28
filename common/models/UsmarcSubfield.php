@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 
@@ -45,10 +45,10 @@ class UsmarcSubfield extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'tag' => Yii::t('app', 'Tag'),
-            'subfield_cd' => Yii::t('app', 'Subfield Cd'),
-            'description' => Yii::t('app', 'Description'),
-            'repeatable_flg' => Yii::t('app', 'Repeatable Flg'),
+            'tag' => Yii::t('usmarc', 'Tag'),
+            'subfield_cd' => Yii::t('usmarc', 'Subfield Cd'),
+            'description' => Yii::t('usmarc', 'Description'),
+            'repeatable_flg' => Yii::t('usmarc', 'Repeatable Flg'),
         ];
     }
 }

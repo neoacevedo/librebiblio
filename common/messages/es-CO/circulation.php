@@ -51,7 +51,7 @@ return [
     'Place holds' => 'Reservas',
     'Print QR' => 'Imprimir QR',
     'Profile' => 'Perfil',
-    'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => 'La bibliografía con el número de código de barras {barcode} que está intentando registrar tiene una o más solicitudes de bloqueo. <b> Archive esta bibliografía con los elementos que tenga en su lugar en lugar de colocarlos en su carrito de estanterías. </ b> El código de estado de esta bibliografía se ha configurado para que se mantenga.',
+    'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => 'La bibliografía con número de código de barras {barcode} que estás intentando conseguir tiene una o más peticiones de reserva. <strong>Por favor, retorna el item en las estanterías</strong>. El código de estado para esta bibliografía se ha establecido en "reservado".',
     'The item is already on cart' => 'El artículo ya se encuentra en el carrito.',
     'The requested page does not exist.' => 'La página solicitada no existe.',
     'This item is not checked out or on hold.' => 'Este ítem no se encuentra prestado o reservado.',

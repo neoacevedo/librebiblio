@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -46,77 +47,93 @@ foreach ($model->biblioFields as $biblioField) {
     ];
     array_push($usmarc, $field);
 }
+
+// emulación de data-confirm en elemento "a"
+$js = "\$('#copy_delete a').on('click', function(e) {
+        a = confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "');
+        return a;
+    });";
+$this->registerJs($js);
 ?>
 <div class="biblio-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Add Copy'), ['biblio-copy/create', 'bibid' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?=
-        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ])
-        ?>
-    </p>
     <div class="box">
         <div class="box-body">
-            <?=
-            DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'created_at',
-                    'updated_at',
-                    [
-                        'attribute' => 'user',
-                        'value' => $model->user->username,
-                        'label' => \Yii::t('app', 'Updated by')
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <?=
+                    SideNav::widget([
+                        'type' => SideNav::TYPE_PRIMARY,
+                        'heading' => Yii::t('app', 'Options'),
+                        'items' => [
+                            ['label' => Yii::t('app', 'Add Copy'), 'url' => ['biblio-copy/create', 'bibid' => $model->id]],
+                            ['label' => Yii::t('app', 'Update'), 'url' => ['update', 'id' => $model->id]],
+                            ['label' => Yii::t('app', 'Delete'), 'url' => ['delete', 'id' => $model->id],
+                                'options' => ['id' => 'copy_delete']
+                            ],
+                            ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
+                            ['label' => Yii::t('app', 'View'), 'url' => ['usmarc-biblio', 'id' => $model->id]],
+                            ['label' => Yii::t('app', 'New'), 'url' => ['create-usmarc', 'id' => $model->id]],
+                        ]
+                    ]);
+                    ?>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'created_at',
+                        'updated_at',
+                        [
+                            'attribute' => 'user',
+                            'value' => $model->user->username,
+                            'label' => \Yii::t('app', 'Updated by')
+                        ],
+                        [
+                            'attribute' => 'materialType',
+                            'value' => $model->materialType->description,
+                            'label' => 'Material'
+                        ],
+                        [
+                            'attribute' => 'collection',
+                            'value' => $model->collection->description,
+                            'label' => Yii::t('app', 'Collection')
+                        ],
+                        [
+                            'attribute' => 'call_nmbr1',
+                            'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
+                            'label' => Yii::t('biblio', 'Call Nmbr1')
+                        ],
+                        'title:ntext',
+                        'title_remainder:ntext',
+                        [
+                            'attribute' => 'image_file',
+                            'value' => function($model) {
+                                return Html::img($model->image_file, ['alt' => $model->title,
+                                            'title' => $model->title,
+                                            'class' => 'image-thumbnail center-block',
+                                            'style' => 'width: 140px']);
+                            },
+                            'format' => 'raw'
+                        ],
+                        'responsibility_stmt:ntext',
+                        'author:ntext',
+                        [
+                            'attribute' => 'opac_flg',
+                            'value' => function($model) {
+                                return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
+                            },
+                        ]
                     ],
-                    [
-                        'attribute' => 'materialType',
-                        'value' => $model->materialType->description,
-                        'label' => 'Material'
-                    ],
-                    [
-                        'attribute' => 'collection',
-                        'value' => $model->collection->description,
-                        'label' => Yii::t('app', 'Collection')
-                    ],
-                    [
-                        'attribute' => 'call_nmbr1',
-                        'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
-                        'label' => Yii::t('biblio', 'Call Nmbr1')
-                    ],
-                    'title:ntext',
-                    'title_remainder:ntext',
-                    [
-                        'attribute' => 'image_file',
-                        'value' => function($model) {
-                            return Html::img($model->image_file, ['alt' => $model->title,
-                                        'title' => $model->title,
-                                        'class' => 'image-thumbnail center-block',
-                                        'style' => 'width: 140px']);
-                        },
-                        'format' => 'raw'
-                    ],
-                    'responsibility_stmt:ntext',
-                    'author:ntext',
-                    [
-                        'attribute' => 'opac_flg',
-                        'value' => function($model) {
-                            return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
-                        },
-                    ]
-                ],
-                'options' => ['class' => 'table table-striped table-bordered table-responsive']
-            ])
-            ?>
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ])
+                ?>
+            </div>
         </div>
     </div>
     <div class="box">
