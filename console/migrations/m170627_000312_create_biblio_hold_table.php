@@ -28,7 +28,7 @@ class m170627_000312_create_biblio_hold_table extends Migration {
         // alter id to autoincrement
         if ($this->db->driverName === 'mysql') {
             $this->alterColumn('{{%biblio_hold}}', 'id', $this->integer() . ' NOT NULL AUTO_INCREMENT');
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $this->db->createCommand("CREATE SEQUENCE IF NOT EXISTS biblio_hold_id_seq;")->execute();
             $this->alterColumn('{{%biblio_hold}}', 'id', "SET DEFAULT nextval('biblio_hold_id_seq')");
         }

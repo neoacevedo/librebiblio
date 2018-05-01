@@ -59,6 +59,7 @@ class BiblioHold extends \yii\db\ActiveRecord
     }
     
     /**
+     * Obtiene la bibliografía de la copia bibliográfica 
      * @return \yii\db\ActiveQuery
      */
     public function getBiblio()
@@ -67,6 +68,7 @@ class BiblioHold extends \yii\db\ActiveRecord
     }
     
     /**
+     * Obtiene la copia bibliográfica que está reservada.
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioCopy()
@@ -75,6 +77,7 @@ class BiblioHold extends \yii\db\ActiveRecord
     }
 
     /**
+     * Obtiene el miembro de la biblioteca que reservó la copia.
      * @return \yii\db\ActiveQuery
      */
     public function getMbr()

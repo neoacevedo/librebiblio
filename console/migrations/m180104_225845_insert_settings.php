@@ -17,7 +17,7 @@ class m180104_225845_insert_settings extends Migration
             'library_image_url' => 'openbiblio2.png',
             'use_image_flg' => 1,
             'library_hours' => 'L-V 08:00 - 16:30',
-            'library_phone' => '+571 4157818',
+            'library_phone' => '+571 1234567',
             'purge_history_after_months' => 6,
             'block_checkouts_when_fines_due' => 1,
             'hold_max_days' => 14,

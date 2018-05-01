@@ -31,7 +31,7 @@ class m170627_005605_create_biblio_copy_table extends Migration {
         // alter id to autoincrement
         if ($this->db->driverName === 'mysql') {
             $this->alterColumn('{{%biblio_copy}}', 'id', $this->integer() . ' NOT NULL AUTO_INCREMENT');
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $this->db->createCommand("CREATE SEQUENCE IF NOT EXISTS biblio_copy_id_seq;")->execute();
             $this->alterColumn('{{%biblio_copy}}', 'id', "SET DEFAULT nextval('biblio_copy_id_seq')");
         }

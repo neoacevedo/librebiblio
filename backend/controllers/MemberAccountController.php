@@ -16,7 +16,8 @@ use yii\filters\VerbFilter;
 /**
  * MemberAccountController implements the CRUD actions for MemberAccount model.
  */
-class MemberAccountController extends Controller {
+class MemberAccountController extends Controller 
+{
     
 
     /**

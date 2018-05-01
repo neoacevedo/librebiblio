@@ -128,7 +128,7 @@ foreach ($model->biblioFields as $biblioField) {
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'placehold') {
                         return \yii\helpers\Url::to(["circulation/$action", "copyid" => $model->id, "bibid" => $model->bibid]);
-                    } else if ($action === "checkout") {
+                    } elseif ($action === "checkout") {
                         return \yii\helpers\Url::to(["circulation/add-to-cart", "copyid" => $model->id, "bibid" => $model->bibid, 'status' => 'out']);
                     }
                 }],

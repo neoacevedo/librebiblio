@@ -18,7 +18,8 @@ use yii\web\UploadedFile;
 /**
  * MaterialTypeController implements the CRUD actions for MaterialType model.
  */
-class MaterialTypeController extends Controller {
+class MaterialTypeController extends Controller 
+{
 
     /**
      * @inheritdoc

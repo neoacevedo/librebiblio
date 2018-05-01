@@ -20,7 +20,7 @@ class m180216_232457_create_view_checkoutStats extends Migration {
                     . "AND c.id = h.copyid "
                     . "AND h.status_cd = 'out' "
                     . "GROUP BY h.created_at;";
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $sql = "CREATE OR REPLACE VIEW {{%checkoutStats}} AS "
                     . "SELECT c.id, h.created_at, "
                     . "(SELECT COUNT(h.created_at) FROM {{%biblio_status_hist}} h WHERE h.copyid = c.id) checkoutCount "

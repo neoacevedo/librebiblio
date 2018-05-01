@@ -20,7 +20,8 @@ use yii\web\UploadedFile;
 /**
  * BiblioController implements the CRUD actions for Biblio model.
  */
-class BiblioController extends Controller {
+class BiblioController extends Controller 
+{
 
     /**
      *

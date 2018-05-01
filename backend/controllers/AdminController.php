@@ -17,7 +17,8 @@ use yii\filters\AccessControl;
 /**
  * AdminController implements the CRUD actions for User model.
  */
-class AdminController extends Controller {
+class AdminController extends Controller 
+{
 
     /**
      * @inheritdoc

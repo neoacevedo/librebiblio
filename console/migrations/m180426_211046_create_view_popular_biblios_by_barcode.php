@@ -21,7 +21,7 @@ if ($this->db->driverName === 'mysql') {
                     . "LEFT JOIN {{%biblio}} b ON h.bibid = b.id "
                     . "WHERE h.status_cd = 'out' "
                     . "GROUP BY b.id, c.barcode_nmbr, b.title, b.author;";
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $sql = "CREATE OR REPLACE VIEW {{%popular_biblios_by_barcode}} AS "
                     . "SELECT b.id, c.barcode_nmbr, b.title, b.author, "
                     . "(select count(h.created_at) from {{%biblio_status_hist}} h where h.bibid = b.id) \"checkoutCount\" "

@@ -19,7 +19,8 @@ use backend\reports;
 /**
  * Site controller
  */
-class SiteController extends Controller {
+class SiteController extends Controller 
+{
 
     public $bodyClass;
 
@@ -102,7 +103,7 @@ class SiteController extends Controller {
                     ->groupBy(['checkoutsPerDay'])
                     ->limit(5)
                     ->all();
-        } else if (Yii::$app->db->driverName === "pgsql") {
+        } elseif (Yii::$app->db->driverName === "pgsql") {
             $checkout_stats = (new \yii\db\Query())
                     ->select(['to_char(created_at, \'YYYY-MM_DD\') as "checkoutsPerDay"', 'count(*) as "checkoutCount"'])
                     ->from("{{%biblio_status_hist}}")

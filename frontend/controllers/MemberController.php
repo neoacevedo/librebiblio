@@ -18,7 +18,8 @@ use yii\filters\AccessControl;
 /**
  * MemberController implementa las operaciones CRUD para el modelo Member
  */
-class MemberController extends Controller {
+class MemberController extends Controller 
+{
 
     /**
      * @inheritdoc

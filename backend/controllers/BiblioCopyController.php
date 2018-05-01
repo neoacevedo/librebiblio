@@ -17,7 +17,8 @@ use yii\filters\VerbFilter;
 /**
  * BiblioCopyController implements the CRUD actions for BiblioCopy model.
  */
-class BiblioCopyController extends Controller {
+class BiblioCopyController extends Controller 
+{
 
     /**
      * @inheritdoc

@@ -22,7 +22,8 @@ use yii\filters\VerbFilter;
  * @author John Martin <john.itvn@gmail.com>
  * @since 1.0.0
  */
-class AssignmentController extends Controller {
+class AssignmentController extends Controller 
+{
     
     /**
      * @inheritdoc

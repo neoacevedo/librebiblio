@@ -21,7 +21,7 @@ class m180216_185043_create_view_checkouts extends Migration {
                     . "LEFT JOIN {{%biblio_copy}} c ON b.id = c.bibid "
                     . "LEFT JOIN {{%member}} m ON c.mbr_id = m.id "
                     . "WHERE c.status_cd = 'out';";
-        } else if ($this->db->driverName === "pgsql") {
+        } elseif ($this->db->driverName === "pgsql") {
             $sql = "CREATE OR REPLACE VIEW {{%checkouts}} AS "
                     . "SELECT c.bibid, c.id , m.id as mbr_id, c.barcode_nmbr, "
                     . "b.title, b.author, c.status_begin_dt, "

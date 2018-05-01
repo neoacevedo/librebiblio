@@ -62,6 +62,7 @@ class BiblioField extends \yii\db\ActiveRecord
     }
 
     /**
+     * Devuelve la bibliografía a la que pertenece el campo.
      * @return \yii\db\ActiveQuery
      */
     public function getBib()

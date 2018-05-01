@@ -15,7 +15,8 @@ use yii\filters\AccessControl;
 /**
  * ReportController implements the CRUD actions for Acquisitions model.
  */
-class ReportController extends Controller {
+class ReportController extends Controller 
+{
 
     /**
      * @inheritdoc

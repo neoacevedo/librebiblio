@@ -22,7 +22,7 @@ class m170703_230848_create_member_account_table extends Migration {
                 'description' => $this->string(128),
                 'PRIMARY KEY(id, mbr_id)',
             ]);
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $this->createTable('{{%member_account}}', [
                 'id' => "SERIAL",
                 'mbr_id' => $this->integer()->notNull(),

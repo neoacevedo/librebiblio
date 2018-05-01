@@ -23,7 +23,7 @@ class m171229_193919_create_view_overdue extends Migration {
                     . "LEFT JOIN {{%biblio_copy}} c ON b.id = c.bibid "
                     . "LEFT JOIN {{%member}} m ON c.mbr_id = m.id "
                     . "WHERE c.status_cd = 'out';";
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $sql = "CREATE OR REPLACE VIEW {{%overdue}} AS "
                     . "SELECT c.bibid, c.id, m.id as mbr_id, c.barcode_nmbr, "
                     . "concat_ws(' ', b.call_nmbr1, b.call_nmbr2, b.call_nmbr3) as callno, "

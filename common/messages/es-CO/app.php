@@ -61,7 +61,7 @@ return [
     'Bibliographies Currently On Hold' => 'Bibliografías actualmente en espera',
     'Bibliography Copy Information' => 'Información de la copia bibliográfica',
     'Biblios' => 'Catalogación',
-    'Block Checkouts When Fines Due' => 'Bloquear pagos cuando las multas venzan',
+    'Block Checkouts When Fines Due' => 'Bloquear préstamos cuando haya pendiente una multa',
     'Blocked' => 'Bloqueado',
     'Cancel' => 'Cancelar',
     'Cart' => 'Carrito',

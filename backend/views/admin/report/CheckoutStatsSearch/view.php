@@ -40,7 +40,7 @@ $fullExportMenu = ExportMenu::widget([
                     'value' => function($model) {
                         if (Yii::$app->request->queryParams['timespan'] == 'w') {
                             return strftime("%x %V", strtotime($model->created_at));
-                        } else if (Yii::$app->request->queryParams['timespan'] == 'w') {
+                        } elseif (Yii::$app->request->queryParams['timespan'] == 'w') {
                             return strftime("%Y %m", strtotime($model->created_at));
                         }
                     }

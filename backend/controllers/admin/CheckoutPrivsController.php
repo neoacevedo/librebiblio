@@ -17,7 +17,8 @@ use yii\filters\AccessControl;
 /**
  * CheckoutPrivsController implements the CRUD actions for CheckoutPrivs model.
  */
-class CheckoutPrivsController extends Controller {
+class CheckoutPrivsController extends Controller 
+{
 
     /**
      * @inheritdoc

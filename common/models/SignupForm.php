@@ -100,7 +100,11 @@ class SignupForm extends Model {
         return $randomString;
     }
     
-    
+    /**
+     * Envía un correo electrónico con la información para crear la contraseña.
+     * @param int $id
+     * @return boolean
+     */
     public function sendEmail(int $id) {
         $user = Member::findOne($id);
 

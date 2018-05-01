@@ -23,7 +23,7 @@ $fullExportMenu = ExportMenu::widget([
                     'value' => function($model) {
                         if (Yii::$app->request->queryParams['timespan'] == 'w') {
                             return strftime("%x %V", strtotime($model->created_at));
-                        } else if (Yii::$app->request->queryParams['timespan'] == 'w') {
+                        } elseif (Yii::$app->request->queryParams['timespan'] == 'w') {
                             return strftime("%Y %m", strtotime($model->created_at));
                         }
                     }
@@ -55,9 +55,9 @@ $fullExportMenu = ExportMenu::widget([
                     'value' => function($model) {
                         if (Yii::$app->request->queryParams['timespan'] === 'w') {
                             return strftime("%G %V", strtotime($model->created_at));
-                        } else if (Yii::$app->request->queryParams['timespan'] === 'm') {
+                        } elseif (Yii::$app->request->queryParams['timespan'] === 'm') {
                             return strftime("%Y %m", strtotime($model->created_at));
-                        } else if (Yii::$app->request->queryParams['timespan'] === 'q') {
+                        } elseif (Yii::$app->request->queryParams['timespan'] === 'q') {
                             return date('Y', strtotime($model->created_at)) . " " . ceil(date('n', strtotime($model->created_at)) / 3);
                         }
                     }

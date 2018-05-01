@@ -59,6 +59,7 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
     }
 
     /**
+     * Obtiene el tipo de miembro (su clasificación en la biblioteca)
      * @return \yii\db\ActiveQuery
      */
     public function getMemberClassify()
@@ -67,6 +68,7 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
     }
 
     /**
+     * Obtiene el tipo de material 
      * @return \yii\db\ActiveQuery
      */
     public function getMaterialType()

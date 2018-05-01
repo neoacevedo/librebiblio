@@ -30,7 +30,7 @@ class PopularBiblios extends \yii\db\ActiveRecord {
     public static function tableName() {
         if (Yii::$app->request->queryParams['groupBy'] === 'biblio') {
             return '{{%popular_biblios_by_id}}';
-        } else if (Yii::$app->request->queryParams['groupBy'] === 'copy') {
+        } elseif (Yii::$app->request->queryParams['groupBy'] === 'copy') {
             return '{{%popular_biblios_by_barcode}}';
         }
     }

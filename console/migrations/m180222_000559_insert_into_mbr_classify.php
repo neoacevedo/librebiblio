@@ -19,7 +19,7 @@ class m180222_000559_insert_into_mbr_classify extends Migration {
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();
-        } else if ($this->db->driverName === "pgsql") {
+        } elseif ($this->db->driverName === "pgsql") {
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
                 $this->db->createCommand($sql)->execute();

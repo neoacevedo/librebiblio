@@ -17,7 +17,8 @@ use yii\filters\AccessControl;
 /**
  * MemberClassifyController implements the CRUD actions for MemberClassify model.
  */
-class MemberClassifyController extends Controller {
+class MemberClassifyController extends Controller 
+{
 
     /**
      * @inheritdoc

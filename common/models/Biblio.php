@@ -98,7 +98,7 @@ class Biblio extends \yii\db\ActiveRecord {
     }
 
     /**
-     * 
+     * Obtiene el tipo de material de la bibliografía
      * @return \yii\db\ActiveQuery
      */
     public function getMaterialType() {
@@ -106,13 +106,17 @@ class Biblio extends \yii\db\ActiveRecord {
     }
 
     /**
-     * 
+     * Obtiene la colección de la bibliografía
      * @return \yii\db\ActiveQuery
      */
     public function getCollection() {
         return $this->hasOne(\backend\models\Collection::className(), ['id' => 'collection_cd']);
     }
 
+    /**
+     * Obtiene los campos bibliográficos 
+     * @return \yii\db\ActiveQuery
+     */
     public function getBiblioFields() {
         return $this->hasMany(BiblioField::className(), ['bibid' => 'id']);
     }

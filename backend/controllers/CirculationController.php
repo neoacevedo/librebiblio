@@ -20,7 +20,8 @@ use yii\filters\AccessControl;
 /**
  * CirculationController implementa las acciones CRUD para el préstamo o reserva de materiales bibliográficos.
  */
-class CirculationController extends Controller {
+class CirculationController extends Controller 
+{
 
     /**
      * @inheritdoc

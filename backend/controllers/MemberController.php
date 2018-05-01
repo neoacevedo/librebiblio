@@ -24,7 +24,8 @@ use yii\filters\AccessControl;
  * MemberController implementa las operaciones CRUD para el modelo Member
  *
  */
-class MemberController extends Controller {
+class MemberController extends Controller 
+{
 
     /**
      * @inheritdoc
@@ -203,7 +204,7 @@ class MemberController extends Controller {
                     ->where('{{%member}}.id = :id', [":id" => $id])
                     ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                     ->all();
-        } else if (Yii::$app->db->driverName === "pgsql") {
+        } elseif (Yii::$app->db->driverName === "pgsql") {
             
             $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
                         "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"

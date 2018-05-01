@@ -21,7 +21,8 @@ use common\models\BiblioSearch;
 /**
  * Site controller
  */
-class SiteController extends Controller {
+class SiteController extends Controller 
+{
 
     /**
      * @inheritdoc

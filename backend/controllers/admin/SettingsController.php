@@ -13,9 +13,22 @@ use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 
 /**
- * Site controller
+ * SettingsController implementa las configuraciones del sitio usando el modelo Settings.
+ * 
+ * Las configuraciones que usa son las siguientes:
+ * - Nombre de la biblioteca
+ * - URL de la imagen de la biblioteca (El logo empleado para el frontend (o backend, dependiendo del tema).
+ * - Solo mostrar la imagen en el encabezado (Si solo se usa el logo y no logo y texto)
+ * - Horario de la biblioteca
+ * - Teléfono de la biblioteca
+ * - Purgar historial despues de estos meses
+ * - Bloquear préstamos cuando haya pendiente una multa
+ * - Días máximos de reserva
+ * - Artículos por página
+ * - Desconectado (La biblioteca para los miembros no estará disponible cuando esta opción esté activa)
  */
-class SettingsController extends Controller {
+class SettingsController extends Controller 
+{
 
     /**
      * @inheritdoc
@@ -92,6 +105,10 @@ class SettingsController extends Controller {
         return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
     }
     
+    /**
+     * Actualiza la configuración básica de la biblioteca.
+     * @return mixed
+     */
     public function actionLibrarySettingsUpdate() {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);

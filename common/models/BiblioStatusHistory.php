@@ -66,6 +66,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     }
 
     /**
+     * Obtiene la bibliografía de la copia bibliográfica en el historial
      * @return \yii\db\ActiveQuery
      */
     public function getBib()
@@ -74,6 +75,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     }
 
     /**
+     * Obtiene la copia bibliográfica en el historial
      * @return \yii\db\ActiveQuery
      */
     public function getCopy()

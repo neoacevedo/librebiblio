@@ -58,6 +58,7 @@ class Collection extends \yii\db\ActiveRecord
     }
 
     /**
+     * Devuelve las bibliografías asociadas con la colección
      * @return \yii\db\ActiveQuery
      */
     public function getBiblios()

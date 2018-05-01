@@ -24,7 +24,7 @@ class m180216_230454_create_view_item_history extends Migration {
                     . "LEFT JOIN {{%biblio_status_hist}} s ON s.bibid = b.id "
                     . "LEFT JOIN {{%member}} m ON s.mbr_id = m.id "
                     . "WHERE s.status_cd='out'";
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $sql = "CREATE OR REPLACE VIEW {{%item_history}} AS "
                     . "SELECT b.id, "
                     . "CONCAT_WS(' ', b.call_nmbr1, b.call_nmbr2, b.call_nmbr3) AS call_num, "

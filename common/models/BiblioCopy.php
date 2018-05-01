@@ -75,6 +75,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Obtiene la bibliografía a la que pertenece la copia
      * @return \yii\db\ActiveQuery
      */
     public function getBiblio() {
@@ -82,6 +83,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Devuelve el historial de la copia bibliográfica
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioStatusHists() {
@@ -89,6 +91,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Devuelve la relación entre la copia y la bibliografía
      * @return \yii\db\ActiveQuery
      */
     public function getBibs() {

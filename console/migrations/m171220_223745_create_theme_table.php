@@ -20,7 +20,7 @@ class m171220_223745_create_theme_table extends Migration {
                 'skin' => $this->string(15),
                 'created_at' => $this->dateTime()
             ]);
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $this->createTable('{{%theme}}', [
                 'id' => "SERIAL",
                 'name' => $this->string(15)->notNull(),

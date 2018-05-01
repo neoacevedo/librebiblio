@@ -22,7 +22,8 @@ use common\models\BiblioSearch;
  * 
  * Incluye el listado del carrito con los materiales que se pretenden solicitar en préstamo.
  */
-class CirculationController extends Controller {
+class CirculationController extends Controller 
+{
     //put your code here
 
     /**

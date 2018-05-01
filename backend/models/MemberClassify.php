@@ -55,6 +55,7 @@ class MemberClassify extends \yii\db\ActiveRecord
     }
 
     /**
+     * Devuelve los privilegios de préstamo de acuerdo a la clasificación del miembro de la biblioteca.
      * @return \yii\db\ActiveQuery
      */
     public function getCheckoutPrivs()

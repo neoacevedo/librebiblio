@@ -28,7 +28,7 @@ class m170626_040540_create_member_table extends Migration {
                 'created_at' => $this->integer()->notNull(),
                 'updated_at' => $this->integer()->notNull(),
             ]);
-        } else if ($this->db->driverName === 'pgsql') {
+        } elseif ($this->db->driverName === 'pgsql') {
             $this->createTable('{{%member}}', [
                 'id' => "SERIAL",
                 'username' => $this->string()->notNull()->unique(),

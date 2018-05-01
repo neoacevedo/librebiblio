@@ -22,7 +22,8 @@ use yii\filters\AccessControl;
  * @author John Martin <john.itvn@gmail.com>
  * @since 1.0.0
  */
-class RuleController extends Controller {
+class RuleController extends Controller 
+{
 
     /**
      * @inheritdoc
@@ -143,7 +144,7 @@ class RuleController extends Controller {
                     'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
                     Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } elseif ($model->load($request->post()) && $model->save()) {
                 return [
                     'forceReload' => 'true',
                     'title' => Yii::t('app/rbac', "Create new {0}", ["Rule"]),
@@ -200,7 +201,7 @@ class RuleController extends Controller {
                     'footer' => Html::button(Yii::t('app/rbac', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
                     Html::button(Yii::t('app/rbac', 'Save'), ['class' => 'btn btn-primary', 'type' => "submit"])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } elseif ($model->load($request->post()) && $model->save()) {
                 return [
                     'forceReload' => 'true',
                     'title' => $name,

@@ -13,7 +13,8 @@ use yii\filters\VerbFilter;
 /**
  * BiblioFieldController implements the CRUD actions for BiblioField model.
  */
-class BiblioFieldController extends Controller {
+class BiblioFieldController extends Controller 
+{
 
     /**
      * @inheritdoc

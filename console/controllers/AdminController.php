@@ -20,7 +20,8 @@ use DateTime;
  * 
  * Console environment.
  */
-class AdminController extends Controller {
+class AdminController extends Controller 
+{
 
     /**
      * Genera un restablecimiento de la contraseña.

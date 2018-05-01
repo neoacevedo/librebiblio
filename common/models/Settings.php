@@ -65,7 +65,7 @@ class Settings extends \yii\db\ActiveRecord {
             'library_image_url' => Yii::t('app', 'Library Image Url'),
             'use_image_flg' => Yii::t('app', 'Only Show Image in Header'),
             'library_hours' => Yii::t('app', 'Library Hours'),
-            'lirbrary_phone' => Yii::t('app', 'Lirbrary Phone'),
+            'lirbrary_phone' => Yii::t('library', 'Lirbrary Phone'),
             'purge_history_after_months' => Yii::t('app', 'Purge History After Months'),
             'block_checkouts_when_fines_due' => Yii::t('app', 'Block Checkouts When Fines Due'),
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),

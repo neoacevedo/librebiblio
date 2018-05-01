@@ -24,7 +24,7 @@ $authManager = Yii::$app->authManager;
                         $checked = true;
                         if($formModel->roles==null||!is_array($formModel->roles)||count($formModel->roles)==0){
                             $checked = false;
-                        }else if(!in_array($role->name, $formModel->roles) ){
+                        }elseif(!in_array($role->name, $formModel->roles) ){
                             $checked = false;
                         }                        
                     ?>
