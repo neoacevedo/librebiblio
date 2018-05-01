@@ -13,7 +13,7 @@ class m170627_011354_create_biblio_field_table extends Migration
     /**
      * @inheritdoc
      */
-    public function up()
+    public function safeUp()
     {
         $this->createTable('{{%biblio_field}}', [
             'bibid' => $this->integer()->notNull(),
@@ -29,13 +29,20 @@ class m170627_011354_create_biblio_field_table extends Migration
         $this->addPrimaryKey('bibliofield_pk', '{{%biblio_field}}', ['bibid', 'fieldid']);
 
         // alter id to autoincrement
-        #$this->alterColumn('{{%biblio_field}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
+        $this->alterColumn('{{%biblio_field}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `bibid`
         $this->createIndex(
             'idx-biblio_field-bibid',
             'biblio_field',
             'bibid'
+        );
+        
+        // creates index for column `fieldid`
+        $this->createIndex(
+            'idx-biblio_field-fieldid',
+            'biblio_field',
+            'fieldid'
         );
 
         // add foreign key for table `biblio`
@@ -52,7 +59,7 @@ class m170627_011354_create_biblio_field_table extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
+    public function safeDown()
     {
         // drops foreign key for table `biblio`
         $this->dropForeignKey(
@@ -63,6 +70,12 @@ class m170627_011354_create_biblio_field_table extends Migration
         // drops index for column `bibid`
         $this->dropIndex(
             'idx-biblio_field-bibid',
+            '{{%biblio_field}}'
+        );
+        
+        // drops index for column `fieldid`
+        $this->dropIndex(
+            'idx-biblio_field-fieldid',
             '{{%biblio_field}}'
         );
 

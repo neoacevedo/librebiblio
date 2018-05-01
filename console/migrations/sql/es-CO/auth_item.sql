@@ -17,3 +17,6 @@ INSERT INTO {{%auth_item}} VALUES ('member/index', 2, 'Permiso para listar miemb
 INSERT INTO {{%auth_item}} VALUES ('member/create', 2, 'Permiso para registrar miembros en la biblioteca.', NULL, NULL, 1524156333, 1524156333);
 INSERT INTO {{%auth_item}} VALUES ('member/update', 2, 'Permiso para actualizar información del miembro de la bibliteca.', NULL, NULL, 1524156378, 1524156378);
 INSERT INTO {{%auth_item}} VALUES ('member/delete', 2, 'Permiso para borrar miembros de la biblioteca.', NULL, NULL, 1524156287, 1524156287);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio-field/create', 2, 'Permiso para registrar campos bibliográficos.', NULL, NULL, 1524156333, 1524156333);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio-field/update', 2, 'Permiso para actualizar campos bibliográficos.', NULL, NULL, 1524156378, 1524156378);
+INSERT INTO {{%auth_item}} VALUES ('cataloging/biblio-field/delete', 2, 'Permiso para borrar campos bibliográficos.', NULL, NULL, 1524156287, 1524156287);

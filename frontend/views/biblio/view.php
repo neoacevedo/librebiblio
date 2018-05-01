@@ -41,8 +41,13 @@ $usmarc = [
 foreach ($model->biblioFields as $biblioField) {
     $field = [
         'attribute' => 'biblioFields',
-        'value' => $biblioField->field_data,
-        'label' => backend\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
+        'format' => 'raw',
+        'value' => function() use($biblioField) {
+            if($biblioField->subfield_cd === 'u') {
+                return Html::a($biblioField->field_data, $biblioField->field_data, ['target' => '_blank']);
+            }
+        },
+        'label' => common\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
     ];
     array_push($usmarc, $field);
 }

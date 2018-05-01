@@ -17,19 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure you want to delete this item?' => '',
-    'Biblio Fields' => '',
-    'Create Biblio Field' => '',
-    'Create MARC Field' => '',
-    'Delete' => '',
-    'EDIT MARC' => '',
-    'Field Data' => '',
-    'Ind1 Cd' => '',
-    'Ind2 Cd' => '',
-    'Print List' => '',
-    'Reset' => '',
-    'Search' => '',
-    'Subfield Cd' => 'Subcampo',
-    'Update' => '',
-    'Update Biblio Field: {nameAttribute}' => '',
+    'Block Mbr' => '',
+    'Block Nmbr' => '',
+    'Description' => '',
+    'Ind1 Description' => '',
+    'Ind2 Description' => '',
+    'Repeatable Flg' => '',
+    'Subfield Cd' => '',
+    'Tag' => '',
 ];

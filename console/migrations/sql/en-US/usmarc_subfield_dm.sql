@@ -1673,3 +1673,7 @@ insert into {{%usmarc_subfield_dm}} values (886,'b','Content of the foreign MARC
 insert into {{%usmarc_subfield_dm}} values (886,'2','Source of data','N');
 insert into {{%usmarc_subfield_dm}} values (887,'a','Content of non-MARC field','N');
 insert into {{%usmarc_subfield_dm}} values (887,'2','Source of data','N');
+insert into {{%usmarc_subfield_dm}} values (902, 'a', 'Image File of the Cover', 'N');
+insert into {{%usmarc_subfield_dm}} values (902, 'b', 'Image File of the Back Cover', 'N');
+insert into {{%usmarc_subfield_dm}} values (902, 'c', 'Image File of the Author', 'N');
+insert into {{%usmarc_subfield_dm}} values (903, 'a', 'Digital Material', 'N');

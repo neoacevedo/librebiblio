@@ -41,12 +41,16 @@ $usmarc = [
 foreach ($model->biblioFields as $biblioField) {
     $field = [
         'attribute' => 'biblioFields',
-        'value' => $biblioField->field_data,
-        'label' => backend\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
+        'format' => 'raw',
+        'value' => function() use($biblioField) {
+            if($biblioField->subfield_cd === 'u') {
+                return Html::a($biblioField->field_data, $biblioField->field_data, ['target' => '_blank']);
+            }
+        },
+        'label' => common\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
     ];
     array_push($usmarc, $field);
 }
-
 ?>
 <div class="biblio-view">
 
@@ -124,7 +128,7 @@ foreach ($model->biblioFields as $biblioField) {
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'placehold') {
                         return \yii\helpers\Url::to(["circulation/$action", "copyid" => $model->id, "bibid" => $model->bibid]);
-                    } else if($action === "checkout") {
+                    } else if ($action === "checkout") {
                         return \yii\helpers\Url::to(["circulation/add-to-cart", "copyid" => $model->id, "bibid" => $model->bibid, 'status' => 'out']);
                     }
                 }],

@@ -10,7 +10,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('cataloging', 'Biblio Fields');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblios'), 'url' => ['cataloging/biblio/index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['cataloging/biblio/view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-field-index">
@@ -34,11 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'bibid',
                     //'fieldid',
                     'tag',
-                    'ind1_cd',
-                    'ind2_cd',
+                    //'ind1_cd',
+                    //'ind2_cd',
                     'subfield_cd',
                     'field_data:ntext',
-                    ['class' => 'yii\grid\ActionColumn'],
+                    ['class' => 'yii\grid\ActionColumn', 'template' => '{update}&nbsp;&nbsp;{delete}'],
                 ],
             ]);
             ?>

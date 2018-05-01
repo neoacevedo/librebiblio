@@ -5,10 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $biblio common\models\Biblio */
 /* @var $model common\models\BiblioField */
+/* @var $marcBlocks marcBlocks */
 
 $this->title = Yii::t('cataloging', 'Create Biblio Field');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblios'), 'url' => ['cataloging/biblio/index']];
-$this->params['breadcrumbs'][] = ['label' => $biblio->title, 'url' => ['view', 'id' => $biblio->id]];
+$this->params['breadcrumbs'][] = ['label' => $biblio->title, 'url' => ['cataloging/biblio/view', 'id' => $biblio->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-field-create">
@@ -26,3 +27,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
     </div>
+</div>

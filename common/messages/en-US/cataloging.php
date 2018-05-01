@@ -17,6 +17,19 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Print List' => ''
+    'Are you sure you want to delete this item?' => '',
+    'Biblio Fields' => '',
+    'Create Biblio Field' => '',
+    'Create MARC Field' => '',
+    'Delete' => '',
+    'EDIT MARC' => '',
+    'Field Data' => '',
+    'Ind1 Cd' => '',
+    'Ind2 Cd' => '',
+    'Print List' => '',
+    'Reset' => '',
+    'Search' => '',
+    'Subfield Cd' => '',
+    'Update' => '',
+    'Update Biblio Field: {nameAttribute}' => '',
 ];
-

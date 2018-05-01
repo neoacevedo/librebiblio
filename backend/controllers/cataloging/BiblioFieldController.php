@@ -63,6 +63,19 @@ class BiblioFieldController extends Controller {
     }
 
     /**
+     * Gestión de errores
+     * @return mixed
+     */
+    public function actions() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+
+    /**
      * Lists all BiblioField models.
      * @return mixed
      */
@@ -70,7 +83,7 @@ class BiblioFieldController extends Controller {
         $searchModel = new BiblioFieldSearch();
         $model = \common\models\Biblio::findOne($bibid);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'model' => $model,
                     'searchModel' => $searchModel,
@@ -86,6 +99,7 @@ class BiblioFieldController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($bibid, $fieldid) {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($bibid, $fieldid),
         ]);
@@ -106,7 +120,7 @@ class BiblioFieldController extends Controller {
                         'bibid' => $model->bibid
             ]);
         }
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('create', [
                     'model' => $model, 'biblio' => $biblio, 'marcBlocks' => $marcBlocks
         ]);
@@ -122,13 +136,18 @@ class BiblioFieldController extends Controller {
      */
     public function actionUpdate($bibid, $fieldid) {
         $model = $this->findModel($bibid, $fieldid);
-
+        $biblio = \common\models\Biblio::findOne($bibid);
+        $marcBlocks = \common\models\Usmarc::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'bibid' => $model->bibid, 'fieldid' => $model->fieldid]);
+            return $this->redirect(['index',
+                        'bibid' => $model->bibid
+            ]);
         }
-
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('update', [
                     'model' => $model,
+                    'biblio' => $biblio,
+                    'marcBlocks' => $marcBlocks
         ]);
     }
 
@@ -143,7 +162,7 @@ class BiblioFieldController extends Controller {
     public function actionDelete($bibid, $fieldid) {
         $this->findModel($bibid, $fieldid)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['cataloging/biblio/view', 'index' => $bibid]);
     }
 
     public function actionUsmarcTagsOptions(int $block) {
@@ -156,7 +175,7 @@ class BiblioFieldController extends Controller {
             echo "<option value=''>" . Yii::t('app', 'No results found.') . "</option>";
         }
     }
-    
+
     public function actionUsmarcSubfieldsOptions(int $tag) {
         $usmarcSubfields = \common\models\UsmarcSubfield::findAll(['tag' => $tag]);
         if (count($usmarcSubfields) > 0) {
