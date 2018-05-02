@@ -45,7 +45,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration {
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function safeUp() {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
@@ -137,7 +137,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function safeDown() {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 

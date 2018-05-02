@@ -1,8 +1,9 @@
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('audio tapes','N','tape.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('book','Y','book.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('cd audio','N','cd.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('cd computer','N','cd.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('equipment','N','case.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('magazines','N','mag.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('maps','N','map.gif');
-insert into {{%material_type_dm}} (description, image_file, default_flg) values ('video/dvd','N','camera.gif');
+insert into {{%material_type_dm}} values (1,'audio tapes','N','tape.gif');
+insert into {{%material_type_dm}} values (2,'book','Y','book.gif');
+insert into {{%material_type_dm}} values (3,'cd audio','N','cd.gif');
+insert into {{%material_type_dm}} values (4,'cd computer','N','cd.gif');
+insert into {{%material_type_dm}} values (5,'equipment','N','case.gif');
+insert into {{%material_type_dm}} values (6,'magazines','N','mag.gif');
+insert into {{%material_type_dm}} values (7,'maps','N','map.gif');
+insert into {{%material_type_dm}} values (8,'video/dvd','N','camera.gif');
+insert into {{%material_type_dm}} values (9,'digital book','N','book.gif');
