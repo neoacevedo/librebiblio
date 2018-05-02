@@ -27,10 +27,7 @@ class m170627_011354_create_biblio_field_table extends Migration
         
         // add primary keys
         $this->addPrimaryKey('bibliofield_pk', '{{%biblio_field}}', ['bibid', 'fieldid']);
-
-        // alter id to autoincrement
-        $this->alterColumn('{{%biblio_field}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
-
+        
         // creates index for column `bibid`
         $this->createIndex(
             'idx-biblio_field-bibid',
@@ -39,11 +36,19 @@ class m170627_011354_create_biblio_field_table extends Migration
         );
         
         // creates index for column `fieldid`
-        /*$this->createIndex(
+        $this->createIndex(
             'idx-biblio_field-fieldid',
             'biblio_field',
             'fieldid'
-        );*/
+        );
+
+        // alter id to autoincrement
+        if ($this->db->driverName === 'mysql') {
+            $this->alterColumn('{{%biblio_field}}', 'fieldid', $this->integer().' NOT NULL AUTO_INCREMENT');
+        } elseif ($this->db->driverName === 'pgsql') {
+            $this->db->createCommand("CREATE SEQUENCE IF NOT EXISTS biblio_field_fieldid_seq;")->execute();
+            $this->alterColumn('{{%biblio_field}}', 'fieldid', "SET DEFAULT nextval('biblio_field_fieldid_seq')");
+        }
 
         // add foreign key for table `biblio`
         $this->addForeignKey(
