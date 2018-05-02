@@ -62,20 +62,26 @@ use yii\web\UploadedFile;
  * 
  * Para _backend_:<br />
  * <pre>
- *  <code>
- *  admin
- *  biblio-copy
- *  cataloging
- *    biblio
- *    biblio-field
- *  circulation
- *    placehold
- *    checkout
- *  collectoin
- *  layouts 
- *  member-account
- *  site
- *  </code>
+ * <code>
+ * admin
+ *  checkout-privs
+ *  collection
+ *  material-type
+ *  member-classify
+ *  report
+ *    &lt;ReportType&gt;Search
+ * biblio-copy
+ * cataloging
+ *   biblio
+ *   biblio-field
+ * circulation
+ *   placehold
+ *   checkout
+ * collectoin
+ * layouts 
+ * member-account
+ * site
+ * </code>
  * </pre>
  * 
  * Para _frontend_:
@@ -101,6 +107,8 @@ use yii\web\UploadedFile;
  * 
  * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_ 
  * y que no se incluyen en el archivo principal de configuración.
+ * 
+ * **NOTA:** Si no se incluye en la estructura anterior algún archivo/directorio, es posible que la aplicación renderice una predefinida o que genere un error 400
  */
 class ThemeController extends Controller 
 {

@@ -76,6 +76,7 @@ class Acquisitions extends \yii\db\ActiveRecord
      * @return string
      */
     public function getName() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return Yii::t("app/reports", $this->name);
     }
     
@@ -84,6 +85,7 @@ class Acquisitions extends \yii\db\ActiveRecord
      * @return string
      */
     public function getCategory() {
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return Yii::t("app/reports", $this->category);
     }
 }

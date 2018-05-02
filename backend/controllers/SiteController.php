@@ -45,15 +45,6 @@ class SiteController extends Controller
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
-                    /* 'matchCallback' => function () {
-                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                      //Yii::info($roles);
-                      if (array_key_exists('admin', $roles) || array_key_exists('staff', $roles)) {
-                      return true;
-                      }
-
-                      return false;
-                      }, */
                     ],
                     [
                         'actions' => ['logout'],
@@ -154,32 +145,6 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
-     * @throws BadRequestHttpException
-     */
-    public function actionResetPassword(string $token) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'New password saved.'));
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-                    'model' => $model,
-        ]);
     }
 
 }

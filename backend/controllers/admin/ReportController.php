@@ -13,7 +13,18 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * ReportController implements the CRUD actions for Acquisitions model.
+ * ReportController implementa los métodos para la visualización y descarga de reportes.
+ * 
+ * En la vista del reporte, se puede opcionalmente descargar el reporte 
+ * en formato PDF, CVS y EXCEL.
+ * 
+ * Cada reporte es un modelo que apunta a una vista de la base de datos. Adicional al modelo [[\yii\db\ActiveRecord]] (https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord) conocido 
+ * estos tienen 2 atributos adicionales: [[\backend\reports\Acquisitions::$name|$name]] y [[\backend\reports\Acquisitions::$category|$category]].
+ * 
+ * $name es el nombre del reporte. $category es la sección a la que pertenece el reporte.
+ * 
+ * Para crear un reporte propio se debería primero crear una vista en la base de datos y a través de [Gii] (https://www.yiiframework.com/doc/guide/2.0/en/start-gii) 
+ * generar el modelo y el modelo de búsqueda que lo extienda. Ver como ejemplo el reporte de Adquisiciones ([[\backend\reports\Acquisitions|Acquisitions]]).
  */
 class ReportController extends Controller 
 {
@@ -79,6 +90,11 @@ class ReportController extends Controller
 
     /**
      * Lista todos los reportes disponibles en el sitio.
+     * 
+     * La sección de cada reporte está determinada por el atributo {$category} del modelo.<br />
+     * Para idiomas diferentes al Inglés, en algunos nombres de categorías o reportes se generarían sus respectivas traducciones 
+     * pero encerradas con doble arroba (@@nombre de la categoría@@), esto debido a que los reportes son dinámicos y no están 
+     * predefinidos. 
      * @return mixed
      */
     public function actionIndex() {
@@ -99,6 +115,8 @@ class ReportController extends Controller
 
     /**
      * Permite realizar el reporte de acuerdo a varios filtros disponibles.
+     * 
+     * El filtro lo establece cada reporte. El modelo es invocado de acuerdo al nombre del tipo de reporte.
      * @return mixed
      */
     public function actionSearch() {
@@ -112,7 +130,7 @@ class ReportController extends Controller
     }
 
     /**
-     * Displays a single Acquisitions model.
+     * Muestra el reporte generado.
      * @param integer $id
      * @return mixed
      */
@@ -126,23 +144,4 @@ class ReportController extends Controller
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider]);
     }
-
-    /**
-     * Updates an existing Acquisitions model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate(int $id) {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
-        }
-    }
-
 }
