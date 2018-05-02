@@ -39,11 +39,11 @@ class m170627_011354_create_biblio_field_table extends Migration
         );
         
         // creates index for column `fieldid`
-        $this->createIndex(
+        /*$this->createIndex(
             'idx-biblio_field-fieldid',
             'biblio_field',
             'fieldid'
-        );
+        );*/
 
         // add foreign key for table `biblio`
         $this->addForeignKey(
