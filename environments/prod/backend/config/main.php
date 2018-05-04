@@ -103,7 +103,7 @@ return [
         ],
         'urlManagerFrontend' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => '//obib2.hyntibasoftware.co', // se deberá cambiar por la URL del frontend
+            'baseUrl' => 'http://openbiblio2.neoacevedo.co', // se deberá cambiar por la URL del frontend
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
