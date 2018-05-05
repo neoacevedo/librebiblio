@@ -6,7 +6,8 @@
  */
 namespace common\components;
 
-use \yii\web\HttpException;
+use yii\web\HttpException;
+use yii\helpers\Url;
 use \Aws\S3\Exception\S3Exception;
 use \Aws\S3\S3Client;
 use \MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -134,7 +135,7 @@ class Storage extends \yii\base\BaseObject {
             case self::LOCAL:
                 // Predefinido.
             default:
-                return \Yii::$app->urlManagerFrontend->createUrl($this->prefix.$file);
+                return Url::to($file, "");
         }
     }
 
