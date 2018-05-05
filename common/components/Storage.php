@@ -132,8 +132,9 @@ class Storage extends \yii\base\BaseObject {
             case self::GOOGLE_CLOUD_STORAGE:
                 return $this->clientService->bucket($this->bucket)->object($file)->signedUrl(new Timestamp(new DateTime('tomorrow')));
             case self::LOCAL:
+                // Predefinido.
             default:
-                return \Yii::$app->urlManagerFrontend->createUrl($file);
+                return \Yii::$app->urlManagerFrontend->createUrl($this->prefix.$file);
         }
     }
 
