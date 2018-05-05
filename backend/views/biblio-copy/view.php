@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\BiblioCopy */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblio Copies'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biblio', 'Biblio Copies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-view">

@@ -18,6 +18,7 @@
  */
 return [
     'Could not copy theme files.' => '',
+    'File not uploaded' => '',
     'Frontend' => '',
     'Install' => '',
     'Location' => '',

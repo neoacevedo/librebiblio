@@ -18,12 +18,7 @@
  */
 return [
     'Payment' => '',
-    'Update' => '',
     'Update Member Account: {nameAttribute}' => '',
-    'placed hold copy' => '',
-    'Has reserved' => '@@@@',
-    'Has reserved copy' => '@@@@',
-    'Item checked out.' => '@@Artículo Revisado.@@',
     'The item {barcode} is already on cart' => '@@El artículo {barcode} ya está en el carrito.@@',
     'This item is already checked out or on hold.' => '@@Este artículo ya se encuentra en préstamo o reserva.@@',
     'Account' => 'Cuenta',
@@ -59,4 +54,5 @@ return [
     'This member already has that item placed hold -- not placing hold.' => 'Este miembro ya tiene en reserva este ítem -- no se reserva.',
     'This member is currently blocked.' => 'Este miembro está actualmente bloqueado.',
     'Transaction Type Cd' => 'Tipo de Transacción',
+    'placed hold copy' => 'reservó la copia',
 ];

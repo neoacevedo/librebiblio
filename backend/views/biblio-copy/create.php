@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\models\BiblioCopy */
 
 $this->title = Yii::t('app', 'Create Biblio Copy');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblio Copies'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biblio', 'Biblio Copies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-create">

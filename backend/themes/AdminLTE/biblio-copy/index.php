@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\BiblioCopySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Biblio Copies');
+$this->title = Yii::t('biblio', 'Biblio Copies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-index">

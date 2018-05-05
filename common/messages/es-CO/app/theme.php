@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'File not uploaded' => '',
     'Could not copy theme files.' => 'No se pudieron copiar los archivos del tema.',
     'Frontend' => 'Público',
     'Install' => 'Instalar',
@@ -26,5 +27,5 @@ return [
     'Theme uninstalled successfully.' => 'Tema desinstalado satisfactoriamente',
     'Theme updated successfully.' => 'Tema actualizado satisfactoriamente',
     'Themes' => 'Temas',
-    'Update {modelClass}: ' => 'Actualizar {modelClass}:',   
+    'Update {modelClass}: ' => 'Actualizar {modelClass}:',
 ];

@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use Yii;
 use yii\base\Model;
 use common\models\User;
 
@@ -56,6 +57,22 @@ class SignupForm extends Model {
             ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => \Yii::t('app', 'This email address has already been taken.')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        parent::attributeLabels();
+        return [
+            'first_name' => Yii::t('app', 'First Name'),
+            'last_name' => Yii::t('app', 'Last Name'),
+            'phone' => Yii::t('app', 'Phone'),
+            'pin' => Yii::t('member', 'Pin'),
+            'address' => Yii::t('app', 'Address'),
+            'email' => Yii::t('app', 'Email'),
+            'classification_id' => Yii::t('checkout', 'Classification ID'),  
         ];
     }
 

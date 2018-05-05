@@ -6,6 +6,7 @@
  */
 namespace backend\models;
 
+use Yii;
 use yii\base\Model;
 use backend\models\User;
 
@@ -52,6 +53,20 @@ class SignupForm extends Model {
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
             ['status', 'required']
+        ];
+    }
+    
+        /**
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        parent::attributeLabels();
+        return [
+            'first_name' => Yii::t('app', 'First Name'),
+            'last_name' => Yii::t('app', 'Last Name'),
+            'phone' => Yii::t('app', 'Phone'),
+            'address' => Yii::t('app', 'address'),
+            'email' => Yii::t('app', 'Email'),
         ];
     }
     

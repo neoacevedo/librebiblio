@@ -21,4 +21,5 @@ return [
     'Library Hours' => '',
     'Library Phone' => '',
     'Library hours' => '@@@@',
+    'Lirbrary Phone' => '@@@@',
 ];

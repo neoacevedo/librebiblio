@@ -50,7 +50,6 @@ return [
     'This member already has that item placed hold -- not placing hold.' => '',
     'This member is currently blocked.' => '',
     'Transaction Type Cd' => '',
-    'Update' => '',
     'Update Member Account: {nameAttribute}' => '',
     'placed hold copy' => '',
     'Are you sure you want to delete this item?' => '@@@@',
@@ -71,5 +70,6 @@ return [
     'This item is already checked out or on hold.' => '@@@@',
     'This member already has that item checked out -- not checking out.' => '@@@@',
     'This member already has that item placed hold -- not checking out.' => '@@@@',
+    'Update' => '@@@@',
     'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => '@@@@',
 ];
