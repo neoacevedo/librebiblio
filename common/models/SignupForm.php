@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use yii\base\Model;
@@ -78,7 +80,7 @@ class SignupForm extends Model {
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->status = 10;
-        $user->classification_id = $this->classification_id ?: 1;
+        $user->classification_id = $this->classification_id;
 
         if ($user->save()) {
             return $user;
@@ -99,7 +101,7 @@ class SignupForm extends Model {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
     }
-    
+
     /**
      * Envía un correo electrónico con la información para crear la contraseña.
      * @param int $id

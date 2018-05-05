@@ -12,10 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+    <p><?= Yii::t('app', 'Please fill out the following fields to signup:') ?></p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-3 col-md-3 col-sm-3">&nbsp;</div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -28,14 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'last_name')->textInput() ?>
                 </div>
             </div>
-            
+
+            <div class="row">                
+                <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">
+                    <label><?= Yii::t('app', 'Birthdate') ?></label>
+                    <input type="date" name="birthdate" />
+                </div>
+            </div>
+
             <?= $form->field($model, 'pin')->input('number', ['min' => 1]) ?>
 
             <?= $form->field($model, 'email') ?>
-            
+
             <?= $form->field($model, 'address') ?>
 
-            <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 10000]) ?>
+            <?= $form->field($model, 'phone')->textInput() ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
@@ -45,5 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php ActiveForm::end(); ?>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">&nbsp;</div>
     </div>
 </div>

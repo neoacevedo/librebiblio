@@ -1,13 +1,15 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/* @var $model \common\models\SignupForm */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
+
+$mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
 ?>
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -31,14 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <?= $form->field($model, 'pin')->input('number', ['min' => 1]) ?>
-            
+
             <?= $form->field($model, 'email') ?>
-            
+
             <?= $form->field($model, 'address') ?>
 
             <?= $form->field($model, 'phone')->textInput() ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
+            
+            <?= $form->field($model, 'classification_id')->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

@@ -17,12 +17,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Checkout Limit' => '',
-    'Checkout Privs' => '',
-    'Classification ID' => '',
+    'Checkout Limit' => 'Límite de Préstamo',
+    'Checkout Privs' => 'Privilegios de Préstamo',
+    'Classification ID' => 'Clasificación de Miembro.',
     'Create Checkout Privs' => '',
     'ID' => '',
-    'Material Cd' => '',
+    'Material Cd' => 'Tipo de Material',
     'Are you sure you want to delete this item?' => '@@¿Está seguro(a) que desea borrar este ítem?@@',
     'Delete' => '@@@@',
     'Reset' => '@@Restablecer@@',

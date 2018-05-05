@@ -54,7 +54,7 @@ class SignupForm extends Model {
             ['status', 'required']
         ];
     }
-
+    
     /**
      * Signs user up.
      *
