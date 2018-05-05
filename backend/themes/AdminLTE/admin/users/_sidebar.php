@@ -21,6 +21,7 @@ use kartik\sidenav\SideNav;
             'headingOptions' => ['class' => 'head-style'],
             'items' => [['label' => Yii::t('app', 'Create User'), 'url' => ['admin/users-create'], 'type' => 'link'],
                 ['label' => Yii::t('app', 'Roles'), 'url' => ['admin/users/role']],
+                ['label' => Yii::t('app', 'Permissions'), 'url' => ['admin/users/permission']],
                 ['label' => Yii::t('app', 'Assignment'), 'url' => ['admin/users/assignment']]],
         ]);
     }
