@@ -103,7 +103,8 @@ class Member extends ActiveRecord implements IdentityInterface {
             'pin' => Yii::t('member', 'Pin'),
             'phone' => Yii::t('app', 'Phone'),
             'email' => Yii::t('app', 'Email'),
-            'status' => Yii::t('app', 'Status')
+            'status' => Yii::t('app', 'Status'),
+            'classification_id' => Yii::t('checkout', 'Classification ID'), 
         ];
     }
 
