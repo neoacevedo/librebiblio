@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
 $cache = require(__DIR__ . '/cache.php');
 $db = require(__DIR__ . '/database.php');
 $mailer = require(__DIR__ . '/mail.php');

@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-$cache = require(__DIR__ . '/cache.php');
+$cache = require(__DIR__ . '/cache-local.php');
 $db = require(__DIR__ . '/database-local.php');
 $fs = require(__DIR__ . '/storage-local.php');
 

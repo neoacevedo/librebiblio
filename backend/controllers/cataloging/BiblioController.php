@@ -131,9 +131,9 @@ class BiblioController extends Controller
         $this->fillUsMarc();
         // Uploaded file instance.
         $imageFile = UploadedFile::getInstance($model, 'image_file');
-        $modelBiblioFields[] = new \backend\models\BiblioField();
+        $modelBiblioFields[] = new \common\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
-            $modelBiblioFields[] = new \backend\models\BiblioField();
+            $modelBiblioFields[] = new \common\models\BiblioField();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
@@ -185,9 +185,9 @@ class BiblioController extends Controller
      */
     private function createBiblioField(int $bibid, $models) {
         $i = 1; // fieldid
-        $modelBiblioField = \backend\models\BiblioField::findAll(['bibid' => $bibid]);
+        $modelBiblioField = \common\models\BiblioField::findAll(['bibid' => $bibid]);
         if (count($modelBiblioField) > 0) {
-            \backend\models\BiblioField::deleteAll(['bibid' => $bibid]);
+            \common\models\BiblioField::deleteAll(['bibid' => $bibid]);
         }
         if (\yii\base\Model::loadMultiple($models, Yii::$app->request->post())) {
             foreach ($models as $model) {
