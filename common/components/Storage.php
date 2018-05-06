@@ -6,8 +6,7 @@
  */
 namespace common\components;
 
-use yii\web\HttpException;
-use yii\helpers\Url;
+use \yii\web\HttpException;
 use \Aws\S3\Exception\S3Exception;
 use \Aws\S3\S3Client;
 use \MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -24,7 +23,8 @@ use \Google\Cloud\Core\Timestamp;
  * 
  * Componente que hace uso del archivo
  */
-class Storage extends \yii\base\BaseObject {
+class Storage extends \yii\base\BaseObject 
+{
 
     const AWS_S3 = 's3';
     const AZURE_BLOB_STORAGE = 'azure';
@@ -69,7 +69,8 @@ class Storage extends \yii\base\BaseObject {
                 break;
             case self::LOCAL:
             default:
-                $this->bucket = $this->config['path'];
+                $this->bucket = $this->config['bucket'];
+                $this->prefix = $this->config['prefix'];
         }
     }
 
@@ -135,7 +136,7 @@ class Storage extends \yii\base\BaseObject {
             case self::LOCAL:
                 // Predefinido.
             default:
-                return \Yii::$app->urlManagerFrontend->baseUrl."/".$file;
+                return \Yii::$app->urlManagerFrontend->baseUrl . "/" . $file;
         }
     }
 
@@ -194,7 +195,7 @@ class Storage extends \yii\base\BaseObject {
      */
     private function uploadToLocal($file) {
         try {
-            $file->saveAs(\Yii::getAlias($this->bucket) . $file->name);
+            $file->saveAs(\Yii::getAlias($this->bucket. $this->prefix) . $file->name);
         } catch (\Exception $ex) {
             throw new HttpException(500, $ex->getMessage());
         }

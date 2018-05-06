@@ -16,7 +16,7 @@
  */
 
 // Amazon S3
-return $storageService = [
+/*return $storageService = [
     'class' => 'common\components\Storage',
     'service' => 's3',
     'config' => [
@@ -26,7 +26,7 @@ return $storageService = [
         'region' => '',
         'prefix' => '', // ruta al directorio de imágenes (Opcional)
     ]
-];
+];*/
 
 
 // Azure Blob Storage
@@ -56,13 +56,14 @@ return $storageService = [
 
 
 // Almacenamiento local
-/*return $storageService = [
+return $storageService = [
     'class' => 'common\components\Storage',
     'service' => 'local',
     'config' => [
-        'path' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
+        'bucket' => '@frontend/web/', // reemplace @webroot por @frontend o @backend según sea el caso
+        'prefix' => 'images/'
     ]
-];*/
+];
 
 
 

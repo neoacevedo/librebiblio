@@ -60,7 +60,8 @@ return $storageService = [
     'class' => 'common\components\Storage',
     'service' => 'local',
     'config' => [
-        'path' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
+        'bucket' => '@frontend/web/', // reemplace @webroot por @frontend o @backend según sea el caso
+        'prefix' => 'images/'
     ]
 ];
 
