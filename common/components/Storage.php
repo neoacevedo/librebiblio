@@ -135,7 +135,7 @@ class Storage extends \yii\base\BaseObject {
             case self::LOCAL:
                 // Predefinido.
             default:
-                return Url::to($file, "");
+                return \Yii::$app->urlManagerFrontend->baseUrl.$file;
         }
     }
 
