@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\components;
 
 use \yii\web\HttpException;
@@ -134,9 +136,13 @@ class Storage extends \yii\base\BaseObject
             case self::GOOGLE_CLOUD_STORAGE:
                 return $this->clientService->bucket($this->bucket)->object($file)->signedUrl(new Timestamp(new DateTime('tomorrow')));
             case self::LOCAL:
-                // Predefinido.
+            // Predefinido.
             default:
-                return \Yii::$app->urlManagerFrontend->baseUrl . "/" . $file;
+                try {
+                    return \Yii::$app->urlManagerFrontend->baseUrl . "/" . $file;
+                } catch (Exception $ex) {
+                    return \Yii::$app->urlManager->baseUrl . "/" . $file;
+                }
         }
     }
 
@@ -195,7 +201,7 @@ class Storage extends \yii\base\BaseObject
      */
     private function uploadToLocal($file) {
         try {
-            $file->saveAs(\Yii::getAlias($this->bucket. $this->prefix) . $file->name);
+            $file->saveAs(\Yii::getAlias($this->bucket . $this->prefix) . $file->name);
         } catch (\Exception $ex) {
             throw new HttpException(500, $ex->getMessage());
         }
