@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'materialType',
                 'value' => function($model) {
-                    return Html::img($model->materialType->image_file, ['alt' => $model->materialType->description,
+                    return Html::img(Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$model->materialType->image_file), ['alt' => $model->materialType->description,
                                 'title' => $model->materialType->description,
                                 'class' => 'image-responsive center-block',
                                 'style' => 'width: 33.333333%']);

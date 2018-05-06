@@ -86,23 +86,6 @@ class CirculationController extends Controller
     }
 
     /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex() {
-        //return $this->render('index');
-        $searchModel = new BiblioSearch();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
      * Agrega el item al carro.
      * 
      * El ítem es la copia del material bibliográfico. El manejo del carro se hace por sesión.
