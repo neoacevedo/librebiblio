@@ -178,6 +178,7 @@ class CirculationController extends Controller
         if ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id === $id) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
         if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
