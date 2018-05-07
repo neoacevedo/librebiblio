@@ -60,21 +60,21 @@ class BiblioSearch extends Biblio {
         ]);
 
         // Important: here is how we set up the sorting
-        // The key is the attribute name on our "TourSearch" instance
+        // The key is the attribute name on our "user" instance
         $dataProvider->sort->attributes['user'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"
             'asc' => ['{{%user}}.username' => SORT_ASC],
             'desc' => ['{{%user}}.username' => SORT_DESC],
         ];
-
+        // The key is the attribute name on our "materialType" instance
         $dataProvider->sort->attributes['materialType'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"
             'asc' => ['{{%materialtype_dm}}.description' => SORT_ASC],
             'desc' => ['{{%material_type_dm}}.description' => SORT_DESC],
         ];
-
+        // The key is the attribute name on our "collection" instance
         $dataProvider->sort->attributes['collection'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"

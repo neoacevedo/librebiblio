@@ -48,11 +48,19 @@ class BiblioHoldSearch extends BiblioHold {
         $query = BiblioHold::find();
 
         // add conditions that should always apply here
-        $query->joinWith(['biblio', 'biblioCopy'], 'LEFT JOIN');
+        $query->joinWith(['biblio', 'biblioCopy'], true, 'LEFT JOIN');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
+        // The key is the attribute name on our "TourSearch" instance
+        $dataProvider->sort->attributes['biblioTitle'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['{{%biblio}}.title' => SORT_ASC],
+            'desc' => ['{{%biblio}}.title' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -61,14 +69,6 @@ class BiblioHoldSearch extends BiblioHold {
             // $query->where('0=1');
             return $dataProvider;
         }
-
-        // The key is the attribute name on our "TourSearch" instance
-        $dataProvider->sort->attributes['biblioTitle'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['{{%biblio}}.title' => SORT_ASC],
-            'desc' => ['{{%biblio}}.title' => SORT_DESC],
-        ];
 
         // grid filtering conditions
         $query->andFilterWhere([

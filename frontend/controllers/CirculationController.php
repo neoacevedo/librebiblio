@@ -86,9 +86,9 @@ class CirculationController extends Controller
     }
 
     /**
-     * Agrega el item al carro.
+     * Agrega el artículo al carro.
      * 
-     * El ítem es la copia del material bibliográfico. El manejo del carro se hace por sesión.
+     * El artículo es la copia del material bibliográfico.
      * @param int $copyid el ID de la copia
      * @param int $bibid el ID del material bibliográfico
      * @param string $status Acepta los siguiente estados:
@@ -99,23 +99,25 @@ class CirculationController extends Controller
      * @return mixed
      */
     public function actionAddToCart(int $copyid, int $bibid, string $status) {
-
+        $id = \Yii::$app->user->id;
+        
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        // agregar al carro (en sesión)
-        try {
-            if (!isset(\Yii::$app->session['cart'])) {
-                \Yii::$app->session->set('cart', []);
-            }
-            $copies = array_column(\Yii::$app->session['cart'], "copyid");
-            if (!in_array($copyid, $copies)) {
-                $count = count(Yii::$app->session->get('cart')) + 1;
-                \Yii::$app->session['cart'] = array_merge(\Yii::$app->session['cart'], [$count => ['copyid' => $copyid, 'bibid' => $bibid, 'status' => $status]]);
+        // agregar al carro
+        if (($cart = \frontend\models\Cart::findOne(['bibid' => $bibid, 'copyid' => $copyid, 'mbr_id' => $id])) === null) {
+            $newCart = new \frontend\models\Cart;
+            $newCart->bibid = $bibid;
+            $newCart->copyid = $copyid;
+            $newCart->mbr_id = $id;
+            $newCart->status = $status;
+            if($newCart->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item added to cart."));
             } else {
-                Yii::$app->getSession()->setFlash('warning', Yii::t("circulation", "The item is already on cart"));
+                @array_walk_recursive($model->errors, function($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
             }
-        } catch (Exception $ex) {
-            Yii::$app->getSession()->setFlash('error', $ex->getMessage());
+        } else {
+            Yii::$app->getSession()->setFlash('warning', Yii::t("circulation", "The item is already on cart"));
         }
 
         return $this->redirect(Yii::$app->request->referrer);
@@ -131,19 +133,21 @@ class CirculationController extends Controller
      */
     public function actionCart() {
         $id = Yii::$app->user->id;
-        if (!isset(\Yii::$app->session['cart'])) {
-            \Yii::$app->session->set('cart', []);
-        }
         $model = \common\models\Member::findOne($id);
-        $copies = array_column(\Yii::$app->session['cart'], "copyid");
-        $models = \common\models\BiblioCopy::find()->where(['in', 'id', $copies])->all();
-        $provider = new \yii\data\ArrayDataProvider([
-            'allModels' => $models,
-            'sort' => [
-                'attributes' => ['id', 'username', 'email'],
-            ],
+        $searchModel = new \frontend\models\CartSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('cart', [
+            'model' => $model, 
+            'id' => $id, 
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
         ]);
-        return $this->render('cart', ['model' => $model, 'id' => $id, 'dataProvider' => $provider]);
+    }
+    
+    public function actionDelete(int $id) {
+        \frontend\models\Cart::findOne($id)->delete();
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -231,12 +235,14 @@ class CirculationController extends Controller
                 return $this->redirect(Yii::$app->request->referrer);
             }
         }
-        //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
+        // iteración por cada selección del carro.
         foreach ($selection as $copyid) {
             $biblioCopy = \common\models\BiblioCopy::findOne($copyid);
-            $collection = \backend\models\Collection::findOne(\common\models\Biblio::findOne($biblioCopy->bibid)->collection_cd);
+            $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
+            $collection = \backend\models\Collection::findOne($biblio->collection_cd);
 
             if ($biblioCopy->status_cd === 'hld') {
+                // si la copia está reservada
                 if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $biblioCopy->bibid, 'mbr_id' => $id])) !== null) {
                     // el miembro fue quien reservó el material
                     $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
@@ -244,6 +250,7 @@ class CirculationController extends Controller
                     $datetime2 = new DateTime('now');
                     $interval = $datetime1->diff($datetime2);
                     $diff = (int) $interval->format('%r%a');
+                    // evaluar si la copia ha excedido el tiempo de reservación.
                     if ($holdMaxDays > 0 && $diff > $holdMaxDays) {
                         $tooOld = true;
                     } else {
@@ -262,7 +269,6 @@ class CirculationController extends Controller
             }
 
             if ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id === $id) {
-
                 // el miembro tiene el material. Buscar si ya alcanzó el límite de renovaciones.
                 if ($biblioCopy->hasReachedRenewalLimit(Member::findOne($id)->classification_id)) {
                     // el miembro ya alcanzó el límite de renovaciones
@@ -314,11 +320,12 @@ class CirculationController extends Controller
                                 Yii::$app->getSession()->setFlash('error', $v);
                             });
                 } else {
+                    // se borra el material del carro
+                    \frontend\models\Cart::findOne(['bibid' => $biblioCopy->bibid, 'copyid' => $biblioCopy->id, 'mbr_id' => $id])->delete();
                     \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                     Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item {barcode} checked out.", ['barcode' => $biblioCopy->barcode_nmbr]));
-                    $copies = array_column(\Yii::$app->session['cart'], "copyid");
-                    $key = array_search((int) $copyid, $copies, true);
-                    $copy_array[$key] = \Yii::$app->session['cart'][$key];
+                    // añadir el código de la copia en el array.
+                    $copy_array[] = $biblioCopy->barcode_nmbr;
                 }
             }
         }
@@ -335,15 +342,12 @@ class CirculationController extends Controller
             ->setSubject('New Member Checkout')
             ->send();
         
-        foreach ($copy_array as $key => $value) {
-            unset($_SESSION['cart'][$key]);
-        }
         return $this->redirect(['/member/profile']);
     }
 
     /**
      * Borra una reserva de un usuario dado.
-     * Cuando borra la reserva, el material pasa al carrito.
+     * Cuando borra la reserva, el material pasa al carrito de devolución.
      * @param int $id
      * @param int $mbr_id
      * @return mixed
