@@ -35,7 +35,23 @@ class AppController extends Controller
      * @param string $token Token de autorización.
      */
     public function actionUpdate(string $token) {
-        $cmd = "git init && git remote add origin https://x-token-auth:$token@bitbucket.org/nacevedo/openbiblio2.git && "
+        $loginPassw = \Yii::$app->params['updateKey'] . ":" . \Yii::$app->params['updateSecret'];
+        $ch = curl_init("https://bitbucket.org/site/oauth2/access_token");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTPS');
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $loginPassw);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            "grant_type" => "refresh_token",
+            "refresh_token" => $token]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        $auth = \GuzzleHttp\json_decode($response);
+        
+        $cmd = "git init && git remote add origin https://x-token-auth:{$auth->access_token}@bitbucket.org/nacevedo/openbiblio2.git && "
                 . "git fetch --all && git reset --hard origin/master";
 
         echo $this->ansiFormat("Antes de continuar, verifique que haya hecho un respaldo del sitio web (archivos y base de datos).\n"
