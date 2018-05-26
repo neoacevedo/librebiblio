@@ -32,27 +32,13 @@ class AppController extends Controller
      * <br />
      * Para ello, se puede modificar la lógica de este método para implementar la actualización desde recursos propios 
      * (Repositorios privados, archivos comprimidos en almacenamiento privado, etc).
-     * @param string $token Token de autorización.
      */
-    public function actionUpdate(string $token) 
+    public function actionUpdate() 
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://bitbucket.org/site/oauth2/access_token");
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, [
-            "client_id" => \Yii::$app->params['updateKey'],
-            "client_secret" => \Yii::$app->params['updateSecret'],
-            "grant_type" => "refresh_token",
-            "refresh_token" => $token]);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-        
-        $auth = \json_decode($response);
+        $accessToken = $this->getAccessToken();
         
         $cmd = "git init && "
-                . "git remote add origin https://x-token-auth:{$auth->access_token}@bitbucket.org/nacevedo/openbiblio2.git "
+                . "git remote add origin https://x-token-auth:$accessToken@bitbucket.org/nacevedo/openbiblio2.git "
                 . "&& git fetch --all && git reset --hard origin/master";
 
         echo $this->ansiFormat("Antes de continuar, verifique que haya hecho un respaldo del sitio web "
@@ -89,7 +75,31 @@ class AppController extends Controller
             }
         }
     }
+    
+    /**
+     * Obtiene las credenciales de acceso.
+     * 
+     * @link https://developer.atlassian.com/cloud/bitbucket/oauth-2/ BitBucket OAuth2 REST API
+     * @return string
+     */
+    private function getAccessToken() 
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://bitbucket.org/site/oauth2/access_token");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            "client_id" => \Yii::$app->params['updateKey'],
+            "client_secret" => \Yii::$app->params['updateSecret'],
+            "grant_type" => "client_credentials"
+            ]);
 
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $auth = \json_decode($response);
+        return $auth->access_token;
+    }
+    
     /**
      * Verifica si una función PHP está habilitada.
      * 
