@@ -40,7 +40,7 @@ class BiblioHold extends \yii\db\ActiveRecord
             [['bibid', 'copyid', 'hold_begin_dt'], 'required'],
             [['bibid', 'copyid', 'mbr_id'], 'integer'],
             [['hold_begin_dt'], 'safe'],
-            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
+            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::class, 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class BiblioHold extends \yii\db\ActiveRecord
      */
     public function getBiblio()
     {
-        return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
+        return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
     
     /**
@@ -73,7 +73,7 @@ class BiblioHold extends \yii\db\ActiveRecord
      */
     public function getBiblioCopy()
     {
-        return $this->hasOne(BiblioCopy::className(), ['id' => 'copyid']);
+        return $this->hasOne(BiblioCopy::class, ['id' => 'copyid']);
     }
 
     /**
@@ -82,6 +82,6 @@ class BiblioHold extends \yii\db\ActiveRecord
      */
     public function getMbr()
     {
-        return $this->hasOne(Member::className(), ['id' => 'mbr_id']);
+        return $this->hasOne(Member::class, ['id' => 'mbr_id']);
     }
 }

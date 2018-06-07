@@ -52,58 +52,52 @@ use yii\web\UploadedFile;
  * La estructura de directorios del archivo comprimido del tema es la siguiente:
  * <pre>
  *  <code>
- * basePath (/backend | /frontend)
- *  themes
- *  nombre_del_tema
- * </code>
+ * - basePath (/backend | /frontend)
+ *  - themes
+ *    - nombre_del_tema
+ *  </code>
  * </pre>
  * 
  * Esta estructura cambia internamente dependiendo del nivel.
  * 
- * Para _backend_:<br />
- * <pre>
- * <code>
- * admin
- *  checkout-privs
- *  collection
- *  material-type
- *  member-classify
- *  report
- *    &lt;ReportType&gt;Search
- * biblio-copy
- * cataloging
- *   biblio
- *   biblio-field
- * circulation
- *   placehold
- *   checkout
- * collectoin
- * layouts 
- * member-account
- * site
+ * Para _backend_:
+ * <code class="list-group">
+ * - admin
+ *  - checkout-privs
+ *  - collection
+ *  - material-type
+ *  - member-classify
+ *  - report
+ *    - &lt;ReportType&gt;Search
+ * - biblio-copy
+ * - cataloging
+ *   - biblio
+ *   - biblio-field
+ * - circulation
+ *   - placehold
+ *   - checkout
+ * - collectoin
+ * - layouts
+ * - member-account
+ * - site
  * </code>
- * </pre>
  * 
  * Para _frontend_:
- * <pre> 
- *  <code>
- *  biblio
- *  circulation
- *  layouts
- *  member
- *  site
- *  </code>
- * </pre>
+ * <code class="list-group"> 
+ * - biblio
+ * - circulation
+ * - layouts
+ * - member
+ * - site
+ * </code>
  * 
  * Adicional a ello, en algunos directorios se crean subdirectorios para idiomas específicos. Por ejemplo:
- * <pre>
- * <code>
- * backend
- *  AdminLTE
- *   site
- *    es-CO
+ * <code class="list-group">
+ * - backend
+ *  - AdminLTE
+ *   - site
+ *    - es-CO
  * </code>
- * </pre>
  * 
  * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_ 
  * y que no se incluyen en el archivo principal de configuración.
@@ -119,7 +113,7 @@ class ThemeController extends Controller
     public function behaviors() {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -138,7 +132,7 @@ class ThemeController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

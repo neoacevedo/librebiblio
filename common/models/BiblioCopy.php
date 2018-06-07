@@ -51,7 +51,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
                 }],
             [['barcode_nmbr'], 'string', 'max' => 20],
             [['status_cd'], 'string', 'max' => 3],
-            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
+            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::class, 'targetAttribute' => ['bibid' => 'id']],
         ];
     }
 
@@ -79,7 +79,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBiblio() {
-        return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
+        return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
 
     /**
@@ -87,7 +87,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioStatusHists() {
-        return $this->hasMany(BiblioStatusHistory::className(), ['copyid' => 'id']);
+        return $this->hasMany(BiblioStatusHistory::class, ['copyid' => 'id']);
     }
 
     /**
@@ -95,7 +95,7 @@ class BiblioCopy extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBibs() {
-        return $this->hasMany(Biblio::className(), ['id' => 'bibid'])->viaTable('{{%biblio_status_hist}}', ['copyid' => 'id']);
+        return $this->hasMany(Biblio::class, ['id' => 'bibid'])->viaTable('{{%biblio_status_hist}}', ['copyid' => 'id']);
     }
     
     /**

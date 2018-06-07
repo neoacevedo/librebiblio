@@ -57,7 +57,7 @@ class Cart extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getBiblio() {
-        return $this->hasOne(\common\models\Biblio::className(), ['id' => 'bibid']);
+        return $this->hasOne(\common\models\Biblio::class, ['id' => 'bibid']);
     }
     
     /**
@@ -65,6 +65,6 @@ class Cart extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioCopy() {
-        return $this->hasOne(\common\models\BiblioCopy::className(), ['id' => 'copyid']);
+        return $this->hasOne(\common\models\BiblioCopy::class, ['id' => 'copyid']);
     }
 }

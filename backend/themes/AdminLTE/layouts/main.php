@@ -351,6 +351,15 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "h
                                     </p>
                                 </div>
                                 <!-- /.form-group -->
+                                
+                                <div class="form-group">
+                                    <?= Html::a(Yii::t('app/settings', 'Flush Cache'), yii\helpers\Url::to(['admin/flush-cache']), ['class' => 'control-sidebar-subheading']) ?>
+
+                                    <p>
+                                        &nbsp;
+                                    </p>
+                                </div>
+                                <!-- /.form-group -->
                             </form>
                         </div>
                         <!-- /.tab-pane -->

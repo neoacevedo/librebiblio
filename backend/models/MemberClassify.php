@@ -60,6 +60,6 @@ class MemberClassify extends \yii\db\ActiveRecord
      */
     public function getCheckoutPrivs()
     {
-        return $this->hasMany(CheckoutPrivs::className(), ['classification_id' => 'id']);
+        return $this->hasMany(CheckoutPrivs::class, ['classification_id' => 'id']);
     }
 }

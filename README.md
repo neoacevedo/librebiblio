@@ -21,6 +21,7 @@ INSTALACIÓN
 + PHP 7
 + MySQL, MariaDB, PostgresSQL (Por ahora)
 + PHP7 bcmath
++ Apache Redirect (Si se usa Apache)
 
 ## Instalando desde Composer
 
@@ -34,7 +35,7 @@ Luego instalar OpenBiblio2 desde Composer:
 
 ## Desde un archivo comprimido
 
-Descargue el archivo comprimido desde [Github](https://github.com/neoacevedo/openbiblio2/archive/2.18.1.zip) y proceda a descomprimirlo en el directorio raiz de su sitio web o en public_html 
+Descargue el archivo comprimido desde [Github](https://github.com/neoacevedo/openbiblio2/archive/2.18.5.1.zip) y proceda a descomprimirlo en el directorio raiz de su sitio web o en public_html 
 
 ## Preparando la aplicación
 
@@ -69,18 +70,23 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
 
     php /ruta/al/directorio/de/openbiblio2/yii migrate
 
-5. Seguir las instrucciones para [configurar un servidor web en Yii2](http://www.yiiframework.com/doc-2.0/guide-start-installation.html#configuring-web-servers).
-
-6. En el archivo **backend/config/main.php** modificar la línea del componente _urlManagerFrontend_ reemplazando el valor de baseUrl con la URL del dominio del frontend:
-
+5. Configurar el servidor web. Para Apache, puede usar la siguiente configuración:
+   
     ```
-    ...
-        'baseUrl' => '//obib2.hyntibasoftware.co', // se debe cambiar por la URL del frontend
-    ...
+    <VirtualHost *:80>
+        ServerName openbiblio2.neoacevedo.co
+        ServerAlias openbiblio2.neoacevedo.co
+        # ej: /var/www/html/
+        DocumentRoot "/path/to/your/site/"
+        <Directory "/path/to/your/site/">
+          AllowOverride All
+        </Directory>
+    </VirtualHost>
     ```
-    _urlManagerFrontend_ genera las rutas de las imágenes en el frontend que se suben desde el backend.
 
-Hecho esto, puede acceder al backend desde la URL configurada - por ejemplo, _backend.openbiblio2.tld_ - con usuario y contraseña **_admin_**
+Hecho esto, puede acceder al sitio web desde la URL configurada - por ejemplo, openbiblio2.neoacevedo.co - 
+
+También puede acceder a la administración del sitio con la ruta _/admin_ con usuario y contraseña **_admin_**
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------

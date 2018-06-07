@@ -57,7 +57,7 @@ class Biblio extends \yii\db\ActiveRecord {
             [['image_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],
             [['opac_flg'], 'string', 'max' => 1],
-            [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => \backend\models\User::className(), 'targetAttribute' => ['updated_userid' => 'id']],
+            [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => \backend\models\User::class, 'targetAttribute' => ['updated_userid' => 'id']],
         ];
     }
 
@@ -94,7 +94,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getUser() {
-        return $this->hasOne(\backend\models\User::className(), ['id' => 'updated_userid']);
+        return $this->hasOne(\backend\models\User::class, ['id' => 'updated_userid']);
     }
 
     /**
@@ -102,7 +102,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getMaterialType() {
-        return $this->hasOne(\backend\models\MaterialType::className(), ['id' => 'material_cd']);
+        return $this->hasOne(\backend\models\MaterialType::class, ['id' => 'material_cd']);
     }
 
     /**
@@ -110,7 +110,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getCollection() {
-        return $this->hasOne(\backend\models\Collection::className(), ['id' => 'collection_cd']);
+        return $this->hasOne(\backend\models\Collection::class, ['id' => 'collection_cd']);
     }
 
     /**
@@ -118,7 +118,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioFields() {
-        return $this->hasMany(BiblioField::className(), ['bibid' => 'id']);
+        return $this->hasMany(BiblioField::class, ['bibid' => 'id']);
     }
 
     /**

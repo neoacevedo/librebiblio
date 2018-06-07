@@ -39,8 +39,8 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
         return [
             [['material_cd', 'classification_id', 'checkout_limit', 'renewal_limit'], 'required'],
             [['material_cd', 'classification_id', 'checkout_limit', 'renewal_limit'], 'integer'],
-            [['classification_id'], 'exist', 'skipOnError' => true, 'targetClass' => MemberClassify::className(), 'targetAttribute' => ['classification_id' => 'id']],
-            [['material_cd'], 'exist', 'skipOnError' => true, 'targetClass' => MaterialType::className(), 'targetAttribute' => ['material_cd' => 'id']],
+            [['classification_id'], 'exist', 'skipOnError' => true, 'targetClass' => MemberClassify::class, 'targetAttribute' => ['classification_id' => 'id']],
+            [['material_cd'], 'exist', 'skipOnError' => true, 'targetClass' => MaterialType::class, 'targetAttribute' => ['material_cd' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
      */
     public function getMemberClassify()
     {
-        return $this->hasOne(MemberClassify::className(), ['id' => 'classification_id']);
+        return $this->hasOne(MemberClassify::class, ['id' => 'classification_id']);
     }
 
     /**
@@ -73,6 +73,6 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
      */
     public function getMaterialType()
     {
-        return $this->hasOne(MaterialType::className(), ['id' => 'material_cd']);
+        return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
     }
 }

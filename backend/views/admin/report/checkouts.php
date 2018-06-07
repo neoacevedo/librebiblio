@@ -30,9 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $form->field($model, 'author') ?>
 
-    <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+    <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
 
-    <?php echo $form->field($model, 'status_begin_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+    <?php echo $form->field($model, 'status_begin_dt')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
 
     <?php // echo $form->field($model, 'pin') ?>
 

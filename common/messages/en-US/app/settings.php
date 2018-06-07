@@ -25,6 +25,7 @@ return [
     'Basic Library Settings.' => '',
     'Checkout Privileges' => '',
     'Collections' => '',
+    'Flush Cache' => '',
     'Library Settings' => '',
     'Material Types' => '',
     'Member Classify' => '',

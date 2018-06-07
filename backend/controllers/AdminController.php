@@ -26,17 +26,17 @@ class AdminController extends Controller
     public function behaviors() {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['users', 'users-create', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
+                        'actions' => ['flush-cache', 'users', 'users-create', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
                         'allow' => true,
                         'roles' => ['admin'],
-                    //'controllers' => [AdminController::className(), admin\SettingsController::className()],
+                    //'controllers' => [AdminController::class, admin\SettingsController::class],
                     /* 'matchCallback' => function () {
                       $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                       //Yii::info($roles);
@@ -55,7 +55,7 @@ class AdminController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -74,6 +74,38 @@ class AdminController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
+    }
+    
+    /**
+     * Borra la caché.
+     * 
+     * @link https://www.yee-soft.com/docs/yeesoft-settings-controllers-cachecontroller.html#actionFlush()-detail
+     * @return type
+     */
+    public function actionFlushCache()
+    {        
+        $frontendAssetPath = \Yii::getAlias('@frontend') . '/web/assets/';
+        $backendAssetPath = \Yii::getAlias('@backend') . '/web/assets/';
+
+        AdminController::recursiveDelete($frontendAssetPath);
+        AdminController::recursiveDelete($backendAssetPath);
+        
+        if (!is_dir($frontendAssetPath)) {
+            @mkdir($frontendAssetPath);
+        }
+        
+        if (!is_dir($backendAssetPath)) {
+            @mkdir($backendAssetPath);
+        }
+        
+        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        if (\Yii::$app->cache->flush()) {
+            \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
+        } else {
+            \Yii::$app->getSession()->setFlash('error',  \Yii::t('app', 'Failed to flush cache.'));
+        }
+        
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 
     /**
@@ -216,6 +248,26 @@ class AdminController extends Controller
         } else {
             $model = new \common\models\Settings;
             return $model;
+        }
+    }
+              
+    /**
+     * Remove file or directory
+     * @link https://www.yee-soft.com/docs/yeesoft-helpers-yeehelper.html#recursiveDelete()-detail YeeSoft Documentation     
+     * 
+     * @param string $path
+     * @return boolean
+     */
+    private static function recursiveDelete($path)
+    {
+        if (is_file($path)) {
+            return @unlink($path);
+        } elseif (is_dir($path)) {
+            $scan = glob(rtrim($path, '/') . '/*');
+            foreach ($scan as $index => $newPath) {
+                self::recursiveDelete($newPath);
+            }
+            return @rmdir($path);
         }
     }
 

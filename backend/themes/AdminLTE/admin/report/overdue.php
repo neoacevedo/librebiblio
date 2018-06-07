@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-xs-4">&nbsp;</div>
                 <div class="col-xs-4">
-                    <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+                    <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
                 </div>
                 <div class="col-xs-4">&nbsp;</div>
             </div>

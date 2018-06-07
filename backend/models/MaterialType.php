@@ -59,7 +59,7 @@ class MaterialType extends \yii\db\ActiveRecord
      */
     public function getBiblios()
     {
-        return $this->hasMany(Biblio::className(), ['material_cd' => 'id']);
+        return $this->hasMany(Biblio::class, ['material_cd' => 'id']);
     }
     
     /**

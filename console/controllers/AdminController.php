@@ -8,7 +8,6 @@
 
 namespace console\controllers;
 
-use Yii;
 use yii\helpers\Console;
 use yii\console\Controller;
 use console\models\PasswordResetRequest;
@@ -22,7 +21,7 @@ use DateTime;
  */
 class AdminController extends Controller 
 {
-
+    
     /**
      * Genera un restablecimiento de la contraseña.
      * 

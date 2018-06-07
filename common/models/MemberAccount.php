@@ -66,7 +66,7 @@ class MemberAccount extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\backend\models\User::className(), ['id' => 'create_userid']);
+        return $this->hasOne(\backend\models\User::class, ['id' => 'create_userid']);
     }
     
 }

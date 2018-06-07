@@ -32,7 +32,7 @@ class CirculationController extends Controller
     public function behaviors() {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 //'only' => ['logout', 'signup'],
                 'rules' => [
                     [
@@ -64,7 +64,7 @@ class CirculationController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -172,13 +172,13 @@ class CirculationController extends Controller
         }
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
         $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
-
+        // El artículo no se encuentra prestado o reservado.
         if ($biblioCopy->status_cd !== "out" && $biblioCopy->status_cd !== "hld") {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This item is not checked out or on hold."));
             return $this->redirect(Yii::$app->request->referrer);
         }
-
+        // el usuario ya tiene el artículo reservado.
         if ($biblioCopy->status_cd === 'out' && $biblioCopy->mbr_id === $id) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item checked out -- not placing hold."));
@@ -213,6 +213,7 @@ class CirculationController extends Controller
     /**
      * Solicita el préstamo de las copias bibliográficas seleccionadas.
      * 
+     * Se verifica si el usuario tiene deudas pendientes.
      * El método tiene una iteración interna por cada copia bibliográfica seleccionada. <br />
      * Después de esto actualiza la lista de las copias en el carrito.
      * @return mixed
@@ -224,7 +225,7 @@ class CirculationController extends Controller
         // los checkbox seleccionados
         $selection = \Yii::$app->request->post('selection'); 
 
-        $this->updateMemberAccount($id);
+        $this->updateMemberAccount();
                 
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
@@ -386,7 +387,9 @@ class CirculationController extends Controller
     /**
      * Actualiza la deuda del usuario.
      * 
-     * @param int $mbrid
+     * Si el usuario tiene algún material en préstamo y ha excedido el tiempo límite de entrega, 
+     * se actualiza esa información, se genera la deuda y se bloquea la cuenta del usuario para nuevos préstamos.
+     * 
      */
     protected function updateMemberAccount() {
         $id = Yii::$app->user->id;

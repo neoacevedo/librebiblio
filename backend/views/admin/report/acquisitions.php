@@ -35,7 +35,7 @@ $collections = array_merge([' ' => ''], $collections);
     <div class="row">
         <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-4">
-            <?= $form->field($model, 'created_at')->widget(DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?= $form->field($model, 'created_at')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
         </div>
         <div class="col-xs-4">&nbsp;</div>
     </div>

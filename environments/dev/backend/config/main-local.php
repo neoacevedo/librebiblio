@@ -62,6 +62,7 @@ $config = [
             'csrfParam' => '_csrf-backend',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9BvFtaWREW6eFhUe84XdS6CZNX3oUbSy',
+            'baseUrl' => '/admin'
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
@@ -100,15 +101,12 @@ $config = [
                 ],
             ],
         ],
-        'urlManagerFrontend' => [
+        'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => 'http://localhost/openbiblio2/frontend/web', // se deberá cambiar por @web para producción
+            //'baseUrl' => '/', // se deberá cambiar por @web para producción
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => false,
-            'rules' => [
-            ],
-        ]
+        ],
     ],
     'params' => $params,
 ];

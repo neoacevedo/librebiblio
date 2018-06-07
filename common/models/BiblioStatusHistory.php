@@ -43,9 +43,9 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
             [['bibid', 'copyid', 'mbr_id'], 'integer'],
             [['created_at', 'updated_at', 'due_back_dt'], 'safe'],
             [['status_cd'], 'string', 'max' => 3],
-            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
-            [['copyid'], 'exist', 'skipOnError' => true, 'targetClass' => BiblioCopy::className(), 'targetAttribute' => ['copyid' => 'id']],
-            //[['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::className(), 'targetAttribute' => ['mbr_id' => 'id']],
+            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::class, 'targetAttribute' => ['bibid' => 'id']],
+            [['copyid'], 'exist', 'skipOnError' => true, 'targetClass' => BiblioCopy::class, 'targetAttribute' => ['copyid' => 'id']],
+            //[['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::class, 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 
@@ -71,7 +71,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
      */
     public function getBib()
     {
-        return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
+        return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
 
     /**
@@ -80,6 +80,6 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
      */
     public function getCopy()
     {
-        return $this->hasOne(BiblioCopy::className(), ['id' => 'copyid']);
+        return $this->hasOne(BiblioCopy::class, ['id' => 'copyid']);
     }
 }

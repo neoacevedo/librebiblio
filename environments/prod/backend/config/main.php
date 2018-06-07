@@ -63,6 +63,7 @@ return [
             'csrfParam' => '_csrf-backend',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9BvFtaWREW6eFhUe84XdS6CZNX3oUbSy',
+            'baseUrl' => '/admin'
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
@@ -101,15 +102,12 @@ return [
                 ],
             ],
         ],
-        'urlManagerFrontend' => [
+        'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => 'http://openbiblio2.neoacevedo.co', // se deberá cambiar por la URL del frontend
+            //'baseUrl' => '/', // se deberá cambiar por @web para producción
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => false,
-            'rules' => [
-            ],
-        ]
+        ],
     ],
     'params' => $params,
 ];

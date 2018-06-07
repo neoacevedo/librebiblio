@@ -105,7 +105,7 @@ return [
             ],
         ],
         'pdf' => [
-            'class' => kartik\mpdf\Pdf::classname(),
+            'class' => kartik\mpdf\Pdf::class,
             'format' => kartik\mpdf\Pdf::FORMAT_A4,
             'orientation' => kartik\mpdf\Pdf::ORIENT_LANDSCAPE,
             'destination' => kartik\mpdf\Pdf::DEST_BROWSER,

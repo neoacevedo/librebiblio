@@ -35,7 +35,7 @@ class BiblioController extends Controller
     public function behaviors() {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -71,7 +71,7 @@ class BiblioController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -225,7 +225,7 @@ class BiblioController extends Controller
         $modelBiblioFields[] = new \common\models\BiblioField();
 
         $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
-        if ($materialType->hasMany(Biblio::className(), ['material_cd' => 'id'])->count() == 1) {
+        if ($materialType->hasMany(Biblio::class, ['material_cd' => 'id'])->count() == 1) {
             $materialType->default_flg = 'N';
             $materialType->save();
         }

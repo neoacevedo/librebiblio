@@ -63,6 +63,6 @@ class Collection extends \yii\db\ActiveRecord
      */
     public function getBiblios()
     {
-        return $this->hasMany(Biblio::className(), ['collection_cd' => 'id']);
+        return $this->hasMany(Biblio::class, ['collection_cd' => 'id']);
     }
 }

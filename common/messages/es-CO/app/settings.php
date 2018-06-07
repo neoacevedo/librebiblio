@@ -17,9 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Add/Edit/Delete Checkout for Library Members.' => '',
-    'Checkout Privileges' => '',
-    'Settings changed successfuly.' => 'Configuraciones actualizadas satisfactoriamente.',
+    'Add/Edit/Delete Checkout for Library Members.' => 'Agregar/Editar/Borrar Préstamos para Miembros de la Biblioteca.',
+    'Checkout Privileges' => 'Privilegios de Préstamos',
+    'Flush Cache' => 'Vaciar Caché',
     'Add/Edit/Delete Bibliograhical Collections.' => 'Agregar/Editar/Borrar Colecciones Bibliográficas.',
     'Add/Edit/Delete Classification for Library Members.' => 'Agregar/Editar/Borrar Clasificaciones para Miembros de la Biblioteca.',
     'Add/Edit/Delete Material types for Library.' => 'Agregar/Editar/Borrar Tipos de material para la Biblioteca',
@@ -29,5 +29,6 @@ return [
     'Library Settings' => 'Configuración de la Biblioteca',
     'Material Types' => 'Tipos de Material',
     'Member Classify' => 'Clasificación de Miembros',
+    'Settings changed successfuly.' => 'Configuraciones actualizadas satisfactoriamente.',
     'Themes' => 'Temas',
 ];

@@ -41,7 +41,7 @@ class BiblioField extends \yii\db\ActiveRecord
             [['bibid', 'tag'], 'integer'],
             [['field_data'], 'string', 'skipOnEmpty' => true],
             [['ind1_cd', 'ind2_cd', 'subfield_cd'], 'string', 'max' => 1],
-            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Biblio::className(), 'targetAttribute' => ['bibid' => 'id']],
+            [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\Biblio::class, 'targetAttribute' => ['bibid' => 'id']],
         ];
     }
 
@@ -67,6 +67,6 @@ class BiblioField extends \yii\db\ActiveRecord
      */
     public function getBib()
     {
-        return $this->hasOne(Biblio::className(), ['id' => 'bibid']);
+        return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
 }
