@@ -17,53 +17,50 @@
 
 // Amazon S3
 /*return $storageService = [
-    'class' => 'common\components\Storage',
+    'class' => 'neoacevedo\yii2\Storage',
     'service' => 's3',
     'config' => [
         'key' => '',
         'secret' => '',
         'bucket' => '',
-        'region' => '',
-        'prefix' => '', // ruta al directorio de imágenes (Opcional)
-    ]
+        'region' => ''
+    ],
+    'prefix' => '', // ruta al directorio de imágenes (Opcional)
 ];*/
 
 
 // Azure Blob Storage
 /* return $storageService = [
-  'class' => 'common\components\Storage',
+  'class' => 'neoacevedo\yii2\Storage',
   'service' => 'azure',
   'config' => [
   'accountName' => '',
   'accountKey' => '',
-  'container' => '',
+  'container' => ''
+  ],
   'prefix' => '' // ruta al directorio de imágenes (Opcional)
-  ]
   ]; */
 
 
 // Google Cloud Storage
 /* return $storageService = [
-  'class' => 'common\components\Storage',
+  'class' => 'neoacevedo\yii2\Storage',
   'service' => 'gcs',
   'config' => [
   'projectId' => '',
   'bucket' => 'your-bucket',
-  'prefix' => '', // ruta al directorio de imágenes (Opcional)
   'keyFile' => '' // Contenido del archivo JSON generado en la consola de Google
-  ]
+  ],
+  'prefix' => '' // ruta al directorio de imágenes (Opcional)
   ]; */
 
 
 // Almacenamiento local
 return $storageService = [
-    'class' => 'common\components\Storage',
+    'class' => 'neoacevedo\yii2\Storage',
     'service' => 'local',
     'config' => [
         'bucket' => '@frontend/web/', // reemplace @webroot por @frontend o @backend según sea el caso
-        'prefix' => 'images/'
-    ]
+    ],
+    'directory' => 'images/'
 ];
-
-
-

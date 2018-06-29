@@ -31,7 +31,7 @@ Primero, se debe comprobar de que se tenga la última versión del plugin [Compo
 
 Desde la web, verifique las extensiones de PHP: _http://<su-dominio>/requirements.php_
 
-Ejecute el siguiente comando:
+Ejecute el siguiente commando:
 `php /frontend/web/requirements.php`
 
 Obtendrá información sobre su servidor para identificar si cumple con los requerimientos. Instale los módulos PHP que hagan falta.

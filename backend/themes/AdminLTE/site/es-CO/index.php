@@ -5,17 +5,36 @@ use dosamigos\chartjs\ChartJs;
 /* @var $this yii\web\View */
 
 $settings = \common\models\Settings::find()->one();
-$this->title = null !== Yii::$app->name ? Yii::$app->name: "OpenBiblio2";#$settings->library_name ? $settings->library_name : "OpenBiblio2";
+$this->title = null !== Yii::$app->name ? Yii::$app->name : "OpenBiblio2"; #$settings->library_name ? $settings->library_name : "OpenBiblio2";
 $totales = [];
 $fechas = [];
 
 $fechas[] = "";
 $totales[] = "";
-foreach($checkout_stats as $checkout) {
-    $fechas[] = $checkout['checkoutsPerDay'];
-    $totales[] = $checkout['checkoutCount'];
+if (count($checkout_stats) >= 1) {
+    // Hay por lo menos uno. Se itera en ese o esos, y luego se rellena.
+    $count = 0;
+    // iteración para días anteriores.
+    for($count = count($checkout_stats); $count >= 1; $count--) {
+        $fechas[] = date('Y-m-d', strtotime("-$count day"));
+        $totales[] = 0;
+    }
+    // iteración de los actuales.
+    foreach ($checkout_stats as $checkout) {
+        $fechas[] = $checkout['checkoutsPerDay'];
+        $totales[] = $checkout['checkoutCount'];
+    }
+    
+} else {
+    // No hay. Se rellena la información.
+    for($count = 4; $count >= 1; $count--) {
+        $fechas[] = date('Y-m-d', strtotime("-$count day"));
+        $totales[] = 0;
+    }
+    
+    $fechas[] = date('Y-m-d');
 }
-$fechas[] = date('Y-m-d', strtotime('+1 day'));
+
 $fechas[] = "";
 $totales[] = "";
 ?>
