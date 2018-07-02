@@ -1,9 +1,11 @@
 <?php
+
 $params = array_merge(
         require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params-local.php'), require(__DIR__ . '/../../common/config/i18n.php')
 );
 
 $urlManager = require(__DIR__ . '/urlManager.php');
+
 $config = [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -21,22 +23,13 @@ $config = [
               ]; */
         }
     },
-    'on beforeAction' => function() {
-        $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
-        if ($theme) {
-            Yii::$app->getView()->theme = new \yii\base\Theme([
-                'basePath' => "@app/themes/{$theme->name}",
-                'baseUrl' => "@web/themes/{$theme->name}",
-                'pathMap' => [
-                    '@app/views' => "@app/themes/{$theme->name}",
-                ],
-            ]);
-            // configurar el tema en la sesión        
-            Yii::$app->session->set('frontend-skin', $theme->skin);
-        }
-    },
     //'language' => 'es-CO',
     'components' => [
+        'view' => [
+            'theme' => [
+                'class' => 'frontend\components\Theme',
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

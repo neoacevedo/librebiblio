@@ -13,5 +13,5 @@ return [
     'preferredLanguages' => ['es-CO', 'en-US'],
     'updateKey' => 'AFAF2ZeJ7QYSNfeB2h', // key del OAuth
     'updateSecret' => 'X64BEuBF3KXGfwbdLzTyWefz8gbPPRFZ', // secret key del OAuth
-    'version' => '2.18.6.28'
+    'version' => '2.18.07.02'
 ];

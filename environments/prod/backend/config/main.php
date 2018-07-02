@@ -9,20 +9,6 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'on beforeAction' => function() {
-        $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
-        if ($theme) {
-            Yii::$app->getView()->theme = new \yii\base\Theme([
-                'basePath' => "@app/themes/{$theme->name}",
-                'baseUrl' => "@web/themes/{$theme->name}",
-                'pathMap' => [
-                    '@app/views' => "@app/themes/{$theme->name}",
-                ],
-            ]);
-            // configurar el tema en la sesión        
-            Yii::$app->session->set('backend-skin', $theme->skin);
-        }
-    },
     'modules' => [
         'rbac' => [
             'class' => 'johnitvn\rbacplus\Module',
@@ -39,26 +25,15 @@ return [
 //                    }
 //                ]
 //            ],
-            'beforeCreateController' => function ($action) {
-
-                return Yii::$app->response->redirect(["admin/users"]);
-
-                #throw new NotFoundHttpException('The requested page does not exist.');
-            },
-            'beforeAction' => function ($action) {
-                /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                  //Yii::info($roles);
-                  if (array_key_exists("admin", $roles)) {
-                  return true;
-                  } */
-                return Yii::$app->response->redirect(["admin/users"]);
-
-                #throw new NotFoundHttpException('The requested page does not exist.');
-            },
         ],
     ],
     //'language' => 'es-CO',
     'components' => [
+        'view' => [
+            'theme' => [
+                'class' => 'backend\components\Theme',
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
