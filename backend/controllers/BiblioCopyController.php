@@ -37,11 +37,6 @@ class BiblioCopyController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                              if (array_key_exists("admin", $roles)) {
-                              return true;
-                              }
-                              return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id); */
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";

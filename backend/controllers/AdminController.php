@@ -36,16 +36,6 @@ class AdminController extends Controller
                         'actions' => ['flush-cache', 'users', 'users-create', 'users-update', 'users-delete', 'users-view', 'settings', 'themes'],
                         'allow' => true,
                         'roles' => ['admin'],
-                    //'controllers' => [AdminController::class, admin\SettingsController::class],
-                    /* 'matchCallback' => function () {
-                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                      //Yii::info($roles);
-                      if (array_key_exists("admin", $roles)) {
-                      return true;
-                      }
-
-                      return false;
-                      }, */
                     ],
                     [
                         'actions' => ['logout'],

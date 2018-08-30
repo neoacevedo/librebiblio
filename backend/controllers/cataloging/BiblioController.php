@@ -16,11 +16,12 @@ use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use neoacevedo\yii2\Storage;
 
 /**
  * BiblioController implements the CRUD actions for Biblio model.
  */
-class BiblioController extends Controller 
+class BiblioController extends Controller
 {
 
     /**
@@ -32,7 +33,8 @@ class BiblioController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -45,11 +47,6 @@ class BiblioController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-                            /* $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                              if (array_key_exists("admin", $roles)) {
-                              return true;
-                              }
-                              return Yii::$app->authManager->checkAccess(\Yii::$app->user->getId(), $this->action->id); */
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
@@ -83,7 +80,8 @@ class BiblioController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -96,7 +94,8 @@ class BiblioController extends Controller
      * Lists all Biblio models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -113,7 +112,8 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView(int $id) {
+    public function actionView(int $id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
                     'model' => $this->findModel($id),
@@ -125,20 +125,39 @@ class BiblioController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new Biblio();
         // este método es solo para crear los campos en el formulario
         $this->fillUsMarc();
         // Uploaded file instance.
-        $imageFile = UploadedFile::getInstance($model, 'image_file');
+        //$imageFile = UploadedFile::getInstance($model, 'image_file');
+        $storage = new Storage([
+            'service' => 'local',
+            'config' => [
+                'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
+                'extensions' => 'png, jpg, jpeg'
+            ]
+        ]);
+        $fileModel = $storage->getModel();
         $modelBiblioFields[] = new \common\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->upload($imageFile)) {
-                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            if (null !== $fileModel->uploadedFile) {
+                if ($storage->save()) {
+                    $model->image_file = $storage->getUrl("images/covers/" . $fileModel->uploadedFile->name);
+                } else {
+                    @array_walk_recursive($fileModel->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                }
+            } else {
+                @array_walk_recursive($fileModel->errors, function($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
             }
             if ($model->save()) {
                 // file is uploaded successfully
@@ -183,7 +202,8 @@ class BiblioController extends Controller
      * @param mixed $models
      * @return boolean
      */
-    private function createBiblioField(int $bibid, $models) {
+    private function createBiblioField(int $bibid, $models)
+    {
         $i = 1; // fieldid
         $modelBiblioField = \common\models\BiblioField::findAll(['bibid' => $bibid]);
         if (count($modelBiblioField) > 0) {
@@ -214,12 +234,20 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate(int $id) {
+    public function actionUpdate(int $id)
+    {
         $model = $this->findModel($id);
         $current_image_file = $model->image_file;
         // Uploaded file instance.
-        $imageFile = UploadedFile::getInstance($model, 'image_file');
-
+        //$imageFile = UploadedFile::getInstance($model, 'image_file');
+        $storage = new Storage([
+            'service' => 'local',
+            'config' => [
+                'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
+                'extensions' => 'png, jpg, jpeg'
+            ]
+        ]);
+        $fileModel = $storage->getModel();
         $this->fillUsMarc();
 
         $modelBiblioFields[] = new \common\models\BiblioField();
@@ -232,9 +260,14 @@ class BiblioController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if (null !== $imageFile) {
-                $model->upload($imageFile);
-                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            if (null !== $fileModel->uploadedFile) {
+                if ($storage->save()) {
+                    $model->image_file = $storage->getUrl("images/covers/" . $fileModel->uploadedFile->name);
+                } else {
+                    @array_walk_recursive($fileModel->errors, function($v, $k) {
+                                Yii::$app->getSession()->setFlash('error', $v);
+                            });
+                }
                 if ($model->save()) {
                     $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
                     $materialType->default_flg = 'Y';
@@ -287,7 +320,8 @@ class BiblioController extends Controller
         } else {
             //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $biblioField = \common\models\BiblioField::findOne(['bibid' => $id, "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
+                $biblioField = \common\models\BiblioField::findOne(['bibid' => $id,
+                            "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
                 if ($biblioField !== null) {
                     $modelBiblioFields[] = $biblioField;
                 } else {
@@ -297,7 +331,8 @@ class BiblioController extends Controller
             return $this->render('update', [
                         'model' => $model,
                         'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc
+                        'usmarc' => $this->usmarc,
+                        'fileModel' => $fileModel
             ]);
         }
     }
@@ -308,7 +343,8 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete(int $id) {
+    public function actionDelete(int $id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -319,7 +355,8 @@ class BiblioController extends Controller
      * 
      * Estos son los datos adicionales "básicos" de la bibliografía.
      */
-    private function fillUsMarc() {
+    private function fillUsMarc()
+    {
         $this->usmarc = null;
         $this->usmarc = \common\models\UsmarcSubfield::find()
                         ->where(["tag" => 100, "subfield_cd" => "a"])
@@ -331,7 +368,8 @@ class BiblioController extends Controller
                         ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
                         ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
                         ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c', 'e']])
+                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c',
+                                'e']])
                         ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
     }
 
@@ -342,7 +380,8 @@ class BiblioController extends Controller
      * @return Biblio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {

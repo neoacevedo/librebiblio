@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $fileModel neoacevedo\yii2\models\FileManager */
 
 
 #$bibliofield = backend\models\BiblioField::
@@ -41,7 +42,7 @@ endif;
 
     <?= $form->field($model, 'title_remainder')->textInput(['maxlength' => true, 'data-value' => '245b']) ?>
 
-    <?= $form->field($model, 'image_file')->fileInput() ?>
+    <?= $form->field($fileModel, 'uploadedFile')->fileInput() ?>
     <?=
     /* Html::img(Yii::$app->params['baseUrlFrontend'] . "/images/covers/{$model->image_file}", ['alt' => $model->title,
       'title' => $model->title,

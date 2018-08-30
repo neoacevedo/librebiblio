@@ -45,17 +45,24 @@ $mbr_id = Yii::$app->request->get('id');
                 'template' => '{checkout}',
                 'buttons' => [
                     'checkout' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, [
+                        return Html::a('<span class="glyphicon glyphicon-plus"></span>', [
+                            'circulation/checkout',
+                            'id' => Yii::$app->request->get('id'),
+                            'copyid' => $model->id,
+                            'bibid' => $model->bibid,
+                            'status' => 'out',
+                            'data-pjax' => 0
+                        ], [
                                     'title' => Yii::t('app', 'Check Out'),
                         ]);
                     }
                 ],
-                'urlCreator' => function ($action, $model, $key, $index) use($mbr_id) {
+                /*'urlCreator' => function ($action, $model, $key, $index) use($mbr_id) {
                     if ($action === 'checkout') {
                         $url = "index.php?r=circulation/checkout&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=out&data-pjax=0";
                         return $url;
                     }
-                }],
+                }],*/
         ],
     ]);
     ?>
