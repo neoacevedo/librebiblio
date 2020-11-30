@@ -38,6 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Material'
                     ],
                     [
+                        'attribute' => 'collection',
+                        'value' => 'collection.description',
+                        'label' => Yii::t('app', 'Collection')
+                    ],
+                    [
                         'value' => function($model) {
                             $biblioCopySearch = new \common\models\BiblioCopySearch();
                             $biblioCopySearch->bibid = $model->id;

@@ -16,31 +16,34 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "neoacevedo/yii2-rbac-plus": "18.06.29.2",
+        "neoacevedo/yii2-rbac-plus": "^18.11 || ^19.01",
         "kartik-v/yii2-widget-sidenav": "*",
         "yiisoft/yii2-jui": "^2.0",
-        "kartik-v/yii2-mpdf": "dev-master",
-        "mpdf/mpdf": "^7.0",
+        "kartik-v/yii2-mpdf": "^1.0",
+        "mpdf/mpdf": "^8.0",
         "kartik-v/yii2-export": "@dev",
         "2amigos/yii2-chartjs-widget": "~2.0",
-        "phpseclib/phpseclib": "^2",
+        "dmstr/yii2-adminlte-asset": "^2.6",
         "neoacevedo/yii2-storage": "^18.08"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "codeception/base": "^2.2.3",
+        "codeception/codeception": "^2.2.3",
         "codeception/verify": "~0.3.1",
         "yiisoft/yii2-apidoc": "~2.1.0"
     },
     "config": {
         "process-timeout": 1800,
         "fxp-asset": {
-            "installer-paths": {
-                "npm-asset-library": "vendor/npm",
-                "bower-asset-library": "vendor/bower"
-            }
+            "enabled": false
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }

@@ -135,6 +135,7 @@ class BiblioController extends Controller
         $storage = new Storage([
             'service' => 'local',
             'config' => [
+                'baseUrl' => Yii::$app->request->hostInfo, // ej: http://example.com/
                 'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
                 'extensions' => 'png, jpg, jpeg'
             ]
@@ -148,7 +149,7 @@ class BiblioController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if ($storage->save()) {
-                    $model->image_file = $storage->getUrl("images/covers/" . $fileModel->uploadedFile->name);
+                    $model->image_file = $storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
                 } else {
                     @array_walk_recursive($fileModel->errors, function($v, $k) {
                                 Yii::$app->getSession()->setFlash('error', $v);
@@ -171,7 +172,8 @@ class BiblioController extends Controller
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc
+                            'usmarc' => $this->usmarc,
+                            'fileModel' => $fileModel
                 ]);
             }
             #$posts = Yii::$app->request->post('BiblioField', []);
@@ -182,14 +184,16 @@ class BiblioController extends Controller
                 return $this->render('create', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc
+                            'usmarc' => $this->usmarc,
+                            'fileModel' => $fileModel
                 ]);
             }
         } else {
             return $this->render('create', [
                         'model' => $model,
                         'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc
+                        'usmarc' => $this->usmarc,
+                        'fileModel' => $fileModel
             ]);
         }
     }
@@ -262,7 +266,7 @@ class BiblioController extends Controller
 
             if (null !== $fileModel->uploadedFile) {
                 if ($storage->save()) {
-                    $model->image_file = $storage->getUrl("images/covers/" . $fileModel->uploadedFile->name);
+                    $model->image_file = $storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
                 } else {
                     @array_walk_recursive($fileModel->errors, function($v, $k) {
                                 Yii::$app->getSession()->setFlash('error', $v);
@@ -279,7 +283,8 @@ class BiblioController extends Controller
                     return $this->render('create', [
                                 'model' => $model,
                                 'modelBiblioFields' => $modelBiblioFields,
-                                'usmarc' => $this->usmarc
+                                'usmarc' => $this->usmarc,
+                                'fileModel' => $fileModel
                     ]);
                 }
             } else {
@@ -295,7 +300,8 @@ class BiblioController extends Controller
                     return $this->render('create', [
                                 'model' => $model,
                                 'modelBiblioFields' => $modelBiblioFields,
-                                'usmarc' => $this->usmarc
+                                'usmarc' => $this->usmarc,
+                                'fileModel' => $fileModel
                     ]);
                 }
             }
@@ -312,7 +318,8 @@ class BiblioController extends Controller
                 return $this->render('update', [
                             'model' => $model,
                             'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc
+                            'usmarc' => $this->usmarc,
+                            'fileModel' => $fileModel
                 ]);
             }
 

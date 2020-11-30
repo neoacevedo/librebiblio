@@ -1,0 +1,29 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Theme */
+/* @var $form yii\widgets\ActiveForm */
+?>
+
+<div class="theme-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+
+    <?= $form->field($model, 'skin')->dropDownList($skins, ['class' => 'form-control']) ?>
+    
+    <div class="hidden">
+        <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
+        <?= $form->field($model, "active")->label("")->hiddenInput() ?>
+    </div>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+</div>

@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle {
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\jui\JuiAsset',
+        #'yii\jui\JuiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
         'yii\web\YiiAsset',
@@ -27,7 +27,7 @@ class AppAsset extends AssetBundle {
     /**
      * @inheritdoc
      */
-    public function init() {
+    /*public function init() {
         parent::init();
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
         if ($theme) {
@@ -50,6 +50,6 @@ class AppAsset extends AssetBundle {
                 
             }
         }
-    }
+    }*/
 
 }

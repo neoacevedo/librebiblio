@@ -17,8 +17,8 @@ use common\models\Biblio;
 class BiblioSearch extends Biblio {
 
     public $user;
-    public $materialType;
-    public $collection;
+    #public $materialType;
+    #public $collection;
     public $biblioFields;
 
     /**
@@ -71,7 +71,7 @@ class BiblioSearch extends Biblio {
         $dataProvider->sort->attributes['materialType'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"
-            'asc' => ['{{%materialtype_dm}}.description' => SORT_ASC],
+            'asc' => ['{{%material_type_dm}}.description' => SORT_ASC],
             'desc' => ['{{%material_type_dm}}.description' => SORT_DESC],
         ];
         // The key is the attribute name on our "collection" instance

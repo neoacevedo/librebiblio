@@ -41,12 +41,12 @@ class AdminController extends Controller
         $model->email = $email;
         if ($model->validate()) {
             if ($model->sendEmail()) {
-                echo $this->ansiFormat("Coreo enviado al usuario.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
+                echo $this->ansiFormat("Correo enviado al usuario.\n", Console::BG_GREEN, \yii\helpers\Console::BOLD);
             } else {
                 echo $this->ansiFormat("Lo sentimos, no podemos restablecer la contraseña para la dirección de correo electrónico proporcionada.\n", Console::BG_RED, Console::BOLD);
             }
         } else {
-            echo $this->ansiFormat($model->errors() . "\n", Console::BG_RED, Console::BOLD);
+            echo $this->ansiFormat(\json_encode($model->getErrors()) . "\n", Console::BG_RED, Console::BOLD);
         }
     }
 
@@ -56,7 +56,7 @@ class AdminController extends Controller
      * La ejecución se hace como un comando de Yii:
      * 
      * ```
-     * php yii app/remove-placeholds
+     * php yii admin/remove-placeholds
      * ```
      * 
      * Busca cada copia y verifica si el número de días en reserva ha superado el establecido y procede a 
