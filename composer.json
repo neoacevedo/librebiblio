@@ -16,7 +16,7 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "neoacevedo/yii2-rbac-plus": "^18.11 || ^19.01",
+        "neoacevedo/yii2-rbac-plus": "*",
         "kartik-v/yii2-widget-sidenav": "*",
         "yiisoft/yii2-jui": "^2.0",
         "kartik-v/yii2-mpdf": "^1.0",
@@ -24,7 +24,7 @@
         "kartik-v/yii2-export": "@dev",
         "2amigos/yii2-chartjs-widget": "~2.0",
         "dmstr/yii2-adminlte-asset": "^2.6",
-        "neoacevedo/yii2-storage": "^18.08"
+        "neoacevedo/yii2-storage": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
