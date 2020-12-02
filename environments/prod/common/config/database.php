@@ -8,11 +8,14 @@
 /**
  * Configuración de base de datos.
  */
-$connectstr_dbhost = filter_input(INPUT_SERVER, "DB_HOSTNAME") or filter_input(INPUT_ENV, "DB_HOSTNAME");
-$connectstr_dbname = filter_input(INPUT_SERVER, "DB_NAME") or filter_input(INPUT_ENV, "DB_NAME");
-$connectstr_dbusername = filter_input(INPUT_SERVER, "DB_USERNAME") or filter_input(INPUT_ENV, "DB_USERNAME");
-$connectstr_dbpassword = filter_input(INPUT_SERVER, "DB_PASSWORD") or filter_input(INPUT_ENV, "DB_PASSWORD");
-$connectstr_dbengine = filter_input(INPUT_SERVER, "DB_ENGINE") or filter_input(INPUT_ENV, "DB_ENGINE");
+$connectstr_dbhost = filter_input(INPUT_SERVER, "DB_HOSTNAME") ?? filter_input(INPUT_ENV, "DB_HOSTNAME");
+$connectstr_dbname = filter_input(INPUT_SERVER, "DB_NAME") ?? filter_input(INPUT_ENV, "DB_NAME");
+$connectstr_dbusername = filter_input(INPUT_SERVER, "DB_USERNAME") ?? filter_input(INPUT_ENV, "DB_USERNAME");
+$connectstr_dbpassword = filter_input(INPUT_SERVER, "DB_PASSWORD") ?? filter_input(INPUT_ENV, "DB_PASSWORD");
+$connectstr_dbengine = filter_input(INPUT_SERVER, "DB_ENGINE") ?? filter_input(INPUT_ENV, "DB_ENGINE");
+
+// debug
+print_r($connectstr_dbhost, true);
 
 return [
     'class' => 'yii\db\Connection',
