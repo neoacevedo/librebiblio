@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+$useMemcached = filter_input(INPUT_SERVER, "USE_MEMCACHED") ?? getenv("USE_MEMCACHED");
 /**
  * Gestión de caché.
  * 
@@ -12,8 +13,8 @@
  */
 if (extension_loaded('memcached')) {
     $cache['class'] = "yii\caching\MemCache";
-    $servers['host'] = 'localhost';
-    $servers['port'] = 11211;
+    $servers['host'] = filter_input(INPUT_SERVER, "CACHE_HOST") ?? getenv("CACHE_HOST");
+    $servers['port'] = filter_input(INPUT_SERVER, "CACHE_PORT") ?? getenv("CACHE_PORT");
     $servers['weight'] = 100;
     $cache['servers'] = [];
     array_push($cache['servers'], $servers);

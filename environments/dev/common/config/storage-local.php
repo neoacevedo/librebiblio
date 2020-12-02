@@ -15,26 +15,26 @@
  * Tipo de servicio
  * @var string
  */
-$storageService = filter_input(INPUT_SERVER | INPUT_ENV, "STORAGE_SERVICE");
+$storageService = filter_input(INPUT_SERVER, "STORAGE_SERVICE") ?? getenv("STORAGE_SERVICE");
 
 // Amazon S3
-$aws_key = filter_input(INPUT_SERVER | INPUT_ENV, "AWS_KEY");
-$aws_secret_access_key = filter_input(INPUT_SERVER | INPUT_ENV, "AWS_SECRET_ACCESS_KEY");
-$aws_bucket = filter_input(INPUT_SERVER | INPUT_ENV, "AWS_BUCKET");
-$aws_region = filter_input(INPUT_SERVER | INPUT_ENV, "AWS_REGION");
-$aws_prefix = filter_input(INPUT_SERVER | INPUT_ENV, "AWS_PREFIX");
+$aws_key = filter_input(INPUT_SERVER, "AWS_KEY") ?? getenv("AWS_KEY");
+$aws_secret_access_key = filter_input(INPUT_SERVER, "AWS_SECRET_ACCESS_KEY") ?? getenv("AWS_SECRET_ACCESS_KEY");
+$aws_bucket = filter_input(INPUT_SERVER, "AWS_BUCKET") ?? getenv("AWS_BUCKET");
+$aws_region = filter_input(INPUT_SERVER, "AWS_REGION") ?? getenv("AWS_REGION");
+$aws_prefix = filter_input(INPUT_SERVER, "AWS_PREFIX") ?? getenv("AWS_PREFIX");
 
 // Azure Storage Blob
-$azure_accountName = filter_input(INPUT_SERVER | INPUT_ENV, "AZURE_ACCOUNTNAME");
-$azure_accountKey = filter_input(INPUT_SERVER | INPUT_ENV, "AZURE_ACCOUNTKEY");
-$azure_container = filter_input(INPUT_SERVER | INPUT_ENV, "AZURE_CONTAINER");
-$azure_prefix = filter_input(INPUT_SERVER | INPUT_ENV, "AZURE_PREFIX");
+$azure_accountName = filter_input(INPUT_SERVER, "AZURE_ACCOUNTNAME") ?? getenv("AZURE_ACCOUNTNAME");
+$azure_accountKey = filter_input(INPUT_SERVER, "AZURE_ACCOUNTKEY") ?? getenv("AZURE_ACCOUNTKEY");
+$azure_container = filter_input(INPUT_SERVER, "AZURE_CONTAINER") ?? getenv("AZURE_CONTAINER");
+$azure_prefix = filter_input(INPUT_SERVER, "AZURE_PREFIX") ?? getenv("AZURE_PREFIX");
 
 // Google Cloud Storage
-$gcs_projectId = filter_input(INPUT_SERVER | INPUT_ENV, "GCS_PROJECTID");
-$gcs_bucket = filter_input(INPUT_SERVER | INPUT_ENV, "GCS_BUCKET");
-$gcs_keyFile = filter_input(INPUT_SERVER | INPUT_ENV, "GCS_KEYFILE_CONTENT"); # ESTO PARA REVISAR.
-$gcs_prefix = filter_input(INPUT_SERVER | INPUT_ENV, "GCS_PREFIX");
+$gcs_projectId = filter_input(INPUT_SERVER, "GCS_PROJECTID") ?? getenv("GCS_PROJECTID");
+$gcs_bucket = filter_input(INPUT_SERVER, "GCS_BUCKET") ?? getenv("GCS_BUCKET");
+$gcs_keyFile = filter_input(INPUT_SERVER, "GCS_KEYFILE_CONTENT") ?? getenv("GCS_KEYFILE_CONTENT"); # ESTO PARA REVISAR.
+$gcs_prefix = filter_input(INPUT_SERVER, "GCS_PREFIX") ?? getenv("GCS_PREFIX");
 
 switch ($storageService) {
   case "s3":
