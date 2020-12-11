@@ -16,6 +16,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\BiblioSearch;
+use yii\web\Response;
+use yii\web\NotFoundHttpException;
 
 /**
  * CirculationController implementa la lógica para los préstamos y reservas de materiales bibliográficos.
@@ -96,7 +98,7 @@ class CirculationController extends Controller
      *  <li>hld</li>
      *  <li>out</li>
      * </ul>
-     * @return mixed
+     * @return Response
      */
     public function actionAddToCart(int $copyid, int $bibid, string $status) {
         $id = \Yii::$app->user->id;
@@ -112,7 +114,7 @@ class CirculationController extends Controller
             if($newCart->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item added to cart."));
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
+                @array_walk_recursive($newCart->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
@@ -129,7 +131,7 @@ class CirculationController extends Controller
      * El listado de los materiales se obtiene desde variables de sesión, por lo que al cerrar la sesión 
      * e iniciar de nuevo sesión, el listado desaparece.
      * 
-     * @return mixed
+     * @return Response
      */
     public function actionCart() {
         $id = Yii::$app->user->id;
@@ -145,6 +147,11 @@ class CirculationController extends Controller
         ]);
     }
     
+    /**
+     * Borra del carro el libro para préstamo.
+     * @param int $id ID del ítem.
+     * @return Response
+     */
     public function actionDelete(int $id) {
         \frontend\models\Cart::findOne($id)->delete();
         return $this->redirect(Yii::$app->request->referrer);
@@ -155,7 +162,7 @@ class CirculationController extends Controller
      * @todo Queda pendiente que el propio miembro pueda solicitar en préstamo un material.
      * @param int $bibid
      * @param int $copyid
-     * @return mixed
+     * @return Response
      */
     public function actionPlacehold(int $bibid, int $copyid) {
         $id = Yii::$app->user->id;
@@ -198,7 +205,7 @@ class CirculationController extends Controller
             $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
 
             if (!$biblioHold->save()) {
-                array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+                array_walk_recursive($biblioHold->errors, function($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             } else {
@@ -216,7 +223,7 @@ class CirculationController extends Controller
      * Se verifica si el usuario tiene deudas pendientes.
      * El método tiene una iteración interna por cada copia bibliográfica seleccionada. <br />
      * Después de esto actualiza la lista de las copias en el carrito.
-     * @return mixed
+     * @return Response
      */
     public function actionCheckout() {
         $id = Yii::$app->user->id;
@@ -351,7 +358,7 @@ class CirculationController extends Controller
      * Cuando borra la reserva, el material pasa al carrito de devolución.
      * @param int $id
      * @param int $mbr_id
-     * @return mixed
+     * @return Response
      */
     public function actionHoldDelete(int $hld_id) {
         $biblioHold = \common\models\BiblioHold::findOne($hld_id);

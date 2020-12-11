@@ -144,15 +144,10 @@
     RewriteCond %{HTTP_USER_AGENT} ZyBorg
     RewriteRule ^.* - [F,L]
 
-    RewriteCond %{REQUEST_URI} ^/admin/$
-    RewriteRule ^(admin)/$ /$1 [R=301,L]
-    RewriteCond %{REQUEST_URI} ^/admin
-    RewriteRule ^admin(/.+)?$ /backend/web/$1 [L,PT]
-
-    RewriteCond %{REQUEST_URI} ^/rest/$
-    RewriteRule ^(rest)/$ /$1 [R=301,L]
-    RewriteCond %{REQUEST_URI} ^/rest
-    RewriteRule ^rest(/.+)?$ /webservice/web/$1 [L,PT]
+    #RewriteCond %{REQUEST_URI} ^/rest/$
+    #RewriteRule ^(rest)/$ /$1 [R=301,L]
+    #RewriteCond %{REQUEST_URI} ^/rest
+    #RewriteRule ^rest(/.+)?$ /rest/web/$1 [L,PT]
 
     RewriteCond %{REQUEST_URI} ^.*$
     RewriteRule ^(.*)$ /frontend/web/$1
