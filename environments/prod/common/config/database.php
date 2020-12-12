@@ -14,7 +14,7 @@ $connectstr_dbusername = filter_input(INPUT_SERVER, "DB_USERNAME") ?? getenv("DB
 $connectstr_dbpassword = filter_input(INPUT_SERVER, "DB_PASSWORD") ?? getenv("DB_PASSWORD");
 $connectstr_dbengine = filter_input(INPUT_SERVER, "DB_ENGINE") ?? getenv("DB_ENGINE");
 
-print_r("$connectstr_dbengine:host=$connectstr_dbhost;dbname=$connectstr_dbname");
+print_r("$connectstr_dbengine:host=" . getenv("DB_HOSTNAME") . ";dbname=$connectstr_dbname");
 
 return [
     'class' => 'yii\db\Connection',
