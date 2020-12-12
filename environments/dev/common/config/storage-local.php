@@ -15,40 +15,40 @@
  * Tipo de servicio
  * @var string
  */
-$storageService = filter_input(INPUT_SERVER, "STORAGE_SERVICE") ?? getenv("STORAGE_SERVICE");
+define('STORAGE_SERVICE', '%%STORAGE_SERVICE%%');
 
 // Amazon S3
-$aws_key = filter_input(INPUT_SERVER, "AWS_KEY") ?? getenv("AWS_KEY");
-$aws_secret_access_key = filter_input(INPUT_SERVER, "AWS_SECRET_ACCESS_KEY") ?? getenv("AWS_SECRET_ACCESS_KEY");
-$aws_bucket = filter_input(INPUT_SERVER, "AWS_BUCKET") ?? getenv("AWS_BUCKET");
-$aws_region = filter_input(INPUT_SERVER, "AWS_REGION") ?? getenv("AWS_REGION");
-$aws_prefix = filter_input(INPUT_SERVER, "AWS_PREFIX") ?? getenv("AWS_PREFIX");
+define('AWS_KEY', '%%AWS_KEY%%');
+define('AWS_SECRET_ACCES_KEY', '%%AWS_SECRET_ACCESS_KEY%%');
+define('AWS_BUCKET', '%%AWS_BUCKET%%');
+define('AWS_REGION', '%%AWS_REGION%%');
+define('AWS_PREFIX', '%%AWS_PREFIX%%');
 
 // Azure Storage Blob
-$azure_accountName = filter_input(INPUT_SERVER, "AZURE_ACCOUNTNAME") ?? getenv("AZURE_ACCOUNTNAME");
-$azure_accountKey = filter_input(INPUT_SERVER, "AZURE_ACCOUNTKEY") ?? getenv("AZURE_ACCOUNTKEY");
-$azure_container = filter_input(INPUT_SERVER, "AZURE_CONTAINER") ?? getenv("AZURE_CONTAINER");
-$azure_prefix = filter_input(INPUT_SERVER, "AZURE_PREFIX") ?? getenv("AZURE_PREFIX");
+define('AZURE_ACCOUNTNAME', '%%AZURE_ACCOUNTNAME%%');
+define('AZURE_ACCOUNTKEY', '%%AZURE_ACCOUNTKEY%%');
+define('AZURE_CONTAINER', '%%AZURE_CONTAINER%%');
+define('AZURE_PREFIX', '%%AZURE_PREFIX%%');
 
 // Google Cloud Storage
-$gcs_projectId = filter_input(INPUT_SERVER, "GCS_PROJECTID") ?? getenv("GCS_PROJECTID");
-$gcs_bucket = filter_input(INPUT_SERVER, "GCS_BUCKET") ?? getenv("GCS_BUCKET");
-$gcs_keyFile = filter_input(INPUT_SERVER, "GCS_KEYFILE_CONTENT") ?? getenv("GCS_KEYFILE_CONTENT"); # ESTO PARA REVISAR.
-$gcs_prefix = filter_input(INPUT_SERVER, "GCS_PREFIX") ?? getenv("GCS_PREFIX");
+define('GCS_PROJECTID', '%%GCS_PROJECTID%%');
+define('GCS_BUCKET', '%%GCS_BUCKET%%');
+define('GCS_KEYFILE_CONTENT', '%%GCS_KEYFILE_CONTENT%%'); # ESTO PARA REVISAR.
+define('GCS_PREFIX', '%%GCS_PREFIX%%');
 
-switch ($storageService) {
+switch (STORAGE_SERVICE) {
   case "s3":
   case "S3":
     $storage = [
       'class' => 'neoacevedo\yii2\Storage',
       'service' => 's3',
       'config' => [
-        'key' => $aws_key,
-        'secret' => $aws_secret_access_key,
-        'bucket' => $aws_bucket,
-        'region' => $aws_region
+        'key' => AWS_KEY,
+        'secret' => AWS_SECRET_ACCES_KEY,
+        'bucket' => AWS_BUCKET,
+        'region' => AWS_REGION
       ],
-      'prefix' => $aws_prefix, // ruta al directorio de imágenes (Opcional)
+      'prefix' => AWS_PREFIX, // ruta al directorio de imágenes (Opcional)
     ];
     break;
   case "azure":
@@ -56,11 +56,11 @@ switch ($storageService) {
       'class' => 'neoacevedo\yii2\Storage',
       'service' => 'azure',
       'config' => [
-        'accountName' => $azure_accountName,
-        'accountKey' => $azure_accountKey,
-        'container' => $azure_container
+        'accountName' => AZURE_ACCOUNTNAME,
+        'accountKey' => AZURE_ACCOUNTKEY,
+        'container' => AZURE_CONTAINER
       ],
-      'prefix' => $azure_prefix // ruta al directorio de imágenes (Opcional)
+      'prefix' => AZURE_PREFIX // ruta al directorio de imágenes (Opcional)
     ];
     break;
   case "google":
@@ -68,11 +68,11 @@ switch ($storageService) {
       'class' => 'neoacevedo\yii2\Storage',
       'service' => 'gcs',
       'config' => [
-        'projectId' => $gcs_projectId,
-        'bucket' => $gcs_bucket,
-        'keyFile' => $gcs_keyFile // Contenido del archivo JSON generado en la consola de Google
+        'projectId' => GCS_PROJECTID,
+        'bucket' => GCS_BUCKET,
+        'keyFile' => GCS_KEYFILE_CONTENT // Contenido del archivo JSON generado en la consola de Google
       ],
-      'prefix' => $gcs_prefix // ruta al directorio de imágenes (Opcional)
+      'prefix' => GCS_PREFIX // ruta al directorio de imágenes (Opcional)
     ];
     break;
   default:

@@ -8,17 +8,17 @@
 /**
  * Configuración de base de datos.
  */
-$connectstr_dbhost = filter_input(INPUT_SERVER, "DB_HOSTNAME") ?? getenv("DB_HOSTNAME");
-$connectstr_dbname = filter_input(INPUT_SERVER, "DB_NAME") ?? getenv("DB_NAME");
-$connectstr_dbusername = filter_input(INPUT_SERVER, "DB_USERNAME") ?? getenv("DB_USERNAME");
-$connectstr_dbpassword = filter_input(INPUT_SERVER, "DB_PASSWORD") ?? getenv("DB_PASSWORD");
-$connectstr_dbengine = filter_input(INPUT_SERVER, "DB_ENGINE") ?? getenv("DB_ENGINE");
+define('DB_NAME', '%%DB_NAME%%');
+define('DB_USERNAME', '%%DB_USERNAME%%');
+define('DB_PASSWORD', '%%DB_PASSWORD%%');
+define('DB_HOSTNAME', '%%DB_HOSTNAME%%');
+define('DB_ENGINE', '%%DB_ENGINE%%');
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "$connectstr_dbengine:host=$connectstr_dbhost;dbname=$connectstr_dbname",
-    'username' => $connectstr_dbusername,
-    'password' => $connectstr_dbpassword,
+    'dsn' => DB_ENGINE . ":host=" . DB_HOSTNAME . ";dbname=" . DB_NAME,
+    'username' => DB_USERNAME,
+    'password' => DB_PASSWORD,
     'charset' => 'utf8',
     'enableQueryCache' => true
 ];
