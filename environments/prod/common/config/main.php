@@ -10,6 +10,10 @@ $mailer = require(__DIR__ . '/mail.php');
 $fs = require(__DIR__.'/storage.php');
 
 return [
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'America/Bogota',
     'components' => [

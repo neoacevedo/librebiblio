@@ -10,6 +10,10 @@ $db = require(__DIR__ . '/database-local.php');
 $fs = require(__DIR__ . '/storage-local.php');
 
 return [
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm' => '@vendor/npm-asset',
+    ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'America/Bogota',
     'components' => [
