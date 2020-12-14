@@ -48,16 +48,16 @@ $library_phone = \common\models\Settings::find()->one()->library_phone;#null !==
                 ],
             ]);
             $menuItems = [
-                ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+                ['label' => Yii::t('app', 'Home'), 'url' => ['site/index']],
             ];
             if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
+                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['site/login']];
             } else {
                 $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation']];
-                $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['/cataloging/biblio']];
-                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
-                $menuItems[] = ['label' => Yii::t('app/reports', 'Reports'), 'url' => ['admin/report/index'], 'template' => '<a href="{url}"><i class="fa fa-bar-chart"></i><span>{label}</span></a>'];
+                $menuItems[] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['circulation']];
+                $menuItems[] = ['label' => Yii::t('app', 'Cataloging'), 'url' => ['cataloging/biblio']];
+                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['circulation/cart']];
+                $menuItems[] = ['label' => Yii::t('app/reports', 'Reports'), 'url' => ['report/index'], 'template' => '<a href="{url}"><i class="fa fa-bar-chart"></i><span>{label}</span></a>'];
                 $isAdmin = false;
                 foreach ($roles as $role) {
                     if ($role->name == "admin") {
@@ -68,8 +68,8 @@ $library_phone = \common\models\Settings::find()->one()->library_phone;#null !==
                     $menuItems[] = [
                         'label' => Yii::$app->user->identity->username,
                         'items' => [
-                            ['label' => Yii::t('app', 'Settings'), 'url' => ["/admin/settings"]],
-                            ['label' => Yii::t('app', 'Staff'), 'url' => ['/admin/users']],
+                            ['label' => Yii::t('app', 'Settings'), 'url' => ["settings"]],
+                            ['label' => Yii::t('app', 'Staff'), 'url' => ['users']],
                             '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(

@@ -38,7 +38,6 @@ return [
             'csrfParam' => '_csrf-backend',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9BvFtaWREW6eFhUe84XdS6CZNX3oUbSy',
-            'baseUrl' => '/admin'
         ],
         'user' => [
             'identityClass' => 'backend\models\User',

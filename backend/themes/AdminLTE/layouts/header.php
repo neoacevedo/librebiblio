@@ -92,7 +92,7 @@ use yii\helpers\Html;
                                 <div class="row">
                                     <div class="col-xs-4 text-center">&nbsp;</div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="<?= yii\helpers\Url::to(['/admin/users']); ?>">
+                                        <a href="<?= yii\helpers\Url::to(['users']); ?>">
                                             <i class="fa fa-users"></i> <?= Yii::t('app', 'Staff'); ?>
                                         </a>                                                        
                                     </div>
