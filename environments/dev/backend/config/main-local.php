@@ -78,8 +78,7 @@ $config = [
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            //'baseUrl' => '/', // se deberá cambiar por @web para producción
-            'enablePrettyUrl' => true,
+            'enablePrettyUrl' => false,
             'showScriptName' => false,
         ],
     ],
