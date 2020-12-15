@@ -361,7 +361,7 @@ class CirculationController extends Controller
             $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
 
             if (!$biblioHold->save()) {
-                @array_walk_recursive($biblioHold->errors, function($v, $k) {
+                array_walk_recursive($biblioHold->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                 return false;
@@ -463,7 +463,7 @@ class CirculationController extends Controller
         $biblioCopy->status_cd = 'out';
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if (!$biblioCopy->save()) {
-            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
+            array_walk_recursive($biblioCopy->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
             return false;
@@ -479,7 +479,7 @@ class CirculationController extends Controller
         $biblioStatusHistory->due_back_dt = date('Y-m-d', strtotime($biblioCopy->due_back_dt));
 
         if (!$biblioStatusHistory->save()) {
-            @array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
         }
@@ -529,7 +529,7 @@ class CirculationController extends Controller
         $biblioCopy->due_back_dt = null;
         $biblioCopy->updated_at = date('Y-m-d H:i:s');
         if (!$biblioCopy->save()) {
-            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
+            array_walk_recursive($biblioCopy->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
             return false;
@@ -546,7 +546,7 @@ class CirculationController extends Controller
         $biblioStatusHistory->due_back_dt = null;
 
         if (!$biblioStatusHistory->save()) {
-            @array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
+            array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
         }
@@ -590,7 +590,7 @@ class CirculationController extends Controller
             $trans->amount = $fee * $late;
             $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
             if (!$trans->save()) {
-                @array_walk_recursive($trans->errors, function($v, $k) {
+                array_walk_recursive($trans->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                 return false;

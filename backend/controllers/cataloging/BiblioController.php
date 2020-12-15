@@ -129,18 +129,18 @@ class BiblioController extends Controller
     {
         $model = new Biblio();
         // este método es solo para crear los campos en el formulario
-        $this->fillUsMarc();
+        $this->getUsMarc();
         // Uploaded file instance.
         //$imageFile = UploadedFile::getInstance($model, 'image_file');
-        $storage = new Storage([
+        /*$storage = new Storage([
             'service' => 'local',
             'config' => [
                 'baseUrl' => Yii::$app->request->hostInfo, // ej: http://example.com/
                 'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
                 'extensions' => 'png, jpg, jpeg'
             ]
-        ]);
-        $fileModel = $storage->getModel();
+        ]);*/
+        $fileModel = Yii::$app->storage->getModel();
         $modelBiblioFields[] = new \common\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
@@ -148,8 +148,8 @@ class BiblioController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
-                if ($storage->save()) {
-                    $model->image_file = $storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
+                if (Yii::$app->storage->save()) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
                 } else {
                     @array_walk_recursive($fileModel->errors, function($v, $k) {
                                 Yii::$app->getSession()->setFlash('error', $v);
@@ -224,8 +224,13 @@ class BiblioController extends Controller
             }
             return true;
         } else {
-            array_walk_recursive($modelBiblioField->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
+            $message = "";
+            array_walk_recursive($modelBiblioField, function($model, $k) use ($message) {
+                foreach ($model->errors as $key => $error) {
+                    $message .= $error[0] . "\n";
+                }
+
+                Yii::$app->getSession()->setFlash('error', $message);
             });
         }
 
@@ -277,7 +282,7 @@ class BiblioController extends Controller
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
-                    @array_walk_recursive($model->errors, function($v, $k) {
+                    array_walk_recursive($model->errors, function($v, $k) {
                                 Yii::$app->getSession()->setFlash('error', $v);
                             });
                     return $this->render('create', [
@@ -362,7 +367,7 @@ class BiblioController extends Controller
      * 
      * Estos son los datos adicionales "básicos" de la bibliografía.
      */
-    private function fillUsMarc()
+    private function getUsMarc()
     {
         $this->usmarc = null;
         $this->usmarc = \common\models\UsmarcSubfield::find()

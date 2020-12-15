@@ -108,7 +108,7 @@ class MemberController extends Controller
                 return $this->redirect(['circulation/index']);
             }
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
         }
@@ -302,7 +302,7 @@ class MemberController extends Controller
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
             return $this->render('update', [

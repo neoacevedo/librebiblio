@@ -4,15 +4,9 @@
 
 use yii\helpers\Html;
 
-if (class_exists('backend\assets\AppAsset')) {
-    backend\assets\AppAsset::register($this);
-} else {
-    app\assets\AppAsset::register($this);
-}
+backend\assets\AppAsset::register($this);
 
-#CrudAsset::register($this);
-
-backend\assets\AdminLteAsset::register($this);
+dmstr\web\AdminLteAsset::register($this);
 
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
 $library_name = Yii::$app->name; //null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
