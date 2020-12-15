@@ -21,7 +21,7 @@ return [
         'db' => $db,
         'session' => [
             'class' => 'yii\web\CacheSession',
-            'cache' => 'cache',
+            'cache' => $cache,
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',

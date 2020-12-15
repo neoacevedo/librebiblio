@@ -47,6 +47,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
+            'class' => yii\web\CacheSession::class,
             'name' => 'ob2',
             'timeout' => 3600
         ],
