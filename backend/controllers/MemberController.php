@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
@@ -24,13 +24,14 @@ use yii\filters\AccessControl;
  * MemberController implementa las operaciones CRUD para el modelo Member
  *
  */
-class MemberController extends Controller 
+class MemberController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -82,7 +83,8 @@ class MemberController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -95,7 +97,8 @@ class MemberController extends Controller
      * Registrar un miembro de la biblioteca desde la administración.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new \common\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
@@ -108,13 +111,13 @@ class MemberController extends Controller
                 return $this->redirect(['circulation/index']);
             }
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
         }
 
         return $this->render('signup', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -124,7 +127,8 @@ class MemberController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -134,7 +138,8 @@ class MemberController extends Controller
      * Genera un PDF con un diseño básico con la información de los miembros de la biblioteca.
      * @return mixed
      */
-    public function actionPrint() {
+    public function actionPrint()
+    {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -146,13 +151,15 @@ class MemberController extends Controller
         ]);
         $pdf = Yii::$app->pdf;
         $pdf->content = $html;
-        $pdf->options = ['margin_left' => 20,
+        $pdf->options = [
+            'margin_left' => 20,
             'margin_right' => 15,
             'margin_top' => 25,
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE];
+            'showBarcodeNumbers' => FALSE
+        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
@@ -170,16 +177,22 @@ class MemberController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionHistory(int $id) {
+    public function actionHistory(int $id)
+    {
         $model = $this->findModel($id);
         $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
         ]);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -189,51 +202,54 @@ class MemberController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView(int $id) {
+    public function actionView(int $id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-// estadísticas del usuario con los tipos de material registrados en la biblioteca
+        // estadísticas del usuario con los tipos de material registrados en la biblioteca
         if (Yii::$app->db->driverName === "mysql") {
-            $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
-                        "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
-                    ])->from("{{%material_type_dm}} mat")
-                    ->join('join', '{{%member}}')
-                    ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
-                    ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
-                            . 'from biblio_copy c, biblio b '
-                            . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
-                    ->where('{{%member}}.id = :id', [":id" => $id])
-                    ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
-                    ->all();
+            $materialTypeStats = (new \yii\db\Query)->select([
+                "mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
+                "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+            ])->from("{{%material_type_dm}} mat")
+                ->join('join', '{{%member}}')
+                ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
+                ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
+                    . 'from biblio_copy c, biblio b '
+                    . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                ->where('{{%member}}.id = :id', [":id" => $id])
+                ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
+                ->all();
         } elseif (Yii::$app->db->driverName === "pgsql") {
-            
-            $materialTypeStats = (new \yii\db\Query)->select(["mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
-                        "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
-                    ])->from("{{%material_type_dm}} mat")
-                    ->join('cross join', '{{%member}}')
-                    ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id = {{%member}}.classification_id')
-                    ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
-                            . 'from {{%biblio_copy}} c, biblio b '
-                            . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
-                    ->where('{{%member}}.id = :id', [":id" => $id])
-                    ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
-                    ->orderBy('mat.id')
-                    ->all();
+
+            $materialTypeStats = (new \yii\db\Query)->select([
+                "mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
+                "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+            ])->from("{{%material_type_dm}} mat")
+                ->join('cross join', '{{%member}}')
+                ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id = {{%member}}.classification_id')
+                ->leftJoin('(select b.material_cd, c.bibid, c.id as copyid '
+                    . 'from {{%biblio_copy}} c, biblio b '
+                    . 'where c.mbr_id=' . $id . ' and b.id=c.bibid) as mbrout', 'mbrout.material_cd = mat.id')
+                ->where('{{%member}}.id = :id', [":id" => $id])
+                ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
+                ->orderBy('mat.id')
+                ->all();
         }
 
 
-// status: checkout
+        // status: checkout
         $biblioCopySearch[0] = new \common\models\BiblioCopySearch();
         $biblioCopySearch[0]->mbr_id = $id;
         $biblioCopySearch[0]->status_cd = 'out';
         $biblioCopy[0] = $biblioCopySearch[0]->search([]);
-// status: hold
+        // status: hold
         $biblioCopySearch[1] = new \common\models\BiblioHoldSearch();
         $biblioCopySearch[1]->mbr_id = $id;
         $biblioCopy[1] = $biblioCopySearch[1]->search([]);
-// copias bibliográficas
+        // copias bibliográficas
         $searchModel = new \common\models\BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-// deudas
+        // deudas
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
@@ -244,12 +260,12 @@ class MemberController extends Controller
             Yii::$app->getSession()->setFlash('error', Yii::t('circulation', "This member is currently blocked."));
         }
         return $this->render('view', [
-                    'model' => $member,
-                    'materialTypeStats' => $materialTypeStats,
-                    'biblioCopySearch' => $biblioCopySearch,
-                    'biblioCopy' => $biblioCopy,
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider
+            'model' => $member,
+            'materialTypeStats' => $materialTypeStats,
+            'biblioCopySearch' => $biblioCopySearch,
+            'biblioCopy' => $biblioCopy,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -259,7 +275,8 @@ class MemberController extends Controller
      * @param int $mbr_id
      * @return mixed
      */
-    public function actionAccountPrint($id, $mbr_id) {
+    public function actionAccountPrint($id, $mbr_id)
+    {
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
 
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -271,13 +288,15 @@ class MemberController extends Controller
 
         $pdf = Yii::$app->pdf;
         $pdf->content = $html;
-        $pdf->options = ['margin_left' => 20,
+        $pdf->options = [
+            'margin_left' => 20,
             'margin_right' => 15,
             'margin_top' => 25,
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE];
+            'showBarcodeNumbers' => FALSE
+        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
@@ -295,18 +314,19 @@ class MemberController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate(int $id) {
+    public function actionUpdate(int $id)
+    {
         $model = $this->findModel($id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -318,7 +338,8 @@ class MemberController extends Controller
      * @return Member the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
@@ -326,5 +347,4 @@ class MemberController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
-
 }

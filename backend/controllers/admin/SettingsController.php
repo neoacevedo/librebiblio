@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers\admin;
 
 use Yii;
@@ -11,6 +13,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use yii\web\NotFoundHttpException;
 
 /**
  * SettingsController implementa las configuraciones del sitio usando el modelo Settings.
@@ -27,13 +30,14 @@ use yii\web\UploadedFile;
  * - Artículos por página
  * - Desconectado (La biblioteca para los miembros no estará disponible cuando esta opción esté activa)
  */
-class SettingsController extends Controller 
+class SettingsController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -46,7 +50,7 @@ class SettingsController extends Controller
                         //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['admin'],
-                    /* 'matchCallback' => function () {
+                        /* 'matchCallback' => function () {
                       $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
                       //Yii::info($roles);
                       if (array_key_exists("admin", $roles)) {
@@ -75,7 +79,8 @@ class SettingsController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -89,7 +94,8 @@ class SettingsController extends Controller
      *
      * @return string
      */
-    public function actionLibrarySettings() {
+    public function actionLibrarySettings()
+    {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
@@ -104,12 +110,13 @@ class SettingsController extends Controller
         array_push($files_list, Yii::t('app', 'Upload File:'));
         return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
     }
-    
+
     /**
      * Actualiza la configuración básica de la biblioteca.
      * @return mixed
      */
-    public function actionLibrarySettingsUpdate() {
+    public function actionLibrarySettingsUpdate()
+    {
         $model = $this->findModel();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
@@ -128,8 +135,8 @@ class SettingsController extends Controller
                 if ($model->upload()) {
                     $model->library_image_url = $model->imageFile->name;
                 }
-                
-                if($model->save()) {
+
+                if ($model->save()) {
                     return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
                 }
             } else {
@@ -139,7 +146,7 @@ class SettingsController extends Controller
                 }
             }
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
 
@@ -152,12 +159,12 @@ class SettingsController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @return Settings the loaded model
      */
-    protected function findModel() {
+    protected function findModel()
+    {
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
-
 }

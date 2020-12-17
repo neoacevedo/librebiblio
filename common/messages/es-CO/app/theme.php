@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'File not uploaded' => '',
+    'File not uploaded' => 'No se pudo subir el archivo',
     'Could not copy theme files.' => 'No se pudieron copiar los archivos del tema.',
     'Frontend' => 'Público',
     'Install' => 'Instalar',

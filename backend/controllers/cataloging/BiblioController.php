@@ -121,9 +121,10 @@ class BiblioController extends Controller
     }
 
     /**
-     * Creates a new Biblio model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Registra el material bibliográfico.
+     * Primero llena los atributos USMarc del controlador, asigna el tipo de material 
+     * y luego realiza el registro.
+     * @return string
      */
     public function actionCreate()
     {
@@ -148,15 +149,16 @@ class BiblioController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
+                Yii::$app->storage->prefix = "covers/";
                 if (Yii::$app->storage->save()) {
                     $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
                 } else {
-                    @array_walk_recursive($fileModel->errors, function($v, $k) {
+                    array_walk_recursive($fileModel->errors, function($v, $k) {
                                 Yii::$app->getSession()->setFlash('error', $v);
                             });
                 }
             } else {
-                @array_walk_recursive($fileModel->errors, function($v, $k) {
+                array_walk_recursive($fileModel->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
             }
@@ -166,7 +168,7 @@ class BiblioController extends Controller
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
+                array_walk_recursive($model->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                 return $this->render('create', [
@@ -176,7 +178,6 @@ class BiblioController extends Controller
                             'fileModel' => $fileModel
                 ]);
             }
-            #$posts = Yii::$app->request->post('BiblioField', []);
 
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);

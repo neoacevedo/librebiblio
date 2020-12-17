@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <a href="<?= \yii\helpers\Url::to(["member/print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('circulation', 'Print QR') ?></a>
+                <a href="<?= \yii\helpers\Url::to(["member/print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('circulation', 'Print List') ?></a>
                 <?php Pjax::begin(); ?>   <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,

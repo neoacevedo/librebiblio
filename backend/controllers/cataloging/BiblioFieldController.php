@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.neoacevedo.co
+ * @copyright Copyright (c) 2020 Néstor Acevedo
+ * @license https://www.neoacevedo.co/license
+ */
+
 namespace backend\controllers\cataloging;
 
 use Yii;
@@ -13,13 +19,14 @@ use yii\filters\VerbFilter;
 /**
  * BiblioFieldController implements the CRUD actions for BiblioField model.
  */
-class BiblioFieldController extends Controller 
+class BiblioFieldController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -67,7 +74,8 @@ class BiblioFieldController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -80,15 +88,16 @@ class BiblioFieldController extends Controller
      * Lists all BiblioField models.
      * @return mixed
      */
-    public function actionIndex($bibid) {
+    public function actionIndex($bibid)
+    {
         $searchModel = new BiblioFieldSearch();
         $model = \common\models\Biblio::findOne($bibid);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'model' => $model,
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -99,10 +108,11 @@ class BiblioFieldController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($bibid, $fieldid) {
+    public function actionView($bibid, $fieldid)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-                    'model' => $this->findModel($bibid, $fieldid),
+            'model' => $this->findModel($bibid, $fieldid),
         ]);
     }
 
@@ -112,18 +122,20 @@ class BiblioFieldController extends Controller
      * @param integer $bibid
      * @return mixed
      */
-    public function actionCreate($bibid) {
+    public function actionCreate($bibid)
+    {
         $model = new BiblioField();
         $biblio = \common\models\Biblio::findOne($bibid);
         $marcBlocks = \common\models\Usmarc::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index',
-                        'bibid' => $model->bibid
+            return $this->redirect([
+                'index',
+                'bibid' => $model->bibid
             ]);
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('create', [
-                    'model' => $model, 'biblio' => $biblio, 'marcBlocks' => $marcBlocks
+            'model' => $model, 'biblio' => $biblio, 'marcBlocks' => $marcBlocks
         ]);
     }
 
@@ -135,20 +147,22 @@ class BiblioFieldController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($bibid, $fieldid) {
+    public function actionUpdate($bibid, $fieldid)
+    {
         $model = $this->findModel($bibid, $fieldid);
         $biblio = \common\models\Biblio::findOne($bibid);
         $marcBlocks = \common\models\Usmarc::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index',
-                        'bibid' => $model->bibid
+            return $this->redirect([
+                'index',
+                'bibid' => $model->bibid
             ]);
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('update', [
-                    'model' => $model,
-                    'biblio' => $biblio,
-                    'marcBlocks' => $marcBlocks
+            'model' => $model,
+            'biblio' => $biblio,
+            'marcBlocks' => $marcBlocks
         ]);
     }
 
@@ -160,13 +174,15 @@ class BiblioFieldController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($bibid, $fieldid) {
+    public function actionDelete($bibid, $fieldid)
+    {
         $this->findModel($bibid, $fieldid)->delete();
 
         return $this->redirect(['cataloging/biblio/view', 'index' => $bibid]);
     }
 
-    public function actionUsmarcTagsOptions(int $block) {
+    public function actionUsmarcTagsOptions(int $block)
+    {
         $usmarTags = \common\models\UsmarcTagDm::findAll(['block_nmbr' => $block]);
         if (count($usmarTags) > 0) {
             foreach ($usmarTags as $tag) {
@@ -177,7 +193,8 @@ class BiblioFieldController extends Controller
         }
     }
 
-    public function actionUsmarcSubfieldsOptions(int $tag) {
+    public function actionUsmarcSubfieldsOptions(int $tag)
+    {
         $usmarcSubfields = \common\models\UsmarcSubfield::findAll(['tag' => $tag]);
         if (count($usmarcSubfields) > 0) {
             foreach ($usmarcSubfields as $sf) {
@@ -196,7 +213,8 @@ class BiblioFieldController extends Controller
      * @return BiblioField the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($bibid, $fieldid = null) {
+    protected function findModel($bibid, $fieldid = null)
+    {
         if ($fieldid !== null) {
             if (($model = BiblioField::findOne(['bibid' => $bibid, 'fieldid' => $fieldid])) !== null) {
                 return $model;
@@ -209,5 +227,4 @@ class BiblioFieldController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-
 }

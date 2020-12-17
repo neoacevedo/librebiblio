@@ -47,6 +47,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'History');
                             return common\models\BiblioStatusDm::findOne($model->status_cd)->description;
                         }
                     ],
+                    [
+                        'label' => Yii::t('library', 'Date'),
+                        'value' => function($model) {
+                            return $model->created_at;
+                        }
+                    ]
                 ]
             ])
             ?>

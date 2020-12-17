@@ -16,7 +16,7 @@ use yii\helpers\Html;
                     echo \yii\helpers\Html::encode($this->title);
                 } else {
                     echo \yii\helpers\Inflector::camel2words(
-                            \yii\helpers\Inflector::id2camel($this->context->module->id)
+                        \yii\helpers\Inflector::id2camel($this->context->module->id)
                     );
                     echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
                 }
@@ -25,11 +25,11 @@ use yii\helpers\Html;
         <?php } ?>
 
         <?=
-        Breadcrumbs::widget(
+            Breadcrumbs::widget(
                 [
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]
-        )
+            )
         ?>
     </section>
 
@@ -44,10 +44,9 @@ use yii\helpers\Html;
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0
+        <b>Version</b> <?= Yii::$app->params['version'] ?>
     </div>
-    <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; <?= \date('Y') ?> <?= Html::encode(Yii::$app->name) ?>.</strong> Todos los derechos reservados.
 </footer>
 
 <!-- Control Sidebar -->
@@ -113,7 +112,7 @@ use yii\helpers\Html;
                     </p>
                 </div>
                 <!-- /.form-group -->
-                
+
                 <div class="form-group">
                     <?= Html::a(Yii::t('app/settings', 'Flush Cache'), yii\helpers\Url::to(['admin/flush-cache']), ['class' => 'control-sidebar-subheading']); ?>
 

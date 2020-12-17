@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers;
 
 use Yii;
@@ -17,13 +19,14 @@ use yii\filters\VerbFilter;
 /**
  * BiblioCopyController implements the CRUD actions for BiblioCopy model.
  */
-class BiblioCopyController extends Controller 
+class BiblioCopyController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -65,12 +68,13 @@ class BiblioCopyController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -83,13 +87,14 @@ class BiblioCopyController extends Controller
      * Lists all BiblioCopy models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -99,10 +104,11 @@ class BiblioCopyController extends Controller
      * @param integer $bibid
      * @return mixed
      */
-    public function actionView(int $id, int $bibid) {
+    public function actionView(int $id, int $bibid)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-                    'model' => $this->findModel($id, $bibid),
+            'model' => $this->findModel($id, $bibid),
         ]);
     }
 
@@ -111,17 +117,18 @@ class BiblioCopyController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new BiblioCopy();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -133,17 +140,18 @@ class BiblioCopyController extends Controller
      * @param integer $bibid
      * @return mixed
      */
-    public function actionUpdate(int $id, int $bibid) {
+    public function actionUpdate(int $id, int $bibid)
+    {
         $model = $this->findModel($id, $bibid);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -155,7 +163,8 @@ class BiblioCopyController extends Controller
      * @param integer $bibid
      * @return mixed
      */
-    public function actionDelete(int $id, int $bibid) {
+    public function actionDelete(int $id, int $bibid)
+    {
         $this->findModel($id, $bibid)->delete();
 
         return $this->redirect(['cataloging/biblio/index']);
@@ -165,7 +174,8 @@ class BiblioCopyController extends Controller
      * Genera un PDF con el código QR de las copias bibliográficas.
      * @return mixed
      */
-    public function actionCopiesPrint() {
+    public function actionCopiesPrint()
+    {
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -174,7 +184,8 @@ class BiblioCopyController extends Controller
         ]);
         $pdf = Yii::$app->pdf;
         $pdf->content = $html;
-        $pdf->options = ['margin_left' => 15,
+        $pdf->options = [
+            'margin_left' => 15,
             'margin_right' => 15,
             'margin_top' => 25,
             'margin_bottom' => 25,
@@ -202,12 +213,11 @@ class BiblioCopyController extends Controller
      * @return BiblioCopy the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id, int $bibid) {
+    protected function findModel(int $id, int $bibid)
+    {
         if (($model = BiblioCopy::findOne(['id' => $id, 'bibid' => $bibid])) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

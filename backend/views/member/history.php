@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model \common\models\User */
 
 $this->title = Yii::t('app', '{modelClass} History: ', [
             'modelClass' => Yii::t('app', 'User'),
@@ -47,6 +47,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'History');
                             return common\models\BiblioStatusDm::findOne($model->status_cd)->description;
                         }
                     ],
+                    [
+                        'label' => Yii::t('library', 'Date'),
+                        'value' => function($model) {
+                            return $model->created_at;
+                        }
+                    ]
                 ]
             ])
             ?>

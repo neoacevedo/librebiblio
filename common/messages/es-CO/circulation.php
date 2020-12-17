@@ -18,7 +18,7 @@
  */
 return [
     'Payment' => '',
-    'Update Member Account: {nameAttribute}' => '',
+    'Update Member Account: {nameAttribute}' => 'Actualizar Cuenta de Miembro: {nameAttribute}',
     'The item {barcode} is already on cart' => '@@El artículo {barcode} ya está en el carrito.@@',
     'This item is already checked out or on hold.' => '@@Este artículo ya se encuentra en préstamo o reserva.@@',
     'Account' => 'Cuenta',
@@ -44,6 +44,7 @@ return [
     'No new holds' => 'Sin nuevas reservas',
     'Note: Member has an outstanding account balance of {0, number, currency}' => 'Nota: El miembro tiene un saldo de cuenta pendiente de {0, number, currency}',
     'Place holds' => 'Reservas',
+    'Print List' => 'Imprimir Lista',
     'Print QR' => 'Imprimir QR',
     'Profile' => 'Perfil',
     'The bibliography with barcode number {barcode} that you are attempting to check in has one or more hold requests placed on it.  <b>Please file this bibliography with your held items instead of placing it on your shelving cart.</b>  The status code for this bibliography has been set to hold.' => 'La bibliografía con número de código de barras {barcode} que estás intentando conseguir tiene una o más peticiones de reserva. <strong>Por favor, retorna el item en las estanterías</strong>. El código de estado para esta bibliografía se ha establecido en "reservado".',

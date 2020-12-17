@@ -11,7 +11,5 @@ return [
     // caducidad del token de renovación de la contraseña.
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO'],
-    'updateKey' => 'AFAF2ZeJ7QYSNfeB2h', // key del OAuth
-    'updateSecret' => 'X64BEuBF3KXGfwbdLzTyWefz8gbPPRFZ', // secret key del OAuth
     'version' => '2.20.12.14'
 ];

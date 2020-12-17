@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
@@ -19,15 +19,20 @@ use backend\reports;
 /**
  * Site controller
  */
-class SiteController extends Controller 
+class SiteController extends Controller
 {
 
+    /**
+     * Define la clase CSS de la etiqueta body
+     * @var string
+     */
     public $bodyClass;
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -66,7 +71,8 @@ class SiteController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -80,37 +86,38 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $copy_count = \common\models\BiblioCopy::find()->where(['status_cd' => 'out'])->count();
         $bills = \common\models\MemberAccount::find()->where(["transaction_type_cd" => "+c"])->sum('amount');
         $new_members_count = \common\models\Member::find()->where(['>=', 'created_at', strtotime(date('Y-m-d'))])->count();
         // gráfica
         if (Yii::$app->db->driverName === "mysql") {
             $checkout_stats = (new \yii\db\Query())
-                    ->select(["date_format(created_at, '%Y-%m-%d') as checkoutsPerDay", 'count(*) as checkoutCount'])
-                    ->from("{{%biblio_status_hist}}")
-                    ->where(['status_cd' => 'out'])
-                    ->andWhere([">=", "created_at", new \yii\db\Expression('(NOW() - INTERVAL 1 WEEK)')])
-                    ->groupBy(['checkoutsPerDay'])
-                    ->limit(5)
-                    ->all();
+                ->select(["date_format(created_at, '%Y-%m-%d') as checkoutsPerDay", 'count(*) as checkoutCount'])
+                ->from("{{%biblio_status_hist}}")
+                ->where(['status_cd' => 'out'])
+                ->andWhere([">=", "created_at", new \yii\db\Expression('(NOW() - INTERVAL 1 WEEK)')])
+                ->groupBy(['checkoutsPerDay'])
+                ->limit(5)
+                ->all();
         } elseif (Yii::$app->db->driverName === "pgsql") {
             $checkout_stats = (new \yii\db\Query())
-                    ->select(['to_char(created_at, \'YYYY-MM_DD\') as "checkoutsPerDay"', 'count(*) as "checkoutCount"'])
-                    ->from("{{%biblio_status_hist}}")
-                    ->where(['status_cd' => 'out'])
-                    ->andWhere([">=", "created_at", new \yii\db\Expression("(NOW() - INTERVAL '1 WEEK')")])
-                    ->groupBy(['"checkoutsPerDay"'])
-                    ->limit(5)
-                    ->all();
+                ->select(['to_char(created_at, \'YYYY-MM_DD\') as "checkoutsPerDay"', 'count(*) as "checkoutCount"'])
+                ->from("{{%biblio_status_hist}}")
+                ->where(['status_cd' => 'out'])
+                ->andWhere([">=", "created_at", new \yii\db\Expression("(NOW() - INTERVAL '1 WEEK')")])
+                ->groupBy(['"checkoutsPerDay"'])
+                ->limit(5)
+                ->all();
         }
 
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'checkouts' => $copy_count,
-                    'bills' => $bills,
-                    'new_members' => $new_members_count,
-                    'checkout_stats' => $checkout_stats
+            'checkouts' => $copy_count,
+            'bills' => $bills,
+            'new_members' => $new_members_count,
+            'checkout_stats' => $checkout_stats
         ]);
     }
 
@@ -119,7 +126,8 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionLogin() {
+    public function actionLogin()
+    {
         $this->bodyClass = "hold-transition login-page";
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (!Yii::$app->user->isGuest) {
@@ -133,7 +141,7 @@ class SiteController extends Controller
             $model->password = '';
             $this->layout = '//main-login';
             return $this->render('login', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -143,10 +151,10 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionLogout() {
+    public function actionLogout()
+    {
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
-
 }

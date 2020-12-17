@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers\admin;
 
 use Yii;
@@ -17,13 +19,14 @@ use yii\filters\AccessControl;
 /**
  * CheckoutPrivsController implements the CRUD actions for CheckoutPrivs model.
  */
-class CheckoutPrivsController extends Controller 
+class CheckoutPrivsController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -61,12 +64,13 @@ class CheckoutPrivsController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -79,13 +83,14 @@ class CheckoutPrivsController extends Controller
      * Lists all CheckoutPrivs models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new CheckoutPrivsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -96,10 +101,11 @@ class CheckoutPrivsController extends Controller
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionView(int $id, int $material_cd, int $classification_id) {
+    public function actionView(int $id, int $material_cd, int $classification_id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-                    'model' => $this->findModel($id, $material_cd, $classification_id),
+            'model' => $this->findModel($id, $material_cd, $classification_id),
         ]);
     }
 
@@ -108,17 +114,18 @@ class CheckoutPrivsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new CheckoutPrivs();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id]);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -131,17 +138,18 @@ class CheckoutPrivsController extends Controller
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionUpdate(int $id, int $material_cd, int $classification_id) {
+    public function actionUpdate(int $id, int $material_cd, int $classification_id)
+    {
         $model = $this->findModel($id, $material_cd, $classification_id);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id]);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -154,7 +162,8 @@ class CheckoutPrivsController extends Controller
      * @param integer $classification_id
      * @return mixed
      */
-    public function actionDelete(int $id, int $material_cd, int $classification_id) {
+    public function actionDelete(int $id, int $material_cd, int $classification_id)
+    {
         $this->findModel($id, $material_cd, $classification_id)->delete();
 
         return $this->redirect(['index']);
@@ -169,7 +178,8 @@ class CheckoutPrivsController extends Controller
      * @return CheckoutPrivs the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id, int $material_cd, int $classification_id) {
+    protected function findModel(int $id, int $material_cd, int $classification_id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = CheckoutPrivs::findOne(['id' => $id, 'material_cd' => $material_cd, 'classification_id' => $classification_id])) !== null) {
             return $model;
@@ -177,5 +187,4 @@ class CheckoutPrivsController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
-
 }

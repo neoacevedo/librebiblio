@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 namespace backend\controllers;
@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Settings;
 
 /**
  * AdminController implements the CRUD actions for User model.
@@ -81,11 +82,11 @@ class AdminController extends Controller
         AdminController::recursiveDelete($backendAssetPath);
         
         if (!is_dir($frontendAssetPath)) {
-            @mkdir($frontendAssetPath);
+            mkdir($frontendAssetPath);
         }
         
         if (!is_dir($backendAssetPath)) {
-            @mkdir($backendAssetPath);
+            mkdir($backendAssetPath);
         }
         
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -137,7 +138,7 @@ class AdminController extends Controller
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'User registered'));
                 return $this->redirect(['admin/users-view', 'id' => $user->id]);
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
+                array_walk_recursive($model->errors, function($v, $k) {
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                 return $this->render('users/create', [
@@ -145,7 +146,7 @@ class AdminController extends Controller
                 ]);
             }
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
             return $this->render('users/create', [
@@ -166,7 +167,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
             return $this->render('users/update', [
@@ -208,7 +209,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            array_walk_recursive($model->errors, function($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
 
@@ -232,6 +233,12 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Devuelve el modelo de las configuraciones.
+     * Si no hay aún alguna configuración, devuelve un nuevo modelo.
+     * 
+     * @return Settings
+     */
     private function findSettingsModel() {
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
@@ -251,13 +258,13 @@ class AdminController extends Controller
     private static function recursiveDelete($path)
     {
         if (is_file($path)) {
-            return @unlink($path);
+            return unlink($path);
         } elseif (is_dir($path)) {
             $scan = glob(rtrim($path, '/') . '/*');
             foreach ($scan as $index => $newPath) {
                 self::recursiveDelete($newPath);
             }
-            return @rmdir($path);
+            return rmdir($path);
         }
     }
 

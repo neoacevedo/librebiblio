@@ -41,6 +41,7 @@ return [
     'Note: Member has an outstanding account balance of {0, number, currency}' => '',
     'Payment' => '',
     'Place holds' => '',
+    'Print List' => '',
     'Print QR' => '',
     'Profile' => '',
     'The item is already on cart' => '',

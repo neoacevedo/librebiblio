@@ -1,13 +1,15 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers\admin;
 
 use Yii;
-use backend\models\MaterialType;
+use common\models\MaterialType;
 use backend\models\MaterialTypeSearch;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -18,13 +20,14 @@ use yii\web\UploadedFile;
 /**
  * MaterialTypeController implements the CRUD actions for MaterialType model.
  */
-class MaterialTypeController extends Controller 
+class MaterialTypeController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -61,12 +64,13 @@ class MaterialTypeController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -79,13 +83,14 @@ class MaterialTypeController extends Controller
      * Lists all MaterialType models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new MaterialTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -94,10 +99,11 @@ class MaterialTypeController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView(int $id) {
+    public function actionView(int $id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -106,33 +112,36 @@ class MaterialTypeController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new MaterialType();
         // Uploaded file instance.
-        $imageFile = UploadedFile::getInstance($model, 'image_file');
+        $imageFile = Yii::$app->storage->getModel();#UploadedFile::getInstance($model, 'image_file');
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->upload($imageFile)) {
-                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+            if (null !== $imageFile->uploadedFile) {
+                if (Yii::$app->storage->save()) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $imageFile->name);
+                }
             }
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->save() && $model->upload()) {
+            
+            if ($model->save()) {
                 // file is uploaded successfully
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -143,32 +152,33 @@ class MaterialTypeController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate(int $id) {
+    public function actionUpdate(int $id)
+    {
         $model = $this->findModel($id);
         // Uploaded file instance.
         $imageFile = UploadedFile::getInstance($model, 'image_file');
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($model->upload($imageFile)) {
-                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$imageFile->name);
+                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $imageFile->name);
             }
             if ($model->save()) {
                 // file is uploaded successfully
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                @array_walk_recursive($model->errors, function($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
+            @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -179,7 +189,8 @@ class MaterialTypeController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete(int $id) {
+    public function actionDelete(int $id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -192,7 +203,8 @@ class MaterialTypeController extends Controller
      * @return MaterialType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = MaterialType::findOne($id)) !== null) {
             return $model;
@@ -200,5 +212,4 @@ class MaterialTypeController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
-
 }

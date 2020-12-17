@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers\admin;
 
 use Yii;
@@ -26,13 +28,14 @@ use yii\filters\AccessControl;
  * Para crear un reporte propio se debería primero crear una vista en la base de datos y a través de [Gii] (https://www.yiiframework.com/doc/guide/2.0/en/start-gii) 
  * generar el modelo y el modelo de búsqueda que lo extienda. Ver como ejemplo el reporte de Adquisiciones ([[\backend\reports\Acquisitions|Acquisitions]]).
  */
-class ReportController extends Controller 
+class ReportController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -74,12 +77,13 @@ class ReportController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -97,7 +101,8 @@ class ReportController extends Controller
      * predefinidos. 
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $directory = Yii::getAlias("@backend") . "/reports/";
         $reports = [];
         $files = \yii\helpers\FileHelper::findFiles($directory, ['only' => ['*.php'], 'except' => ['*Search.php']]);
@@ -109,7 +114,7 @@ class ReportController extends Controller
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'reports' => $reports,
+            'reports' => $reports,
         ]);
     }
 
@@ -119,13 +124,14 @@ class ReportController extends Controller
      * El filtro lo establece cada reporte. El modelo es invocado de acuerdo al nombre del tipo de reporte.
      * @return mixed
      */
-    public function actionSearch() {
+    public function actionSearch()
+    {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
         $view = strtolower(Yii::$app->request->get("type"));
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render($view, [
-                    'model' => $searchModel,
+            'model' => $searchModel,
         ]);
     }
 
@@ -134,14 +140,16 @@ class ReportController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView() {
+    public function actionView()
+    {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
         $viewName = Yii::$app->request->get("type");
         $searchModel = new $classnameSearch;
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render("$viewName/view", [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider]);
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
+        ]);
     }
 }
