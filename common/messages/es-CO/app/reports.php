@@ -24,7 +24,7 @@ return [
     'Due' => '',
     'ID' => '',
     'Mbr ID' => '',
-    'Periodic Checkout Count' => '',
+    'Periodic Checkout Count' => 'Recuento periódico de préstamos',
     'Pin' => '',
     'Time Span' => 'Espacio de tiempo',
     'Update' => '',

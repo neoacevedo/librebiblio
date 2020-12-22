@@ -23,7 +23,7 @@ $i = 0;
                         <?php
                         foreach ($reports[$category] as $report) :
                             ?>
-                            <li><?= Html::a($report->getName(), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
+                            <li><?= Html::a($report::getName(), \yii\helpers\Url::toRoute(["admin/report/search", "type" => $report->formName()])) ?></li>
                             <?php
                         endforeach;
                         ?>

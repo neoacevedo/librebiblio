@@ -109,8 +109,7 @@ class ReportController extends Controller
         $report_files = str_replace("$directory", "", $files);
         foreach ($report_files as $file) {
             $classname = "backend\\reports\\" . substr($file, 0, -4);
-            $object = new $classname;
-            $reports[$object->category][] = $object;
+            $reports[$classname::getCategory()][] = new $classname;
         }
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [

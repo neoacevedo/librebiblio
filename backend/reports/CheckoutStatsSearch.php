@@ -1,29 +1,41 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\reports;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\reports\CheckoutStats;
+use yii\db\Query;
+use common\models\BiblioCopy;
+use common\models\BiblioStatusHistory;
 
 /**
  * CheckoutStatsSearch represents the model behind the search form of `backend\reports\CheckoutStats`.
  */
 class CheckoutStatsSearch extends CheckoutStats
 {
+    /** @var string */
+    public $cycle;
+
+    /** @var integer */
+    public $checkoutCount;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'checkoutCount'], 'integer'],
-            [['created_at'], 'string'],
+            [['checkoutCount'], 'integer'],
+            [['cycle'], 'string'],
+            [['biblio_copy', 'biblio_status_hist'], 'safe']
         ];
     }
 
@@ -45,7 +57,21 @@ class CheckoutStatsSearch extends CheckoutStats
      */
     public function search($params)
     {
-        $query = CheckoutStats::find();
+        $query = new Query();
+        if ($params['timespan'] == "w") {
+            $query->select(["DATE_FORMAT((h.created_at),
+			'%x %v') as cycle", "COUNT(*) as checkoutCount"]);
+        } elseif ($params['timespan'] == "m") {
+            $query->select(["DATE_FORMAT((h.created_at),
+			'%Y %m') as cycle", "COUNT(*) as checkoutCount"]);
+        } else {
+            $query->select(["CONCAT(YEAR(h.created_at),
+			' ', QUARTER(h.created_at)) as cycle", "COUNT(*) as checkoutCount"]);
+        }
+
+        $query
+            ->from('{{%biblio_copy}} c')
+            ->leftJoin('{{%biblio_status_hist}} h', 'h.copyid = c.id');
 
         // add conditions that should always apply here
 
@@ -56,7 +82,7 @@ class CheckoutStatsSearch extends CheckoutStats
             ]
         ]);
 
-        
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -64,14 +90,30 @@ class CheckoutStatsSearch extends CheckoutStats
             // $query->where('0=1');
             return $dataProvider;
         }
-        
+
+        $dataProvider->sort->attributes['cycle'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['cycle' => SORT_ASC],
+            'desc' => ['cycle' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['checkoutCount'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['checkoutCount' => SORT_ASC],
+            'desc' => ['checkoutCount' => SORT_DESC],
+        ];
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
+            'cycle' => $this->cycle,
             'checkoutCount' => $this->checkoutCount,
+            'h.status_cd' => 'out'
         ]);
-        
+
+        $query->groupBy("cycle");
+
         return $dataProvider;
     }
 }

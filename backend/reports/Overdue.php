@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\reports;
 
 use Yii;
@@ -25,8 +27,9 @@ use Yii;
  */
 class Overdue extends \yii\db\ActiveRecord
 {
-    public $name = "Over Due Member List";
-    public $category = "Circulation";
+    private static $name = "Over Due Member List";
+    private static $category = "Circulation";
+
     /**
      * @inheritdoc
      */
@@ -69,28 +72,31 @@ class Overdue extends \yii\db\ActiveRecord
             'days_late' => Yii::t('app', 'Days Late'),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
-    public static function primaryKey() {
+    public static function primaryKey()
+    {
         parent::primaryKey();
         return ['id'];
     }
-    
+
     /**
      * Devuelve el nombre del reporte traducido.
      * @return string
      */
-    public function getName() {
-        return Yii::t("app/reports", $this->name);
+    public static function getName()
+    {
+        return Yii::t("app/reports", self::$name);
     }
-    
+
     /**
      * Devuelve el nombre de la categoría traducida.
      * @return string
      */
-    public function getCategory() {
-        return Yii::t("app/reports", $this->category);
+    public static function getCategory()
+    {
+        return Yii::t("app/reports", self::$category);
     }
 }

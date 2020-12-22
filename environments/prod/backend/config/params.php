@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 $db = require(__DIR__ . '/../../common/config/database.php');

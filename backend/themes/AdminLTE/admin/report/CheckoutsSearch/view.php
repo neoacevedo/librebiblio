@@ -1,5 +1,6 @@
 <?php
 
+use backend\reports\Checkouts;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
@@ -55,7 +56,7 @@ $fullExportMenu = ExportMenu::widget([
             ],
             'panel' => [
                 'headingOptions' => ['class' => 'box-header'],
-                'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
+                'heading' => '<h1>' . Html::encode(Yii::t('app/reports', Checkouts::getName())) . '</h1>',
             ],
             'toolbar' => [
                 $fullExportMenu

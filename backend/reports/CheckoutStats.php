@@ -2,13 +2,14 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
 namespace backend\reports;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * This is the model class for table "{{%checkoutStats}}".
@@ -17,17 +18,10 @@ use Yii;
  * @property string $created_at
  * @property int $checkoutCount
  */
-class CheckoutStats extends \yii\db\ActiveRecord {
+class CheckoutStats extends Model {
 
-    public $name = "Periodic Checkout Count";
-    public $category = "Statistics";
-
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return '{{%checkoutStats}}';
-    }
+    private static $name = "Periodic Checkout Count";
+    private static $category = "Statistics";
 
     /**
      * @inheritdoc
@@ -62,16 +56,16 @@ class CheckoutStats extends \yii\db\ActiveRecord {
      * Devuelve el nombre del reporte traducido.
      * @return string
      */
-    public function getName() {
-        return Yii::t("app/reports", $this->name);
+    public static function getName() {
+        return Yii::t("app/reports", self::$name);
     }
 
     /**
      * Devuelve el nombre de la categoría traducida.
      * @return string
      */
-    public function getCategory() {
-        return Yii::t("app/reports", $this->category);
+    public static function getCategory() {
+        return Yii::t("app/reports", self::$category);
     }
 
 }

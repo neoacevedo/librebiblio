@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 namespace common\models;
@@ -69,7 +69,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
      * Obtiene la bibliografía de la copia bibliográfica en el historial
      * @return \yii\db\ActiveQuery
      */
-    public function getBib()
+    public function getBiblio()
     {
         return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
@@ -78,7 +78,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
      * Obtiene la copia bibliográfica en el historial
      * @return \yii\db\ActiveQuery
      */
-    public function getCopy()
+    public function getBiblioCopy()
     {
         return $this->hasOne(BiblioCopy::class, ['id' => 'copyid']);
     }
