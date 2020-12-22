@@ -9,6 +9,9 @@
 namespace common\models;
 
 use Yii;
+use common\models\MaterialType;
+use backend\models\Collection;
+use common\models\BiblioField;
 
 /**
  * This is the model class for table "{{%biblio}}".
@@ -102,7 +105,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getMaterialType() {
-        return $this->hasOne(\backend\models\MaterialType::class, ['id' => 'material_cd']);
+        return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
     }
 
     /**
@@ -110,7 +113,7 @@ class Biblio extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getCollection() {
-        return $this->hasOne(\backend\models\Collection::class, ['id' => 'collection_cd']);
+        return $this->hasOne(Collection::class, ['id' => 'collection_cd']);
     }
 
     /**
@@ -128,7 +131,6 @@ class Biblio extends \yii\db\ActiveRecord {
      */
     public function upload($imageFile) {
         if (null !== $imageFile) {
-            #$this->image_file->saveAs(Yii::getAlias("@frontend") . "/web/images/covers/" . $this->image_file->baseName . '.' . $this->image_file->extension);
             Yii::$app->storage->saveAs($imageFile);
             return true;
         } else {

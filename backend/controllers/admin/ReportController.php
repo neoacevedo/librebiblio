@@ -132,6 +132,8 @@ class ReportController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render($view, [
             'model' => $searchModel,
+            'materialType' => \common\models\MaterialType::find()->all(),
+            'collection' => \backend\models\Collection::find()->all()
         ]);
     }
 

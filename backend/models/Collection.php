@@ -1,12 +1,15 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\models;
 
 use Yii;
+use common\models\Biblio;
 
 /**
  * This is the model class for table "{{%collection_dm}}".
@@ -55,6 +58,20 @@ class Collection extends \yii\db\ActiveRecord
             'days_due_back' => Yii::t('app', 'Days Due Back'),
             'daily_late_fee' => Yii::t('app', 'Daily Late Fee'),
         ];
+    }
+
+    /**
+     * Devuelve la lista de colecciones como un array
+     * @return array
+     */
+    public static function asArray(): array
+    {
+        $collections = Collection::find()->select('description')->asArray()->all();
+        foreach ($collections as $index => $value) {
+            $collection[$value['description']] = $value['description'];
+        }
+
+        return $collection;
     }
 
     /**

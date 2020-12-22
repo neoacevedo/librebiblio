@@ -1,13 +1,13 @@
 <?php
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2018 Néstor Acevedo
+ * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 namespace backend\models;
 
 use yii\base\Model;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use backend\models\User;
 
 /**
@@ -18,7 +18,7 @@ class ResetPasswordForm extends Model
     public $password;
 
     /**
-     * @var \common\models\User
+     * @var User
      */
     private $_user;
 
@@ -33,11 +33,11 @@ class ResetPasswordForm extends Model
     public function __construct(string $token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException('Password reset token cannot be blank.');
+            throw new InvalidArgumentException('Password reset token cannot be blank.');
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
-            throw new InvalidParamException('Wrong password reset token.');
+            throw new InvalidArgumentException('Wrong password reset token.');
         }
         parent::__construct($config);
     }
@@ -49,7 +49,7 @@ class ResetPasswordForm extends Model
     {
         return [
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => 12],
         ];
     }
 

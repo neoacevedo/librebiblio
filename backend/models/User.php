@@ -81,6 +81,7 @@ class User extends ActiveRecord implements IdentityInterface {
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
+            ['password_hash', 'required']
         ];
     }
 

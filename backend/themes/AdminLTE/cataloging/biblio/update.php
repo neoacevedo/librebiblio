@@ -2,9 +2,10 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Biblio */
-/* @var $fileModel neoacevedo\yii2\models\FileManager */
+/** @var yii\web\View $this */
+/** @var common\models\Biblio $model */
+/** @var array|common\models\MaterialType $materialType */
+/** @var array|backend\models\Collection $collection */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
             'modelClass' => 'Biblio',
@@ -23,7 +24,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                 'model' => $model,
                 'modelBiblioFields' => $modelBiblioFields,
                 'usmarc' => $usmarc,
-                'fileModel' => $fileModel
+                'fileModel' => $fileModel,
+                'materialType' => $materialType,
+                'collection' => $collection
             ])
             ?>
         </div>

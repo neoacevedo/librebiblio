@@ -87,6 +87,7 @@ class Member extends ActiveRecord implements IdentityInterface {
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
             ['classification_id', 'required'],
+            ['password_hash', 'required']
         ];
     }
     

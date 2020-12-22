@@ -264,7 +264,8 @@ class AdminController extends Controller
             foreach ($scan as $index => $newPath) {
                 self::recursiveDelete($newPath);
             }
-            return rmdir($path);
+
+            return @rmdir($path);
         }
     }
 

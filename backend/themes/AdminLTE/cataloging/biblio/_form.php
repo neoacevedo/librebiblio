@@ -3,15 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Biblio */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $fileModel neoacevedo\yii2\models\FileManager */
+/** @var yii\web\View $view */
+/** @var common\models\Biblio $model */
+/** @var yii\widgets\ActiveForm $form */
+/** @var $fileModel neoacevedo\yii2\models\FileManager */
+/** @var array|common\models\MaterialType $materialType */
+/** @var array|common\models\Collection $collection */
 
 
-#$bibliofield = backend\models\BiblioField::
-$materialType = backend\models\MaterialType::find()->all();
-$collection = \backend\models\Collection::find()->all();
 ?>
 <?php
 if (Yii::$app->session->hasFlash("error")):

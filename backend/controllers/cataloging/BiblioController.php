@@ -17,6 +17,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use neoacevedo\yii2\Storage;
+use common\models\MaterialType;
+use backend\models\Collection;
 
 /**
  * BiblioController implements the CRUD actions for Biblio model.
@@ -101,8 +103,8 @@ class BiblioController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         #if (\Yii::$app->user->can('view')) {
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
         #}
     }
@@ -116,7 +118,7 @@ class BiblioController extends Controller
     {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -142,6 +144,7 @@ class BiblioController extends Controller
             ]
         ]);*/
         $fileModel = Yii::$app->storage->getModel();
+        Yii::$app->storage->prefix = "images/covers/";
         $modelBiblioFields[] = new \common\models\BiblioField();
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
@@ -149,33 +152,34 @@ class BiblioController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
-                Yii::$app->storage->prefix = "covers/";
                 if (Yii::$app->storage->save()) {
-                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
-                    array_walk_recursive($fileModel->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    array_walk_recursive($fileModel->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                 }
             } else {
-                array_walk_recursive($fileModel->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                array_walk_recursive($fileModel->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
             }
             if ($model->save()) {
                 // file is uploaded successfully
-                $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                $materialType = MaterialType::find($model->material_cd)->one();
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('create', [
-                            'model' => $model,
-                            'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc,
-                            'fileModel' => $fileModel
+                    'model' => $model,
+                    'modelBiblioFields' => $modelBiblioFields,
+                    'usmarc' => $this->usmarc,
+                    'fileModel' => $fileModel,
+                    'materialType' => MaterialType::find()->all(),
+                    'collection' => Collection::find()->all()
                 ]);
             }
 
@@ -183,18 +187,22 @@ class BiblioController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
-                            'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc,
-                            'fileModel' => $fileModel
+                    'model' => $model,
+                    'modelBiblioFields' => $modelBiblioFields,
+                    'usmarc' => $this->usmarc,
+                    'fileModel' => $fileModel,
+                    'materialType' => MaterialType::find()->all(),
+                    'collection' => Collection::find()->all()
                 ]);
             }
         } else {
             return $this->render('create', [
-                        'model' => $model,
-                        'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc,
-                        'fileModel' => $fileModel
+                'model' => $model,
+                'modelBiblioFields' => $modelBiblioFields,
+                'usmarc' => $this->usmarc,
+                'fileModel' => $fileModel,
+                'materialType' => MaterialType::find()->all(),
+                'collection' => Collection::find()->all()
             ]);
         }
     }
@@ -226,7 +234,7 @@ class BiblioController extends Controller
             return true;
         } else {
             $message = "";
-            array_walk_recursive($modelBiblioField, function($model, $k) use ($message) {
+            array_walk_recursive($modelBiblioField, function ($model, $k) use ($message) {
                 foreach ($model->errors as $key => $error) {
                     $message .= $error[0] . "\n";
                 }
@@ -248,66 +256,68 @@ class BiblioController extends Controller
     {
         $model = $this->findModel($id);
         $current_image_file = $model->image_file;
-        // Uploaded file instance.
-        //$imageFile = UploadedFile::getInstance($model, 'image_file');
-        $storage = new Storage([
+
+        /*$storage = new Storage([
             'service' => 'local',
             'config' => [
                 'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
                 'extensions' => 'png, jpg, jpeg'
             ]
-        ]);
-        $fileModel = $storage->getModel();
-        $this->fillUsMarc();
-
+        ]);*/
+        $fileModel = Yii::$app->storage->getModel();
+        Yii::$app->storage->prefix = "images/covers/";
+        $this->getUsMarc();
         $modelBiblioFields[] = new \common\models\BiblioField();
 
-        $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+        $materialType = MaterialType::find($model->material_cd)->one();
         if ($materialType->hasMany(Biblio::class, ['material_cd' => 'id'])->count() == 1) {
             $materialType->default_flg = 'N';
             $materialType->save();
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
             if (null !== $fileModel->uploadedFile) {
-                if ($storage->save()) {
-                    $model->image_file = $storage->getUrl(Yii::$app->storage->prefix.$fileModel->uploadedFile->name);
+                if (Yii::$app->storage->save()) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
-                    @array_walk_recursive($fileModel->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    array_walk_recursive(Yii::$app->storage->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                 }
                 if ($model->save()) {
-                    $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                    $materialType = MaterialType::find($model->material_cd)->one();
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
-                    array_walk_recursive($model->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    array_walk_recursive($model->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                     return $this->render('create', [
-                                'model' => $model,
-                                'modelBiblioFields' => $modelBiblioFields,
-                                'usmarc' => $this->usmarc,
-                                'fileModel' => $fileModel
+                        'model' => $model,
+                        'modelBiblioFields' => $modelBiblioFields,
+                        'usmarc' => $this->usmarc,
+                        'fileModel' => Yii::$app->storage->getModel(),
+                        'materialType' => MaterialType::find()->all(),
+                        'collection' => Collection::find()->all()
                     ]);
                 }
             } else {
                 $model->image_file = $current_image_file;
                 if ($model->save()) {
-                    $materialType = \backend\models\MaterialType::find($model->material_cd)->one();
+                    $materialType = MaterialType::find($model->material_cd)->one();
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
-                    @array_walk_recursive($model->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    @array_walk_recursive($model->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                     return $this->render('create', [
-                                'model' => $model,
-                                'modelBiblioFields' => $modelBiblioFields,
-                                'usmarc' => $this->usmarc,
-                                'fileModel' => $fileModel
+                        'model' => $model,
+                        'modelBiblioFields' => $modelBiblioFields,
+                        'usmarc' => $this->usmarc,
+                        'fileModel' => Yii::$app->storage->getModel(),
+                        'materialType' => MaterialType::find()->all(),
+                        'collection' => Collection::find()->all()
                     ]);
                 }
             }
@@ -322,10 +332,12 @@ class BiblioController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
-                            'modelBiblioFields' => $modelBiblioFields,
-                            'usmarc' => $this->usmarc,
-                            'fileModel' => $fileModel
+                    'model' => $model,
+                    'modelBiblioFields' => $modelBiblioFields,
+                    'usmarc' => $this->usmarc,
+                    'fileModel' => Yii::$app->storage->getModel(),
+                    'materialType' => MaterialType::find()->all(),
+                    'collection' => Collection::find()->all()
                 ]);
             }
 
@@ -333,8 +345,10 @@ class BiblioController extends Controller
         } else {
             //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
             for ($i = 1; $i < count($this->usmarc); $i++) {
-                $biblioField = \common\models\BiblioField::findOne(['bibid' => $id,
-                            "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd]);
+                $biblioField = \common\models\BiblioField::findOne([
+                    'bibid' => $id,
+                    "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd
+                ]);
                 if ($biblioField !== null) {
                     $modelBiblioFields[] = $biblioField;
                 } else {
@@ -342,10 +356,12 @@ class BiblioController extends Controller
                 }
             }
             return $this->render('update', [
-                        'model' => $model,
-                        'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc,
-                        'fileModel' => $fileModel
+                'model' => $model,
+                'modelBiblioFields' => $modelBiblioFields,
+                'usmarc' => $this->usmarc,
+                'fileModel' => Yii::$app->storage->getModel(),
+                'materialType' => MaterialType::find()->all(),
+                'collection' => Collection::find()->all()
             ]);
         }
     }
@@ -372,18 +388,20 @@ class BiblioController extends Controller
     {
         $this->usmarc = null;
         $this->usmarc = \common\models\UsmarcSubfield::find()
-                        ->where(["tag" => 100, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 650, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 250, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 20, "subfield_cd" => "a"])
-                        ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
-                        ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
-                        ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
-                        ->orWhere(["tag" => 300, "subfield_cd" => ['a', 'b', 'c',
-                                'e']])
-                        ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
+            ->where(["tag" => 100, "subfield_cd" => "a"])
+            ->orWhere(["tag" => 650, "subfield_cd" => "a"])
+            ->orWhere(["tag" => 250, "subfield_cd" => "a"])
+            ->orWhere(["tag" => 10, "subfield_cd" => 'a'])
+            ->orWhere(["tag" => 20, "subfield_cd" => "a"])
+            ->orWhere(["tag" => 50, "subfield_cd" => ['a', 'b', 'c']])
+            ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
+            ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
+            ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
+            ->orWhere(["tag" => 300, "subfield_cd" => [
+                'a', 'b', 'c',
+                'e'
+            ]])
+            ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
     }
 
     /**
@@ -401,5 +419,4 @@ class BiblioController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }

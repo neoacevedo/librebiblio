@@ -1,12 +1,15 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2018 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
+use common\models\Biblio;
 
 /**
  * This is the model class for table "{{%material_type_dm}}".
@@ -61,7 +64,21 @@ class MaterialType extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Biblio::class, ['material_cd' => 'id']);
     }
-    
+
+    /**
+     * Devuelve los tipos de material como array.
+     * @return array
+     */
+    public static function asArray(): array
+    {
+        $materials = MaterialType::find()->select('id, description')->asArray()->all();
+        foreach ($materials as $index => $value) {
+            $material[$value['description']] = $value['description'];
+        }
+
+        return $material;
+    }
+
     /**
      * Sube el archivo de imagen.
      * @param yii\web\UploadedFile $imageFile
@@ -76,5 +93,5 @@ class MaterialType extends \yii\db\ActiveRecord
         } else {
             return false;
         }
-    } 
+    }
 }

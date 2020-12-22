@@ -56,7 +56,7 @@ class SignupForm extends Model {
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => \Yii::t('app', 'This email address has already been taken.')],
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => 12],
             ['classification_id', 'required'],
             ['classification_id', 'number']
         ];

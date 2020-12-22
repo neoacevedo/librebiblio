@@ -4,20 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
 
-/* @var $this yii\web\View */
-/* @var $model backend\reports\AcquisitionsSearch */
-/* @var $form yii\widgets\ActiveForm */
+/** @var $this yii\web\View */
+/** @var backend\reports\AcquisitionsSearch $model */
+/** @var yii\widgets\ActiveForm $form */
+/** @var array|ActiveRecord[] $materialType */
+/** @var array|ActiveRecord[] $collection */
 
 $this->title = Yii::t('app/reports', 'Acquisitions');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$materialType = backend\models\MaterialType::find()->all();
 $materials = \yii\helpers\ArrayHelper::map($materialType, 'description', 'description');
 $materials = array_merge([" " => ""], $materials);
 
-
-$collection = \backend\models\Collection::find()->all();
 $collections = \yii\helpers\ArrayHelper::map($collection, 'description', 'description');
 $collections = array_merge([' ' => ''], $collections);
 ?>
