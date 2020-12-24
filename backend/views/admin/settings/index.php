@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\sidenav\SideNav;
 
 //use yii\grid\GridView;
 
@@ -13,12 +12,8 @@ $this->title = Yii::t('app', 'Settings');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="settings">
-    <div class="col-lg-3 col-md-3 col-sm-3">
-        <?=
-        $this->render("../_sidenav");
-        ?>
-    </div>
-    <div class="col-lg-9 col-md-9 col-sm-9">
+    
+    <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="content">
             <h4><?= Html::encode(Yii::t('app/settings', 'Library Settings')) ?></h4>
             <p><?= Html::encode(Yii::t('app/settings', 'Basic Library Settings.')) ?></p>

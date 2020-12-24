@@ -5,7 +5,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use pceuropa\menu\Menu;
 use kartik\sidenav\SideNav;
 
 $this->title = Yii::t('app', 'New Member');

@@ -17,8 +17,8 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $username
- * @propoerty string $first_name
- * @propoerty string $last_name
+ * @property string $first_name
+ * @property string $last_name
  * @property double $pin
  * @property string phone
  * @property string $password_hash

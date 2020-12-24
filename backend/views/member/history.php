@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model \common\models\User */
+/* @var $model common\models\User */
 
 $this->title = Yii::t('app', '{modelClass} History: ', [
-            'modelClass' => Yii::t('app', 'User'),
+            'modelClass' => Yii::t('app', 'Member'),
         ]) . $model->username;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['member-view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['member/view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'History');
 ?>
 <div class="user-update">

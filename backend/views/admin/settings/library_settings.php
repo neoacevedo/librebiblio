@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 //use yii\grid\GridView;
 use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioCopySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,6 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="settings-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php  echo $this->render('_form', ['model' => $model, 'files' => $files]); ?>
-    
+    <div class="box">
+        <div class="box-body">
+            <?php echo $this->render('_form', ['model' => $model, 'files' => $files]); ?>
+        </div>
+    </div>
 </div>

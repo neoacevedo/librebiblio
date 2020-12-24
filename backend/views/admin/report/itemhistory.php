@@ -13,33 +13,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="item-history-search">
     <h1><?= $this->title ?></h1>
-    <?php
-    $form = ActiveForm::begin([
-                'action' => ['view', 'type' => $model->formName()],
-                'method' => 'get',
-                'options' => [
-                    'data-pjax' => 1
-                ],
-    ]);
-    ?>
+    <div class="box">
+        <div class="box-body">
+            <?php
+            $form = ActiveForm::begin([
+                        'action' => ['view', 'type' => $model->formName()],
+                        'method' => 'get',
+                        'options' => [
+                            'data-pjax' => 1
+                        ],
+            ]);
+            ?>
 
-    <?= $form->field($model, 'call_num') ?>
+            <?= $form->field($model, 'call_num') ?>
 
-    <?= $form->field($model, 'title') ?>
+            <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'author') ?>
+            <?= $form->field($model, 'author') ?>
 
-    <?php // echo $form->field($model, 'member') ?>
+            <?php // echo $form->field($model, 'member') ?>
 
-    <?php // echo $form->field($model, 'checkout') ?>
+            <?php // echo $form->field($model, 'checkout') ?>
 
-    <?php // echo $form->field($model, 'due')  ?>
+            <?php // echo $form->field($model, 'due')  ?>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

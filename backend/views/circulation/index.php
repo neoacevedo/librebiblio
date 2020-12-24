@@ -15,16 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="user-index">
 
-        <h2><?= Html::encode($this->title) ?></h2>
-
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="box">
-                <div class="box-header">
-                    <h4><?= Yii::t('app', 'Search User') ?></h4>
-                </div>
-                <div class="box-body">
-                    <?= $this->render('_search', ['model' => $searchModel]) ?>
-                </div>
-            </div>
-        </div>
+        <?= $this->render("search", ['searchModel' => $searchModel, 'dataProvider' => $dataProvider]) ?>
+        
     </div>
+</div>

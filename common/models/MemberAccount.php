@@ -61,7 +61,7 @@ class MemberAccount extends \yii\db\ActiveRecord
     }
     
     /**
-     * Devuelve el usuario que modificó la información del material bibliográfico
+     * Devuelve el usuario que modificó la información de la cuenta.
      * @return \yii\db\ActiveQuery
      */
     public function getUser()

@@ -6,18 +6,25 @@ use yii\helpers\Html;
 /* @var $model backend\models\User */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'User',
-]) . $model->username;
+            'modelClass' => 'User',
+        ]) . $model->username;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['users']];
 $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['users-view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="user-update">
+    <div class="box">
+        <div class="box-header">
+            <h1><?= Html::encode($this->title) ?></h1>
+        </div>
+        <div class="box-body">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+            <?=
+            $this->render('_form', [
+                'model' => $model,
+                'isNewRecord' => false
+            ])
+            ?>
+        </div>
+    </div>
 </div>

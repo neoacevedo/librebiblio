@@ -1,5 +1,6 @@
 <?php
 
+use backend\reports\OverdueSearch;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
@@ -72,7 +73,7 @@ $fullExportMenu = ExportMenu::widget([
             'columns' => $gridColumns,
             'panel' => [
                 'headingOptions' => ['class' => 'box-header'],
-                'heading' => '<h1>' . Html::encode($this->title) . '</h1>',
+                'heading' => '<h1>' . Html::encode(Yii::t('app/reports', OverdueSearch::getName())) . '</h1>',
             ],
             'toolbar' => [
                 $fullExportMenu

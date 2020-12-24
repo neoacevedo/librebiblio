@@ -5,7 +5,7 @@ use dosamigos\chartjs\ChartJs;
 /* @var $this yii\web\View */
 
 $settings = \common\models\Settings::find()->one();
-$this->title = null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
+$this->title =$settings->library_name;
 $totales = [];
 $fechas = [];
 

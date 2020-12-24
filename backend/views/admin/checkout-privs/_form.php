@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\CheckoutPrivs */
 /* @var $form yii\widgets\ActiveForm */
 $materialType = backend\models\MaterialType::find()->all();
-$classification = common\models\MemberClassify::find()->all();
+$classification = backend\models\MemberClassify::find()->all();
 ?>
 
 <div class="checkout-privs-form">

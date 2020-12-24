@@ -54,7 +54,7 @@ $status = Yii::$app->request->get('status');
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) use($mbr_id, $status) {
                     if ($action === 'checkout') {
-                        $url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=$status";
+                        $url = "index.php?r=circulation/create&id=$mbr_id&copyid=$model->id&bibid=$model->bibid&status=$status&data-pjax=0";
                         return $url;
                     }
                 }],

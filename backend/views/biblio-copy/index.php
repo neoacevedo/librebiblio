@@ -18,28 +18,39 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
     </p>
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'bibid',
-            'created_at',
-            'updated_at',
-            'copy_desc',
-            // 'barcode_nmbr',
-            // 'status_cd',
-            // 'status_begint_dt',
-            // 'due_back_dt',
-            // 'mbr_id',
-            // 'renewal_count',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-        'options' => [
-            'class' => 'table table-striped table-bordered table-responsive'
-        ],
-    ]);
-    ?>
+    <div class="box">
+        <div class="box-body">
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'id',
+                    'barcode_nmbr',
+                    [
+                        'attribute' => 'bibid',
+                        'label' => Yii::t('app', 'Title'),
+                        'value' => function($model) {
+                            return $model->biblio->title;
+                        }
+                    ],
+                    'created_at',
+                    'updated_at',
+                    'copy_desc',
+                    // 'barcode_nmbr',
+                    // 'status_cd',
+                    // 'status_begint_dt',
+                    // 'due_back_dt',
+                    // 'mbr_id',
+                    // 'renewal_count',
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+                'options' => [
+                    'class' => 'table table-striped table-bordered table-responsive'
+                ],
+            ]);
+            ?>
+        </div>
+    </div>
 </div>

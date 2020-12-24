@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use kartik\sidenav\SideNav;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\MemberClassify */
+/* @var $model backend\models\MemberClassify */
 
 $this->title = $model->description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
@@ -15,23 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="member-classify-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="col-lg-3 col-md-3 col-sm-3">
-        <?=
-        SideNav::widget([
-            'type' => SideNav::TYPE_DEFAULT,
-            'heading' => Yii::t('app', 'Options'),
-            'headingOptions' => ['class' => 'head-style'],
-            'items' => [
-                ['label' => Yii::t('app/settings', 'Library Settings'), 'url' => ['admin/settings/library-settings'], 'icon' => 'wrench'],
-                ['label' => Yii::t('app/settings', 'Material Types'), 'url' => ['admin/material-type/index'], 'icon' => 'tags'],
-                ['label' => Yii::t('app/settings', 'Collections'), 'url' => ['admin/collections/index'], 'icon' => 'folder-open'],
-                ['label' => Yii::t('app/settings', 'Member Classify'), 'url' => ['admin/member-classify/index'], 'icon' => 'user'],
-                ['label' => Yii::t('app/settings', 'Themes'), 'url' => ['admin/themes'], 'icon' => 'adjust']
-            ],
-        ]);
-        ?>
-    </div>
-    <div class="col-lg-9 col-md-9 col-sm-9">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?=
@@ -44,17 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ])
             ?>
         </p>
-
-        <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'description',
-                'max_fines',
-            ],
-        ])
-        ?>
+        <div class="box">
+            <div class="box-body">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'description',
+                        'max_fines',
+                    ],
+                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                ])
+                ?>
+            </div>
+        </div>
     </div>
 
 </div>

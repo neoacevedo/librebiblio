@@ -11,9 +11,9 @@ use yii\widgets\ActiveForm;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    
+
     <?= $form->field($model, 'username') ?>
-    
+
     <div class="row">
         <div class="col-xs-4">
             <?= $form->field($model, 'first_name')->textInput() ?>
@@ -27,12 +27,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'phone')->textInput(['type' => 'number', 'min' => 100000]) ?>
+    <?= $form->field($model, 'phone')->textInput() ?>
 
     <?= $form->field($model, 'status')->dropDownList([\backend\models\User::STATUS_BLOCKED => Yii::t('app', 'Blocked'), \backend\models\User::STATUS_ACTIVE => Yii::t('app', 'Active')]) ?>
-
+    <div class="hidden">
+        <?= !$isNewRecord ?: $form->field($model, 'password')->hiddenInput(['value' => $model->generateUniqueRandomString(12)])->label('') ?>
+    </div>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
