@@ -7,7 +7,6 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -17,6 +16,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\ContactForm;
 use common\models\BiblioSearch;
+use yii\base\InvalidArgumentException;
 
 /**
  * Site controller
@@ -172,7 +172,7 @@ class SiteController extends Controller
         $model = new \common\models\SignupForm();
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            if (($user = $model->signup())) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
@@ -241,7 +241,7 @@ class SiteController extends Controller
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         try {
             $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
