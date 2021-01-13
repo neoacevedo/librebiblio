@@ -6,8 +6,8 @@
  * @license https://www.neoacevedo.co/license
  */
 return [
-    'adminEmail' => '',
-    'supportEmail' => '',
+    'adminEmail' => '%%ADMIN_EMAIL%%',
+    'supportEmail' => '%%SUPPORT_EMAIL%%',
     // caducidad del token de renovación de la contraseña.
     'user.passwordResetTokenExpire' => 3600,
     'preferredLanguages' => ['es-CO'],

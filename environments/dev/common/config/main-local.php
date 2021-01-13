@@ -5,8 +5,8 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
-$cache = require(__DIR__ . '/cache-local.php');
 $db = require(__DIR__ . '/database-local.php');
+$cache = require(__DIR__ . '/cache-local.php');
 $fs = require(__DIR__ . '/storage-local.php');
 
 return [
@@ -17,15 +17,15 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'America/Bogota',
     'components' => [
-        'cache' => $cache,
         'db' => $db,
+        'cache' => $cache,
         'session' => [
             'class' => 'yii\web\CacheSession',
             'cache' => 'cache',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-        //'defaultRoles' => ['admin', 'staff', 'user'],
+            //'defaultRoles' => ['admin', 'staff', 'user'],
         ],
         'i18n' => [
             'translations' => [
@@ -114,28 +114,28 @@ return [
             'useFileTransport' => false, //for the testing purpose, you need to enable this
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => '', // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => '',
-                'password' => "",
+                'host' => '%%SMTP_HOST%%', // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => '%%SMTP_USERNAME%%',
+                'password' => '%%SMTP_PASSWORD%%',
                 'port' => '587', // Port 25 is a very common port too
                 'encryption' => 'tls', // It is often used, check your provider or mail server specs
             ],
         ],
         'storage' => $fs
     ],
-    'name' => call_user_func(function() use($db) {
-                try {
-                    array_shift($db);
-                    $connection = new \yii\db\Connection($db);
-                    $connection->open();
-                    $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
-                } catch (Exception $ex) {
-                    $library_name = "OpenBiblio2";
-                }
-                return $library_name;
-            }),
+    'name' => call_user_func(function () use ($db) {
+        try {
+            array_shift($db);
+            $connection = new \yii\db\Connection($db);
+            $connection->open();
+            $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
+        } catch (Exception $ex) {
+            $library_name = "OpenBiblio2";
+        }
+        return $library_name;
+    }),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
-    // accesos solo administrativos a módulos específicos
+        // accesos solo administrativos a módulos específicos
     ]
 ];

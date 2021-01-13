@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace frontend\controllers;
 
 use Yii;
@@ -32,12 +34,13 @@ class BiblioController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [

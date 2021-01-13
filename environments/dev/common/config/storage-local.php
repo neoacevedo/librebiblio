@@ -33,7 +33,6 @@ define('AZURE_PREFIX', '%%AZURE_PREFIX%%');
 // Google Cloud Storage
 define('GCS_PROJECTID', '%%GCS_PROJECTID%%');
 define('GCS_BUCKET', '%%GCS_BUCKET%%');
-define('GCS_KEYFILE_CONTENT', '%%GCS_KEYFILE_CONTENT%%'); # ESTO PARA REVISAR.
 define('GCS_PREFIX', '%%GCS_PREFIX%%');
 
 switch (STORAGE_SERVICE) {
@@ -70,7 +69,7 @@ switch (STORAGE_SERVICE) {
       'config' => [
         'projectId' => GCS_PROJECTID,
         'bucket' => GCS_BUCKET,
-        'keyFile' => GCS_KEYFILE_CONTENT // Contenido del archivo JSON generado en la consola de Google
+        'keyFile' => '%%GCS_KEYFILE_CONTENT%%' // Contenido del archivo JSON generado en la consola de Google
       ],
       'prefix' => GCS_PREFIX // ruta al directorio de imágenes (Opcional)
     ];

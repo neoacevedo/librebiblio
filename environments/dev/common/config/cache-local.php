@@ -15,6 +15,7 @@ define("CACHE_HOST", "%%CACHE_HOST%%");
  * Puerto del servidor de cache
  */
 define('CACHE_PORT', '%%CACHE_PORT%%');
+
 /**
  * Gestión de caché.
  * 

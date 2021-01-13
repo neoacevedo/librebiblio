@@ -6,9 +6,9 @@ return [
     'useFileTransport' => false, //for the testing purpose, you need to enable this
     'transport' => [
         'class' => 'Swift_SmtpTransport',
-        'host' => getenv('SMTP_HOST'), // e.g. smtp.mandrillapp.com or smtp.gmail.com
-        'username' => getenv('SMTP_USERNAME'),
-        'password' => getenv('SMTP_PASSWORD'),
+        'host' => '%%SMTP_HOST%%', // e.g. smtp.mandrillapp.com or smtp.gmail.com
+        'username' => '%%SMTP_USERNAME%%',
+        'password' => '%%SMTP_PASSWORD%%',
         'port' => '587', // Port 25 is a very common port too
         'encryption' => 'tls', // It is often used, check your provider or mail server specs
     ],

@@ -24,14 +24,15 @@ use yii\web\NotFoundHttpException;
  * 
  * Incluye el listado del carrito con los materiales que se pretenden solicitar en préstamo.
  */
-class CirculationController extends Controller 
+class CirculationController extends Controller
 {
     //put your code here
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -78,7 +79,8 @@ class CirculationController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -100,9 +102,10 @@ class CirculationController extends Controller
      * </ul>
      * @return Response
      */
-    public function actionAddToCart(int $copyid, int $bibid, string $status) {
+    public function actionAddToCart(int $copyid, int $bibid, string $status)
+    {
         $id = \Yii::$app->user->id;
-        
+
         \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // agregar al carro
         if (($cart = \frontend\models\Cart::findOne(['bibid' => $bibid, 'copyid' => $copyid, 'mbr_id' => $id])) === null) {
@@ -111,10 +114,10 @@ class CirculationController extends Controller
             $newCart->copyid = $copyid;
             $newCart->mbr_id = $id;
             $newCart->status = $status;
-            if($newCart->save()) {
+            if ($newCart->save()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item added to cart."));
             } else {
-                @array_walk_recursive($newCart->errors, function($v, $k) {
+                @array_walk_recursive($newCart->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
@@ -133,26 +136,28 @@ class CirculationController extends Controller
      * 
      * @return Response
      */
-    public function actionCart() {
+    public function actionCart()
+    {
         $id = Yii::$app->user->id;
         $model = \common\models\Member::findOne($id);
         $searchModel = new \frontend\models\CartSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
+
         return $this->render('cart', [
-            'model' => $model, 
-            'id' => $id, 
+            'model' => $model,
+            'id' => $id,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider
         ]);
     }
-    
+
     /**
      * Borra del carro el libro para préstamo.
      * @param int $id ID del ítem.
      * @return Response
      */
-    public function actionDelete(int $id) {
+    public function actionDelete(int $id)
+    {
         \frontend\models\Cart::findOne($id)->delete();
         return $this->redirect(Yii::$app->request->referrer);
     }
@@ -164,7 +169,8 @@ class CirculationController extends Controller
      * @param int $copyid
      * @return Response
      */
-    public function actionPlacehold(int $bibid, int $copyid) {
+    public function actionPlacehold(int $bibid, int $copyid)
+    {
         $id = Yii::$app->user->id;
         $this->updateMemberAccount($id);
 
@@ -205,7 +211,7 @@ class CirculationController extends Controller
             $biblioHold->hold_begin_dt = date('Y-m-d H:i:s');
 
             if (!$biblioHold->save()) {
-                array_walk_recursive($biblioHold->errors, function($v, $k) {
+                array_walk_recursive($biblioHold->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             } else {
@@ -225,15 +231,16 @@ class CirculationController extends Controller
      * Después de esto actualiza la lista de las copias en el carrito.
      * @return Response
      */
-    public function actionCheckout() {
+    public function actionCheckout()
+    {
         $id = Yii::$app->user->id;
         // array temporal para guardar los id del array del carro seleccionado (los de la sesión).
         $copy_array = [];
         // los checkbox seleccionados
-        $selection = \Yii::$app->request->post('selection'); 
+        $selection = \Yii::$app->request->post('selection');
 
         $this->updateMemberAccount();
-                
+
         $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -310,9 +317,9 @@ class CirculationController extends Controller
             $biblioCopy->status_cd = 'out';
             $biblioCopy->updated_at = date('Y-m-d H:i:s');
             if (!$biblioCopy->save()) {
-                @array_walk_recursive($biblioCopy->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                @array_walk_recursive($biblioCopy->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
             } else {
                 // crear el historial para el miembro
                 $biblioStatusHistory = new \common\models\BiblioStatusHistory;
@@ -324,9 +331,9 @@ class CirculationController extends Controller
                 $biblioStatusHistory->due_back_dt = date('Y-m-d');
 
                 if (!$biblioStatusHistory->save()) {
-                    @array_walk_recursive($biblioStatusHistory->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    @array_walk_recursive($biblioStatusHistory->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                 } else {
                     // se borra el material del carro
                     \frontend\models\Cart::findOne(['bibid' => $biblioCopy->bibid, 'copyid' => $biblioCopy->id, 'mbr_id' => $id])->delete();
@@ -337,7 +344,7 @@ class CirculationController extends Controller
                 }
             }
         }
-        
+
         // enviar correo.
         Yii::$app
             ->mailer
@@ -349,7 +356,7 @@ class CirculationController extends Controller
             ->setTo(Yii::$app->params['supportEmail'])
             ->setSubject('New Member Checkout')
             ->send();
-        
+
         return $this->redirect(['/member/profile']);
     }
 
@@ -360,7 +367,8 @@ class CirculationController extends Controller
      * @param int $mbr_id
      * @return Response
      */
-    public function actionHoldDelete(int $hld_id) {
+    public function actionHoldDelete(int $hld_id)
+    {
         $biblioHold = \common\models\BiblioHold::findOne($hld_id);
         $biblioCopy = \common\models\BiblioCopy::findOne(['bibid' => $biblioHold->bibid, 'id' => $biblioHold->copyid]);
         $biblioHold->delete();
@@ -368,9 +376,9 @@ class CirculationController extends Controller
         if ($biblioCopy->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item placed hold."));
         } else {
-            @array_walk_recursive($biblioCopy->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            @array_walk_recursive($biblioCopy->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
         }
         return $this->redirect(['member/profile']);
     }
@@ -382,7 +390,8 @@ class CirculationController extends Controller
      * @return Member the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
@@ -398,7 +407,8 @@ class CirculationController extends Controller
      * se actualiza esa información, se genera la deuda y se bloquea la cuenta del usuario para nuevos préstamos.
      * 
      */
-    protected function updateMemberAccount() {
+    protected function updateMemberAccount()
+    {
         $id = Yii::$app->user->id;
         $late = $fee = 0; // se definen estas dos variables de tipo entero
 
@@ -430,7 +440,7 @@ class CirculationController extends Controller
                 \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                 $trans->description = Yii::t('circulation', "Late fee (barcode={n, number})", ['n' => $biblioCopy->barcode_nmbr]);
                 if (!$trans->save()) {
-                    array_walk_recursive($trans->errors, function($v, $k) {
+                    array_walk_recursive($trans->errors, function ($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
                     return $this->redirect(Yii::$app->request->referrer);
@@ -442,5 +452,4 @@ class CirculationController extends Controller
             }
         }
     }
-
 }
