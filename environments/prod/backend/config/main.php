@@ -1,9 +1,12 @@
 <?php
 
 $params = array_merge(
-        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
+    require(__DIR__ . '/../../common/config/params.php'),
+    require(__DIR__ . '/../../common/config/params-local.php'),
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
 );
-
+$db = require(__DIR__ . '/../../common/config/database.php');
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -17,14 +20,14 @@ return [
             'userModelLoginField' => 'username',
             'userModelLoginFieldLabel' => null,
             'userModelExtraDataColumls' => null,
-//            'userModelExtraDataColumls' => [
-//                [
-//                    'attributes' => 'created_at',
-//                    'value' => function($model) {
-//                        return date('m/d/Y', $model->created_at);
-//                    }
-//                ]
-//            ],
+            //            'userModelExtraDataColumls' => [
+            //                [
+            //                    'attributes' => 'created_at',
+            //                    'value' => function($model) {
+            //                        return date('m/d/Y', $model->created_at);
+            //                    }
+            //                ]
+            //            ],
         ],
     ],
     //'language' => 'es-CO',
@@ -33,6 +36,20 @@ return [
             'theme' => [
                 'class' => 'backend\components\Theme',
             ]
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => call_user_func(function () use ($db) {
+                        array_shift($db);
+                        $connection = new \yii\db\Connection($db);
+                        $connection->open();
+                        $skin = $connection->createCommand("select * from {{%theme}} where active = 1 and frontend = 0")->cache(7200)->queryOne()['skin'];
+                        return "skin-$skin";
+                    }),
+                ],
+            ],
+            'forceCopy' => YII_DEBUG
         ],
         'request' => [
             'csrfParam' => '_csrf-backend',

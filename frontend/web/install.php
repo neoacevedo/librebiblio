@@ -1,33 +1,58 @@
 <?php
 
-require(__DIR__ . '/../../vendor/autoload.php');
-require(__DIR__ . '/../../vendor/yiisoft/yii2/Yii.php');
-require(__DIR__ . '/../../common/config/bootstrap.php');
-require(__DIR__ . '/../config/bootstrap.php');
-
 /**
  * Desde acá validar si la instalación ya se hizo y borrar este archivo de modo automático.
  */
 if (!extension_loaded('openssl')) {
     die('The OpenSSL PHP extension is required by Yii2.');
 }
+
+if (null !== filter_input(INPUT_POST, "env")) {
+    $env = filter_input(INPUT_POST, "env");
+    // Ejecutar el comando init con la opción de entorno elegida
+    $init_output = [];
+    exec("php " . __DIR__ . "/../../init  --env=$env", $init_output);
+
+    // Reemplazo de los valores
+    $dbConfs = [
+        "%%DB_USERNAME%%" => $DB_USERNAME,
+        "%%DB_NAME%%" => $DB_NAME,
+        "%%DB_PASSWORD%%" => $DB_PASSWORD,
+        "%%DB_HOSTNAME%%" => $DB_HOSTNAME,
+        "%%DB_ENGINE%%" => $DB_ENGINE
+    ];
+}
 ?>
 <html>
 
 <head>
     <title>OpenBiblio2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <style>
-        /* Style the form */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f1f1f1;
+        }
+
         #regForm {
             background-color: #ffffff;
             margin: 100px auto;
+            font-family: Raleway;
             padding: 40px;
             width: 70%;
             min-width: 300px;
         }
 
-        /* Style the input fields */
-        input {
+        h1 {
+            text-align: center;
+        }
+
+        input,
+        select {
             padding: 10px;
             width: 100%;
             font-size: 17px;
@@ -45,6 +70,24 @@ if (!extension_loaded('openssl')) {
             display: none;
         }
 
+        button {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            font-family: Raleway;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #prevBtn {
+            background-color: #bbbbbb;
+        }
+
         /* Make circles that indicate the steps of the form: */
         .step {
             height: 15px;
@@ -57,7 +100,6 @@ if (!extension_loaded('openssl')) {
             opacity: 0.5;
         }
 
-        /* Mark the active step: */
         .step.active {
             opacity: 1;
         }
@@ -75,25 +117,31 @@ if (!extension_loaded('openssl')) {
         <h1>Register:</h1>
 
         <!-- One "tab" for each step in the form: -->
-        <div class="tab">Name:
-            <p><input placeholder="First name..." oninput="this.className = ''"></p>
-            <p><input placeholder="Last name..." oninput="this.className = ''"></p>
+        <div class="tab">Entorno / Environment:
+            <p>
+                <select name="env">
+                    <option value="Production">Producción/Production</option>
+                    <option value="Development">Desarrollo/Development</option>
+                </select>
+            </p>
         </div>
 
-        <div class="tab">Contact Info:
-            <p><input placeholder="E-mail..." oninput="this.className = ''"></p>
-            <p><input placeholder="Phone..." oninput="this.className = ''"></p>
+        <div class="tab">Conexión a la BD / DB Connection:
+            <p><input name="host" placeholder="Host..." oninput="this.className = ''"></p>
+            <p><input name="username" placeholder="Usuario/User..." oninput="this.className = ''"></p>
+            <p><input type="password" name="password" placeholder="Contraseña/Password..." oninput="this.className = ''"></p>
+            <p><input name="db_name" placeholder="Nombre de la BD/DB Name..." oninput="this.className = ''"></p>
+            <p><select name="db_engine" required>
+                    <option>Motor/Engine...</option>
+                    <option value="mysql">MariaDB/MySQL</option>
+                    <option value="pgsql">PostgresSQL</option>
+                </select></p>
         </div>
 
-        <div class="tab">Birthday:
-            <p><input placeholder="dd" oninput="this.className = ''"></p>
-            <p><input placeholder="mm" oninput="this.className = ''"></p>
-            <p><input placeholder="yyyy" oninput="this.className = ''"></p>
-        </div>
-
-        <div class="tab">Login Info:
-            <p><input placeholder="Username..." oninput="this.className = ''"></p>
-            <p><input placeholder="Password..." oninput="this.className = ''"></p>
+        <div class="tab">Configuración del Correo / Email Setting (Swift Mailer):
+            <p><input name="smtp_host" placeholder="Host..." oninput="this.className = ''"></p>
+            <p><input name="smtp_username" placeholder="Usuario/User..." oninput="this.className = ''"></p>
+            <p><input name="smtp_password" placeholder="Contraseña/Password..." oninput="this.className = ''"></p>
         </div>
 
         <div style="overflow:auto;">
