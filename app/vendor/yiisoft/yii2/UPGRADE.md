@@ -51,6 +51,76 @@ if you want to upgrade from version A to version C and there is
 version B between A and C, you need to follow the instructions
 for both A and B.
 
+Upgrade from Yii 2.0.44
+-----------------------
+
+* `yii\filters\PageCache::$cacheHeaders` now takes a case-sensitive list of header names since PageCache is no longer 
+  storing the normalized (lowercase) versions of them so make sure this list is properly updated and your page cache 
+  is recreated.
+
+Upgrade from Yii 2.0.43
+-----------------------
+
+* `Json::encode()` can now handle zero-indexed objects in same way as `json_encode()` and keep them as objects. In order 
+  to avoid breaking backwards compatibility this behavior could be enabled by a new option flag but is disabled by default.
+  * Set `yii/helpers/Json::$keepObjectType = true` anywhere in your application code
+  * Or configure json response formatter to enable it for all JSON responses:
+      ```php
+      'response' => [
+        'formatters' => [
+          \yii\web\Response::FORMAT_JSON => [
+            'class' => 'yii\web\JsonResponseFormatter',
+            'prettyPrint' => YII_DEBUG, // use "pretty" output in debug mode
+            'keepObjectType' => true, // keep object type for zero-indexed objects
+          ],
+        ],
+      ],
+      ```
+* `yii\caching\Cache::multiSet()` now uses the default cache duration (`yii\caching\Cache::$defaultDuration`) when no 
+  duration is provided. A duration of 0 should be explicitly passed if items should not expire.
+
+Upgrade from Yii 2.0.42
+-----------------------
+
+* `yii\base\ErrorHandler` does not expose the `$_SERVER` information implicitly anymore.
+* The methods `phpTypecast()` and `dbTypecast()` of `yii\db\ColumnSchema` will no longer convert `$value` from `int` to 
+  `string`, if database column type is `INTEGER UNSIGNED` or `BIGINT UNSIGNED`.
+  * I.e. it affects update and insert queries. For example:
+  ```php
+  \Yii::$app->db->createCommand()->insert('{{some_table}}', ['int_unsigned_col' => 22])->execute();
+  ```
+  will execute next SQL:
+  ```sql
+  INSERT INTO `some_table` (`int_unsigned_col`) VALUES (22)
+  ```
+* Property `yii\db\ColumnSchemaBuilder::$categoryMap` has been removed in favor of getter/setter methods `getCategoryMap()` 
+  and `setCategoryMap()`.
+
+Upgrade from Yii 2.0.41
+-----------------------
+
+* `NumberValidator` (`number`, `double`, `integer`) does not allow values with leading or terminating (non-trimmed) 
+  white spaces anymore. If your application expects non-trimmed values provided to this validator make sure to trim 
+  them first (i.e. by using `trim` / `filter` "validators").
+
+Upgrade from Yii 2.0.40
+-----------------------
+
+* The methods `getAuthKey()` and `validateAuthKey()` of `yii\web\IdentityInterface` are now also used to validate active
+  sessions (previously these methods were only used for cookie-based login). If your identity class does not properly
+  implement these methods yet, you should update it accordingly (an example can be found in the guide under
+  `Security` -> `Authentication`). Alternatively, you can simply return `null` in the `getAuthKey()` method to keep
+  the old behavior (that is, no validation of active sessions). Applications that change the underlying `authKey` of
+  an authenticated identity, should now call `yii\web\User::switchIdentity()`, `yii\web\User::login()`
+  or `yii\web\User::logout()` to recreate the active session with the new `authKey`.
+
+Upgrade from Yii 2.0.39.3
+-------------------------
+
+* Priority of processing `yii\base\Arrayable`, and `JsonSerializable` data has been reversed (`Arrayable` data is checked
+  first now) in `yii\base\Model`, and `yii\rest\Serializer`. If your application relies on the previous priority you need 
+  to fix it manually based on the complexity of desired (de)serialization result.
+
 Upgrade from Yii 2.0.38
 -----------------------
 
@@ -789,7 +859,7 @@ Upgrade from Yii 2.0 Beta
   You can add it with `ALTER TABLE log ADD COLUMN prefix TEXT AFTER log_time;`.
 
 * The `fileinfo` PHP extension is now required by Yii. If you use  `yii\helpers\FileHelper::getMimeType()`, make sure
-  you have enabled this extension. This extension is [builtin](https://secure.php.net/manual/en/fileinfo.installation.php) in php above `5.3`.
+  you have enabled this extension. This extension is [builtin](https://www.php.net/manual/en/fileinfo.installation.php) in php above `5.3`.
 
 * Please update your main layout file by adding this line in the `<head>` section: `<?= Html::csrfMetaTags() ?>`.
   This change is needed because `yii\web\View` no longer automatically generates CSRF meta tags due to issue #3358.

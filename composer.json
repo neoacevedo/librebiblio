@@ -1,0 +1,57 @@
+{
+    "name": "neoacevedo/openbiblio2",
+    "description": "Sistema automatizado de gestión bibliotecaria y OPAC.",
+    "keywords": [
+        "yii2",
+        "opac",
+        "openbiblio2",
+        "online library project"
+    ],
+    "homepage": "https://www.neoacevedo.co/openbiblio2",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "support": {
+        "issues": "https://github.com/neoacevedo/openbiblio2/issues",
+        "forum": "https://www.neoacevedo.co/forum/index",
+        "source": "https://github.com/neoacevedo/openbiblio2"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0",
+        "yiisoft/yii2": "~2.0.6",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "neoacevedo/yii2-rbac-plus": "*",
+        "kartik-v/yii2-widget-sidenav": "*",
+        "yiisoft/yii2-jui": "^2.0",
+        "kartik-v/yii2-mpdf": "dev-master",
+        "mpdf/mpdf": "^8.0",
+        "kartik-v/yii2-export": "@dev",
+        "2amigos/yii2-chartjs-widget": "~2.0",
+        "dmstr/yii2-adminlte-asset": "^2.6",
+        "neoacevedo/yii2-storage": "*",
+        "paragonie/random_compat": "^2.0",
+        "mpdf/qrcode": "^1.1"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "codeception/codeception": "^2.2.3",
+        "codeception/verify": "~0.3.1",
+        "yiisoft/yii2-apidoc": "~2.1.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        },
+        "vendor-dir": "app/vendor"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}

@@ -1,6 +1,22 @@
 Change Log: `yii2-editable`
 ===========================
 
+## Version 1.8.0
+
+**Date:** 29-Apr-2022
+
+- (enh #217): PHP 8.1 enhancements for native functions.
+
+## Version 1.7.9
+
+**Date:** 20-Nov-2021
+
+- (enh #214): Enhance close button CSS style for support in all Bootstrap releases.
+- (enh #212): Enhancements to support Bootstrap v5.x.
+- (enh #206): Validate undefined data returned to ajax call.
+- (enh #198): Initialize value for model.
+- (enh #184): Add gitattributes.
+
 ## Version 1.7.8
 
 **Date:** 03-Oct-2018

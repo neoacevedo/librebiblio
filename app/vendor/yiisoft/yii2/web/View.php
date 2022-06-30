@@ -132,6 +132,11 @@ class View extends \yii\base\View
     public $jsFiles = [];
 
     private $_assetManager;
+    /**
+     * Whether [[endPage()]] has been called and all files have been registered
+     * @var bool
+     */
+    private $_isPageEnded = false;
 
 
     /**
@@ -173,6 +178,8 @@ class View extends \yii\base\View
     public function endPage($ajaxMode = false)
     {
         $this->trigger(self::EVENT_END_PAGE);
+
+        $this->_isPageEnded = true;
 
         $content = ob_get_clean();
 
@@ -490,10 +497,20 @@ class View extends \yii\base\View
         }
         $appendTimestamp = ArrayHelper::remove($options, 'appendTimestamp', $assetManagerAppendTimestamp);
 
+        if ($this->_isPageEnded) {
+            Yii::warning('You\'re trying to register a file after View::endPage() has been called');
+        }
+
         if (empty($depends)) {
             // register directly without AssetManager
-            if ($appendTimestamp && Url::isRelative($url) && ($timestamp = @filemtime(Yii::getAlias('@webroot/' . ltrim($url, '/'), false))) > 0) {
-                $url = $timestamp ? "$url?v=$timestamp" : $url;
+            if ($appendTimestamp && Url::isRelative($url)) {
+                $prefix = Yii::getAlias('@web');
+                $prefixLength = strlen($prefix);
+                $trimmedUrl = ltrim((substr($url, 0, $prefixLength) === $prefix) ? substr($url, $prefixLength) : $url, '/');
+                $timestamp = @filemtime(Yii::getAlias('@webroot/' . $trimmedUrl, false));
+                if ($timestamp > 0) {
+                    $url = $timestamp ? "$url?v=$timestamp" : $url;
+                }
             }
             if ($type === 'js') {
                 $this->jsFiles[$position][$key] = Html::jsFile($url, $options);

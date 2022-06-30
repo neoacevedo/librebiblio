@@ -1,8 +1,8 @@
 /*!
  * @package   yii2-editable
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2015 - 2018
- * @version   1.7.8
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2015 - 2022
+ * @version   1.8.0
  *
  * Editable Extension jQuery plugin
  *
@@ -271,7 +271,7 @@
         },
         htmlEncode: function (data) {
             var self = this;
-            if (!self.encodeOutput) {
+            if (!self.encodeOutput || !data) {
                 return data;
             }
             if (typeof data === 'object') {

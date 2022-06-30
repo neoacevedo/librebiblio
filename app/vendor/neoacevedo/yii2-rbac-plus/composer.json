@@ -1,8 +1,12 @@
 {
     "name": "neoacevedo/yii2-rbac-plus",
-    "description":"Administrador de control de acceso basado en función de base de datos para yii2.",
+    "description": "Administrador de control de acceso basado en función de base de datos para yii2.",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension", "RBAC"],
+    "keywords": [
+        "yii2",
+        "extension",
+        "RBAC"
+    ],
     "license": "GPL-3.0+",
     "authors": [
         {
@@ -15,15 +19,15 @@
             "email": "soporte@neoacevedo.co",
             "homepage": "https://www.neoacevedo.co/"
         }
-    ],    
+    ],
     "support": {
         "forum": "https://www.neoacevedo.co/forum",
         "source": "https://gitlab.com/neoacevedo/yii2-rbac-plus"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "yiisoft/yii2": "~2.0.6",
-        "johnitvn/yii2-ajaxcrud": ">=2.0.0"
+        "johnitvn/yii2-ajaxcrud": "^2.1"
     },
     "autoload": {
         "psr-4": {

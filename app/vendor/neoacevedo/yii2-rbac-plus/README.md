@@ -28,7 +28,7 @@ php composer.phar require --prefer-dist neoacevedo/yii2-rbac-plus
 o agregue
 
 ```
-"neoacevedo/yii2-rbac-plus": "^18.06"
+"neoacevedo/yii2-rbac-plus": "*"
 ```
 
 a la sección require de su archivo `composer.json`.
