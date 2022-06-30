@@ -126,23 +126,21 @@ return [
             'useFileTransport' => false, //for the testing purpose, you need to enable this
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => '%%SMTP_HOST%%', // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => '%%SMTP_USERNAME%%',
-                'password' => '%%SMTP_PASSWORD%%',
+                'host' => '', // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => '',
+                'password' => '',
                 'port' => '587', // Port 25 is a very common port too
                 'encryption' => 'tls', // It is often used, check your provider or mail server specs
             ],
         ],
-        'storage' => $fs
     ],
-    'name' => call_user_func(function () use ($db) {
+    'name' => call_user_func(function () use ($config) {
         try {
-            array_shift($db);
-            $connection = new \yii\db\Connection($db);
+            $connection = new \yii\db\Connection($config['components']['db']);
             $connection->open();
             $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
         } catch (Exception $ex) {
-            $library_name = "OpenBiblio2";
+            $library_name = "LibreBiblio";
         }
         return $library_name;
     }),

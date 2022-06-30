@@ -79,48 +79,54 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
     </VirtualHost>
     ```
 
-Hecho esto, puede acceder al sitio web desde la URL configurada - por ejemplo, openbiblio2.neoacevedo.co - 
+Hecho esto, puede acceder al sitio web desde la URL configurada - por ejemplo, librebiblio.neoacevedo.co - 
 
-También puede acceder a la administración del sitio con la ruta _/admin_ con usuario y contraseña **_admin_**
+También puede acceder a la administración del sitio con la ruta _/backend/web_ con usuario y contraseña **_admin_**
 
 ESTRUCTURA DE DIRECTORIOS
 -------------------
 
 ```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
+/                    contains the frontend entry script, favicon, and robots.txt.             
+assets/              contains the frontend web runtime assets    
+css/                 contiene los archivos css del sitio público         
+images/              contiene imágnes del sitio público   
+themes/              contiene los recursos web de los temas del sitio público   
 backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    reports/             contiene clases modelo específicas para la generación de reportes 
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    themes/              contiene los temas del backend
-    tmp/                 directorio temporal específico para la carga de archivos de tema.
-    tests/               contains tests for backend application    
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    themes/              contiene los temas del frontend
-    tests/               contains tests for frontend application
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
+    web/                 contains the backend entry script and Web resources
+app
+    common
+        config/              contains shared configurations
+        mail/                contains view files for e-mails
+        models/              contains model classes used in both backend and frontend
+        tests/               contains tests for common classes    
+    console
+        config/              contains console configurations
+        controllers/         contains console controllers (commands)
+        migrations/          contains database migrations
+        models/              contains console-specific model classes
+        runtime/             contains files generated during runtime
+    backend
+        assets/              contains application assets such as JavaScript and CSS
+        config/              contains backend configurations
+        controllers/         contains Web controller classes
+        reports/             contiene clases modelo específicas para la generación de reportes 
+        models/              contains backend-specific model classes
+        runtime/             contains files generated during runtime
+        themes/              contiene los temas del backend
+        tmp/                 directorio temporal específico para la carga de archivos de tema.
+        tests/               contains tests for backend application    
+        views/               contains view files for the Web application
+    frontend
+        assets/              contains application assets such as JavaScript and CSS
+        config/              contains frontend configurations
+        controllers/         contains Web controller classes
+        models/              contains frontend-specific model classes
+        runtime/             contains files generated during runtime
+        themes/              contiene los temas del frontend
+        tests/               contains tests for frontend application
+        views/               contains view files for the Web application
+        widgets/             contains frontend widgets
+    vendor/                  contains dependent 3rd-party packages
+    environments/            contains environment-based overrides
 ```
