@@ -1,9 +1,25 @@
+SetEnvIfNoCase User-Agent “^Wget” bad_bot
+## Apache 2.2
+#<Limit GET POST>
+#    Order Allow,Deny
+#    Allow from all
+#    Deny from env=bad_bot
+#</Limit>
+##
+
+## Apache 2.4 con PHP7
+<RequireAll>
+    Require all granted
+    Require not env bad_bot
+</RequireAll>
+##
 <IfModule mod_rewrite.c>
-    # prevent directory listings
-    Options -Indexes
-    # follow symbolic links
-    Options FollowSymlinks
-    RewriteEngine on
+    Options +FollowSymlinks
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php
 
     RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR]
     RewriteCond %{HTTP_USER_AGENT} ^Bolt\  [OR]
@@ -143,12 +159,4 @@
     RewriteCond %{HTTP_USER_AGENT} ^ZmEu [OR]
     RewriteCond %{HTTP_USER_AGENT} ZyBorg
     RewriteRule ^.* - [F,L]
-
-    #RewriteCond %{REQUEST_URI} ^/rest/$
-    #RewriteRule ^(rest)/$ /$1 [R=301,L]
-    #RewriteCond %{REQUEST_URI} ^/rest
-    #RewriteRule ^rest(/.+)?$ /rest/web/$1 [L,PT]
-
-    RewriteCond %{REQUEST_URI} ^.*$
-    RewriteRule ^(.*)$ /frontend/web/$1
 </IfModule>

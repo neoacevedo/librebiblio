@@ -1,0 +1,13 @@
+<?php
+/* @var $this yii\web\View */
+/* @var $model neoacevedo\rbacplus\models\AuthItem */
+?>
+<div class="auth-item-update">
+
+<?=
+$this->render('_form', [
+    'model' => $model,
+])
+?>
+
+</div>
