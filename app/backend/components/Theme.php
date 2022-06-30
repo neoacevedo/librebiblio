@@ -13,7 +13,7 @@ class Theme extends \yii\base\Theme
      *
      * @var string
      */
-    public $theme;
+    public $theme = 'AdminLTE';
 
     public function init()
     {
@@ -32,8 +32,7 @@ class Theme extends \yii\base\Theme
             '@app/views' => '@app/themes/' . $this->theme,
         ];
 
-        // configurar el tema en la sesión        
+        // configurar el tema en la sesión
         \Yii::$app->session->set('backend-skin', $theme->skin);
     }
-
 }

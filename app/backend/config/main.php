@@ -2,9 +2,10 @@
 
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params-local.php')
+    require(__DIR__ . '/params-local.php'),
 );
-$db = require(__DIR__ . '/../../common/config/database-local.php');
+
+require __DIR__ . '/../../common/config/main-local.php';
 
 
 return [
@@ -39,22 +40,13 @@ return [
         ],
         'assetManager' => [
             'bundles' => [
-                'dmstr\web\AdminLteAsset' => [
-                    'skin' => call_user_func(function () use ($db) {
-                        array_shift($db);
-                        $connection = new \yii\db\Connection($db);
-                        $connection->open();
-                        $skin = $connection->createCommand("select * from {{%theme}} where active = 1 and frontend = 0")->cache(7200)->queryOne()['skin'];
-                        return "skin-$skin";
-                    }),
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
                 ],
             ],
-            'forceCopy' => YII_DEBUG
         ],
         'request' => [
             'csrfParam' => '_csrf-backend',
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '9BvFtaWREW6eFhUe84XdS6CZNX3oUbSy',
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
@@ -64,7 +56,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'ob2',
+            'name' => 'lb-back',
             'timeout' => 3600
         ],
         'log' => [

@@ -1,7 +1,11 @@
 <?php
 
 $params = array_merge(
-        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php'), require(__DIR__ . '/../../common/config/i18n.php')
+    require(__DIR__ . '/../../common/config/params.php'),
+    require(__DIR__ . '/../../common/config/params-local.php'),
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php'),
+    require(__DIR__ . '/../../common/config/i18n.php')
 );
 
 $urlManager = require(__DIR__ . '/urlManager.php');
@@ -11,7 +15,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'db'],
     'controllerNamespace' => 'frontend\controllers',
-    'on beforeRequest' => function() {
+    'on beforeRequest' => function () {
         $settings = \common\models\Settings::find()->one();
         if ($settings->offline == 1) {
             throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));
@@ -23,7 +27,7 @@ return [
               ]; */
         }
     },
-    'on beforeAction' => function() {
+    'on beforeAction' => function () {
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
         if ($theme) {
             Yii::$app->getView()->theme = new \yii\base\Theme([
@@ -33,7 +37,7 @@ return [
                     '@app/views' => "@app/themes/{$theme->name}",
                 ],
             ]);
-            // configurar el tema en la sesión        
+            // configurar el tema en la sesión
             Yii::$app->session->set('frontend-skin', $theme->skin);
         }
     },
@@ -41,8 +45,6 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'nS24qNF2Yr72wN56u08P6wgfIZQsPoaC',
         ],
         'user' => [
             'identityClass' => 'common\models\Member',
@@ -51,7 +53,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend',
+            'name' => 'lb-front',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
