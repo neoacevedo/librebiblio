@@ -15,18 +15,6 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'db'],
     'controllerNamespace' => 'frontend\controllers',
-    'on beforeRequest' => function () {
-        $settings = \common\models\Settings::find()->one();
-        if ($settings->offline == 1) {
-            throw new \yii\web\HttpException(503, Yii::t('app', 'Maintenance Mode'));
-            /* Yii::$app->catchAll = [
-              // force route if portal in maintenance mode
-              'site/maintenance',
-              'message' => Yii::t('app', 'Maintenance Mode'),
-              'status' => 503
-              ]; */
-        }
-    },
     'on beforeAction' => function () {
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
         if ($theme) {
@@ -42,6 +30,9 @@ return [
         }
     },
     //'language' => 'es-CO',
+    'catchAll' => [
+        $params['offline'] == 1 ? 'site/offline': ''
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',

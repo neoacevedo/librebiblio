@@ -269,4 +269,14 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    /**
+     * Displays offline page.
+     *
+     * @return mixed
+     */
+    public function actionOffline()
+    {
+        return $this->view("offline");
+    }
 }

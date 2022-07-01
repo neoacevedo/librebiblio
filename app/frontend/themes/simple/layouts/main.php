@@ -11,29 +11,31 @@ use common\widgets\Alert;
 
 AppAsset::register($this);
 
-#$settings = \common\models\Settings::find()->one();
-$library_name = Yii::$app->name; #null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
-$library_hours = \common\models\Settings::find()->one()->library_hours; #null !== $settings->library_hours ? $settings->library_hours : "N/A";
-$library_phone = \common\models\Settings::find()->one()->library_phone; #null !== $settings->library_phone ? $settings->library_phone : "N/A";
+$library_name = Yii::$app->name;
+$library_hours = \common\models\Settings::find()->one()->library_hours;
+$library_phone = \common\models\Settings::find()->one()->library_phone;
 $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : "" . Yii::$app->session['frontend-skin'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-    <head>
-        <meta charset="<?= Yii::$app->charset ?>">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
-        <?php $this->head() ?>
-    </head>
-    <body class="<?= $bodyClass ?>">
-        <?php $this->beginBody() ?>
 
-        <div class="wrap">
-            <?php
+<head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?>
+    </title>
+    <?php $this->head() ?>
+</head>
+
+<body class="<?= $bodyClass ?>">
+    <?php $this->beginBody() ?>
+
+    <div class="wrap">
+        <?php
             NavBar::begin([
                 'brandLabel' => "",
                 'brandUrl' => Yii::$app->homeUrl,
@@ -58,7 +60,8 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(
-                                Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
+                            Yii::t('app', 'Logout'),
+                            ['class' => 'btn btn-link logout']
                         )
                         . Html::endForm()
                         . '</li>'
@@ -71,37 +74,45 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
             NavBar::end();
             ?>
 
-            <div class="container">
-                <?=
+        <div class="container">
+            <?=
                 Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>
-                <?= Alert::widget() ?>
-                <?= $content ?>
-            </div>
+            <?= Alert::widget() ?>
+            <?= $content ?>
         </div>
+    </div>
 
-        <footer class="footer">
-            <div class="container">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?></div>
+    <footer class="footer">
+        <div class="container">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v' . Yii::$app->params['version'] ?></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4"><a href="http://www.yiiframework.com/" rel="external"><?= \Yii::t(
-                                                                                                                                'yii',
-                                                                                                                                'Yii Framework'
-                                                                                                                            ) ?></a></div>
+                <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?>
                 </div>
-                <p>&nbsp;</p>
+                <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?>
+                </div>
             </div>
-        </footer>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
+                <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor
+                    Acevedo. <?= 'v' . Yii::$app->version ?>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <a href="http://www.yiiframework.com/" rel="external">
+                        <?= \Yii::t('yii', 'Yii Framework') ?>
+                    </a>
+                </div>
+            </div>
+            <p>&nbsp;</p>
+        </div>
+    </footer>
 
-        <?php $this->endBody() ?>
-    </body>
+    <?php $this->endBody() ?>
+</body>
+
 </html>
-<?php $this->endPage() ?>
+<?php
+$this->endPage();

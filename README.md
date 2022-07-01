@@ -18,7 +18,7 @@ INSTALACIÓN
 ===========
 ## Requerimientos
 
-+ PHP 7
++ PHP >= 7.4
 + MySQL, MariaDB, PostgresSQL (Por ahora)
 + PHP7 bcmath
 + Apache Redirect (Si se usa Apache)
