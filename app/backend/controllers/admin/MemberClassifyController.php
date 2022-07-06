@@ -71,7 +71,7 @@ class MemberClassifyController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -87,7 +87,7 @@ class MemberClassifyController extends Controller
     {
         $searchModel = new MemberClassifySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -101,7 +101,7 @@ class MemberClassifyController extends Controller
      */
     public function actionView(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -115,7 +115,7 @@ class MemberClassifyController extends Controller
     public function actionCreate()
     {
         $model = new MemberClassify();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -137,7 +137,7 @@ class MemberClassifyController extends Controller
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -177,7 +177,7 @@ class MemberClassifyController extends Controller
      */
     protected function findModel(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = MemberClassify::findOne($id)) !== null) {
             return $model;
         } else {

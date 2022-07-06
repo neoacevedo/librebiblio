@@ -9,10 +9,28 @@
 $config = require(__DIR__ . "/main-local.php");
 array_shift($config['components']['db']);
 
+try {
+    $connection = new \yii\db\Connection($config['components']['db']);
+    $connection->open();
+    $tableName = "{$connection->tablePrefix}settings";
+    $settings = $connection->createCommand("select library_hours, library_phone, library_image_url, use_image_flg from {{%settings}}")->cache(86400)->queryAll();
+} catch (Exception $ex) {
+    $message = $ex->getMessage();
+    $settings['library_hours'] = "";
+    $settings['library_phone'] = "";
+    $settings['library_image_url'] = null;
+    $settings['use_image_flg'] = 0;
+}
+
 return [
-    'adminEmail' => '',
-    'supportEmail' => '',
-    // caducidad del token de renovación de la contraseña.
+    'adminEmail' => 'admin@example.com',
+    'supportEmail' => 'support@example.com',
+    'senderEmail' => 'noreply@example.com',
+    'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
-    'preferredLanguages' => ['es-CO'],
+    'user.passwordMinLength' => 8,
+    'library_hours' => $settings['library_hours'],
+    'library_phone' => $settings['library_phone'],
+    'library_image_url' => $settings['library_image_url'],
+    'use_image_flg' => $settings['use_image_flg'],
 ];

@@ -59,7 +59,7 @@ class MemberController extends Controller
      * @return mixed
      */
     public function actions() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -89,7 +89,7 @@ class MemberController extends Controller
                 ]
             ]
         ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
                     'model' => $model,
                     'dataProvider' => $dataProvider,
@@ -103,7 +103,7 @@ class MemberController extends Controller
     public function actionProfile() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('profile', [
                     'model' => $model,
         ]);
@@ -131,7 +131,7 @@ class MemberController extends Controller
         $searchModel->mbr_id = $id;
         $dataProvider = $searchModel->search([]);
 
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account', [
                     'model' => $model,
                     'searchModel' => $searchModel,
@@ -148,7 +148,7 @@ class MemberController extends Controller
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->renderAjax('account-view', [
                     'memberAccount' => $memberAccount,
         ]);
@@ -164,7 +164,7 @@ class MemberController extends Controller
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $html = $this->renderPartial('account-view', [
             'memberAccount' => $memberAccount,
         ]);
@@ -198,7 +198,7 @@ class MemberController extends Controller
      */
     public function actionPlaceholds() {
         $id = Yii::$app->user->id;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $biblioCopySearch = new \common\models\BiblioHoldSearch();
         $biblioCopySearch->mbr_id = $id;
         $biblioCopy = $biblioCopySearch->search([]);
@@ -218,7 +218,7 @@ class MemberController extends Controller
     public function actionUpdate() {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['account']);
@@ -243,7 +243,7 @@ class MemberController extends Controller
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+            // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }

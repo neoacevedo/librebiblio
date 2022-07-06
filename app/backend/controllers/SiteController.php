@@ -73,7 +73,7 @@ class SiteController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -112,7 +112,7 @@ class SiteController extends Controller
                 ->all();
         }
 
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'checkouts' => $copy_count,
             'bills' => $bills,
@@ -128,18 +128,18 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $this->bodyClass = "hold-transition login-page";
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+
+        $this->layout = 'main-login';
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
             $model->password = '';
-            $this->layout = '//main-login';
+
             return $this->render('login', [
                 'model' => $model,
             ]);

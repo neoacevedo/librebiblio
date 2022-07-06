@@ -2,50 +2,52 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\bootstrap4\Html;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
 
-#$settings = \common\models\Settings::find()->one();
 $library_name = Yii::$app->name;#null !== $settings->library_name ? $settings->library_name : "OpenBiblio2";
-$library_hours = \common\models\Settings::find()->one()->library_hours;#null !== $settings->library_hours ? $settings->library_hours : "N/A";
-$library_phone = \common\models\Settings::find()->one()->library_phone;#null !== $settings->library_phone ? $settings->library_phone : "N/A";
+// $library_hours = \common\models\Settings::find()->one()->library_hours;#null !== $settings->library_hours ? $settings->library_hours : "N/A";
+// $library_phone = \common\models\Settings::find()->one()->library_phone;#null !== $settings->library_phone ? $settings->library_phone : "N/A";
 $brandLabel = "";
-if ($settings->library_image_url !== null) {
-    $brandLabel .= Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
+if (Yii::$app->params['library_image_url'] !== null) {
+    $brandLabel .= Html::img('@web/images/logo/' . Yii::$app->params['library_image_url'], ['alt' => $library_name, 'class' => 'img-responsive', 'style' => 'width: 33px; padding: 0 0; display: inline-block']);
 }
 
-if ($settings->use_image_flg == 0) {
+if (Yii::$app->params['use_image_flg'] == 0) {
     $brandLabel .= "&nbsp;$library_name";
 }
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-    <head>
-        <meta charset="<?= Yii::$app->charset ?>">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
-        <?php $this->head() ?>
-    </head>
-    <body>
-        <?php $this->beginBody() ?>
 
-        <div class="wrap">
-            <?php
+<head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?>
+    </title>
+    <?php $this->head() ?>
+</head>
+
+<body>
+    <?php $this->beginBody() ?>
+
+    <div class="wrap">
+        <?php
             NavBar::begin([
                 'brandLabel' => $brandLabel,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
+                    'class' => 'navbar-expand-md navbar-default bg-dark fixed-top',
                 ],
             ]);
             $menuItems = [
@@ -64,50 +66,58 @@ if ($settings->use_image_flg == 0) {
                         '<li>'
                         . Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(
-                                Yii::t('app', 'Logout'), ['class' => 'btn btn-link logout']
+                            Yii::t('app', 'Logout'),
+                            ['class' => 'btn btn-link logout']
                         )
                         . Html::endForm()
                         . '</li>'
                 ]];
             }
             echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
+                'options' => ['class' => 'navbar-nav ml-auto'],
                 'items' => $menuItems,
             ]);
             NavBar::end();
             ?>
 
-            <div class="container">
-                <?=
+        <div class="container">
+            <?=
                 Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>
-                <?= Alert::widget() ?>
-                <?= $content ?>
-            </div>
+            <?= Alert::widget() ?>
+            <?= $content ?>
         </div>
+    </div>
 
-        <footer class="footer">
-            <div class="container">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?></div>
-                    <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?></div>
+    <footer class="footer">
+        <div class="container">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                    <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio2. &copy; <?= date('Y') ?> N&eacute;stor Acevedo. <?= 'v'.Yii::$app->params['version'] ?></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4"><a href="http://www.yiiframework.com/" rel="external"><?= \Yii::t(
-                                                                                                                                'yii',
-                                                                                                                                'Yii Framework'
-                                                                                                                            ) ?></a></div>
+                <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": " . Yii::$app->params['library_image_url'] ?>
                 </div>
-                <p>&nbsp;</p>
+                <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": " . Yii::$app->params['library_image_url'] ?>
+                </div>
             </div>
-        </footer>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
+                <div class="col-lg-4 col-md-4 col-sm-4">LibreBiblio. &copy; <?= date('Y') ?> N&eacute;stor
+                    Acevedo. <?= 'v'.Yii::$app->version ?>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4"><a href="http://www.yiiframework.com/" rel="external"><?= \Yii::t(
+                    'yii',
+                    'Yii Framework'
+                ) ?>
+                    </a></div>
+            </div>
+            <p>&nbsp;</p>
+        </div>
+    </footer>
 
-        <?php $this->endBody() ?>
-    </body>
+    <?php $this->endBody() ?>
+</body>
+
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage() ;

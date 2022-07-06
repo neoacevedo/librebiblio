@@ -85,7 +85,7 @@ class MemberController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -100,7 +100,7 @@ class MemberController extends Controller
     public function actionCreate()
     {
         $model = new \common\models\SignupForm();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if ($model->sendEmail($user->id)) {
@@ -142,7 +142,7 @@ class MemberController extends Controller
     {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         /* return $this->render('members-print', [
           'dataProvider' => $dataProvider,
           ]); */
@@ -189,7 +189,7 @@ class MemberController extends Controller
                 ]
             ],
         ]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
             'model' => $model,
             'dataProvider' => $dataProvider,
@@ -204,7 +204,7 @@ class MemberController extends Controller
      */
     public function actionView(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // estadísticas del usuario con los tipos de material registrados en la biblioteca
         if (Yii::$app->db->driverName === "mysql") {
             $materialTypeStats = (new \yii\db\Query)->select([
@@ -279,7 +279,7 @@ class MemberController extends Controller
     {
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
 
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $html = $this->renderPartial('account-view', [
             'memberAccount' => $memberAccount,
         ]);
@@ -317,7 +317,7 @@ class MemberController extends Controller
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['member-view', 'id' => $model->id]);
@@ -343,7 +343,7 @@ class MemberController extends Controller
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+            // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }

@@ -11,29 +11,12 @@ require __DIR__ . '/params.php';
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm' => '@vendor/npm-asset',
+        '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'timeZone' => 'America/Bogota',
     'components' => [
         'cache' => [
-            'class' => \yii\caching\FileCache::class,
-        ],
-        /**
-         * Almacenamiento local
-         */
-        'storage' => [
-            'class' => 'neoacevedo\yii2\storage\LocalStorage',
-            'config' => [
-                'baseUrl' => "", // ej: http://example.com/
-                'directory' => dirname(__DIR__),
-                'extensions' => 'pdf, jpg, jpeg, gif, png, bmp'
-            ],
-            'prefix' => "images/", // (Opcional) ruta al directorio de imágenes. Debe terminar con un slash.
-        ],
-        'session' => [
-            'class' => 'yii\web\CacheSession',
-            'cache' => 'cache',
+            'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -120,20 +103,8 @@ return [
                 ]
             ],
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
-            'useFileTransport' => false, //for the testing purpose, you need to enable this
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => '', // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => '',
-                'password' => '',
-                'port' => '587', // Port 25 is a very common port too
-                'encryption' => 'tls', // It is often used, check your provider or mail server specs
-            ],
-        ],
     ],
+    'version' => '22.06.29',
     'name' => call_user_func(function () use ($config) {
         try {
             $connection = new \yii\db\Connection($config['components']['db']);
@@ -144,9 +115,4 @@ return [
         }
         return $library_name;
     }),
-    'version' => '22.06.29',
-    'modules' => [
-        'gridview' => ['class' => 'kartik\grid\Module'],
-        // accesos solo administrativos a módulos específicos
-    ]
 ];

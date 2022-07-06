@@ -76,7 +76,7 @@ class BiblioFieldController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -93,7 +93,7 @@ class BiblioFieldController extends Controller
         $searchModel = new BiblioFieldSearch();
         $model = \common\models\Biblio::findOne($bibid);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'model' => $model,
             'searchModel' => $searchModel,
@@ -110,7 +110,7 @@ class BiblioFieldController extends Controller
      */
     public function actionView($bibid, $fieldid)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($bibid, $fieldid),
         ]);
@@ -133,7 +133,7 @@ class BiblioFieldController extends Controller
                 'bibid' => $model->bibid
             ]);
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('create', [
             'model' => $model, 'biblio' => $biblio, 'marcBlocks' => $marcBlocks
         ]);
@@ -158,7 +158,7 @@ class BiblioFieldController extends Controller
                 'bibid' => $model->bibid
             ]);
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('update', [
             'model' => $model,
             'biblio' => $biblio,

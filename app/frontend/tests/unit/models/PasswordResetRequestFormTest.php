@@ -4,8 +4,8 @@ namespace frontend\tests\unit\models;
 
 use Yii;
 use frontend\models\PasswordResetRequestForm;
-use common\fixtures\MemberFixture as MemberFixture;
-use common\models\Member;
+use common\fixtures\UserFixture as UserFixture;
+use common\models\User;
 
 class PasswordResetRequestFormTest extends \Codeception\Test\Unit
 {
@@ -18,9 +18,9 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
     public function _before()
     {
         $this->tester->haveFixtures([
-            'member' => [
-                'class' => MemberFixture::class,
-                'dataFile' => codecept_data_dir() . 'member.php'
+            'user' => [
+                'class' => UserFixture::className(),
+                'dataFile' => codecept_data_dir() . 'user.php'
             ]
         ]);
     }
@@ -34,7 +34,7 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
 
     public function testNotSendEmailsToInactiveUser()
     {
-        $user = $this->tester->grabFixture('member', 1);
+        $user = $this->tester->grabFixture('user', 1);
         $model = new PasswordResetRequestForm();
         $model->email = $user['email'];
         expect_not($model->sendEmail());
@@ -42,11 +42,11 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
 
     public function testSendEmailSuccessfully()
     {
-        $userFixture = $this->tester->grabFixture('member', 0);
+        $userFixture = $this->tester->grabFixture('user', 0);
         
         $model = new PasswordResetRequestForm();
         $model->email = $userFixture['email'];
-        $user = Member::findOne(['password_reset_token' => $userFixture['password_reset_token']]);
+        $user = User::findOne(['password_reset_token' => $userFixture['password_reset_token']]);
 
         expect_that($model->sendEmail());
         expect_that($user->password_reset_token);

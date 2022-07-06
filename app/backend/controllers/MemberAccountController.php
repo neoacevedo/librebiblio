@@ -75,7 +75,7 @@ class MemberAccountController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -92,7 +92,7 @@ class MemberAccountController extends Controller
         $searchModel = new MemberAccountSearch();
         $searchModel->mbr_id = Yii::$app->request->get('mbr_id');
         $dataProvider = $searchModel->search([]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -108,7 +108,7 @@ class MemberAccountController extends Controller
      */
     public function actionView(int $id, int $mbr_id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($id, $mbr_id),
         ]);
@@ -123,7 +123,7 @@ class MemberAccountController extends Controller
     {
         $model = new MemberAccount();
         $transactionType = \common\models\TransactionType::find()->all();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         } else {
@@ -148,7 +148,7 @@ class MemberAccountController extends Controller
     public function actionUpdate(int $id, int $mbr_id)
     {
         $model = $this->findModel($id, $mbr_id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         }

@@ -2,7 +2,7 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\MemberFixture;
+use common\fixtures\UserFixture;
 use frontend\models\ResetPasswordForm;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
@@ -16,27 +16,27 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     public function _before()
     {
         $this->tester->haveFixtures([
-            'member' => [
-                'class' => MemberFixture::class,
-                'dataFile' => codecept_data_dir() . 'member.php'
+            'user' => [
+                'class' => UserFixture::className(),
+                'dataFile' => codecept_data_dir() . 'user.php'
             ],
         ]);
     }
 
     public function testResetWrongToken()
     {
-        $this->tester->expectException('yii\base\InvalidParamException', function() {
+        $this->tester->expectException('\yii\base\InvalidArgumentException', function() {
             new ResetPasswordForm('');
         });
 
-        $this->tester->expectException('yii\base\InvalidParamException', function() {
+        $this->tester->expectException('\yii\base\InvalidArgumentException', function() {
             new ResetPasswordForm('notexistingtoken_1391882543');
         });
     }
 
     public function testResetCorrectToken()
     {
-        $user = $this->tester->grabFixture('member', 0);
+        $user = $this->tester->grabFixture('user', 0);
         $form = new ResetPasswordForm($user['password_reset_token']);
         expect_that($form->resetPassword());
     }

@@ -84,7 +84,7 @@ class BiblioController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -100,7 +100,7 @@ class BiblioController extends Controller
     {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         #if (\Yii::$app->user->can('view')) {
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -116,7 +116,7 @@ class BiblioController extends Controller
      */
     public function actionView(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -149,7 +149,7 @@ class BiblioController extends Controller
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save()) {

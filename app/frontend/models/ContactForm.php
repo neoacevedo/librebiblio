@@ -1,9 +1,5 @@
 <?php
-/**
- * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
- */
+
 namespace frontend\models;
 
 use Yii;
@@ -12,32 +8,35 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class ContactForm extends Model {
-
+class ContactForm extends Model
+{
     public $name;
     public $email;
     public $subject;
     public $body;
     public $verifyCode;
 
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             // name, email, subject and body are required
             [['name', 'email', 'subject', 'body'], 'required'],
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha', 'captchaAction' => 'site/captcha'],
+            ['verifyCode', 'captcha'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'verifyCode' => 'Verification Code',
         ];
@@ -49,15 +48,14 @@ class ContactForm extends Model {
      * @param string $email the target email address
      * @return bool whether the email was sent
      */
-    public function sendEmail(string $email) {
-        return Yii::$app
-                        ->mailer
-                        ->compose()
-                        ->setTo($email)
-                        ->setFrom([$this->email => $this->name])
-                        ->setSubject($this->subject)
-                        ->setTextBody($this->body)
-                        ->send();
+    public function sendEmail($email)
+    {
+        return Yii::$app->mailer->compose()
+            ->setTo($email)
+            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+            ->setReplyTo([$this->email => $this->name])
+            ->setSubject($this->subject)
+            ->setTextBody($this->body)
+            ->send();
     }
-
 }

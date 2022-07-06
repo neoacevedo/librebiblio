@@ -71,7 +71,7 @@ class MaterialTypeController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -87,7 +87,7 @@ class MaterialTypeController extends Controller
     {
         $searchModel = new MaterialTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -101,7 +101,7 @@ class MaterialTypeController extends Controller
      */
     public function actionView(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -117,7 +117,7 @@ class MaterialTypeController extends Controller
         $model = new MaterialType();
         // Uploaded file instance.
         $imageFile = Yii::$app->storage->getModel();#UploadedFile::getInstance($model, 'image_file');
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $imageFile->uploadedFile) {
                 if (Yii::$app->storage->save()) {
@@ -157,7 +157,7 @@ class MaterialTypeController extends Controller
         $model = $this->findModel($id);
         // Uploaded file instance.
         $imageFile = UploadedFile::getInstance($model, 'image_file');
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($model->upload($imageFile)) {
                 $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $imageFile->name);
@@ -205,7 +205,7 @@ class MaterialTypeController extends Controller
      */
     protected function findModel(int $id)
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = MaterialType::findOne($id)) !== null) {
             return $model;
         } else {

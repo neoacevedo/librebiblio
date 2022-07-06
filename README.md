@@ -90,8 +90,7 @@ ESTRUCTURA DE DIRECTORIOS
 /                    contains the frontend entry script, favicon, and robots.txt.             
 assets/              contains the frontend web runtime assets    
 css/                 contiene los archivos css del sitio público         
-images/              contiene imágnes del sitio público   
-themes/              contiene los recursos web de los temas del sitio público   
+images/              contiene imágnes del sitio público     
 backend
     web/                 contains the backend entry script and Web resources
 app

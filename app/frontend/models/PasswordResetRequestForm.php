@@ -1,14 +1,10 @@
 <?php
-/**
- * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
- */
+
 namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use common\models\Member;
+use common\models\User;
 
 /**
  * Password reset request form
@@ -19,7 +15,7 @@ class PasswordResetRequestForm extends Model
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -28,9 +24,9 @@ class PasswordResetRequestForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => '\common\models\Member',
-                'filter' => ['status' => Member::STATUS_ACTIVE],
-                'message' => Yii::t('app', 'There is no user with this email address.')
+                'targetClass' => '\common\models\User',
+                'filter' => ['status' => User::STATUS_ACTIVE],
+                'message' => 'There is no user with this email address.'
             ],
         ];
     }
@@ -43,8 +39,8 @@ class PasswordResetRequestForm extends Model
     public function sendEmail()
     {
         /* @var $user User */
-        $user = Member::findOne([
-            'status' => Member::STATUS_ACTIVE,
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
             'email' => $this->email,
         ]);
 
@@ -52,7 +48,7 @@ class PasswordResetRequestForm extends Model
             return false;
         }
         
-        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save()) {
                 return false;
@@ -65,9 +61,9 @@ class PasswordResetRequestForm extends Model
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => \common\models\Settings::find()->one()->library_name . ' robot'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
             ->setTo($this->email)
-            ->setSubject('Password reset for ' . \common\models\Settings::find()->one()->library_name)
+            ->setSubject('Password reset for ' . Yii::$app->name)
             ->send();
     }
 }

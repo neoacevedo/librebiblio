@@ -16,7 +16,7 @@ class Theme extends \yii\base\Theme
 
     public function init()
     {
-        parent::init();        
+        parent::init();
         
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 1])->one();
         if (!$theme) {
@@ -28,10 +28,10 @@ class Theme extends \yii\base\Theme
         $this->basePath = '@app/themes/' . $this->theme;
         $this->baseUrl = '@web/themes/' . $this->theme;
         $this->pathMap = [
-            '@app/views' => '@app/themes/' . $this->theme,
+            '@app/views' => '@app/themes/' . $this->theme . "/views",
         ];
 
-        // configurar el tema en la sesión        
+        // configurar el tema en la sesión
         \Yii::$app->session->set('frontend-skin', $theme->skin);
     }
 }

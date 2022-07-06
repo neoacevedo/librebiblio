@@ -59,7 +59,7 @@ class AdminController extends Controller
      * @return mixed
      */
     public function actions() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -89,7 +89,7 @@ class AdminController extends Controller
             mkdir($backendAssetPath);
         }
         
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (\Yii::$app->cache->flush()) {
             \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
         } else {
@@ -106,7 +106,7 @@ class AdminController extends Controller
     public function actionUsers() {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -119,7 +119,7 @@ class AdminController extends Controller
      * @return mixed
      */
     public function actionUsersView(int $id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/view', [
                     'model' => $this->findModel($id),
         ]);
@@ -132,7 +132,7 @@ class AdminController extends Controller
      */
     public function actionUsersCreate() {
         $model = new \backend\models\SignupForm();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'User registered'));
@@ -163,7 +163,7 @@ class AdminController extends Controller
      */
     public function actionUsersUpdate(int $id) {
         $model = $this->findModel($id);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
@@ -193,7 +193,7 @@ class AdminController extends Controller
      * @return mixed
      */
     public function actionSettings() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('settings/index');
     }
 
@@ -205,7 +205,7 @@ class AdminController extends Controller
      */
     public function actionLibrarySettings() {
         $model = $this->findSettingsModel();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
@@ -225,7 +225,7 @@ class AdminController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel(int $id) {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {

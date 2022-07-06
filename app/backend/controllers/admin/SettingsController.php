@@ -81,7 +81,7 @@ class SettingsController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -97,7 +97,7 @@ class SettingsController extends Controller
     public function actionLibrarySettings()
     {
         $model = $this->findModel();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
         foreach ($files as $file) {
@@ -118,7 +118,7 @@ class SettingsController extends Controller
     public function actionLibrarySettingsUpdate()
     {
         $model = $this->findModel();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
         foreach ($files as $file) {

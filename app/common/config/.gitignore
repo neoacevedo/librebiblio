@@ -1,6 +1,4 @@
+codeception-local.php
 main-local.php
 params-local.php
-database-local.php
-storage-local.php
 test-local.php
-cache-local.php

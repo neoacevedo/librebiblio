@@ -144,7 +144,7 @@ class ThemeController extends Controller
      * @inheritdoc
      */
     public function actions() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -159,7 +159,7 @@ class ThemeController extends Controller
     public function actionIndex() {
         $searchModel = new ThemeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -178,7 +178,7 @@ class ThemeController extends Controller
      */
     public function actionCreate() {
         $model = new Theme();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('create', [
@@ -241,7 +241,7 @@ class ThemeController extends Controller
     public function actionUpdate(int $id) {
         $model = $this->findModel($id);
         $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // ahora a modificar el json
         if ($current_theme) {
             if ($current_theme->active == 1) {

@@ -87,7 +87,7 @@ class AssignmentController extends Controller
      * @return mixed
      */
     public function actions() {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -102,7 +102,7 @@ class AssignmentController extends Controller
     public function actionIndex() {
         $searchModel = new AssignmentSearch;
         $dataProvider = $searchModel->search();
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
                     'dataProvider' => $dataProvider,
                     'searchModel' => $searchModel,
@@ -120,7 +120,7 @@ class AssignmentController extends Controller
         $model = call_user_func($this->rbacModule->userModelClassName . '::findOne', $id);
         $formModel = new AssignmentForm($id);
         $request = Yii::$app->request;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isPost) {

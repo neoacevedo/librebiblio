@@ -84,7 +84,7 @@ class ReportController extends Controller
      */
     public function actions()
     {
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -111,7 +111,7 @@ class ReportController extends Controller
             $classname = "backend\\reports\\" . substr($file, 0, -4);
             $reports[$classname::getCategory()][] = new $classname;
         }
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'reports' => $reports,
         ]);
@@ -128,7 +128,7 @@ class ReportController extends Controller
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
         $view = strtolower(Yii::$app->request->get("type"));
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render($view, [
             'model' => $searchModel,
             'materialType' => \common\models\MaterialType::find()->all(),
@@ -146,7 +146,7 @@ class ReportController extends Controller
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
         $viewName = Yii::$app->request->get("type");
         $searchModel = new $classnameSearch;
-        \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render("$viewName/view", [
             'searchModel' => $searchModel,
