@@ -18,13 +18,14 @@ use common\models\Settings;
 /**
  * AdminController implements the CRUD actions for User model.
  */
-class AdminController extends Controller 
+class AdminController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -58,7 +59,8 @@ class AdminController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -69,31 +71,31 @@ class AdminController extends Controller
     
     /**
      * Borra la caché.
-     * 
-     * @link https://www.yee-soft.com/docs/yeesoft-settings-controllers-cachecontroller.html#actionFlush()-detail
-     * @return type
+     *
+     * @return mixed
      */
     public function actionFlushCache()
-    {        
-        $frontendAssetPath = \Yii::getAlias('@frontend') . '/web/assets/';
-        $backendAssetPath = \Yii::getAlias('@backend') . '/web/assets/';
+    {
+        $frontendAssetPath = Yii::getAlias("@webroot") . "/../../assets/";
+        $backendAssetPath = Yii::getAlias('@webroot') . '/assets/';
 
+        
         AdminController::recursiveDelete($frontendAssetPath);
         AdminController::recursiveDelete($backendAssetPath);
         
         if (!is_dir($frontendAssetPath)) {
-            mkdir($frontendAssetPath);
+            mkdir($frontendAssetPath) or Yii::debug("No es un directorio: $frontendAssetPath");
         }
         
         if (!is_dir($backendAssetPath)) {
-            mkdir($backendAssetPath);
+            mkdir($backendAssetPath) or Yii::debug("No es un directorio: $backendAssetPath");
         }
         
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (\Yii::$app->cache->flush()) {
             \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
         } else {
-            \Yii::$app->getSession()->setFlash('error',  \Yii::t('app', 'Failed to flush cache.'));
+            \Yii::$app->getSession()->setFlash('error', \Yii::t('app', 'Failed to flush cache.'));
         }
         
         return $this->redirect(\Yii::$app->request->referrer);
@@ -103,7 +105,8 @@ class AdminController extends Controller
      * Lists all User models.
      * @return mixed
      */
-    public function actionUsers() {
+    public function actionUsers()
+    {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -118,7 +121,8 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersView(int $id) {
+    public function actionUsersView(int $id)
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('users/view', [
                     'model' => $this->findModel($id),
@@ -130,7 +134,8 @@ class AdminController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionUsersCreate() {
+    public function actionUsersCreate()
+    {
         $model = new \backend\models\SignupForm();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
@@ -138,17 +143,17 @@ class AdminController extends Controller
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'User registered'));
                 return $this->redirect(['admin/users-view', 'id' => $user->id]);
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render('users/create', [
                             'model' => $model,
                 ]);
             }
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('users/create', [
                         'model' => $model,
             ]);
@@ -161,15 +166,16 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersUpdate(int $id) {
+    public function actionUsersUpdate(int $id)
+    {
         $model = $this->findModel($id);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['admin/users-view', 'id' => $model->id]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('users/update', [
                         'model' => $model,
             ]);
@@ -182,7 +188,8 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUsersDelete(int $id) {
+    public function actionUsersDelete(int $id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -192,26 +199,28 @@ class AdminController extends Controller
      * Describe las configuraciones disponibles de la biblioteca.
      * @return mixed
      */
-    public function actionSettings() {
+    public function actionSettings()
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('settings/index');
     }
 
     /**
      * Carga/guarda las configuraciones de la biblioteca.
-     * 
+     *
      * Algunas configuraciones específicas de la plataforma se crean/guardan desde los diferentes archivos de configuración.
      * @return mixed
      */
-    public function actionLibrarySettings() {
+    public function actionLibrarySettings()
+    {
         $model = $this->findSettingsModel();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
 
             return $this->render('settings/library_settings', ['model' => $model]);
         }
@@ -224,7 +233,8 @@ class AdminController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if (($model = User::findOne($id)) !== null) {
             return $model;
@@ -236,10 +246,11 @@ class AdminController extends Controller
     /**
      * Devuelve el modelo de las configuraciones.
      * Si no hay aún alguna configuración, devuelve un nuevo modelo.
-     * 
+     *
      * @return Settings
      */
-    private function findSettingsModel() {
+    private function findSettingsModel()
+    {
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
         } else {
@@ -250,8 +261,7 @@ class AdminController extends Controller
               
     /**
      * Remove file or directory
-     * @link https://www.yee-soft.com/docs/yeesoft-helpers-yeehelper.html#recursiveDelete()-detail YeeSoft Documentation     
-     * 
+     *
      * @param string $path
      * @return boolean
      */
@@ -268,5 +278,4 @@ class AdminController extends Controller
             return @rmdir($path);
         }
     }
-
 }

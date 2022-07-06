@@ -19,12 +19,12 @@ use yii\web\UploadedFile;
 
 /**
  * ThemeController implementa las opereaciones CRUD para el modelo Theme.
- * 
+ *
  * Cada tema se instala en el directorio _themes_ de los niveles **frontend** y **backend**.<br />
- * Para entender una parte del manejo de temas, vaya a la sección de Temas de Yii (https://www.yiiframework.com/doc/guide/2.0/es/output-theming).<br /> 
- * La instalación se realiza desde un archivo ZIP el cual contiene la estructura del tema y un archivo **_settings.json_** con la descripcíon y configuraciones 
+ * Para entender una parte del manejo de temas, vaya a la sección de Temas de Yii (https://www.yiiframework.com/doc/guide/2.0/es/output-theming).<br />
+ * La instalación se realiza desde un archivo ZIP el cual contiene la estructura del tema y un archivo **_settings.json_** con la descripcíon y configuraciones
  * básicas del tema.
- * 
+ *
  * El archivo _settings.json_ tiene la siguiente estructura:
  * <pre>
  * <code>
@@ -48,7 +48,7 @@ use yii\web\UploadedFile;
  * }
  * </code>
  * </pre>
- * 
+ *
  * La estructura de directorios del archivo comprimido del tema es la siguiente:
  * <pre>
  *  <code>
@@ -57,9 +57,9 @@ use yii\web\UploadedFile;
  *    - nombre_del_tema
  *  </code>
  * </pre>
- * 
+ *
  * Esta estructura cambia internamente dependiendo del nivel.
- * 
+ *
  * Para _backend_:
  * <code class="list-group">
  * - admin
@@ -81,16 +81,16 @@ use yii\web\UploadedFile;
  * - member-account
  * - site
  * </code>
- * 
+ *
  * Para _frontend_:
- * <code class="list-group"> 
+ * <code class="list-group">
  * - biblio
  * - circulation
  * - layouts
  * - member
  * - site
  * </code>
- * 
+ *
  * Adicional a ello, en algunos directorios se crean subdirectorios para idiomas específicos. Por ejemplo:
  * <code class="list-group">
  * - backend
@@ -98,19 +98,20 @@ use yii\web\UploadedFile;
  *   - site
  *    - es-CO
  * </code>
- * 
- * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_ 
+ *
+ * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_
  * y que no se incluyen en el archivo principal de configuración.
- * 
+ *
  * **NOTA:** Si no se incluye en la estructura anterior algún archivo/directorio, es posible que la aplicación renderice una predefinida o que genere un error 400
  */
-class ThemeController extends Controller 
+class ThemeController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -143,7 +144,8 @@ class ThemeController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions() {
+    public function actions()
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -156,7 +158,8 @@ class ThemeController extends Controller
      * Lists all Theme models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new ThemeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -168,15 +171,16 @@ class ThemeController extends Controller
 
     /**
      * Sube el archivo zip del tema y lo instala.
-     * 
-     * El archivo **zip** se sube al directorio _tmp_ del backend. 
-     * Luego lee el archivo **_JSON_** con la información del tema y procede a extraer el contenido del zip en el directorio themes 
+     *
+     * El archivo **zip** se sube al directorio _tmp_ del backend.
+     * Luego lee el archivo **_JSON_** con la información del tema y procede a extraer el contenido del zip en el directorio themes
      * del frontend/backend dependiendo de la configuración del JSON.
-     * 
+     *
      * Posterior a ello borra el archivo zip.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new Theme();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 
@@ -212,9 +216,9 @@ class ThemeController extends Controller
                     if ($model->validate() && $model->save()) {
                         Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme installed successfully.'));
                     } else {
-                        array_walk_recursive($model->errors, function($v, $k) {
-                                    Yii::$app->getSession()->setFlash('error', $v);
-                                });
+                        array_walk_recursive($model->errors, function ($v, $k) {
+                            Yii::$app->getSession()->setFlash('error', $v);
+                        });
                     }
 
                     return $this->redirect(['index']);
@@ -225,9 +229,9 @@ class ThemeController extends Controller
             Yii::$app->getSession()->setFlash('warning', $result);
             return $this->redirect(['index']);
         } else {
-            array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->redirect(['index']);
         }
     }
@@ -238,7 +242,8 @@ class ThemeController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate(int $id) {
+    public function actionUpdate(int $id)
+    {
         $model = $this->findModel($id);
         $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -273,9 +278,9 @@ class ThemeController extends Controller
                     Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                     return $this->redirect(['index']);
                 } else {
-                    array_walk_recursive($model->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    array_walk_recursive($model->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                     return $this->render("update", ['model' => $model, 'skins' => $skins]);
                 }
             } else {
@@ -296,9 +301,9 @@ class ThemeController extends Controller
                     Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                     return $this->redirect(['index']);
                 } else {
-                    array_walk_recursive($model->errors, function($v, $k) {
-                                Yii::$app->getSession()->setFlash('error', $v);
-                            });
+                    array_walk_recursive($model->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                     return $this->render("update", ['model' => $model, 'skins' => $skins]);
                 }
             }
@@ -320,9 +325,9 @@ class ThemeController extends Controller
                 Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
                 return $this->redirect(['index']);
             } else {
-                array_walk_recursive($model->errors, function($v, $k) {
-                            Yii::$app->getSession()->setFlash('error', $v);
-                        });
+                array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 return $this->render("update", ['model' => $model, 'skins' => $skins]);
             }
         }
@@ -334,11 +339,14 @@ class ThemeController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete(int $id) {
+    public function actionDelete(int $id)
+    {
         $model = $this->findModel($id);
         $path = Yii::$app->basePath;
+        $name = "default";
         if ($model->frontend == 1) {
             $path = Yii::$app->basePath . "/../frontend";
+            $name = "simple";
         }
         if (is_dir("$path/themes/{$model->name}")) {
             $this->delTree("$path/themes/{$model->name}");
@@ -346,6 +354,14 @@ class ThemeController extends Controller
 
         if (is_dir("$path/web/themes/{$model->name}")) {
             $this->delTree("$path/web/themes/{$model->name}");
+        }
+
+        if ($model->active == 1) {
+            $defaultModel = Theme::find()
+                ->where(['frontend' => $model->frontend, "name" => $name])
+                ->one();
+            $defaultModel->active = 1;
+            $defaultModel->save();
         }
 
         $model->delete();
@@ -360,7 +376,8 @@ class ThemeController extends Controller
      * @return Theme the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         if (($model = Theme::findOne($id)) !== null) {
             return $model;
         } else {
@@ -370,18 +387,18 @@ class ThemeController extends Controller
 
     /**
      * Borra un directorio completo.
-     * Método abstraído de ({http://php.net/manual/es/function.rmdir.php#110489}) para borrar 
+     * Método abstraído de ({http://php.net/manual/es/function.rmdir.php#110489}) para borrar
      * el directorio completo del tema.
      * @param string $dir
      * @access private
      * @return bool
      */
-    protected function delTree(string $dir) {
+    protected function delTree(string $dir)
+    {
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
         }
         return rmdir($dir);
     }
-
 }
