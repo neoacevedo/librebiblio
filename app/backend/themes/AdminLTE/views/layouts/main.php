@@ -1,5 +1,6 @@
 <?php
-/* @var $this \yii\web\View */
+
+/** @var \yii\web\View $this */
 /* @var $content string */
 
 use yii\helpers\Html;
@@ -8,7 +9,7 @@ backend\assets\ThemeAsset::register($this);
 $this->registerCssFile('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
 
 $assetDir = Yii::$app->assetManager->getPublishedUrl('@app/themes/AdminLTE/assets');
-Yii::debug($assetDir);
+
 $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
 $isAdmin = false;
 foreach ($roles as $role) {

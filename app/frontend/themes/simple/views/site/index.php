@@ -13,7 +13,6 @@ $this->registerJs(""
                 });");
 ?>
 <div class="site-index">
-
     <div class="jumbotron">
 
         <?php
@@ -28,41 +27,34 @@ $this->registerJs(""
             }
         }
         ?>
+        <div class="row">&nbsp;</div>
         <?php
-        $form = ActiveForm::begin([
-                    'action' => ['search'],
-                    'method' => 'get',
-                    'options' => ['class' => 'form-inline', 'id' => 'search']
-        ]);
+                $form = ActiveForm::begin([
+                            'action' => ['search'],
+                            'method' => 'get',
+                            'options' => ['id' => 'search']
+                ]);
         ?>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="col-lg-2 col-md-2 col-sm-2">&nbsp;</div>
-                <div class="col-lg-8 col-md-8 col-sm-8">
-
-                    <input id="input_search" name="BiblioSearch[title]" class="form-control input-lg"
-                        style="width: 83.33333333%" />
-                    <input type="hidden" name="BiblioSearch[opac_flg]" value="1" />
-                    <!--<button type="submit" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-search"></i></button>-->
-
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">&nbsp;</div>
+        <div class="form-row">
+            <div class="col-2">&nbsp;</div>
+            <div class="col">
+                <input id="input_search" name="BiblioSearch[title]" class="form-control form-control-lg" />
+                <input type="hidden" name="BiblioSearch[opac_flg]" value="1" />
             </div>
+            <div class="col-2">&nbsp;</div>
         </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-xs-4">&nbsp;</div>
-            <div class="col-xs-4">
+        <div class="form-row">
+            <div class="col-2">&nbsp;</div>
+            <div class="col">
                 <button type="button" name="search_opt" title="" value="BiblioSearch[title]"
-                    class="btn btn-sm btn-default biblio"> <?= Yii::t('app', 'Title') ?></button>
+                    class="btn btn-sm btn-light biblio"> <?= Yii::t('app', 'Title') ?></button>
+                &nbsp;
                 <button type="button" name="search_opt" value="BiblioSearch[author]"
-                    class="btn btn-sm btn-default biblio"> <?= Yii::t('app', 'Author') ?></button>
+                    class="btn btn-sm btn-light biblio">
+                    <?= Yii::t('app', 'Author') ?></button>
             </div>
-            <div class="col-xs-4">&nbsp;</div>
+            <div class="col-2">&nbsp;</div>
         </div>
-        <?php
-        ActiveForm::end();
-        ?>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>

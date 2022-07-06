@@ -86,27 +86,33 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
     </div>
 
     <footer class="footer">
-        <div class="container">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
+        <div class="container text-center">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
                 </div>
-                <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": $library_hours" ?>
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Library Hours') . ": $library_hours" ?>
                 </div>
-                <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": $library_phone" ?>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
-                <div class="col-lg-4 col-md-4 col-sm-4">LibreBiblio. &copy; <?= date('Y') ?> N&eacute;stor
-                    Acevedo. <?= 'v' . Yii::$app->version ?>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                    <a href="http://www.yiiframework.com/" rel="external">
-                        <?= \Yii::t('yii', 'Yii Framework') ?>
-                    </a>
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Library Phone') . ": $library_phone" ?>
                 </div>
             </div>
-            <p>&nbsp;</p>
+            <!-- Copyright -->
+            <hr />
+            <div class="text-center">
+                OpenBiblio. &copy; 2002-2005 Dave Stevens, et al. |
+                LibreBiblio. &copy; <?= date('Y') ?>
+                <a href="https://www.neoacevedo.co/" target="_blank">
+                    N&eacute;stor
+                    Acevedo.</a>
+                <?= 'v' . Yii::$app->version ?> |
+                <a href="http://www.yiiframework.com/" rel="external">
+                    <?= \Yii::t('yii', 'Yii Framework') ?>
+                </a>
+            </div>
+            <div class="row">&nbsp;</div>
+            <!-- // -->
         </div>
     </footer>
 
