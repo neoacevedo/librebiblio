@@ -43,6 +43,7 @@ $this->registerJs(""
             </div>
             <div class="col-2">&nbsp;</div>
         </div>
+        <div class="row">&nbsp;</div>
         <div class="form-row">
             <div class="col-2">&nbsp;</div>
             <div class="col">

@@ -13,9 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="circulation-index">
 
-    <div class="user-index">
+    <div class="card">
 
         <?= $this->render("search", ['searchModel' => $searchModel, 'dataProvider' => $dataProvider]) ?>
-        
+
     </div>
 </div>

@@ -23,12 +23,12 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap4": "^2.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "neoacevedo/yii2-rbac-plus": "*",
         "kartik-v/yii2-mpdf": "dev-master",
         "kartik-v/yii2-export": "@dev",
         "2amigos/yii2-chartjs-widget": "^3.0",
         "neoacevedo/yii2-storage": "*",
-        "mpdf/qrcode": "^1.2"
+        "mpdf/qrcode": "^1.2",
+        "neoacevedo/yii2-rbac-plus": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

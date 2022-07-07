@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
-use yii\widgets\Breadcrumbs;
+use yii\bootstrap4\Breadcrumbs;
 use frontend\assets\ThemeAsset;
 use common\widgets\Alert;
 
@@ -75,11 +75,19 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
             ?>
 
         <div class="container">
-            <?=
-                Breadcrumbs::widget([
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                ])
-                ?>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col">
+                    <?=
+                        Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'options' => [
+                                'class' => 'breadcrumb'
+                            ]
+                        ])
+                        ?>
+                </div>
+            </div>
             <?= Alert::widget() ?>
             <?= $content ?>
         </div>

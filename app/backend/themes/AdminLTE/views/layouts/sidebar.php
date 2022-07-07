@@ -109,7 +109,8 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="<?= Url::to(['/admin/report/index']) ?>"
+                        class="nav-link">
                         <i class="fas fa-chart-bar"></i> <?= Yii::t("app/reports", "Reports") ?>
                     </a>
                 </li>

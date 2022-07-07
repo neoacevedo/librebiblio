@@ -7,12 +7,12 @@ basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave S
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
 
-[![Latest Stable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/stable)](https://packagist.org/packages/neoacevedo/openbiblio2)
-[![Total Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/downloads)](https://packagist.org/packages/neoacevedo/openbiblio2)
-[![Latest Unstable Version](https://poser.pugx.org/neoacevedo/openbiblio2/v/unstable)](https://packagist.org/packages/neoacevedo/openbiblio2)
-[![License](https://poser.pugx.org/neoacevedo/openbiblio2/license)](https://packagist.org/packages/neoacevedo/openbiblio2)
-[![Monthly Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/d/monthly)](https://packagist.org/packages/neoacevedo/openbiblio2)
-[![Daily Downloads](https://poser.pugx.org/neoacevedo/openbiblio2/d/daily)](https://packagist.org/packages/neoacevedo/openbiblio2)
+[![Latest Stable Version](https://poser.pugx.org/neoacevedo/librebiblio/v/stable)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![Total Downloads](https://poser.pugx.org/neoacevedo/librebiblio/downloads)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![Latest Unstable Version](https://poser.pugx.org/neoacevedo/librebiblio/v/unstable)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![License](https://poser.pugx.org/neoacevedo/librebiblio/license)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![Monthly Downloads](https://poser.pugx.org/neoacevedo/librebiblio/d/monthly)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![Daily Downloads](https://poser.pugx.org/neoacevedo/librebiblio/d/daily)](https://packagist.org/packages/neoacevedo/librebiblio)
 
 INSTALACIÓN
 ===========
@@ -21,7 +21,6 @@ INSTALACIÓN
 + PHP >= 7.4
 + MySQL, MariaDB, PostgresSQL (Por ahora)
 + PHP7 bcmath
-+ Apache Redirect (Si se usa Apache)
 
 ## Configuración
 
@@ -63,14 +62,14 @@ Al estar desarrollado en Yii2, los comandos para preparar la aplicación son bá
 
 4. Desde la terminal, ejecute las migraciones:
 
-    php /ruta/al/directorio/de/openbiblio2/yii migrate
+    php /ruta/al/directorio/de/librebiblio/yii migrate
 
 5. Configurar el servidor web. Para Apache, puede usar la siguiente configuración:
    
     ```
     <VirtualHost *:80>
-        ServerName openbiblio2.neoacevedo.co
-        ServerAlias openbiblio2.neoacevedo.co
+        ServerName librebiblio.neoacevedo.co
+        ServerAlias librebiblio.neoacevedo.co
         # ej: /var/www/html/
         DocumentRoot "/path/to/your/site/"
         <Directory "/path/to/your/site/">

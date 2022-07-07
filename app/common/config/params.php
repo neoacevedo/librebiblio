@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2020 Néstor Acevedo
+ * @copyright Copyright (c) 2022 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
@@ -16,8 +16,8 @@ try {
     $settings = $connection->createCommand("select library_hours, library_phone, library_image_url, use_image_flg from {{%settings}}")->cache(86400)->queryAll();
 } catch (Exception $ex) {
     $message = $ex->getMessage();
-    $settings['library_hours'] = "";
-    $settings['library_phone'] = "";
+    $settings['library_hours'] = "L-V 09:00 - 17:00";
+    $settings['library_phone'] = "+57 601234567";
     $settings['library_image_url'] = null;
     $settings['use_image_flg'] = 0;
 }
@@ -29,6 +29,7 @@ return [
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
+    'bsVersion' => '4.x',
     'library_hours' => $settings['library_hours'],
     'library_phone' => $settings['library_phone'],
     'library_image_url' => $settings['library_image_url'],

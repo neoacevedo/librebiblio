@@ -13,10 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
+
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php Pjax::begin(); ?>    <?=
+    <?php Pjax::begin(); ?>
+    <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
@@ -29,18 +32,18 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'call_nmbr3',
             [
                 'attribute' => 'image_file',
-                'value' => function($model) {
+                'value' => function ($model) {
                     return Html::img($model->image_file, ['alt' => $model->title,
                                 'title' => $model->title,
-                                'class' => 'image-responsive center-block',
-                                'style' => 'width: 33.333333%']);
+                                'class' => 'image-responsive center-block',]);
                 },
                 'format' => 'raw',
-                'label' => 'Image'
+                'label' => 'Image',
+                'enableSorting' => false
             ],
             [
                 'attribute' => 'materialType',
-                'value' => function($model) {
+                'value' => function ($model) {
                     return Html::img(Yii::$app->storage->getUrl(Yii::$app->storage->prefix.$model->materialType->image_file), ['alt' => $model->materialType->description,
                                 'title' => $model->materialType->description,
                                 'class' => 'image-responsive center-block',
@@ -52,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => Yii::t('app', 'Title'),
                 'attribute' => 'title',
-                'value' => function($model) {
+                'value' => function ($model) {
                     return "<h5>$model->title</h5><h6>$model->title_remainder</h6>";
                 },
                 'format' => 'raw'
@@ -61,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'author:ntext',
             [
                 'label' => Yii::t('app', 'Number of copies'),
-                'value' => function($model) {
+                'value' => function ($model) {
                     $biblioCopySearch = new \common\models\BiblioCopySearch();
                     $biblioCopySearch->bibid = $model->id;
                     $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
@@ -95,4 +98,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
     ?>
-    <?php Pjax::end(); ?></div>
+    <?php Pjax::end(); ?>
+</div>
