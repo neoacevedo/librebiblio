@@ -109,11 +109,11 @@ class MemberController extends Controller
                     Yii::$app->getSession()->setFlash('warning', 'Failed, contact Admin!');
                 }
                 return $this->redirect(['circulation/index']);
+            } else {
+                array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
             }
-        } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
         }
 
         return $this->render('signup', [
@@ -158,7 +158,7 @@ class MemberController extends Controller
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE
+            'showBarcodeNumbers' => false
         ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
@@ -220,7 +220,6 @@ class MemberController extends Controller
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
         } elseif (Yii::$app->db->driverName === "pgsql") {
-
             $materialTypeStats = (new \yii\db\Query)->select([
                 "mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
                 "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
@@ -295,7 +294,7 @@ class MemberController extends Controller
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE
+            'showBarcodeNumbers' => false
         ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],

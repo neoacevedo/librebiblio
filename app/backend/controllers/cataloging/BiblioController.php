@@ -28,9 +28,9 @@ class BiblioController extends Controller
 
     /**
      *
-     * @var \common\models\UsmarcSubfield 
+     * @var \common\models\UsmarcSubfield[]
      */
-    private $usmarc = null;
+    private $usmarc;
 
     /**
      * @inheritdoc
@@ -124,7 +124,7 @@ class BiblioController extends Controller
 
     /**
      * Registra el material bibliográfico.
-     * Primero llena los atributos USMarc del controlador, asigna el tipo de material 
+     * Primero llena los atributos USMarc del controlador, asigna el tipo de material
      * y luego realiza el registro.
      * @return string
      */
@@ -132,35 +132,29 @@ class BiblioController extends Controller
     {
         $model = new Biblio();
         // este método es solo para crear los campos en el formulario
-        $this->getUsMarc();
+        $this->usmarc = $this->getUsMarc();
         // Uploaded file instance.
-        //$imageFile = UploadedFile::getInstance($model, 'image_file');
-        /*$storage = new Storage([
-            'service' => 'local',
-            'config' => [
-                'baseUrl' => Yii::$app->request->hostInfo, // ej: http://example.com/
-                'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
-                'extensions' => 'png, jpg, jpeg'
-            ]
-        ]);*/
-        $fileModel = Yii::$app->storage->getModel();
-        Yii::$app->storage->prefix = "images/covers/";
+        $fileManager = Yii::$app->storage->getFileManager();
+
+        Yii::$app->storage->prefix .= "covers/";
+
         $modelBiblioFields[] = new \common\models\BiblioField();
+
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
         }
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if (null !== $fileModel->uploadedFile) {
+            if (null !== $fileManager->uploadedFile) {
                 if (Yii::$app->storage->save()) {
-                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileManager->uploadedFile->name);
                 } else {
-                    array_walk_recursive($fileModel->errors, function ($v, $k) {
+                    array_walk_recursive($fileManager->errors, function ($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
                 }
             } else {
-                array_walk_recursive($fileModel->errors, function ($v, $k) {
+                array_walk_recursive($fileManager->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
@@ -173,43 +167,26 @@ class BiblioController extends Controller
                 array_walk_recursive($model->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
-                return $this->render('create', [
-                    'model' => $model,
-                    'modelBiblioFields' => $modelBiblioFields,
-                    'usmarc' => $this->usmarc,
-                    'fileModel' => $fileModel,
-                    'materialType' => MaterialType::find()->all(),
-                    'collection' => Collection::find()->all()
-                ]);
             }
 
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    'modelBiblioFields' => $modelBiblioFields,
-                    'usmarc' => $this->usmarc,
-                    'fileModel' => $fileModel,
-                    'materialType' => MaterialType::find()->all(),
-                    'collection' => Collection::find()->all()
-                ]);
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'modelBiblioFields' => $modelBiblioFields,
-                'usmarc' => $this->usmarc,
-                'fileModel' => $fileModel,
-                'materialType' => MaterialType::find()->all(),
-                'collection' => Collection::find()->all()
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+            'modelBiblioFields' => $modelBiblioFields,
+            'usmarc' => $this->usmarc,
+            'fileModel' => $fileManager,
+            'materialType' => MaterialType::find()->all(),
+            'collection' => Collection::find()->all()
+        ]);
     }
 
     /**
-     * Borra los registros si los hay de la tabla BiblioField de acuerdo al id del 
-     * campo bibid el cual es la relación con la tabla Biblio y procede a crear nuevos 
+     * Borra los registros si los hay de la tabla BiblioField de acuerdo al id del
+     * campo bibid el cual es la relación con la tabla Biblio y procede a crear nuevos
      * para ese mismo modelo.
      * @param int $bibid
      * @param mixed $models
@@ -257,16 +234,11 @@ class BiblioController extends Controller
         $model = $this->findModel($id);
         $current_image_file = $model->image_file;
 
-        /*$storage = new Storage([
-            'service' => 'local',
-            'config' => [
-                'directory' => '@frontend/web/images/covers/', // reemplace @webroot por @frontend o @backend según sea el caso
-                'extensions' => 'png, jpg, jpeg'
-            ]
-        ]);*/
-        $fileModel = Yii::$app->storage->getModel();
-        Yii::$app->storage->prefix = "images/covers/";
-        $this->getUsMarc();
+        $fileModel = Yii::$app->storage->getFileManager();
+        Yii::$app->storage->prefix .= "covers/";
+
+        $this->usmarc = $this->getUsMarc();
+        
         $modelBiblioFields[] = new \common\models\BiblioField();
 
         $materialType = MaterialType::find($model->material_cd)->one();
@@ -292,14 +264,6 @@ class BiblioController extends Controller
                     array_walk_recursive($model->errors, function ($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
-                    return $this->render('create', [
-                        'model' => $model,
-                        'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc,
-                        'fileModel' => Yii::$app->storage->getModel(),
-                        'materialType' => MaterialType::find()->all(),
-                        'collection' => Collection::find()->all()
-                    ]);
                 }
             } else {
                 $model->image_file = $current_image_file;
@@ -311,14 +275,6 @@ class BiblioController extends Controller
                     @array_walk_recursive($model->errors, function ($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
-                    return $this->render('create', [
-                        'model' => $model,
-                        'modelBiblioFields' => $modelBiblioFields,
-                        'usmarc' => $this->usmarc,
-                        'fileModel' => Yii::$app->storage->getModel(),
-                        'materialType' => MaterialType::find()->all(),
-                        'collection' => Collection::find()->all()
-                    ]);
                 }
             }
 
@@ -330,15 +286,6 @@ class BiblioController extends Controller
 
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                    'modelBiblioFields' => $modelBiblioFields,
-                    'usmarc' => $this->usmarc,
-                    'fileModel' => Yii::$app->storage->getModel(),
-                    'materialType' => MaterialType::find()->all(),
-                    'collection' => Collection::find()->all()
-                ]);
             }
 
             #return $this->redirect(['view', 'id' => $model->id]);
@@ -355,15 +302,16 @@ class BiblioController extends Controller
                     $modelBiblioFields[] = new \common\models\BiblioField();
                 }
             }
-            return $this->render('update', [
-                'model' => $model,
-                'modelBiblioFields' => $modelBiblioFields,
-                'usmarc' => $this->usmarc,
-                'fileModel' => Yii::$app->storage->getModel(),
-                'materialType' => MaterialType::find()->all(),
-                'collection' => Collection::find()->all()
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'modelBiblioFields' => $modelBiblioFields,
+            'usmarc' => $this->usmarc,
+            'fileModel' => $fileModel,
+            'materialType' => MaterialType::find()->all(),
+            'collection' => Collection::find()->all()
+        ]);
     }
 
     /**
@@ -381,13 +329,12 @@ class BiblioController extends Controller
 
     /**
      * Llena el atributo @usmarc del controlador.
-     * 
+     *
      * Estos son los datos adicionales "básicos" de la bibliografía.
      */
     private function getUsMarc()
     {
-        $this->usmarc = null;
-        $this->usmarc = \common\models\UsmarcSubfield::find()
+        return \common\models\UsmarcSubfield::find()
             ->where(["tag" => 100, "subfield_cd" => "a"])
             ->orWhere(["tag" => 650, "subfield_cd" => "a"])
             ->orWhere(["tag" => 250, "subfield_cd" => "a"])

@@ -6,6 +6,8 @@ use yii\helpers\Html;
 /** @var common\models\Biblio $model */
 /** @var array|common\models\MaterialType $materialType */
 /** @var array|backend\models\Collection $collection */
+/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
+/** @var \common\models\BiblioField[] $modelBiblioFields */
 
 $this->title = Yii::t('app', 'Create Biblio');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Biblios'), 'url' => ['index']];
@@ -13,10 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="biblio-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             $this->render('_form', [
                 'model' => $model,

@@ -6,6 +6,8 @@ use yii\helpers\Html;
 /** @var common\models\Biblio $model */
 /** @var array|common\models\MaterialType $materialType */
 /** @var array|backend\models\Collection $collection */
+/** @var \common\models\BiblioField[] $modelBiblioFields */
+/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
             'modelClass' => 'Biblio',
@@ -15,10 +17,8 @@ $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'i
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="biblio-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             $this->render('_form', [
                 'model' => $model,

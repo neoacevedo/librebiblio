@@ -18,7 +18,6 @@ use common\models\Biblio;
  */
 class BiblioSearch extends Biblio
 {
-
     public $user;
     public $materialType;
     public $collection;
@@ -67,28 +66,26 @@ class BiblioSearch extends Biblio
             'query' => $query,
         ]);
 
-        // Important: here is how we set up the sorting
-        // The key is the attribute name on our "user" instance
-        $dataProvider->sort->attributes['user'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['{{%user}}.username' => SORT_ASC],
-            'desc' => ['{{%user}}.username' => SORT_DESC],
-        ];
-        // The key is the attribute name on our "materialType" instance
-        $dataProvider->sort->attributes['materialType'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['{{%material_type_dm}}.description' => SORT_ASC],
-            'desc' => ['{{%material_type_dm}}.description' => SORT_DESC],
-        ];
-        // The key is the attribute name on our "collection" instance
-        $dataProvider->sort->attributes['collection'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['{{%collection_dm}}.description' => SORT_ASC],
-            'desc' => ['{{%collection_dm}}.description' => SORT_DESC],
-        ];
+        $dataProvider->setSort([
+            'attributes' => [
+                'barcode_nmbr',
+                'title',
+                'user' => [
+                    'asc' => ["{{%user}}.firstName" => SORT_ASC, "{{%user}}.lastName" => SORT_ASC],
+                    'desc' => ["{{%user}}.firstName" => SORT_DESC, "{{%user}}.lastName" => SORT_DESC],
+                ],
+                'materialType' => [
+                    'asc' => ["{{%material_type_dm}}.description" => SORT_ASC],
+                    'desc' => ["{{%material_type_dm}}.description" => SORT_DESC],
+                ],
+                'collection' => [
+                    'asc' => ["{{%collection_dm}}.firstName" => SORT_ASC],
+                    'desc' => ["{{%collection_dm}}.firstName" => SORT_DESC],
+                ],
+                'author',
+                'due_back_dt',
+            ]
+        ]);
 
         $this->load($params);
 
@@ -110,8 +107,7 @@ class BiblioSearch extends Biblio
             )->andFilterWhere(['like', 'call_nmbr1', $this->call_nmbr1])
             ->andFilterWhere(['like', 'call_nmbr2', $this->call_nmbr2])
             ->andFilterWhere(['like', 'call_nmbr3', $this->call_nmbr3])
-            ->andFilterWhere(['like', 'title', strtoupper($this->title)])
-            ->orFilterWhere(['like', 'title', strtolower($this->title)])
+            ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'title_remainder', $this->title_remainder])
             ->andFilterWhere(['like', 'responsibility_stmt', $this->responsibility_stmt])
             ->andFilterWhere(['like', 'author', $this->author])

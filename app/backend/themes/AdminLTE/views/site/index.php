@@ -4,20 +4,34 @@
 
 use dosamigos\chartjs\ChartJs;
 
-$settings = \common\models\Settings::find()->one();
-$this->title =$settings->library_name;
+$this->title = Yii::$app->name;
 $totales = [];
 $fechas = [];
 
 $fechas[] = "";
 $totales[] = "";
-foreach ($checkout_stats as $checkout) {
-    $fechas[] = $checkout['checkoutsPerDay'];
-    $totales[] = $checkout['checkoutCount'];
+if (count($checkout_stats) >= 1) {
+    // Hay por lo menos uno. Se itera en ese o esos, y luego se rellena.
+    $count = 0;
+    // iteración para días anteriores.
+    for ($count = count($checkout_stats); $count >= 1; $count--) {
+        $fechas[] = date('Y-m-d', strtotime("-$count day"));
+        $totales[] = 0;
+    }
+    // iteración de los actuales.
+    foreach ($checkout_stats as $checkout) {
+        $fechas[] = $checkout['checkoutsPerDay'];
+        $totales[] = $checkout['checkoutCount'];
+    }
+} else {
+    // No hay. Se rellena la información.
+    for ($count = 4; $count >= 1; $count--) {
+        $fechas[] = date('Y-m-d', strtotime("-$count day"));
+        $totales[] = 0;
+    }
+    
+    $fechas[] = date('Y-m-d');
 }
-$fechas[] = date('Y-m-d', strtotime('+1 day'));
-$fechas[] = "";
-$totales[] = "";
 ?>
 <div class="site-index">
     <h1><?= Yii::t('app', 'Dashboard') ?>
@@ -29,7 +43,8 @@ $totales[] = "";
                 <div class="inner">
                     <h3><?= $checkouts ?>
                     </h3>
-                    <p>Current Checkouts</p>
+                    <p><?= Yii::t("app", "Current Checkouts") ?>
+                    </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -46,7 +61,8 @@ $totales[] = "";
                     <h3><?= $new_members ?>
                     </h3>
 
-                    <p>New Registered Members</p>
+                    <p><?= Yii::t("app", "New Registered Members") ?>
+                    </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
@@ -59,9 +75,10 @@ $totales[] = "";
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3><?= Yii::$app->formatter->asCurrency($bills) ?>
+                    <h3><?= Yii::$app->formatter->asCurrency($bills ?: 0) ?>
                     </h3>
-                    <p>Members Bills</p>
+                    <p><?= Yii::t("app", "Members Bills") ?>
+                    </p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-dollar"></i>
@@ -75,41 +92,43 @@ $totales[] = "";
     <div class="row">
         <!-- Custom tabs (Charts with tabs)-->
         <section class="col-md-12 connectedSortable ui-sortable">
-            <div class="nav-tabs-custom">
-                <?=
-                ChartJs::widget([
-                    'type' => 'line',
-                    /* 'options' => [
-                      'height' => 400,
-                      'width' => 400
-                      ], */
-                    'data' => [
-                        'labels' => array_values($fechas),
-                        'datasets' => [
-                            [
-                                'label' => "Checkouts per day",
-                                'backgroundColor' => "#ffffff",
-                                'borderColor' => "#00c0ef",
-                                'pointBackgroundColor' => "#00c0ef",
-                                'pointBorderColor' => "#fff",
-                                'pointHoverBackgroundColor' => "#fff",
-                                'pointHoverBorderColor' => "#00c0ef",
-                                'data' => array_values($totales)
-                            ],
-                        /* [
-                          'label' => "My Second dataset",
-                          'backgroundColor' => "rgba(255,99,132,0.2)",
-                          'borderColor' => "rgba(255,99,132,1)",
-                          'pointBackgroundColor' => "rgba(255,99,132,1)",
-                          'pointBorderColor' => "#fff",
-                          'pointHoverBackgroundColor' => "#fff",
-                          'pointHoverBorderColor' => "rgba(255,99,132,1)",
-                          'data' => [28, 48, 40, 19, 96, 27, 100]
-                          ] */
+            <div class="card">
+                <div class="card-body">
+                    <?=
+                    ChartJs::widget([
+                        'type' => 'line',
+                        /* 'options' => [
+                        'height' => 400,
+                        'width' => 400
+                        ], */
+                        'data' => [
+                            'labels' => array_values($fechas),
+                            'datasets' => [
+                                [
+                                    'label' => "Checkouts per day",
+                                    'backgroundColor' => "#ffffff",
+                                    'borderColor' => "#00c0ef",
+                                    'pointBackgroundColor' => "#00c0ef",
+                                    'pointBorderColor' => "#fff",
+                                    'pointHoverBackgroundColor' => "#fff",
+                                    'pointHoverBorderColor' => "#00c0ef",
+                                    'data' => array_values($totales)
+                                ],
+                            /* [
+                            'label' => "My Second dataset",
+                            'backgroundColor' => "rgba(255,99,132,0.2)",
+                            'borderColor' => "rgba(255,99,132,1)",
+                            'pointBackgroundColor' => "rgba(255,99,132,1)",
+                            'pointBorderColor' => "#fff",
+                            'pointHoverBackgroundColor' => "#fff",
+                            'pointHoverBorderColor' => "rgba(255,99,132,1)",
+                            'data' => [28, 48, 40, 19, 96, 27, 100]
+                            ] */
+                            ]
                         ]
-                    ]
-                ]);
-                ?>
+                    ]);
+                    ?>
+                </div>
             </div>
         </section>
         <!-- /.nav-tabs-custom -->

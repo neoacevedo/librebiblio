@@ -6,19 +6,19 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $view */
 /** @var common\models\Biblio $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var $fileModel neoacevedo\yii2\models\FileManager */
+/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
 /** @var array|common\models\MaterialType $materialType */
 /** @var array|common\models\Collection $collection */
-
+/** @var \common\models\BiblioField[] $modelBiblioFields */
 
 ?>
 <?php
 if (Yii::$app->session->hasFlash("error")):
     ?>
-    <div class="alert alert-danger">
-        <?= Yii::$app->session->getFlash("error") ?>
-    </div>
-    <?php
+<div class="alert alert-danger">
+    <?= Yii::$app->session->getFlash("error") ?>
+</div>
+<?php
 endif;
 ?>
 <div class="biblio-form">
@@ -29,11 +29,16 @@ endif;
 
     <?= $form->field($model, 'collection_cd')->dropDownList(\yii\helpers\ArrayHelper::map($collection, 'id', 'description')) ?>
 
-    <?= $form->field($model, 'call_nmbr1')->textInput(['maxlength' => true]) ?>
+    <div class="form-row">
+        <div class="form-group form-inline">
+            <?= $form->field($model, 'call_nmbr1', ['template' => '{label}&nbsp;&nbsp;{input}'])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'call_nmbr2')->textInput(['maxlength' => true])->label('') ?>
+            <?= $form->field($model, 'call_nmbr2', ['template' => '{label}&nbsp;&nbsp;{input}'])->textInput(['maxlength' => true])->label(' ') ?>
 
-    <?= $form->field($model, 'call_nmbr3')->textInput(['maxlength' => true])->label('') ?>
+            <?= $form->field($model, 'call_nmbr3', ['template' => '{label}&nbsp;&nbsp;{input}'])->textInput(['maxlength' => true])->label(' ') ?>
+
+        </div>
+    </div>
 
     <?= $form->field($model, 'opac_flg')->checkbox() ?>
 
@@ -68,9 +73,9 @@ endif;
     <?= $form->field($model, 'topic5')->textInput(['maxlength' => true, 'data-value' => '650a4']) ?>
 
     <!-- biblio fields -->
-    <h4><?= Yii::t('biblio', "USMarc Fields:") ?></h4>
+    <h4><?= Yii::t('biblio', "USMarc Fields:") ?>
+    </h4>
     <?php
-    #var_dump($modelBiblioFields);
     foreach ($modelBiblioFields as $index => $biblioField) :
         // se deberá establecer el  número máximo del campo repetible.
         if ($usmarc[$index]->tag == 520) {
@@ -81,17 +86,17 @@ endif;
             echo $form->field($biblioField, "[$index]field_data")->label($usmarc[$index]->description)->textInput(['data-value' => $usmarc[$index]->tag . $usmarc[$index]->subfield_cd]);
         }
         ?>
-        <div class="hidden">
-            <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
-            <?= $form->field($biblioField, "[$index]tag")->label("")->hiddenInput(['value' => $usmarc[$index]->tag]); ?>
-            <?= $form->field($biblioField, "[$index]subfield_cd")->label("")->hiddenInput(['value' => $usmarc[$index]->subfield_cd]); ?>
-        </div>
-        <?php
+    <div class="d-none">
+        <?= $form->field($biblioField, "[$index]fieldid")->label("")->hiddenInput(); ?>
+        <?= $form->field($biblioField, "[$index]tag")->label("")->hiddenInput(['value' => $usmarc[$index]->tag]); ?>
+        <?= $form->field($biblioField, "[$index]subfield_cd")->label("")->hiddenInput(['value' => $usmarc[$index]->subfield_cd]); ?>
+    </div>
+    <?php
     endforeach;
     ?>
 
     <!-- // -->
-    <div class="hidden">
+    <div class="d-none">
         <?= $form->field($model, 'updated_userid')->label('')->hiddenInput(['value' => \Yii::$app->user->id]) ?>
         <?= $form->field($model, 'created_at')->label('')->hiddenInput(['value' => ($model->created_at === null) ? date('Y-m-d H:i:s') : $model->created_at]) ?>
         <?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => date("Y-m-d H:i:s")]) ?>
@@ -100,5 +105,5 @@ endif;
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-    <?php ActiveForm::end(); ?>  
+    <?php ActiveForm::end(); ?>
 </div>

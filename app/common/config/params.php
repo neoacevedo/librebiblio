@@ -13,9 +13,10 @@ try {
     $connection = new \yii\db\Connection($config['components']['db']);
     $connection->open();
     $tableName = "{$connection->tablePrefix}settings";
-    $settings = $connection->createCommand("select library_hours, library_phone, library_image_url, use_image_flg from {{%settings}}")->cache(86400)->queryAll();
+    $settings = $connection->createCommand("select library_name, library_hours, library_phone, library_image_url, use_image_flg from {{%settings}}")->cache(86400)->queryAll();
 } catch (Exception $ex) {
     $message = $ex->getMessage();
+    $settings['library_name'] = "LibreBiblio";
     $settings['library_hours'] = "L-V 09:00 - 17:00";
     $settings['library_phone'] = "+57 601234567";
     $settings['library_image_url'] = null;

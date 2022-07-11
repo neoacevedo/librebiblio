@@ -28,7 +28,8 @@
         "2amigos/yii2-chartjs-widget": "^3.0",
         "neoacevedo/yii2-storage": "*",
         "mpdf/qrcode": "^1.2",
-        "neoacevedo/yii2-rbac-plus": "*"
+        "neoacevedo/yii2-rbac-plus": "*",
+        "kartik-v/yii2-widget-datepicker": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

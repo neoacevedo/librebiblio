@@ -22,6 +22,15 @@ return [
             'class' => 'yii\rbac\DbManager',
             //'defaultRoles' => ['admin', 'staff', 'user'],
         ],
+        'storage' => [
+            'class' => 'neoacevedo\yii2\storage\LocalStorage',
+            'config' => [
+                'baseUrl' => '', // reemplace /web por /frontend/web o /backend/web según sea el caso.
+                'directory' => dirname(__DIR__) . "/", // reemplace @webroot por @frontend o @backend según sea el caso. La ruta debe terminar con una barra diagonal
+                'extensions' => 'pdf, jpg, jpeg, gif, png, bmp'
+            ],
+            'prefix' => 'images/',
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [
@@ -105,16 +114,7 @@ return [
         ],
     ],
     'version' => '22.06.29',
-    'name' => call_user_func(function () use ($config) {
-        try {
-            $connection = new \yii\db\Connection($config['components']['db']);
-            $connection->open();
-            $library_name = $connection->createCommand("Select library_name from {{%settings}}")->cache(3600)->queryOne()['library_name'];
-        } catch (Exception $ex) {
-            $library_name = "LibreBiblio";
-        }
-        return $library_name;
-    }),
+    'name' => $settings[0]['library_name'],
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
     ]
