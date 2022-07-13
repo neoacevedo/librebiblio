@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use neoacevedo\auditing\behaviors\AuditBehavior;
 use Yii;
 
 /**
@@ -39,6 +40,16 @@ class BiblioCopy extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%biblio_copy}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            AuditBehavior::class,
+        ];
     }
 
     /**

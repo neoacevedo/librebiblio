@@ -20,7 +20,6 @@ return [
     'Create Checkout Privs' => '',
     'ID' => '',
     'Are you sure you want to delete this item?' => '@@¿Está seguro(a) que desea borrar este ítem?@@',
-    'Delete' => '@@@@',
     'Reset' => '@@Restablecer@@',
     'Search' => '@@Buscar@@',
     'Checkout Limit' => 'Límite de Préstamo',

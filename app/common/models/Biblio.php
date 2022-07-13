@@ -12,6 +12,7 @@ use Yii;
 use common\models\MaterialType;
 use backend\models\Collection;
 use common\models\BiblioField;
+use neoacevedo\auditing\behaviors\AuditBehavior;
 
 /**
  * This is the model class for table "{{%biblio}}".
@@ -22,7 +23,7 @@ use common\models\BiblioField;
  * @property integer $updated_userid
  * @property integer $material_cd
  * @property integer $collection_cd
- * @property string $image_file 
+ * @property string $image_file
  * @property string $call_nmbr1
  * @property string $call_nmbr2
  * @property string $call_nmbr3
@@ -39,19 +40,32 @@ use common\models\BiblioField;
  *
  * @property User $updatedUser
  */
-class Biblio extends \yii\db\ActiveRecord {
+class Biblio extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%biblio}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function behaviors()
+    {
+        return [
+            AuditBehavior::class,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
         return [
             [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
@@ -67,7 +81,8 @@ class Biblio extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('app', 'ID'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -96,7 +111,8 @@ class Biblio extends \yii\db\ActiveRecord {
      * Devuelve el ID del usuario que modificó la información del material bibliográfico
      * @return \yii\db\ActiveQuery
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->hasOne(\backend\models\User::class, ['id' => 'updated_userid']);
     }
 
@@ -104,7 +120,8 @@ class Biblio extends \yii\db\ActiveRecord {
      * Obtiene el tipo de material de la bibliografía
      * @return \yii\db\ActiveQuery
      */
-    public function getMaterialType() {
+    public function getMaterialType()
+    {
         return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
     }
 
@@ -112,15 +129,17 @@ class Biblio extends \yii\db\ActiveRecord {
      * Obtiene la colección de la bibliografía
      * @return \yii\db\ActiveQuery
      */
-    public function getCollection() {
+    public function getCollection()
+    {
         return $this->hasOne(Collection::class, ['id' => 'collection_cd']);
     }
 
     /**
-     * Obtiene los campos bibliográficos 
+     * Obtiene los campos bibliográficos
      * @return \yii\db\ActiveQuery
      */
-    public function getBiblioFields() {
+    public function getBiblioFields()
+    {
         return $this->hasMany(BiblioField::class, ['bibid' => 'id']);
     }
 
@@ -129,7 +148,8 @@ class Biblio extends \yii\db\ActiveRecord {
      * @param \yii\web\UploadedFile $imageFile
      * @return boolean
      */
-    public function upload($imageFile) {
+    public function upload($imageFile)
+    {
         if (null !== $imageFile) {
             Yii::$app->storage->saveAs($imageFile);
             return true;
@@ -137,5 +157,4 @@ class Biblio extends \yii\db\ActiveRecord {
             return false;
         }
     }
-
 }

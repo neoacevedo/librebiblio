@@ -1,8 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
+/** @var yii\data\ActiveDataProvider $logs  */
 
 use dosamigos\chartjs\ChartJs;
+use yii\grid\GridView;
 
 $this->title = Yii::$app->name;
 $totales = [];
@@ -31,13 +33,14 @@ if (count($checkout_stats) >= 1) {
     }
     
     $fechas[] = date('Y-m-d');
+    $totales[] = 0;
 }
 ?>
 <div class="site-index">
     <h1><?= Yii::t('app', 'Dashboard') ?>
     </h1>
     <div class="row">
-        <div class="col-lg-4 col-xs-6">
+        <div class="col">
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
@@ -54,7 +57,7 @@ if (count($checkout_stats) >= 1) {
             </div>
         </div>
 
-        <div class="col-lg-4 col-xs-6">
+        <div class="col">
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
@@ -71,7 +74,7 @@ if (count($checkout_stats) >= 1) {
             </div>
         </div>
 
-        <div class="col-lg-4 col-xs-12">
+        <div class="col">
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
@@ -91,8 +94,12 @@ if (count($checkout_stats) >= 1) {
 
     <div class="row">
         <!-- Custom tabs (Charts with tabs)-->
-        <section class="col-md-12 connectedSortable ui-sortable">
+        <section class="col-sm connectedSortable ui-sortable">
             <div class="card">
+                <div class="card-header">
+                    <h5><?= Yii::t("app", "Statistics") ?>
+                    </h5>
+                </div>
                 <div class="card-body">
                     <?=
                     ChartJs::widget([
@@ -105,7 +112,7 @@ if (count($checkout_stats) >= 1) {
                             'labels' => array_values($fechas),
                             'datasets' => [
                                 [
-                                    'label' => "Checkouts per day",
+                                    'label' => Yii::t("app", "Checkouts per day"),
                                     'backgroundColor' => "#ffffff",
                                     'borderColor' => "#00c0ef",
                                     'pointBackgroundColor' => "#00c0ef",
@@ -131,6 +138,24 @@ if (count($checkout_stats) >= 1) {
                 </div>
             </div>
         </section>
-        <!-- /.nav-tabs-custom -->
+        <!-- // -->
+        <section class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    <h5><?= Yii::t("app", "Recent Activity") ?>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <?= GridView::widget([
+                        'dataProvider' => $logs,
+                        'columns' => [
+                            'description',
+                            'created_at:date'
+                        ]
+                    ])
+                    ?>
+                </div>
+            </div>
+        </section>
     </div>
 </div>

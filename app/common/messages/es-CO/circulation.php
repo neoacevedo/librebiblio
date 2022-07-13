@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Payment' => '',
+    'Payment' => 'Pago',
     'Update Member Account: {nameAttribute}' => 'Actualizar Cuenta de Miembro: {nameAttribute}',
     'The item {barcode} is already on cart' => '@@El artículo {barcode} ya está en el carrito.@@',
     'This item is already checked out or on hold.' => '@@Este artículo ya se encuentra en préstamo o reserva.@@',

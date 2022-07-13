@@ -26,8 +26,8 @@ return [
             'class' => 'neoacevedo\yii2\storage\LocalStorage',
             'config' => [
                 'baseUrl' => '', // reemplace /web por /frontend/web o /backend/web según sea el caso.
-                'directory' => dirname(__DIR__) . "/", // reemplace @webroot por @frontend o @backend según sea el caso. La ruta debe terminar con una barra diagonal
-                'extensions' => 'pdf, jpg, jpeg, gif, png, bmp'
+                'directory' => dirname(__DIR__, 3) . "/", // reemplace @webroot por @frontend o @backend según sea el caso. La ruta debe terminar con una barra diagonal
+                'extensions' => 'pdf, jpg, jpeg, gif, png, bmp, webp'
             ],
             'prefix' => 'images/',
         ],

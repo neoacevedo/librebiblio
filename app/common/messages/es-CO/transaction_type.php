@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Code' => '',
+    'Code' => 'Código',
     'Default Flg' => '',
-    'Description' => '',
+    'Description' => 'Descripción',
 ];

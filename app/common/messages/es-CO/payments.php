@@ -2,10 +2,10 @@
 
 return [
     'ID' => '',
-    'Code' => '',
+    'Code' => 'Código',
     'Item' => '',
-    'Amount' => '',  
-    'Provider' => '',
-    'Data Received' => '',
-    'Data Procesed' => ''
+    'Amount' => 'Monto',
+    'Provider' => 'Proveedor',
+    'Data Received' => 'Datos Recibidos',
+    'Data Procesed' => 'Datos Procesados'
 ];

@@ -24,5 +24,5 @@ return [
     'Ind2 Description' => '',
     'Repeatable Flg' => '',
     'Subfield Cd' => '',
-    'Tag' => '',
+    'Tag' => 'Etiqueta',
 ];

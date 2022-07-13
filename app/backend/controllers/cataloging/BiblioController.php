@@ -134,7 +134,7 @@ class BiblioController extends Controller
         // este método es solo para crear los campos en el formulario
         $this->usmarc = $this->getUsMarc();
         // Uploaded file instance.
-        $fileManager = Yii::$app->storage->getFileManager();
+        $fileModel = Yii::$app->storage->getFileManager();
 
         Yii::$app->storage->prefix .= "covers/";
 
@@ -145,16 +145,16 @@ class BiblioController extends Controller
         }
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if (null !== $fileManager->uploadedFile) {
-                if (Yii::$app->storage->save()) {
-                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileManager->uploadedFile->name);
+            if (null !== $fileModel->uploadedFile) {
+                if (Yii::$app->storage->save($fileModel)) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
-                    array_walk_recursive($fileManager->errors, function ($v, $k) {
+                    array_walk_recursive($fileModel->errors, function ($v, $k) {
                         Yii::$app->getSession()->setFlash('error', $v);
                     });
                 }
             } else {
-                array_walk_recursive($fileManager->errors, function ($v, $k) {
+                array_walk_recursive($fileModel->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
@@ -178,7 +178,7 @@ class BiblioController extends Controller
             'model' => $model,
             'modelBiblioFields' => $modelBiblioFields,
             'usmarc' => $this->usmarc,
-            'fileModel' => $fileManager,
+            'fileModel' => $fileModel,
             'materialType' => MaterialType::find()->all(),
             'collection' => Collection::find()->all()
         ]);
@@ -249,7 +249,7 @@ class BiblioController extends Controller
         Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (null !== $fileModel->uploadedFile) {
-                if (Yii::$app->storage->save()) {
+                if (Yii::$app->storage->save($fileModel)) {
                     $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
                     array_walk_recursive(Yii::$app->storage->errors, function ($v, $k) {

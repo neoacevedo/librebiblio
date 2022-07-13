@@ -124,13 +124,13 @@ class BiblioCopyController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
+            @array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->session->setFlash('error', $v);
             });
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -147,13 +147,13 @@ class BiblioCopyController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
         } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
+            @array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->session->setFlash('error', $v);
             });
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

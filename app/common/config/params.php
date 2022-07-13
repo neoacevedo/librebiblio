@@ -13,14 +13,14 @@ try {
     $connection = new \yii\db\Connection($config['components']['db']);
     $connection->open();
     $tableName = "{$connection->tablePrefix}settings";
-    $settings = $connection->createCommand("select library_name, library_hours, library_phone, library_image_url, use_image_flg from {{%settings}}")->cache(86400)->queryAll();
+    $settings = $connection->createCommand("select library_name, library_hours, library_phone, library_image_url, use_image_flg from {{%settings}} limit 1")->cache(86400)->queryAll(PDO::FETCH_ASSOC);
 } catch (Exception $ex) {
     $message = $ex->getMessage();
-    $settings['library_name'] = "LibreBiblio";
-    $settings['library_hours'] = "L-V 09:00 - 17:00";
-    $settings['library_phone'] = "+57 601234567";
-    $settings['library_image_url'] = null;
-    $settings['use_image_flg'] = 0;
+    $settings[]['library_name'] = "LibreBiblio";
+    $settings[]['library_hours'] = "L-V 09:00 - 17:00";
+    $settings[]['library_phone'] = "+57 601234567";
+    $settings[]['library_image_url'] = null;
+    $settings[]['use_image_flg'] = 0;
 }
 
 return [
@@ -31,8 +31,8 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
     'bsVersion' => '4.x',
-    'library_hours' => $settings['library_hours'],
-    'library_phone' => $settings['library_phone'],
-    'library_image_url' => $settings['library_image_url'],
-    'use_image_flg' => $settings['use_image_flg'],
+    'library_hours' => $settings[0]['library_hours'],
+    'library_phone' => $settings[0]['library_phone'],
+    'library_image_url' => $settings[0]['library_image_url'],
+    'use_image_flg' => $settings[0]['use_image_flg'],
 ];

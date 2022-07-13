@@ -11,14 +11,15 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use neoacevedo\auditing\behaviors\AuditBehavior;
 
 /**
  * User model
  *
  * @property integer $id
  * @property string $username
- * @propoerty string $first_name
- * @propoerty string $last_name
+ * @property string $first_name
+ * @property string $last_name
  * @property string phone
  * @property string $password_hash
  * @property string $password_reset_token
@@ -30,8 +31,8 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface {
-
+class User extends ActiveRecord implements IdentityInterface
+{
     const STATUS_DELETED = -1;
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 10;
@@ -39,23 +40,30 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%user}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             TimestampBehavior::class,
+            [
+                'class' => AuditBehavior::class,
+                'ignored' => ['created_at', 'updated_at', 'password_hash', 'password_reset_token']
+            ]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             ['username', 'trim'],
             ['username', 'required'],
@@ -88,14 +96,16 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id) {
+    public static function findIdentity($id)
+    {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null) {
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -105,7 +115,8 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername(string $username) {
+    public static function findByUsername(string $username)
+    {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -115,7 +126,8 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken(string $token) {
+    public static function findByPasswordResetToken(string $token)
+    {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
@@ -132,7 +144,8 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token) {
+    public static function isPasswordResetTokenValid($token)
+    {
         if (empty($token)) {
             return false;
         }
@@ -145,21 +158,24 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->getPrimaryKey();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey() {
+    public function getAuthKey()
+    {
         return $this->auth_key;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey) {
+    public function validateAuthKey($authKey)
+    {
         return $this->getAuthKey() === $authKey;
     }
 
@@ -169,7 +185,8 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword(string $password) {
+    public function validatePassword(string $password)
+    {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
@@ -178,34 +195,39 @@ class User extends ActiveRecord implements IdentityInterface {
      *
      * @param string $password
      */
-    public function setPassword(string $password) {
+    public function setPassword(string $password)
+    {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
-    public function generateAuthKey() {
+    public function generateAuthKey()
+    {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
-    public function generatePasswordResetToken() {
+    public function generatePasswordResetToken()
+    {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
-    public function removePasswordResetToken() {
+    public function removePasswordResetToken()
+    {
         $this->password_reset_token = null;
     }
 
     // filter out some fields, best used when you want to inherit the parent implementation
-// and blacklist some sensitive fields.
-    public function fields() {
+    // and blacklist some sensitive fields.
+    public function fields()
+    {
         $fields = parent::fields();
 
         // remove fields that contain sensitive information
@@ -213,5 +235,4 @@ class User extends ActiveRecord implements IdentityInterface {
 
         return $fields;
     }
-
 }

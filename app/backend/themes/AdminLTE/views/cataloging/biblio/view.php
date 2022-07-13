@@ -43,15 +43,19 @@ foreach ($model->biblioFields as $biblioField) {
     $field = [
         'attribute' => 'biblioFields',
         'format' => 'raw',
-        'value' => function() use($biblioField) {
-            if($biblioField->subfield_cd === 'u') {
+        'value' => function () use ($biblioField) {
+            if ($biblioField->subfield_cd === 'u') {
                 return Html::a($biblioField->field_data, $biblioField->field_data, ['target' => '_blank']);
             }
+
+            return $biblioField->field_data;
         },
         'label' => common\models\UsmarcSubfield::findOne(['tag' => $biblioField->tag, 'subfield_cd' => $biblioField->subfield_cd])->description
     ];
     array_push($usmarc, $field);
 }
+
+Yii::debug($usmarc);
 
 // emulación de data-confirm en elemento "a"
 $js = "\$('#copy_delete a').on('click', function(e) {
@@ -62,7 +66,8 @@ $this->registerJs($js);
 ?>
 <div class="biblio-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
 
     <div class="box">
         <div class="box-body">
@@ -118,7 +123,7 @@ $this->registerJs($js);
                         'title_remainder:ntext',
                         [
                             'attribute' => 'image_file',
-                            'value' => function($model) {
+                            'value' => function ($model) {
                                 return Html::img($model->image_file, ['alt' => $model->title,
                                             'title' => $model->title,
                                             'class' => 'image-thumbnail center-block',
@@ -130,7 +135,7 @@ $this->registerJs($js);
                         'author:ntext',
                         [
                             'attribute' => 'opac_flg',
-                            'value' => function($model) {
+                            'value' => function ($model) {
                                 return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
                             },
                         ]
@@ -143,7 +148,8 @@ $this->registerJs($js);
     </div>
     <div class="box">
         <div class="box-header">
-            <h3><?= Yii::t('app', 'Bibliography Copy Information') ?></h3>
+            <h3><?= Yii::t('app', 'Bibliography Copy Information') ?>
+            </h3>
         </div>
         <div class="box-body">
             <?php
@@ -159,7 +165,7 @@ $this->registerJs($js);
                     'copy_desc',
                     [
                         'attribute' => 'status_cd',
-                        'value' => function($model) {
+                        'value' => function ($model) {
                             return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
                         },
                         'label' => Yii::t('app', 'Status')
@@ -199,7 +205,8 @@ $this->registerJs($js);
     </div>
     <div class="box">
         <div class="box-header">
-            <h3><?= Yii::t('app', 'Additional Bibliographic Information') ?></h3>
+            <h3><?= Yii::t('app', 'Additional Bibliographic Information') ?>
+            </h3>
         </div>
         <div class="box-body">
             <?=

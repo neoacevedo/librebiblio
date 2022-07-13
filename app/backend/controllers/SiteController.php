@@ -112,12 +112,22 @@ class SiteController extends Controller
                 ->all();
         }
 
+        // Esto es temporal e irá junto con el widget como parte del widget de yii2-auditing
+        $logs = new \yii\data\ActiveDataProvider([
+            'query' => \neoacevedo\auditing\models\Auditing::find()
+                ->select(["description", "created_at"])
+                ->limit(5),
+            'pagination' => false,
+            'sort' => false
+        ]);
+
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'checkouts' => $copy_count,
             'bills' => $bills,
             'new_members' => $new_members_count,
-            'checkout_stats' => $checkout_stats
+            'checkout_stats' => $checkout_stats,
+            "logs" => $logs,
         ]);
     }
 

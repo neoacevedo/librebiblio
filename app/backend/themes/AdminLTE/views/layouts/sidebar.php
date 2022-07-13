@@ -39,25 +39,25 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         <li class="nav-item">
                             <a href="<?= Url::to(['/rbac/permission']) ?>"
                                 class="nav-link">
-                                <i class="fas fa-check-square"></i> <?= Yii::t("rbac", "Permissions Manager") ?>
+                                <i class="fas fa-check-square"></i> <?= Yii::t("app/rbac", "Permissions Manager") ?>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= Url::to(['/rbac/role']) ?>"
                                 class="nav-link">
-                                <i class="fas fa-users"></i> <?= Yii::t("rbac", "Role Manager") ?>
+                                <i class="fas fa-users"></i> <?= Yii::t("app/rbac", "Role Manager") ?>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= Url::to(['/rbac/rule']) ?>"
                                 class="nav-link">
-                                <i class="fas fa-list"></i> <?= Yii::t("rbac", "Rules Manager") ?>
+                                <i class="fas fa-list"></i> <?= Yii::t("app/rbac", "Rules Manager") ?>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= Url::to(['/rbac/assignment']) ?>"
                                 class="nav-link">
-                                <i class="fas fa-user-plus"></i> <?= Yii::t("rbac", "Assignment") ?>
+                                <i class="fas fa-user-plus"></i> <?= Yii::t("app/rbac", "Assignment") ?>
                             </a>
                         </li>
                     </ul>
