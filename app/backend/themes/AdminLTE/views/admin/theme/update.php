@@ -9,13 +9,11 @@ $this->title = Yii::t('app/theme', 'Update {modelClass}: ', [
             'modelClass' => 'Theme',
         ]) . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/theme', 'Themes'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->name;#['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = $model->name; // ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 ?>
 <div class="theme-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             $this->render('_form', [
                 'model' => $model,

@@ -13,10 +13,14 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => true]) ?>
-
+    <?php
+    if (count($skins) > 0):
+    ?>
     <?= $form->field($model, 'skin')->dropDownList($skins, ['class' => 'form-control']) ?>
-    
-    <div class="hidden">
+    <?php
+    endif;
+    ?>
+    <div class="d-none">
         <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
         <?= $form->field($model, "active")->label("")->hiddenInput() ?>
     </div>
