@@ -5,7 +5,7 @@ use yii\helpers\Url;
 
 $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jpg";
 ?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar elevation-4 sidebar-dark-primary">
     <!-- Brand Logo -->
     <a href="<?= \yii\helpers\Url::to(['index']) ?>"
         class="brand-link">

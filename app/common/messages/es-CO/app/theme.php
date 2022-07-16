@@ -22,7 +22,7 @@ return [
     'Frontend' => 'Público',
     'Install' => 'Instalar',
     'Location' => 'Ubicación',
-    'Skin' => 'Apariencia',
+    'Settings' => 'Configuraciones',
     'Theme installed successfully.' => 'Tema instalado satisfactoriamente.',
     'Theme uninstalled successfully.' => 'Tema desinstalado satisfactoriamente',
     'Theme updated successfully.' => 'Tema actualizado satisfactoriamente',

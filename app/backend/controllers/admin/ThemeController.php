@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2020 Néstor Acevedo
+ * @copyright Copyright (c) 2022 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
@@ -26,78 +26,126 @@ use yii\web\UploadedFile;
  * básicas del tema.
  *
  * El archivo _settings.json_ tiene la siguiente estructura:
- * <pre>
- * <code>
+ * ```js
  * {
- *  "name": "AdminLTE",
- *  "frontend": 0,
- *  "skins": [
- *   "blue",
- *   "black",
- *   "purple",
- *   "green",
- *   "red",
- *   "yellow",
- *   "blue-light",
- *   "black-light",
- *   "purple-light",
- *   "green-light",
- *   "red-light",
- *   "yellow-light"
- *  ]
+ *   "name": "AdminLTE",
+ *   "frontend": 0,
+ *   "navbar_skins": [
+ *       "navbar-primary navbar-dark",
+ *       "navbar-secondary navbar-dark",
+ *       "navbar-info navbar-dark",
+ *       "navbar-succes navbar-darks",
+ *       "navbar-danger navbar-dark",
+ *       "navbar-indigo navbar-dark",
+ *       "navbar-purple navbar-dark",
+ *       "navbar-pink navbar-dark",
+ *       "navbar-navy navbar-dark",
+ *       "navbar-lightblue navbar-dark",
+ *       "navbar-teal navbar-dark",
+ *       "navbar-cyan navbar-dark",
+ *       "navbar-dark",
+ *       "navbar-gray-dark navbar-dark",
+ *       "navbar-gray navbar-dark",
+ *       "navbar-light",
+ *       "navbar-white navbar-light": 1
+ *   ],
+ *   "sidebar_colors": [
+ *       "bg-primary": 1,
+ *       "bg-warning",
+ *       "bg-info",
+ *       "bg-danger",
+ *       "bg-success",
+ **      "bg-indigo",
+ *       "bg-lightblue",
+ *       "bg-navy",
+ *       "bg-purple",
+ *       "bg-fuchsia",
+ *       "bg-pink",
+ *       "bg-maroon",
+ *       "bg-orange",
+ *       "bg-lime",
+ *       "bg-teal",
+ *       "bg-olive"
+ *   ],
+ *   "sidebar_skins": [
+ *       "sidebar-dark-primary": 1,
+ *       "sidebar-dark-warning",
+ *       "sidebar-dark-info",
+ *       "sidebar-dark-danger",
+ *       "sidebar-dark-success",
+ *       "sidebar-dark-indigo",
+ *       "sidebar-dark-lightblue",
+ *       "sidebar-dark-navy",
+ *       "sidebar-dark-purple",
+ *       "sidebar-dark-fuchsia",
+ *       "sidebar-dark-pink",
+ *       "sidebar-dark-maroon",
+ *       "sidebar-dark-orange",
+ *       "sidebar-dark-lime",
+ *       "sidebar-dark-teal",
+ *       "sidebar-dark-olive",
+ *       "sidebar-light-primary",
+ *       "sidebar-light-warning",
+ *       "sidebar-light-info",
+ *       "sidebar-light-danger",
+ *       "sidebar-light-success",
+ *       "sidebar-light-indigo",
+ *       "sidebar-light-lightblue",
+ *       "sidebar-light-navy",
+ *       "sidebar-light-purple",
+ *       "sidebar-light-fuchsia",
+ *       "sidebar-light-pink",
+ *       "sidebar-light-maroon",
+ *       "sidebar-light-orange",
+ *       "sidebar-light-lime",
+ *       "sidebar-light-teal",
+ *       "sidebar-light-olive"
+ *   ]
  * }
- * </code>
- * </pre>
+ * ```
  *
  * La estructura de directorios del archivo comprimido del tema es la siguiente:
- * <pre>
- *  <code>
+ *
  * - basePath (/backend | /frontend)
- *  - themes
- *    - nombre_del_tema
- *  </code>
- * </pre>
+ * - - themes
+ * - - - nombre_del_tema
  *
  * Esta estructura cambia internamente dependiendo del nivel.
  *
  * Para _backend_:
- * <code class="list-group">
+ *
  * - admin
- *  - checkout-privs
- *  - collection
- *  - material-type
- *  - member-classify
- *  - report
- *    - &lt;ReportType&gt;Search
+ * - -  checkout-privs
+ * - - collection
+ * - - material-type
+ * - - member-classify
+ * - - report
+ * - - <ReportType>Search
  * - biblio-copy
  * - cataloging
- *   - biblio
- *   - biblio-field
+ * - - biblio
+ * - - biblio-field
  * - circulation
- *   - placehold
- *   - checkout
+ * - - placehold
+ * - - checkout
  * - collectoin
  * - layouts
  * - member-account
  * - site
- * </code>
  *
  * Para _frontend_:
- * <code class="list-group">
  * - biblio
  * - circulation
  * - layouts
  * - member
  * - site
- * </code>
  *
  * Adicional a ello, en algunos directorios se crean subdirectorios para idiomas específicos. Por ejemplo:
- * <code class="list-group">
+ *
  * - backend
- *  - AdminLTE
- *   - site
- *    - es-CO
- * </code>
+ * - - AdminLTE
+ * - - - site
+ * - - - - es-CO
  *
  * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_
  * y que no se incluyen en el archivo principal de configuración.
@@ -202,7 +250,7 @@ class ThemeController extends Controller
                     $model->frontend = $theme->frontend;
                     $model->name = $theme->name;
                     $model->active = 0;
-                    if (isset($theme->skins)) {
+                    if (isset($theme->settings)) {
                         $model->skin = $theme->skins[0];
                     }
                     $model->created_at = date('Y-m-d H:i:s');

@@ -15,6 +15,12 @@ class Theme extends \yii\base\Theme
      */
     public $theme = 'AdminLTE';
 
+    /** @var mixed */
+    public $settings;
+
+    /** @var int */
+    public $id;
+
     public function init()
     {
         parent::init();
@@ -31,6 +37,9 @@ class Theme extends \yii\base\Theme
         $this->pathMap = [
             '@app/views' => '@app/themes/' . $this->theme . "/views",
         ];
+
+        $this->settings = json_decode($theme->settings);
+        $this->id = $theme->id;
 
         // configurar el tema en la sesión
         // \Yii::$app->session->set('backend-skin', $theme->skin);

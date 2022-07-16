@@ -30,7 +30,8 @@
         "mpdf/qrcode": "^1.2",
         "neoacevedo/yii2-rbac-plus": "*",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-widget-sidenav": "1.0.x-dev"
+        "kartik-v/yii2-widget-sidenav": "1.0.x-dev",
+        "antonyz89/yii2-seeder": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

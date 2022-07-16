@@ -6,6 +6,7 @@
  */
 namespace common\models;
 
+use neoacevedo\auditing\behaviors\AuditBehavior;
 use Yii;
 
 /**
@@ -15,7 +16,7 @@ use Yii;
  * @property string $name
  * @property integer $frontend
  * @property integer $active
- * @property string $skin 
+ * @property string|null $settings json settings
  * @property string $created_at
  */
 class Theme extends \yii\db\ActiveRecord
@@ -36,13 +37,24 @@ class Theme extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            AuditBehavior::class,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['name'], 'required'],
             [['frontend', 'active'], 'integer'],
             [['created_at'], 'safe'],
-            [['name', 'skin'], 'string', 'max' => 15],
+            [['name'], 'string', 'max' => 15],
+            [['settings'], 'string'],
             [['themeFile'], 'safe'],
             [['themeFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'zip'],
         ];
@@ -58,7 +70,7 @@ class Theme extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'frontend' => Yii::t('app/theme', 'Frontend'),
             'active' => Yii::t('app', 'Active'),
-            'skin' => Yii::t('app/theme', 'Skin'),
+            'settings' => Yii::t('app/theme', 'Settings'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
     }

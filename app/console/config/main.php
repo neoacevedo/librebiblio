@@ -20,14 +20,17 @@ return [
         'fixture' => [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
-          ],
-          'migrate' => [
+        ],
+        'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'migrationPath' => [
                 '@app/migrations',
                 '@yii/rbac/migrations',
                 '@vendor/neoacevedo/yii2-auditing/neoacevedo/auditing/migrations',
-            ],
+            ]
+        ],
+        'seeder' => [
+            'class' => 'antonyz89\seeder\SeederController'
         ],
     ],
     'components' => [

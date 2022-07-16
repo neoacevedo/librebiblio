@@ -31,7 +31,7 @@ foreach ($roles as $role) {
     <?php $this->head() ?>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition sidebar-mini">
     <?php $this->beginBody() ?>
 
     <div class="wrapper">

@@ -22,7 +22,7 @@ return [
     'Frontend' => '',
     'Install' => '',
     'Location' => '',
-    'Skin' => '',
+    'Settings' => '',
     'Theme installed successfully.' => '',
     'Theme uninstalled successfully.' => '',
     'Theme updated successfully.' => '',
