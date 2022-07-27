@@ -16,16 +16,16 @@ use yii\filters\AccessControl;
 
 /**
  * ReportController implementa los métodos para la visualización y descarga de reportes.
- * 
- * En la vista del reporte, se puede opcionalmente descargar el reporte 
+ *
+ * En la vista del reporte, se puede opcionalmente descargar el reporte
  * en formato PDF, CVS y EXCEL.
- * 
- * Cada reporte es un modelo que apunta a una vista de la base de datos. Adicional al modelo [[\yii\db\ActiveRecord]] (https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord) conocido 
+ *
+ * Cada reporte es un modelo que apunta a una vista de la base de datos. Adicional al modelo [[\yii\db\ActiveRecord]] (https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord) conocido
  * estos tienen 2 atributos adicionales: [[\backend\reports\Acquisitions::$name|$name]] y [[\backend\reports\Acquisitions::$category|$category]].
- * 
+ *
  * $name es el nombre del reporte. $category es la sección a la que pertenece el reporte.
- * 
- * Para crear un reporte propio se debería primero crear una vista en la base de datos y a través de [Gii] (https://www.yiiframework.com/doc/guide/2.0/en/start-gii) 
+ *
+ * Para crear un reporte propio se debería primero crear una vista en la base de datos y a través de [Gii] (https://www.yiiframework.com/doc/guide/2.0/en/start-gii)
  * generar el modelo y el modelo de búsqueda que lo extienda. Ver como ejemplo el reporte de Adquisiciones ([[\backend\reports\Acquisitions|Acquisitions]]).
  */
 class ReportController extends Controller
@@ -94,11 +94,11 @@ class ReportController extends Controller
 
     /**
      * Lista todos los reportes disponibles en el sitio.
-     * 
+     *
      * La sección de cada reporte está determinada por el atributo {$category} del modelo.<br />
-     * Para idiomas diferentes al Inglés, en algunos nombres de categorías o reportes se generarían sus respectivas traducciones 
-     * pero encerradas con doble arroba (@@nombre de la categoría@@), esto debido a que los reportes son dinámicos y no están 
-     * predefinidos. 
+     * Para idiomas diferentes al Inglés, en algunos nombres de categorías o reportes se generarían sus respectivas traducciones
+     * pero encerradas con doble arroba (@@nombre de la categoría@@), esto debido a que los reportes son dinámicos y no están
+     * predefinidos.
      * @return mixed
      */
     public function actionIndex()
@@ -109,8 +109,10 @@ class ReportController extends Controller
         $report_files = str_replace("$directory", "", $files);
         foreach ($report_files as $file) {
             $classname = "backend\\reports\\" . substr($file, 0, -4);
-            $reports[$classname::getCategory()][] = new $classname;
+            $report = new $classname;
+            $reports[Yii::t("app/reports", $report->getCategory())][] = $report;
         }
+        Yii::debug($reports);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
             'reports' => $reports,
@@ -119,13 +121,13 @@ class ReportController extends Controller
 
     /**
      * Permite realizar el reporte de acuerdo a varios filtros disponibles.
-     * 
+     *
      * El filtro lo establece cada reporte. El modelo es invocado de acuerdo al nombre del tipo de reporte.
      * @return mixed
      */
     public function actionSearch()
     {
-        $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type") . "Search";
+        $classnameSearch = "backend\\reports\\" . $this->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
         $view = strtolower(Yii::$app->request->get("type"));
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);

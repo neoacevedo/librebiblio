@@ -2786,16 +2786,16 @@
         },
         {
             "name": "neoacevedo/yii2-storage",
-            "version": "22.06.12",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:neoacevedo/yii2-storage.git",
-                "reference": "9afeedf248e0fee8512658c7fb79528046ba67a9"
+                "reference": "19a6c6775e61527756bc28a44c76ca68d606345b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/neoacevedo%2Fyii2-storage/repository/archive.zip?sha=9afeedf248e0fee8512658c7fb79528046ba67a9",
-                "reference": "9afeedf248e0fee8512658c7fb79528046ba67a9",
+                "url": "https://gitlab.com/api/v4/projects/neoacevedo%2Fyii2-storage/repository/archive.zip?sha=19a6c6775e61527756bc28a44c76ca68d606345b",
+                "reference": "19a6c6775e61527756bc28a44c76ca68d606345b",
                 "shasum": ""
             },
             "require": {
@@ -2805,6 +2805,7 @@
                 "php": ">=7.0",
                 "yiisoft/yii2": "~2.0.6"
             },
+            "default-branch": true,
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
@@ -2837,7 +2838,7 @@
                 "forum": "https://desk.zoho.com/portal/neoacevedo/es/home",
                 "source": "https://gitlab.com/neoacevedo/yii2-storage"
             },
-            "time": "2022-06-12T22:20:03+00:00"
+            "time": "2022-07-19T23:59:21+00:00"
         },
         {
             "name": "nnnick/chartjs",

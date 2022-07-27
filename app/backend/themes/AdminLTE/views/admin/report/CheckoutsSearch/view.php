@@ -40,7 +40,7 @@ $fullExportMenu = ExportMenu::widget([
         ]);
 ?>
 <div class="collection-index">
-    <div class="box">
+    <div class="card">
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -55,13 +55,13 @@ $fullExportMenu = ExportMenu::widget([
                 'due_back_dt'
             ],
             'panel' => [
-                'headingOptions' => ['class' => 'box-header'],
-                'heading' => '<h1>' . Html::encode(Yii::t('app/reports', Checkouts::getName())) . '</h1>',
+                'headingOptions' => ['class' => 'card-header'],
+                'heading' => Html::encode(Yii::t('app/reports', $searchModel->getName())),
             ],
             'toolbar' => [
                 $fullExportMenu
             ],
-            'containerOptions' => ['class' => 'box-body']
+            'containerOptions' => ['class' => 'card-body']
         ]);
         ?>
     </div>

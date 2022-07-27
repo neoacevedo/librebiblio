@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\MaterialType */
 /* @var $form yii\widgets\ActiveForm */
+/** @var array $material_type_list */
+/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
 ?>
 
 <div class="material-type-form">
@@ -14,7 +16,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image_file')->fileInput()->label(Yii::t('app', 'Image File')) ?>
+    <div class="form-row">
+        <div class="col">
+            <?= $form->field($model, 'icon')->dropDownList($material_type_list)->label(Yii::t('app', 'Icon')) ?>
+        </div>
+
+        <div class="col">
+            <?= $form->field($fileModel, 'uploadedFile')->fileInput(['class' => 'form-control'])->label(Yii::t('app', 'Image File')) ?>
+        </div>
+    </div>
+
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

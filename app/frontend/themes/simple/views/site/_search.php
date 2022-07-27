@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="form">&nbsp;</div>
     <div class="form-row">
-        <div class="col">&nbsp;</div>
+        <div class="col-sm">&nbsp;</div>
         <div class="col text-center">
             <button type="submit" name="search_opt" title="" value="BiblioSearch[title]"
                 class="btn btn-lg btn-light biblio"> <?= Yii::t('app', 'Title') ?></button>
@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
             <button type="submit" name="search_opt" value="BiblioSearch[author]" class="btn btn-lg btn-light biblio">
                 <?= Yii::t('app', 'Author') ?></button>
         </div>
-        <div class="col">&nbsp;</div>
+        <div class="col-sm">&nbsp;</div>
     </div>
     <?php
     ActiveForm::end();

@@ -28,7 +28,8 @@ return [
     'Collections' => 'Colecciones',
     'Library Settings' => 'Configuración de la Biblioteca',
     'Material Types' => 'Tipos de Material',
+    'Material Type created/updated successfully.' => 'Tipo de material creado/actualizado correctamente.',
     'Member Classify' => 'Clasificación de Miembros',
-    'Settings changed successfuly.' => 'Configuraciones actualizadas satisfactoriamente.',
+    'Settings changed successfuly.' => 'Configuraciones actualizadas correctamente.',
     'Themes' => 'Temas',
 ];

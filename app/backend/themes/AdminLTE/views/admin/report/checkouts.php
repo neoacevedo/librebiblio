@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\reports\CheckoutsSearch */
@@ -13,9 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="checkouts-search">
-    <h1><?= $this->title ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php
             $form = ActiveForm::begin([
                         'action' => ['view', 'type' => $model->formName()],
@@ -26,19 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>
 
-            <?php // echo $form->field($model, 'barcode_nmbr') ?>
+            <?php // echo $form->field($model, 'barcode_nmbr')?>
 
-            <?php // echo $form->field($model, 'title') ?>
+            <?php // echo $form->field($model, 'title')?>
 
-            <?php // echo $form->field($model, 'author') ?>
+            <?php // echo $form->field($model, 'author')?>
 
-            <?php echo $form->field($model, 'due_back_dt')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <div class="form-row">
+                <div class="col">
+                    <?php echo $form->field($model, 'due_back_dt')->textInput(['pattern' => '\d{4}-\d{2}-\d{2}', 'type' => 'date']) ?>
+                </div>
+                <div class="col">
+                    <?php echo $form->field($model, 'status_begin_dt')->textInput(['pattern' => '\d{4}-\d{2}-\d{2}', 'type' => 'date']) ?>
+                </div>
+            </div>
 
-            <?php echo $form->field($model, 'status_begin_dt')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <?php // echo $form->field($model, 'pin')?>
 
-            <?php // echo $form->field($model, 'pin') ?>
-
-            <?php // echo $form->field($model, 'name')  ?>
+            <?php // echo $form->field($model, 'name')?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

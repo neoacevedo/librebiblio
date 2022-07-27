@@ -149,14 +149,22 @@ class BiblioController extends Controller
                 if (Yii::$app->storage->save($fileModel)) {
                     $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
-                    array_walk_recursive($fileModel->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+                    $message = "<ul>";
+                    foreach ($fileModel->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+
+                    Yii::$app->session->setFlash('error', $message);
                 }
             } else {
-                array_walk_recursive($fileModel->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+                $message = "<ul>";
+                foreach ($fileModel->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
             }
             if ($model->save()) {
                 // file is uploaded successfully
@@ -164,9 +172,13 @@ class BiblioController extends Controller
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
-                array_walk_recursive($model->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
             }
 
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
@@ -210,14 +222,23 @@ class BiblioController extends Controller
             }
             return true;
         } else {
-            $message = "";
-            array_walk_recursive($modelBiblioField, function ($model, $k) use ($message) {
-                foreach ($model->errors as $key => $error) {
-                    $message .= $error[0] . "\n";
+            $message = "<ul>";
+            foreach ($modelBiblioField as $biblioField) {
+                foreach ($biblioField->errors as $error) {
+                    $message .= "<li>{$error[0]}</li>";
                 }
+            }
 
-                Yii::$app->getSession()->setFlash('error', $message);
-            });
+            $message .= "</ul>";
+
+            Yii::$app->session->setFlash('error', $message);
+            // array_walk_recursive($modelBiblioField, function ($model, $k) use ($message) {
+            //     foreach ($model->errors as $key => $error) {
+            //         $message .= $error[0] . "\n";
+            //     }
+
+            //     Yii::$app->session->setFlash('error', $message);
+            // });
         }
 
         return false;
@@ -253,7 +274,7 @@ class BiblioController extends Controller
                     $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
                 } else {
                     array_walk_recursive(Yii::$app->storage->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
+                        Yii::$app->session->setFlash('error', $v);
                     });
                 }
                 if ($model->save()) {
@@ -262,7 +283,7 @@ class BiblioController extends Controller
                     $materialType->save();
                 } else {
                     array_walk_recursive($model->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
+                        Yii::$app->session->setFlash('error', $v);
                     });
                 }
             } else {
@@ -273,7 +294,7 @@ class BiblioController extends Controller
                     $materialType->save();
                 } else {
                     @array_walk_recursive($model->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
+                        Yii::$app->session->setFlash('error', $v);
                     });
                 }
             }

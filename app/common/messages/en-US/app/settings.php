@@ -28,6 +28,7 @@ return [
     'Flush Cache' => '',
     'Library Settings' => '',
     'Material Types' => '',
+    'Material Type created/updated successfully.' => '',
     'Member Classify' => '',
     'Settings changed successfuly.' => '',
     'Themes' => '',

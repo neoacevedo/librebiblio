@@ -22,9 +22,8 @@ $collections = array_merge([' ' => ''], $collections);
 ?>
 
 <div class="acquisitions-search">
-    <h1><?= $this->title ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php
             $form = ActiveForm::begin([
                         'action' => ['view', 'type' => $model->formName()],
@@ -32,35 +31,35 @@ $collections = array_merge([' ' => ''], $collections);
             ]);
             ?>
 
-            <div class="row">
-                <div class="col-xs-4">&nbsp;</div>
-                <div class="col-xs-4">
-                    <?= $form->field($model, 'created_at')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
+                    <?= $form->field($model, 'created_at')->textInput(['type' => 'date', 'pattern' => '\d{4}-\d{2}-\d{2}']) ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
-            <div class="row">
-                <div class="col-xs-4">&nbsp;</div>
-                <div class="col-xs-4">
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
                     <?= $form->field($model, 'author') ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-4">&nbsp;</div>
-                <div class="col-xs-4">
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
                     <?= $form->field($model, 'collection')->dropDownList($collections) ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-4">&nbsp;</div>
-                <div class="col-xs-4">
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
                     <?= $form->field($model, 'Material')->dropDownList($materials) ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
             <div class="form-group">
@@ -69,7 +68,7 @@ $collections = array_merge([' ' => ''], $collections);
                     <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
                     <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
             <?php ActiveForm::end(); ?>

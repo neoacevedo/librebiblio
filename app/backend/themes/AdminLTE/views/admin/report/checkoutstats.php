@@ -12,9 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="checkout-stats-search">
-    <h1><?= $this->title ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php
             $form = ActiveForm::begin([
                         'action' => ['view', 'type' => $model->formName()],
@@ -28,8 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="form-group">
                 <?= Html::label(Yii::t('app/reports', 'Time Span')) ?>
                 <?php
-                echo Html::dropDownList("timespan", NULL, 
-                        ['w' => Yii::t('app/reports', 'Week'), 'm' => Yii::t('app/reports', 'Month'), 'q' => Yii::t('app/reports', 'Quarter')], ['class' => 'form-control'])
+                echo Html::dropDownList(
+                "timespan",
+                null,
+                ['w' => Yii::t('app/reports', 'Week'), 'm' => Yii::t('app/reports', 'Month'), 'q' => Yii::t('app/reports', 'Quarter')],
+                ['class' => 'form-control']
+            )
                 ?>
             </div>
             <div class="form-group">

@@ -116,34 +116,54 @@ class MaterialTypeController extends Controller
     {
         $model = new MaterialType();
         // Uploaded file instance.
-        $imageFile = Yii::$app->storage->getModel();#UploadedFile::getInstance($model, 'image_file');
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
+        $material_type_list = [
+            "" => "--",
+            'bi bi-disk fas fa-compact-disc' => "CD",
+            "bi bi-cassete fas fa-tape" => Yii::t("app/settings", "Audio Tapes"),
+            "bi bi-book fas fa-book" => Yii::t("app/settings", "Books"),
+            "bi bi-pc fas fa-laptop" => Yii::t("app/settings", "Equipment"),
+            "bi bi-journal fas fa-magazine" => Yii::t("app/settings", "Magazines"),
+            "bi bi-newspaper fas fa-newspaper" => Yii::t("app/settings", "Newspaper"),
+            "bi bi-map fas fa-map" => Yii::t("app/settings", "Maps"),
+        ];
+
+        $fileModel = Yii::$app->storage->getFileManager();
+
         if ($model->load(Yii::$app->request->post())) {
-            if (null !== $imageFile->uploadedFile) {
-                if (Yii::$app->storage->save()) {
-                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $imageFile->name);
+            if (null !== $fileModel->uploadedFile) {
+                if (Yii::$app->storage->save($fileModel)) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->name);
+                } else {
+                    $message = "<ul>";
+                    foreach ($fileModel->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+        
+                    Yii::$app->session->setFlash('error', $message);
                 }
             }
-            
             if ($model->save()) {
-                // file is uploaded successfully
+                Yii::$app->session->setFlash('success', Yii::t("app/settings", "Material Type created/updated successfully."));
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                @array_walk_recursive($model->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+    
+                Yii::$app->session->setFlash('error', $message);
             }
-        } else {
-            @array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+            "material_type_list" => $material_type_list,
+            'fileModel' => $fileModel
+        ]);
     }
 
     /**
@@ -155,32 +175,58 @@ class MaterialTypeController extends Controller
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
+        $material_type_list = [
+            "" => "--",
+            'bi bi-disk fas fa-compact-disc' => "CD",
+            "bi bi-cassete fas fa-tape" => Yii::t("app/settings", "Audio Tapes"),
+            "bi bi-book fas fa-book" => Yii::t("app/settings", "Books"),
+            "bi bi-pc fas fa-laptop" => Yii::t("app/settings", "Equipment"),
+            "bi bi-journal fas fa-magazine" => Yii::t("app/settings", "Magazines"),
+            "bi bi-newspaper fas fa-newspaper" => Yii::t("app/settings", "Newspaper"),
+            "bi bi-map fas fa-map" => Yii::t("app/settings", "Maps"),
+        ];
+        
         // Uploaded file instance.
-        $imageFile = UploadedFile::getInstance($model, 'image_file');
+        $fileModel = Yii::$app->storage->getFileManager();
+        
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->upload($imageFile)) {
-                $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $imageFile->name);
+            if (null !== $fileModel->uploadedFile) {
+                if (Yii::$app->storage->save($fileModel)) {
+                    $model->image_file = Yii::$app->storage->getUrl($fileModel->uploadedFile->name);
+                } else {
+                    $message = "<ul>";
+                    foreach ($fileModel->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+    
+                    Yii::$app->session->setFlash('error', $message);
+                }
+            } else {
+                if ($model->icon != "") {
+                    $model->image_file = "";
+                }
             }
             if ($model->save()) {
-                // file is uploaded successfully
+                Yii::$app->session->setFlash('success', Yii::t("app/settings", "Material Type created/updated successfully."));
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                @array_walk_recursive($model->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
             }
-        } else {
-            @array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+        
+        return $this->render('update', [
+            'model' => $model,
+            "material_type_list" => $material_type_list,
+            'fileModel' => $fileModel
+        ]);
     }
 
     /**
@@ -191,6 +237,8 @@ class MaterialTypeController extends Controller
      */
     public function actionDelete(int $id)
     {
+        Yii::$app->storage->delete($this->findModel($id)->image_file);
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

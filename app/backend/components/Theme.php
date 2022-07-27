@@ -40,8 +40,5 @@ class Theme extends \yii\base\Theme
 
         $this->settings = json_decode($theme->settings);
         $this->id = $theme->id;
-
-        // configurar el tema en la sesión
-        // \Yii::$app->session->set('backend-skin', $theme->skin);
     }
 }

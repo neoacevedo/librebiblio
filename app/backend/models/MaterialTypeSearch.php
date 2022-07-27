@@ -9,7 +9,7 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\MaterialType;
+use common\models\MaterialType;
 
 /**
  * MaterialTypeSearch represents the model behind the search form about `backend\models\MaterialType`.

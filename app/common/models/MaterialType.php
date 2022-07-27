@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2020 Néstor Acevedo
+ * @copyright Copyright (c) 2022 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
 
@@ -18,6 +18,7 @@ use common\models\Biblio;
  * @property string $description
  * @property string $default_flg
  * @property string $image_file
+ * @property string $icon
  *
  * @property Biblio[] $biblios
  */
@@ -38,9 +39,10 @@ class MaterialType extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'default_flg'], 'required'],
-            [['description'], 'string', 'max' => 40],
+            [['description', ], 'string', 'max' => 40],
             [['default_flg'], 'string', 'max' => 1],
-            [['image_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg'],
+            [['icon'], 'string', 'max' => 45],
+            [['image_file'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,6 +55,7 @@ class MaterialType extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'description' => Yii::t('app', 'Description'),
             'default_flg' => Yii::t('app', 'Default Flg'),
+            'icon' => Yii::t('app', 'Icon'),
             'image_file' => Yii::t('app', 'Image File'),
         ];
     }
@@ -77,21 +80,5 @@ class MaterialType extends \yii\db\ActiveRecord
         }
 
         return $material;
-    }
-
-    /**
-     * Sube el archivo de imagen.
-     * @param yii\web\UploadedFile $imageFile
-     * @return boolean
-     */
-    public function upload($imageFile)
-    {
-        if (null !== $imageFile) {
-            #$this->image_file->saveAs(Yii::getAlias("@frontend")."/web/images/" . $this->image_file->baseName . '.' . $this->image_file->extension);
-            Yii::$app->storage->saveAs($imageFile);
-            return true;
-        } else {
-            return false;
-        }
     }
 }

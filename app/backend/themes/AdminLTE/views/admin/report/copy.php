@@ -14,9 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="copy-search">
-    <h1><?= $this->title ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php
             $form = ActiveForm::begin([
                         'action' => ['view', 'type' => $model->formName()],
@@ -24,47 +23,47 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>
 
-            <div class="row">
-                <div class="col-xs-5">&nbsp;</div>
-                <div class="col-xs-2">
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
                     <?php echo $form->field($model, 'barcode_nmbr')->textInput(['type' => 'number']) ?>
                 </div>
-                <div class="col-xs-5">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-5">&nbsp;</div>
-                <div class="col-xs-2">
-                    <?= $form->field($model, 'created_at')->widget(DatePicker::class, ['dateFormat' => 'yyyy-MM-dd']) ?>
+            <div class="form-row">
+                <div class="col">&nbsp;</div>
+                <div class="col">
+                    <?= $form->field($model, 'created_at')->textInput(['pattern' => '\d{4}-\d{2}-\d{2}', 'type' => 'date']) ?>
                 </div>
-                <div class="col-xs-5">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
-            <?php // echo $form->field($model, 'status_cd')  ?>
+            <?php // echo $form->field($model, 'status_cd')?>
 
-            <?php // echo $form->field($model, 'status_begin_dt')  ?>
+            <?php // echo $form->field($model, 'status_begin_dt')?>
 
-            <?php // echo $form->field($model, 'due_back_dt')  ?>
+            <?php // echo $form->field($model, 'due_back_dt')?>
 
-            <?php // echo $form->field($model, 'mbr_id')  ?>
+            <?php // echo $form->field($model, 'mbr_id')?>
 
-            <?php // echo $form->field($model, 'renewal_count')  ?>
+            <?php // echo $form->field($model, 'renewal_count')?>
 
-            <?php // echo $form->field($model, 'callno')  ?>
+            <?php // echo $form->field($model, 'callno')?>
 
-            <?php // echo $form->field($model, 'title')  ?>
+            <?php // echo $form->field($model, 'title')?>
 
-            <?php // echo $form->field($model, 'author')  ?>
+            <?php // echo $form->field($model, 'author')?>
 
-            <?php // echo $form->field($model, 'collection')   ?>
+            <?php // echo $form->field($model, 'collection')?>
 
             <div class="form-group">
-                <div class="col-xs-5">&nbsp;</div>
-                <div class="col-xs-3">
+                <div class="col">&nbsp;</div>
+                <div class="col">
                     <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
                     <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
                 </div>
-                <div class="col-xs-4">&nbsp;</div>
+                <div class="col">&nbsp;</div>
             </div>
 
             <?php ActiveForm::end(); ?>

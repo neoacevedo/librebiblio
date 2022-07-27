@@ -54,7 +54,7 @@ use yii\helpers\Html;
             <a class="nav-link"
                 href="<?= yii\helpers\Url::to(['/circulation/cart']); ?>">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="label label-warning"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])); ?></span>
+                <span class="badge badge-info navbar-badge"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])); ?></span>
             </a>
         </li>
         <!-- // -->

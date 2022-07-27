@@ -30,8 +30,5 @@ class Theme extends \yii\base\Theme
         $this->pathMap = [
             '@app/views' => '@app/themes/' . $this->theme . "/views",
         ];
-
-        // configurar el tema en la sesión
-        \Yii::$app->session->set('frontend-skin', $theme->skin);
     }
 }

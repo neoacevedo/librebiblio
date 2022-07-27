@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-type-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
 
     <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
@@ -29,7 +30,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'yii\grid\SerialColumn'],
                         'id',
                         'description',
-                        'image_file',
+                        [
+                            'attribute' => 'image_file',
+                            'format' => 'html',
+                            'filter' => false,
+                            'contentOptions' => ['class' => 'text-center align-middle'],
+                            'value' => function ($model) {
+                                return Html::img($model->image_file);
+                            }
+                        ],
+                        [
+                            'attribute' => 'icon',
+                            'format' => 'html',
+                            'contentOptions' => ['class' => 'text-center align-middle'],
+                            'value' => function ($model) {
+                                return Html::tag("span", "", ['class' => $model->icon]);
+                            }
+                        ],
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
                     'options' => ['class' => 'table table-striped table-bordered table-responsive']
