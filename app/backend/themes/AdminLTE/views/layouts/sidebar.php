@@ -129,7 +129,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         <li class="nav-item">
                             <a href="<?= Url::to(['/admin/material-type/index']) ?>"
                                 class="nav-link">
-                                <i class="fas fa-books"></i> <?= Yii::t("app/settings", "Material Types") ?>
+                                <i class="fas fa-boxes"></i> <?= Yii::t("app/settings", "Material Types") ?>
                             </a>
                         </li>
                         <li class="nav-item">

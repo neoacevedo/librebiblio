@@ -7,7 +7,6 @@ namespace backend\components;
  */
 class Theme extends \yii\base\Theme
 {
-
     /**
      * Theme folder name
      *
@@ -27,7 +26,7 @@ class Theme extends \yii\base\Theme
 
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
         if (!$theme) {
-            $this->theme = 'AdminLTE';
+            $this->theme = 'default';
         } else {
             $this->theme = $theme->name;
         }
@@ -38,7 +37,7 @@ class Theme extends \yii\base\Theme
             '@app/views' => '@app/themes/' . $this->theme . "/views",
         ];
 
-        $this->settings = json_decode($theme->settings);
+        $this->settings = (array) json_decode($theme->settings);
         $this->id = $theme->id;
     }
 }

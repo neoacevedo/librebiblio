@@ -72,7 +72,8 @@ class Checkouts extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function primaryKey() {
+    public static function primaryKey()
+    {
         parent::primaryKey();
         return ['id'];
     }
@@ -81,7 +82,8 @@ class Checkouts extends \yii\db\ActiveRecord
      * Devuelve el nombre del reporte traducido.
      * @return string
      */
-    public static function getName() {
+    public static function getName()
+    {
         return Yii::t("app/reports", self::$name);
     }
     
@@ -89,7 +91,8 @@ class Checkouts extends \yii\db\ActiveRecord
      * Devuelve el nombre de la categoría traducida.
      * @return string
      */
-    public static function getCategory() {
+    public static function getCategory()
+    {
         return Yii::t("app/reports", self::$category);
     }
 }

@@ -26,24 +26,32 @@ if (count($model) > 0) {
                 }
                 $columns[$key] = $value;
             }
-            $gridColumns = array_merge([
-                ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
+            $gridColumns = array_merge(
+                [
+                ['class' => 'kartik\grid\SerialColumn']],
+                array_keys($columns)
             );
         } else {
-            $gridColumns = array_merge([
-                ['class' => 'kartik\grid\SerialColumn']], array_keys($model[0]->attributes)
+            $gridColumns = array_merge(
+                [
+                ['class' => 'kartik\grid\SerialColumn']],
+                array_keys($model[0]->attributes)
             );
         }
     } else {
         $columns = $searchModel->attributes;
-        $gridColumns = array_merge([
-            ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
+        $gridColumns = array_merge(
+            [
+            ['class' => 'kartik\grid\SerialColumn']],
+            array_keys($columns)
         );
     }
 } else {
     $columns = $searchModel->attributes;
-    $gridColumns = array_merge([
-        ['class' => 'kartik\grid\SerialColumn']], array_keys($columns)
+    $gridColumns = array_merge(
+        [
+        ['class' => 'kartik\grid\SerialColumn']],
+        array_keys($columns)
     );
 
     $filename = str_replace("Search", "", Yii::$app->request->queryParams['type']);
@@ -66,19 +74,19 @@ $fullExportMenu = ExportMenu::widget([
         ]);
 ?>
 <div class="collection-index">
-    <div class="box">
+    <div class="card">
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => $gridColumns,
             'panel' => [
-                'headingOptions' => ['class' => 'box-header'],
-                'heading' => '<h1>' . Html::encode(Yii::t('app/reports', CopySearch::getName())) . '</h1>',
+                'headingOptions' => ['class' => 'card-header'],
+                'heading' => Html::encode(Yii::t('app/reports', CopySearch::getName())),
             ],
             'toolbar' => [
                 $fullExportMenu
             ],
-            'containerOptions' => ['class' => 'box-body']
+            'containerOptions' => ['class' => 'card-body']
         ]);
         ?>
     </div>

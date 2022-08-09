@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
+/** @var array $mbr_classify */
 
 $this->title = Yii::t('app', 'Update {modelClass} : ', [
             'modelClass' => Yii::t('app', 'Member'),
@@ -13,15 +14,10 @@ $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['member
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="user-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
-            <?=
-            $this->render('_form', [
-                'model' => $model,
-            ])
-            ?>
-        </div>
-    </div>
+    <?=
+        $this->render('_form', [
+            'model' => $model,
+            'mbr_classify' => $mbr_classify
+        ])
+?>
 </div>

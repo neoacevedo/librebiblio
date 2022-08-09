@@ -1,7 +1,9 @@
 <?php
 use yii\helpers\Html;
 
+/** @var yii\web\View $this */
 $this->title = Yii::$app->name;
+Yii::$app->controller->layout = 'main-login';
 ?>
 <div class="card">
     <div class="card-body login-card-body">

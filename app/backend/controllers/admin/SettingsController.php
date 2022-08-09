@@ -17,7 +17,7 @@ use yii\web\NotFoundHttpException;
 
 /**
  * SettingsController implementa las configuraciones del sitio usando el modelo Settings.
- * 
+ *
  * Las configuraciones que usa son las siguientes:
  * - Nombre de la biblioteca
  * - URL de la imagen de la biblioteca (El logo empleado para el frontend (o backend, dependiendo del tema).
@@ -32,7 +32,6 @@ use yii\web\NotFoundHttpException;
  */
 class SettingsController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -90,7 +89,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Actualiza un modelo Settings existente.
      *
      * @return string
      */
@@ -98,37 +97,17 @@ class SettingsController extends Controller
     {
         $model = $this->findModel();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
+        $files = \yii\helpers\FileHelper::findFiles(Yii::getAlias("@frontend/../../images/logo/"), ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
         foreach ($files as $file) {
-            $file_name = substr($file, strrpos($file, "/") + 1);
-            $files_list[$file_name] = $file_name;
+            $file_name = "/images/logo/" .  substr($file, strrpos($file, "/") + 1);
+            $files_list[$file_name] = substr($file, strrpos($file, "/") + 1);
         }
         // primer elemento en el array
         array_unshift($files_list, Yii::t('app', 'Choose an option'));
         // último elemento en el array
         array_push($files_list, Yii::t('app', 'Upload File:'));
-        return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
-    }
 
-    /**
-     * Actualiza la configuración básica de la biblioteca.
-     * @return mixed
-     */
-    public function actionLibrarySettingsUpdate()
-    {
-        $model = $this->findModel();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $files = \yii\helpers\FileHelper::findFiles("../../frontend/web/images/logo/", ['only' => ['*.png', '*.jpg', '*.jpeg']]);
-        $files_list = [];
-        foreach ($files as $file) {
-            $file_name = substr($file, strrpos($file, "/") + 1);
-            $files_list[$file_name] = $file_name;
-        }
-        // primer elemento en el array
-        array_unshift($files_list, Yii::t('app', 'Choose an option'));
-        // último elemento en el array
-        array_push($files_list, Yii::t('app', 'Upload File:'));
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstanceByName('imageFile');
             if ($model->imageFile) {
@@ -146,12 +125,12 @@ class SettingsController extends Controller
                 }
             }
         } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-
-            return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
+            foreach ($model->errors as $error) {
+                Yii::$app->getSession()->setFlash('error', $error);
+            }
         }
+
+        return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
     }
 
     /**

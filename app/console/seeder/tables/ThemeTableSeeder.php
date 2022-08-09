@@ -12,7 +12,7 @@ use common\models\Theme;
 class ThemeTableSeeder extends TableSeeder
 {
     public $skipTruncateTables = true;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -93,7 +93,17 @@ class ThemeTableSeeder extends TableSeeder
         }';
 
         $theme->settings = $settings;
-        
-        echo $theme->save() ? "Configuraciones del tema insertados correctamente.": "No se pudieron insertar las configuraciones del tema.";
+        $theme->sourcePath = "@backend/themes/AdminLTE";
+
+        echo $theme->save() ? "Configuraciones del tema insertados correctamente." : "No se pudieron insertar las configuraciones del tema.";
+    }
+
+    public function insertFrontendThemeSettings()
+    {
+        $theme = \common\models\Theme::find()->where(['name' => 'simple'])->one();
+
+        $theme->sourcePath = "@frontend/themes/simple";
+
+        echo $theme->save() ? "Configuraciones del tema insertados correctamente." : "No se pudieron insertar las configuraciones del tema.";
     }
 }

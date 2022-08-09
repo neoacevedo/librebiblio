@@ -21,7 +21,6 @@ use backend\reports;
  */
 class SiteController extends Controller
 {
-
     /**
      * Define la clase CSS de la etiqueta body
      * @var string
@@ -142,7 +141,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $this->layout = 'main-login';
+        // $this->layout = 'main-login';
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

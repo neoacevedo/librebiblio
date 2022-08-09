@@ -28,14 +28,21 @@ class ThemeAsset extends AssetBundle
 
         $this->sourcePath = Yii::getAlias("@app/themes/{$theme->name}/assets");
 
-        $css_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/css", ['only' => ['*.min.css']]);
-        $css_files = str_replace($this->sourcePath . "/css", "css", $css_files);
-        natsort($css_files);
+        $css_files = [];
+        $js_files = [];
 
-        $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js']]);
-        $js_files = str_replace($this->sourcePath . "/js", "js", $js_files);
-        natsort($js_files);
-        
+        if (file_exists($this->sourcePath . "/css")) {
+            $css_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/css", ['only' => ['*.min.css']]);
+            $css_files = str_replace($this->sourcePath . "/css", "css", $css_files);
+            natsort($css_files);
+        }
+
+        if (file_exists($this->sourcePath . "/js")) {
+            $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js']]);
+            $js_files = str_replace($this->sourcePath . "/js", "js", $js_files);
+            natsort($js_files);
+        }
+
         $this->css = $css_files;
         $this->js = $js_files;
     }

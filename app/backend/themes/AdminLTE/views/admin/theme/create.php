@@ -7,19 +7,18 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Theme */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="row">&nbsp;</div>
+
 <div class="theme-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'action' => ['/admin/theme/create'],
+        'options' => ['enctype' => 'multipart/form-data']
+    ]); ?>
 
-    <?= Html::fileInput('themeFile', '', ['id' => 'file', 'required' => true]) ?>
-    <div class="row">&nbsp;</div>
+    <?= $form->field($model, 'themeFile')->fileInput(['required' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Upload'), ['class' => 'btn btn-primary']) ?>
-    </div>
-    <div class="hidden">
-        <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
-        <?= $form->field($model, "active")->label("")->hiddenInput() ?>
     </div>
 
     <?php ActiveForm::end(); ?>

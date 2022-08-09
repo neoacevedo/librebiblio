@@ -15,15 +15,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => true]) ?>
     <?php
     if (count($skins) > 0):
-    ?>
+        ?>
     <?= $form->field($model, 'skin')->dropDownList($skins, ['class' => 'form-control']) ?>
     <?php
     endif;
-    ?>
-    <div class="d-none">
-        <?= $form->field($model, "frontend")->label("")->hiddenInput() ?>
-        <?= $form->field($model, "active")->label("")->hiddenInput() ?>
-    </div>
+?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

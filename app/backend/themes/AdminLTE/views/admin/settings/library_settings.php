@@ -14,9 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="settings-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php echo $this->render('_form', ['model' => $model, 'files' => $files]); ?>
         </div>
     </div>

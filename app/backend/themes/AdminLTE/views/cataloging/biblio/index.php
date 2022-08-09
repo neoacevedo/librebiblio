@@ -15,12 +15,10 @@ $this->title = Yii::t('app', 'Biblios');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  
+    <?php // echo $this->render('_search', ['model' => $searchModel]);
     ?>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?php Pjax::begin(); ?>
             <?=
                 GridView::widget([
@@ -99,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'options' => ['class' => 'table table-responsive']
                 ]);
-            ?>
+?>
             <?php Pjax::end(); ?>
         </div>
     </div>

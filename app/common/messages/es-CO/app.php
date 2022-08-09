@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Address' => '',
     'Bibid' => '',
     'Birthdate' => '',
     'Call Nmbr1' => '',
@@ -31,8 +30,8 @@ return [
     'Material' => '',
     'Mbr ID' => '',
     'Member ID' => '',
-    'New' => '',
-    'No' => '',
+    'New' => 'Nuevo',
+    'No' => 'No',
     'No results found.' => 'No se encontraron resultados.',
     'Roles' => '',
     'Topic1' => '',
@@ -41,11 +40,11 @@ return [
     'Topic4' => '',
     'Topic5' => '',
     'Updated Userid' => '',
-    'address' => 'dirección',
     'Account' => 'Cuenta',
     'Active' => 'Activo',
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',
+    'Address' => 'Dirección',
     'Are you sure you want to delete this item?' => '¿Está seguro que desea borrar este ítem?',
     'Assignment' => 'Asignación',
     'Author' => 'Autor',
@@ -179,5 +178,5 @@ return [
     'View' => 'Ver',
     'Yes' => 'Sí',
     'You must select at least one element' => 'Debe seleccionar al menos un elemento',
-    '{modelClass} History: ' => 'Historial de {modelClass}: ',
+    '{modelClass} History: ' => 'Historial de {modelClass}:'
 ];

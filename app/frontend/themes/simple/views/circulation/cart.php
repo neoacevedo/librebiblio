@@ -1,8 +1,8 @@
 <?php
 
+use kartik\dialog\Dialog;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\jui\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\CartSearch */
@@ -46,7 +46,8 @@ $this->registerJs($js, \yii\web\View::POS_END);
 <section class="content">
     <div class="circulation-index">
         <div class="bibliosearch-index">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h1><?= Html::encode($this->title) ?>
+            </h1>
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <?= $this->render('_sidenav', ['model' => $model]) ?>
             </div>
@@ -59,7 +60,7 @@ $this->registerJs($js, \yii\web\View::POS_END);
                         [
                             'class' => 'yii\grid\CheckboxColumn',
                             'multiple' => true,
-                            'checkboxOptions' => function($model) {
+                            'checkboxOptions' => function ($model) {
                                 return ['class' => 'checkbox', 'value' => $model->copyid];
                             },
                             'headerOptions' => [
@@ -68,13 +69,13 @@ $this->registerJs($js, \yii\web\View::POS_END);
                         ],
                         [
                             'label' => Yii::t('biblio', 'Barcode Nmbr'),
-                            'value' => function($model) {
+                            'value' => function ($model) {
                                 return $model->biblioCopy->barcode_nmbr;
                             }
                         ],
                         [
                             'label' => Yii::t('app', 'Title'),
-                            'value' => function($model) {
+                            'value' => function ($model) {
                                 return $model->biblio->title;
                             }
                         ],
@@ -85,19 +86,19 @@ $this->registerJs($js, \yii\web\View::POS_END);
                     ],
                     'options' => ['class' => 'box table-responsive', 'id' => 'cart']
                 ]);
-                ?>
+?>
                 <?= Html::beginForm(['circulation/checkout'], 'post', ['id' => 'form']) ?>
 
                 <?= Html::endForm() ?>
                 <div class="row">
                     <div class="col-md-12">
                         <?php
-                        if ($dataProvider->count > 0):
-                            ?>
-                            <button class="btn btn-lg btn-success btn-block" id="submit"><?= Yii::t('app', 'Procced to Checkout') ?></button>
-                            <?php
-                        endif;
-                        ?>
+        if ($dataProvider->count > 0):
+            ?>
+                        <button class="btn btn-lg btn-success btn-block" id="submit"><?= Yii::t('app', 'Procced to Checkout') ?></button>
+                        <?php
+        endif;
+?>
                     </div>
                 </div>
 
@@ -114,7 +115,8 @@ $this->registerJs($js, \yii\web\View::POS_END);
                     'buttons' => [
                         [
                             'text' => Yii::t('app', 'Yes'),
-                            'click' => new yii\web\JsExpression(''
+                            'click' => new yii\web\JsExpression(
+                                ''
                                     . 'function(){ '
                                     . '     $("#form").submit();'
                                     . '}'
@@ -127,8 +129,8 @@ $this->registerJs($js, \yii\web\View::POS_END);
                     ],
                 ],
             ]);
-            echo Yii::t('circulation', 'Before proceed, please be sure your address is correct. {address}<br /> Is your address correct?', ['address' => $model->address]);
-            Dialog::end();
-            ?>
+echo Yii::t('circulation', 'Before proceed, please be sure your address is correct. {address}<br /> Is your address correct?', ['address' => $model->address]);
+Dialog::end();
+?>
         </div>
 </section>

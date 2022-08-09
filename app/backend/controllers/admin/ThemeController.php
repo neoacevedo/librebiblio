@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\UploadedFile;
 
 /**
@@ -154,7 +155,6 @@ use yii\web\UploadedFile;
  */
 class ThemeController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -232,39 +232,32 @@ class ThemeController extends Controller
         $model = new Theme();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
 
-        if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('create', [
-                        'model' => $model,
-            ]);
-        }
-        //if ($model->load(Yii::$app->request->post()) && $model->save()) {
         if ($model->load(Yii::$app->request->post())) {
-            $model->themeFile = UploadedFile::getInstanceByName('themeFile');
+            $model->themeFile = UploadedFile::getInstance($model, "themeFile");
             if ($model->themeFile !== null) {
                 if ($model->upload()) {
-                    $path = Yii::getAlias("@backend");
+                    $path = Yii::$app->runtimePath;
                     $zip = new \ZipArchive();
                     $zip->open("$path/tmp/{$model->themeFile->name}");
-                    $name = $zip->getNameIndex(2);
-                    $theme = json_decode($zip->getFromName("{$name}settings.json"));
+
+                    $theme = json_decode($zip->getFromName("{$model->themeFile->baseName}/settings.json"));
                     $model->frontend = $theme->frontend;
                     $model->name = $theme->name;
                     $model->active = 0;
+                    $model->sourcePath = $theme->sourcePath;
                     if (isset($theme->settings)) {
-                        $model->skin = $theme->skins[0];
+                        $model->settings = json_encode($theme->settings);
                     }
                     $model->created_at = date('Y-m-d H:i:s');
                     if ($theme->frontend == 1) {
                         if ($zip->extractTo(Yii::getAlias("@frontend") . "/themes/")) {
                             $zip->close();
-                            unlink("$path/tmp/{$model->themeFile->name}");
                         } else {
                             Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
                         }
                     } else {
                         if ($zip->extractTo(Yii::getAlias("@backend") . "/themes/")) {
                             $zip->close();
-                            unlink("$path/tmp/{$model->themeFile->name}");
                         } else {
                             Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
                         }
@@ -277,11 +270,20 @@ class ThemeController extends Controller
                             Yii::$app->getSession()->setFlash('error', $v);
                         });
                     }
+
+                    @unlink("$path/tmp/{$model->themeFile->name}");
+                } else {
+                    @array_walk_recursive($model->errors, function ($v, $k) {
+                        Yii::$app->getSession()->setFlash('error', $v);
+                    });
                 }
             } else {
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
                 $result = Yii::t('app/theme', "File not uploaded");
+                Yii::$app->getSession()->setFlash('warning', $result);
             }
-            Yii::$app->getSession()->setFlash('warning', $result);
         } else {
             @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
@@ -299,90 +301,62 @@ class ThemeController extends Controller
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
-        $current_theme = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
+        $tema_activo = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        // ahora a modificar el json
-        if ($current_theme) {
-            if ($current_theme->active == 1) {
-                // hay más de un tema.
-                if ($current_theme->frontend == 0) {
-                    $theme_settings = json_decode(file_get_contents(Yii::getAlias("@backend") . "/themes/{$current_theme->name}/settings.json"), true);
-                } else {
-                    $theme_settings = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$current_theme->name}/settings.json"), true);
-                }
-                $skins = [];
-                if (isset($theme_settings['skins'])) {
-                    foreach ($theme_settings['skins'] as $key => $val) {
-                        $skins[$val] = $val;
-                    }
-                }
-                if ($model->load(Yii::$app->request->post())) {
-                    $current_theme->active = 0;
-                    if ($current_theme->save() && $model->save()) {
-                        /* if (isset($model->skin) || $model->skin !== '') {
-                          if ($model->frontend == 0) {
-                          Yii::$app->session->remove("backend-skin");
-                          Yii::$app->session->set("backend-skin", $model->skin);
-                          } else {
-                          Yii::$app->session->remove("frontend-skin");
-                          Yii::$app->session->set("frontend-skin", $model->skin);
-                          }
-                          } */
-                    }
-                    Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
-                    return $this->redirect(['index']);
-                } else {
-                    @array_walk_recursive($model->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
-                }
-            } else {
-                // no hay tema activo pero igual se permite actualizar el tema.
-                if ($model->frontend == 0) {
-                    $theme_settings = json_decode(file_get_contents(Yii::$app->basePath . "/themes/{$model->name}/settings.json"), true);
-                } else {
-                    $theme_settings = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$model->name}/settings.json"), true);
-                }
-                $skins = [];
-                if (isset($theme_settings['skins'])) {
-                    foreach ($theme_settings['skins'] as $key => $val) {
-                        $skins[$val] = $val;
-                    }
-                }
+        $editableIndex = $this->request->post("editableIndex");
+        $post = [];
+        $post["Theme"] = @$this->request->post("Theme")[$editableIndex];
 
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
-                    return $this->redirect(['index']);
-                } else {
-                    @array_walk_recursive($model->errors, function ($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
-                }
-            }
+        $array_settings = [];
+        $json_settings = "";
+
+        $success = false;
+        $message = "";
+
+        if ($model->frontend == 0) {
+            $array_settings = json_decode($model->settings, true);
+            $array_settings = array_merge($array_settings, $this->request->post("settings", ["dark-mode" => 0]));
+            $json_settings = Json::encode($array_settings);
         } else {
-            // no hay tema activo pero igual se permite actualizar el tema.
-            if ($model->frontend == 0) {
-                $theme_settings = json_decode(file_get_contents(Yii::$app->basePath . "/themes/{$model->name}/settings.json"), true);
-            } else {
-                $theme_settings = json_decode(file_get_contents(Yii::getAlias("@frontend") . "/themes/{$model->name}/settings.json"), true);
-            }
-            $skins = [];
-            if (isset($theme_settings['skins'])) {
-                foreach ($theme_settings['skins'] as $key => $val) {
-                    $skins[$val] = $val;
+            $array_settings = json_decode(file_get_contents(Yii::getAlias($model->sourcePath) . "/settings.json"), true);
+        }
+
+        $post["Theme"]["settings"] = $json_settings;
+
+        if ($model->load($post) && $model->save()) {
+            if ($tema_activo->id !== $model->id) {
+                if ($model->active == 1) {
+                    $tema_activo->active = 0;
+                    if (!$tema_activo->save()) {
+                        $message .= "<ul>";
+                        foreach ($tema_activo->errors as $key => $error) {
+                            $message .= "<li>{$error[0]}</li>";
+                        }
+                        $message .= "</ul>";
+                    }
                 }
             }
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->session->setFlash('success', Yii::t('app/theme', 'Theme updated successfully.'));
-                return $this->redirect(['index']);
-            } else {
-                @array_walk_recursive($model->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
+            $success = true;
+        } else {
+            $message .= "<ul>";
+            foreach ($model->errors as $key => $error) {
+                $message .= "<li>{$error[0]}</li>";
             }
+            $message .= "</ul>";
+            return $this->asJson(['success' => $success, "message" => $message]);
         }
-        return $this->render("update", ['model' => $model, 'skins' => $skins]);
+
+        Yii::$app->session->setFlash('success', Yii::t("app/theme", "Theme updated successfully."));
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionRefresh()
+    {
+        $vendorDir = Yii::$app->getVendorPath();
+        $settingsFile = \yii\helpers\FileHelper::findFiles($vendorDir, ['only' => ['settings.json']]);
+        Yii::debug($settingsFile);
+        return $this->redirect(['index']);
     }
 
     /**
@@ -433,6 +407,7 @@ class ThemeController extends Controller
         if (($model = Theme::findOne($id)) !== null) {
             return $model;
         } else {
+            Yii::debug($model);
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }

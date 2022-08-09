@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\models;
 
 use Yii;
@@ -23,7 +24,7 @@ class ThemeSearch extends Theme
     {
         return [
             [['id', 'frontend', 'active'], 'integer'],
-            [['name', 'created_at'], 'safe'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -69,7 +70,6 @@ class ThemeSearch extends Theme
             'id' => $this->id,
             'frontend' => $this->frontend,
             'active' => $this->active,
-            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

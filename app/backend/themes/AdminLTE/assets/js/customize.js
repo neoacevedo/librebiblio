@@ -5,13 +5,47 @@
  */
 
 (function ($) {
+    function setDarkMode(enabled) {
+        sessionStorage.darkMode = enabled;
+    }
+
+    function getDarkMode() {
+        return sessionStorage.darkMode;
+    }
+
+    function setNavBarVariants(cssClass) {
+        sessionStorage.navbar_variants = cssClass;
+    }
+
+    function getNavBarVariants() {
+        return sessionStorage.navbar_variants;
+    }
+
+    if (getDarkMode() == 1) {
+        $('body').addClass('dark-mode');
+    } else {
+        $('body').removeClass('dark-mode');
+    }
+
+    if (getNavBarVariants() != undefined) {
+        var $main_header = $(".main-header");
+        $main_header.removeClass();
+        $main_header.addClass(getNavBarVariants());
+    }
+
     theme = {
         dark_mode: function (object) {
             if (object.checked) {
-                $('body').addClass('dark-mode')
+                $('body').addClass('dark-mode');
+                setDarkMode(1);
+                object.value = 1;
             } else {
-                $('body').removeClass('dark-mode')
+                $('body').removeClass('dark-mode');
+                setDarkMode(0);
+                object.value = 0;
             }
+
+            document.getElementById("customize-adminlte").submit();
         },
         navbar_variants: function (object) {
             var $main_header = $(".main-header");
@@ -42,6 +76,8 @@
 
             $main_header.addClass(object.value);
 
+            setNavBarVariants(classList + " " + object.value);
+
         },
         dark_sidebar_options: function (object) {
             var $main_header = $(".main-sidebar");
@@ -67,6 +103,8 @@
             $main_header.addClass(classList);
 
             $main_header.addClass(object.value);
+
+            // setNavBarDark(classList + " " + object.value);
         },
         light_sidebar_options: function (object) {
             var $main_header = $(".main-sidebar");
@@ -92,6 +130,6 @@
             $main_header.addClass(classList);
 
             $main_header.addClass(object.value);
-        }
+        },
     };
 }(jQuery));

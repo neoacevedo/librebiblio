@@ -7,37 +7,41 @@ use yii\widgets\ActiveForm;
 /** @var common\models\Settings $model */
 /** @var yii\widgets\ActiveForm $form */
 
-
-// emulación de data-confirm en elemento "a"
-$js = "\$('#file_list').change(function(e) {
+$js = <<<JAVASCRIPT
+(function() {
+    document.getElementById("library_img").src = $('#file_list').val();
+    $('#file_list').on('change', function(e) {
         if($(this).val() == 1) {
             $('#file').show();
-            //$('#library_image_url').val('');
         } else {
             $('#file').hide();
-            //$('#library_image_url').val($(this).val());
+            document.getElementById("library_img").src = $(this).val();
         }
     });
-    /*\$('#file').change(function() {
-        $('#library_image_url').val($(this).val());
-    });*/";
+})();
+
+JAVASCRIPT;
 $this->registerJs($js);
 ?>
 
 <div class="settings-form">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['admin/settings/library-settings-update'],
         'options' => ['enctype' => 'multipart/form-data']
     ]);
-    ?>
+?>
 
     <?= $form->field($model, "library_name") ?>
-
-    <?=
-    $form->field($model, 'library_image_url')->dropDownList($files, ['id' => 'file_list', 'class' => 'form-control'])
-    ?>
-
+    <div class="form-row">
+        <div class="col-2">
+            <img id="library_img" src="" class="img img-thumbnail img-responsive">
+        </div>
+        <div class="col">
+            <?=
+                $form->field($model, 'library_image_url')->dropDownList($files, ['id' => 'file_list', 'class' => 'form-control'])
+?>
+        </div>
+    </div>
     <?= Html::fileInput('imageFile', '', ['id' => 'file', 'style' => ['display' => 'none']]) ?>
 
     <div class="checkbox">
@@ -59,7 +63,8 @@ $this->registerJs($js);
     <?= $form->field($model, "offline")->dropDownList(['1' => Yii::t('app', 'Yes'), '0' => Yii::t('app', 'No')]) ?>
 
     <fieldset>
-        <legend><?= Yii::t("app", "Advanced") ?></legend>
+        <legend><?= Yii::t("app", "Advanced") ?>
+        </legend>
         <?= $form->field($model, "cache_handler")->dropDownList(["file" => Yii::t("app", "File"), "memcached" => "Memcached", "dummy" => "Dummy"]) ?>
     </fieldset>
 

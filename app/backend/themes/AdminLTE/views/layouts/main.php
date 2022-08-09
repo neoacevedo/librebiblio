@@ -55,11 +55,6 @@ foreach ($roles as $role) {
     </div>
 
     <?php $this->endBody() ?>
-    <script>
-        /*$(".alert").fadeTo(3000, 500).slideUp(1000, function () {
-                $(".alert").alert('close');
-            });*/
-    </script>
 </body>
 
 </html>

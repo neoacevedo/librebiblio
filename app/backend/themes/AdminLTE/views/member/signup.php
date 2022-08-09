@@ -57,9 +57,10 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
                 </div>
             </div>
 
-            <div class="hidden">
+            <div class="d-none">
                 <?= $form->field($model, 'password')->hiddenInput(['value' => $model->generateUniqueRandomString(12)])->label('') ?>
             </div>
+
             <div class="form-group">
                 <?= Html::submitButton(Yii::t("app", 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
             </div>

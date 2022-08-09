@@ -4,10 +4,12 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use neoacevedo\auditing\behaviors\AuditBehavior;
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%theme}}".
@@ -15,6 +17,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property integer $frontend
+ * @property string $sourcePath
  * @property integer $active
  * @property string|null $settings json settings
  * @property string $created_at
@@ -25,7 +28,7 @@ class Theme extends \yii\db\ActiveRecord
      * @var UploadedFile
      */
     public $themeFile;
-    
+
     /**
      * @inheritdoc
      */
@@ -50,11 +53,11 @@ class Theme extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'sourcePath'], 'required'],
             [['frontend', 'active'], 'integer'],
             [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 15],
-            [['settings'], 'string'],
+            [['settings', 'sourcePath'], 'string'],
             [['themeFile'], 'safe'],
             [['themeFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'zip'],
         ];
@@ -69,12 +72,14 @@ class Theme extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'frontend' => Yii::t('app/theme', 'Frontend'),
+            'sourcePath' => Yii::t("app/theme", "Source Path"),
             'active' => Yii::t('app', 'Active'),
             'settings' => Yii::t('app/theme', 'Settings'),
+            'themeFile' => Yii::t("app", 'File'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
     }
-    
+
     /**
      * Sube un archivo
      * @return boolean
@@ -82,10 +87,10 @@ class Theme extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate(['themeFile'])) {
-            $path = Yii::$app->basePath;
+            $path = Yii::$app->runtimePath;
             $this->name = $this->themeFile->baseName;
-            $this->themeFile->saveAs("$path/tmp/" . $this->themeFile->name, false);
-            return true;
+            @mkdir("$path/tmp/", 0775);
+            return $this->themeFile->saveAs("$path/tmp/" . $this->themeFile->name, false);
         } else {
             return false;
         }

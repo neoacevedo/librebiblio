@@ -17,8 +17,10 @@ try {
 } catch (Exception $ex) {
     $message = $ex->getMessage();
     $items_per_page = 20;
+    $theme = "AdminLTE";
 }
 
 return [
-    'pagination' => $items_per_page
+    'pagination' => $items_per_page,
+    'bsVersion' => '4.x',
 ];

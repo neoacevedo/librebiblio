@@ -14,9 +14,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), '
 $this->params['breadcrumbs'][] = $this->title;
 
 $type = Yii::t('app/reports', 'Quarter');
-if(Yii::$app->request->queryParams['timespan'] == "w") {
+if (Yii::$app->request->queryParams['timespan'] == "w") {
     $type = Yii::t('app/reports', 'Week');
-} elseif(Yii::$app->request->queryParams['timespan'] == "m") {
+} elseif (Yii::$app->request->queryParams['timespan'] == "m") {
     $type = Yii::t('app/reports', 'Month');
 }
 
@@ -48,7 +48,7 @@ $fullExportMenu = ExportMenu::widget([
 ]);
 ?>
 <div class="collection-index">
-    <div class="box">
+    <div class="card">
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,
@@ -63,13 +63,13 @@ $fullExportMenu = ExportMenu::widget([
                 ]
             ],
             'panel' => [
-                'headingOptions' => ['class' => 'box-header'],
-                'heading' => '<h1>' . Html::encode(Yii::t('app/reports', CheckoutStats::getName()) . " - $type") . '</h1>',
+                'headingOptions' => ['class' => 'card-header'],
+                'heading' => Html::encode(Yii::t('app/reports', CheckoutStats::getName()) . " - $type"),
             ],
             'toolbar' => [
                 $fullExportMenu
             ],
-            'containerOptions' => ['class' => 'box-body']
+            'containerOptions' => ['class' => 'card-body']
         ]);
         ?>
     </div>

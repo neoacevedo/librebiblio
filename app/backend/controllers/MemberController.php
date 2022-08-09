@@ -26,7 +26,6 @@ use yii\filters\AccessControl;
  */
 class MemberController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -100,6 +99,7 @@ class MemberController extends Controller
     public function actionCreate()
     {
         $model = new \common\models\SignupForm();
+        $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -116,8 +116,9 @@ class MemberController extends Controller
             }
         }
 
-        return $this->render('signup', [
+        return $this->render('create', [
             'model' => $model,
+            'mbr_classify' => $mbr_classify
         ]);
     }
 
@@ -207,7 +208,7 @@ class MemberController extends Controller
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // estadísticas del usuario con los tipos de material registrados en la biblioteca
         if (Yii::$app->db->driverName === "mysql") {
-            $materialTypeStats = (new \yii\db\Query)->select([
+            $materialTypeStats = (new \yii\db\Query())->select([
                 "mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
                 "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
             ])->from("{{%material_type_dm}} mat")
@@ -220,7 +221,7 @@ class MemberController extends Controller
                 ->groupBy(['mat.id', 'mat.description', 'mat.default_flg', 'privs.checkout_limit', 'privs.renewal_limit'])
                 ->all();
         } elseif (Yii::$app->db->driverName === "pgsql") {
-            $materialTypeStats = (new \yii\db\Query)->select([
+            $materialTypeStats = (new \yii\db\Query())->select([
                 "mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
                 "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
             ])->from("{{%material_type_dm}} mat")
@@ -316,6 +317,7 @@ class MemberController extends Controller
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
+        $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
@@ -326,6 +328,7 @@ class MemberController extends Controller
             });
             return $this->render('update', [
                 'model' => $model,
+                'mbr_classify' => $mbr_classify
             ]);
         }
     }

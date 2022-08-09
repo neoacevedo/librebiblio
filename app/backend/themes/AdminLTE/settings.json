@@ -1,6 +1,7 @@
 {
     "name": "AdminLTE",
     "frontend": 0,
+    "sourcePath": "@app/themes/AdminLTE",
     "settings": {
         "dark-mode": 0,
         "navbar-variants": {

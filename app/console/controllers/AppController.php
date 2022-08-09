@@ -16,19 +16,17 @@ use yii\console\Controller;
  *
  * @author Néstor Acevedo
  */
-class AppController extends Controller 
+class AppController extends Controller
 {
-    
     /**
      * Verifica si una función PHP está habilitada.
-     * 
+     *
      * @access private
      * @param string $func
      * @return bool
      */
-    private function isEnabled(string $func) 
+    private function isEnabled(string $func)
     {
         return is_callable($func) && false === stripos(ini_get('disable_functions'), $func);
     }
-
 }
