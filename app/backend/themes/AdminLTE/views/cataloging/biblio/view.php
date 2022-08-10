@@ -59,7 +59,7 @@ Yii::debug($usmarc);
 
 // emulación de data-confirm en elemento "a"
 $js = "\$('#copy_delete a').on('click', function(e) {
-        a = confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "');
+        a = confirm('" . Yii::t('yii', 'Are you sure you want to delete this item?') . "');
         return a;
     });";
 $this->registerJs($js);
@@ -79,12 +79,12 @@ $this->registerJs($js);
                         'heading' => Yii::t('app', 'Options'),
                         'items' => [
                             ['label' => Yii::t('app', 'Add Copy'), 'url' => ['biblio-copy/create', 'bibid' => $model->id]],
-                            ['label' => Yii::t('app', 'Update'), 'url' => ['update', 'id' => $model->id]],
+                            ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
                             ['label' => Yii::t('app', 'Delete'), 'url' => ['delete', 'id' => $model->id],
                                 'options' => ['id' => 'copy_delete']
                             ],
                             ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
-                            ['label' => Yii::t('app', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
+                            ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
                             ['label' => Yii::t('app', 'New'), 'url' => ['cataloging/biblio-field/create', 'bibid' => $model->id]],
                         ]
                     ]);
@@ -178,19 +178,19 @@ $this->registerJs($js);
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['biblio-copy/view', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                            'title' => Yii::t('app', 'View'),
+                                            'title' => Yii::t('yii', 'View'),
                                 ]);
                             },
                             'update' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                            'title' => Yii::t('app', 'Update'),
+                                            'title' => Yii::t('yii', 'Update'),
                                 ]);
                             },
                             'delete' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
                                             'title' => Yii::t('app', 'Delete'),
                                             'data' => [
-                                                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                                                 'pjax' => 0,
                                             ],
                                 ]);

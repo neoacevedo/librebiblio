@@ -19,7 +19,8 @@ foreach (Menu::NavbarLeft(1) as $menu) {
 ?>
 <div class="user-search">
     <div class="user-index">
-        <h1><?= Html::encode($this->title) ?></h1>
+        <h1><?= Html::encode($this->title) ?>
+        </h1>
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?=
             SideNav::widget([
@@ -30,7 +31,7 @@ foreach (Menu::NavbarLeft(1) as $menu) {
             ?>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9">
-            <?php Pjax::begin(); ?>   <?=
+            <?php Pjax::begin(); ?> <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
                 //'filterModel' => $searchModel,
@@ -52,12 +53,12 @@ foreach (Menu::NavbarLeft(1) as $menu) {
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                            'title' => Yii::t('app', 'View'),
+                                            'title' => Yii::t('yii', 'View'),
                                 ]);
                             },
                             'update' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                            'title' => Yii::t('app', 'Update'),
+                                            'title' => Yii::t('yii', 'Update'),
                                 ]);
                             },
                             'delete' => function ($url, $model) {

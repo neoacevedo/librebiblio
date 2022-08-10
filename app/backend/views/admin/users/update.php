@@ -10,12 +10,13 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
         ]) . $model->username;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['users']];
 $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['users-view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="user-update">
     <div class="box">
         <div class="box-header">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h1><?= Html::encode($this->title) ?>
+            </h1>
         </div>
         <div class="box-body">
 

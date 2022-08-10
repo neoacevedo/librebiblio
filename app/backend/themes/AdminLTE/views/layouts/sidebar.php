@@ -1,6 +1,7 @@
 <?php
 /* @var $assetDir string */
 
+use backend\themes\AdminLTE\widgets\Menu;
 use yii\helpers\Url;
 
 $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jpg";
@@ -29,142 +30,115 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-filter"></i> <?= Yii::t("app", "RBAC") ?>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/rbac/permission']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-check-square"></i> <?= Yii::t("app/rbac", "Permissions Manager") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/rbac/role']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-users"></i> <?= Yii::t("app/rbac", "Role Manager") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/rbac/rule']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-list"></i> <?= Yii::t("app/rbac", "Rules Manager") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/rbac/assignment']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-user-plus"></i> <?= Yii::t("app/rbac", "Assignment") ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-address-book"></i> <?= Yii::t("app", "Circulation") ?>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/circulation/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-check-square"></i> <?= Yii::t("app", "Home") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/member/create']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-users"></i> <?= Yii::t("app", "New Member") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/circulation/reception']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-list"></i> <?= Yii::t("app", "Check in") ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-book"></i> <?= Yii::t("app", "Cataloging") ?>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/cataloging/biblio']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-check-square"></i> <?= Yii::t("app", "Home") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/cataloging/biblio/create']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-book"></i> <?= Yii::t("app", "Create Biblio") ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= Url::to(['/admin/report/index']) ?>"
-                        class="nav-link">
-                        <i class="fas fa-chart-bar"></i> <?= Yii::t("app/reports", "Reports") ?>
-                    </a>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cogs"></i> <?= Yii::t("app", "Options") ?>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/settings/library-settings']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-wrench"></i> <?= Yii::t("app/settings", "Library Settings") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/material-type/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-boxes"></i> <?= Yii::t("app/settings", "Material Types") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/collections/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-tags"></i> <?= Yii::t("app/settings", "Collections") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/member-classify/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-users"></i> <?= Yii::t("app/settings", "Member Classify") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/checkout-privs/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-check"></i> <?= Yii::t("app/settings", "Checkout Privileges") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/theme/index']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-palette"></i> <?= Yii::t("app/settings", "Themes") ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= Url::to(['/admin/flush-cache']) ?>"
-                                class="nav-link">
-                                <i class="fas fa-trash"></i> <?= Yii::t("app/settings", "Flush Cache") ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+
+            <?= Menu::widget([
+                    "items" => [
+                        [
+                            "label" => Yii::t("app", "Cataloging"),
+                            "icon" => "book",
+                            'options' => ['class' => 'nav-header'],
+                            'header' => true,
+                        ],
+                        [
+                            "label" => Yii::t("app", "Home"),
+                            "url" => ['/cataloging/biblio/index'],
+                            "icon" => "check-square"
+                        ],
+                        [
+                            "label" => Yii::t("app", "Create Biblio"),
+                            "url" => ["/cataloging/biblio/create"],
+                            "icon" => "book"
+                        ],
+                        [
+                            "label" => Yii::t("app", "Reports"),
+                            "url" => ["/admin/report/index"],
+                            "icon" => "chart-bar"
+                        ],
+                        [
+                            "label" => Yii::t("app", "Circulation"),
+                            "icon" => "address-book",
+                            'options' => ['class' => 'nav-header'],
+                            'header' => true,
+                        ],
+                        [
+                            "label" => Yii::t("app", "Members"),
+                            "url" => ['/member-account/index'],
+                            'icon' => 'users'
+                        ],
+                        [
+                            "label" => Yii::t("app", "New Member"),
+                            "url" => ['/member/create'],
+                            'icon' => 'user-plus'
+                        ],
+                        [
+                            "label" => Yii::t("app", "RBAC"),
+                            "icon" => "filter",
+                            "items" => [
+                                [
+                                    "label" => Yii::t("app/rbac", "Permissions Manager"),
+                                    "url" => ['/rbac/permission'],
+                                    "icon" => "check-square",
+                                ],
+                                [
+                                    "label" => Yii::t("app/rbac", "Role Manager"),
+                                    "url" => ["/rbac/role"],
+                                    "icon" => "users"
+                                ],
+                                [
+                                    "label" => Yii::t("app/rbac", "Rules Manager"),
+                                    "url" => ["/rbac/rule"],
+                                    "icon" => "list"
+                                ],
+                                [
+                                    "label" => Yii::t("app/rbac", "Asignment"),
+                                    "url" => ["/rbac/assignment"],
+                                    "icon" => "user-plus"
+                                ],
+                            ]
+                        ],
+                        [
+                            "label" => Yii::t("app", "Options"),
+                            "icon" => "cogs",
+                            "items" => [
+                                [
+                                    "label" => Yii::t("app/settings", "Library Settings"),
+                                    "url" => ['/admin/settings/library-settings'],
+                                    'icon' => 'wrench'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Material Types"),
+                                    "url" => ['/admin/material-type/index'],
+                                    'icon' => 'boxes'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Collections"),
+                                    "url" => ['/admin/collections/index'],
+                                    'icon' => 'tags'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Member Classify"),
+                                    "url" => ['/admin/member-classify/index'],
+                                    'icon' => 'users'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Checkout Privileges"),
+                                    "url" => ['/admin/checkout-privs/index'],
+                                    'icon' => 'check'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Themes"),
+                                    "url" => ['/admin/theme/index'],
+                                    'icon' => 'palette'
+                                ],
+                                [
+                                    "label" => Yii::t("app/settings", "Flush Cache"),
+                                    "url" => ['/admin/flush-cache'],
+                                    'icon' => 'trash'
+                                ],
+                            ],
+                        ],
+                    ],
+            ]) ?>
             <?php
             echo \yii\widgets\Menu::widget([
                 'options' => [
@@ -199,7 +173,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                     ],
                 ],
             ]);
-            ?>
+?>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

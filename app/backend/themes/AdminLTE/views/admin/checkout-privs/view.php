@@ -14,16 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="checkout-privs-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
 
     <div class="col-lg-12 col-md-12 col-sm-12">
         <p>
-            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], ['class' => 'btn btn-primary']) ?>
             <?=
             Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id, 'material_cd' => $model->material_cd, 'classification_id' => $model->classification_id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ])

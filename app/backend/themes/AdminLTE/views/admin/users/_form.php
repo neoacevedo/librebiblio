@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
         <?= !$isNewRecord ?: $form->field($model, 'password')->hiddenInput(['value' => $model->generateUniqueRandomString(12)])->label('') ?>
     </div>
     <div class="form-group">
-        <?= Html::submitButton($isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

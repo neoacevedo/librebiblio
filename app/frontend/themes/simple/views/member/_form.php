@@ -4,57 +4,24 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model backend\models\MemberClassify */
 /* @var $form yii\widgets\ActiveForm */
-
-$mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
 ?>
 
-<div class="member-form">
+<div class="member-classify-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="row">
-        <div class="col-md-6 col-xs-6">
-            <?= $form->field($model, 'first_name')->textInput() ?>
-        </div>
-        <div class="col-md-6 col-xs-6">
-            <?= $form->field($model, 'last_name')->textInput() ?>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <?= $form->field($model, 'pin')->input('number', ['readonly' => true]) ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <?= $form->field($model, 'address') ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <?= $form->field($model, 'email') ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <?= $form->field($model, 'phone')->textInput() ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
-            <?= $form->field($model, 'password')->passwordInput() ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'max_fines')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Cancel'), ['admin/settings'], ['class' => 'btn btn-default']) ?>
+        <div class="hidden">
+            <?= $form->field($model, 'default_flg')->input('hidden', ['value' => 'N'])->label('') ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

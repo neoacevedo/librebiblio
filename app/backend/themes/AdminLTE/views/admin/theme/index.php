@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="row">
                     <div class="col">
-                        <?php Pjax::begin(); ?>
+                        <?php #Pjax::begin();?>
                         <?=
                         GridView::widget([
                             'dataProvider' => $dataProvider,
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]) . ' '.
                                         Html::a('<i class="fas fa-redo"></i>', ['admin/theme/refresh'], [
                                             'class' => 'btn btn-outline-secondary',
-                                            'title'=>Yii::t('app', 'Update'),
+                                            'title'=>Yii::t('yii', 'Update'),
                                             'data-pjax' => 1,
                                         ]),
                                     'options' => ['class' => 'btn-group mr-2 me-2']
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'options' => ['class' => 'table table-striped table-bordered table-responsive']
                         ]); ?>
-                        <?php Pjax::end(); ?>
+                        <?php #Pjax::end();?>
                     </div>
                 </div>
             </div>

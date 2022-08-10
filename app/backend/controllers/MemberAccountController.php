@@ -11,6 +11,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\MemberAccount;
 use common\models\MemberAccountSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,8 +21,6 @@ use yii\filters\VerbFilter;
  */
 class MemberAccountController extends Controller
 {
-
-
     /**
      * @inheritdoc
      */

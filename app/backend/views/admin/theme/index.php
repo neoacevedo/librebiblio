@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]) . ' '.
                                         Html::a('<i class="fas fa-redo"></i>', ['admin/theme/refresh'], [
                                             'class' => 'btn btn-outline-secondary',
-                                            'title'=>Yii::t('app', 'Update'),
+                                            'title'=>Yii::t('yii', 'Update'),
                                             'data-pjax' => 1,
                                         ]),
                                     'options' => ['class' => 'btn-group mr-2 me-2']

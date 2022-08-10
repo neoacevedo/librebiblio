@@ -19,7 +19,7 @@
 return [
     'Block Mbr' => '',
     'Block Nmbr' => '',
-    'Description' => '',
+    'Description' => 'Descripción',
     'Ind1 Description' => '',
     'Ind2 Description' => '',
     'Repeatable Flg' => '',

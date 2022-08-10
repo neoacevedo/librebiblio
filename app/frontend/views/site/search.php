@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;', $url, [
-                                    'title' => Yii::t('app', 'View'),
+                                    'title' => Yii::t('yii', 'View'),
                         ]);
                     },
                 ],

@@ -9,74 +9,84 @@ use kartik\sidenav\SideNav;
 
 $this->title = Yii::t('app', 'Circulation');
 $this->params['breadcrumbs'][] = $this->title;
+$items = [];
+foreach (Menu::NavbarLeft(1) as $menu) {
+    $item['label'] = Yii::t('app', $menu['label']);
+    $item['url'] = $menu['url'];
+    $item['type'] = $menu['type'];
+    array_push($items, $item);
+}
 ?>
 <div class="user-search">
-    <div class="box">
-        <div class="box-header">
-            <h1><?= Html::encode($this->title) ?></h1>
+    <div class="user-index">
+        <h1><?= Html::encode($this->title) ?>
+        </h1>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <?=
+            SideNav::widget([
+                'type' => SideNav::TYPE_DEFAULT,
+                'heading' => Yii::t('app', 'Circulation'),
+                'items' => $items,
+            ]);
+?>
         </div>
-        <div class="box-body">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <a href="<?= \yii\helpers\Url::to(["member/print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('circulation', 'Print List') ?></a>
-                <?php Pjax::begin(); ?>   <?=
-                GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'id',
-                        'pin',
-                        'username',
-                        'first_name',
-                        'last_name',
-                        'email:email',
-                        'phone',
-                        [
-                            'attribute' => 'status',
-                            'value' => function($model) {
-                                switch ($model->status) {
-                                    case $model::STATUS_ACTIVE:
-                                        return Yii::t('app', 'Active');
-                                    case $model::STATUS_BLOCKED:
-                                        return Yii::t('app', 'Blocked');
-                                    case $model::STATUS_DELETED:
-                                        return Yii::t('app', 'Deleted');
-                                }
-                            }
-                        ],
-                        // 'created_at',
-                        // 'updated_at',
-                        [
-                            'class' => 'yii\grid\ActionColumn',
-                            'headerOptions' => ['style' => 'color:#337ab7'],
-                            'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
-                            'buttons' => [
-                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['member/view', 'id' => $model->id], [
-                                                'title' => Yii::t('app', 'View'),
-                                    ]);
-                                },
-                                'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['member/update', 'id' => $model->id], [
-                                                'title' => Yii::t('app', 'Update'),
-                                    ]);
-                                },
-                                'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['member/delete', 'id' => $model->id], [
-                                                'title' => Yii::t('app', 'Delete'),
-                                                'data' => [
-                                                    'confirm' => Yii::t('circulation', 'Are you absolutely sure? You will lose all the information about this user with this action.'),
-                                                    'pjax' => 0,
-                                                ],
-                                    ]);
-                                }
-                            ],
-                        ]
-                    ],
-                    'options' => ['class' => 'table table-responsive']
-                ]);
-                ?>
-            </div>
+        <div class="col-lg-9 col-md-9 col-sm-9">
+            <?php Pjax::begin(); ?> <?=
+GridView::widget([
+    'dataProvider' => $dataProvider,
+    //'filterModel' => $searchModel,
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+        'id',
+        'username',
+        'first_name',
+        'last_name',
+        'email:email',
+        'phone',
+        'status',
+        // 'created_at',
+        // 'updated_at',
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'headerOptions' => ['style' => 'color:#337ab7'],
+            'template' => '{view}{update}{delete}',
+            'buttons' => [
+                'view' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'title' => Yii::t('yii', 'View'),
+                    ]);
+                },
+                'update' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('yii', 'Update'),
+                    ]);
+                },
+                'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                'title' => Yii::t('app', 'Delete'),
+                    ]);
+                }
+            ],
+            'urlCreator' => function ($action, $model, $key, $index) {
+                if ($action === 'view') {
+                    $url = 'index.php?r=circulation/member-view&id=' . $model->id;
+                    return $url;
+                }
+
+                if ($action === 'update') {
+                    $url = 'index.php?r=circulation/member-update&id=' . $model->id;
+                    return $url;
+                }
+                if ($action === 'delete') {
+                    $url = 'index.php?r=circulation/member-delete&id=' . $model->id;
+                    return $url;
+                }
+            }
+        ],
+    ],
+    'options' => ['class' => 'table-responsive']
+]);
+?>
             <?php Pjax::end(); ?>
         </div>
     </div>

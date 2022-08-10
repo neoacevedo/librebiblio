@@ -1,16 +1,42 @@
 <?php
 
+use yii\bootstrap4\Nav;
 use yii\helpers\Html;
 
 ?>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-    </ul>
+    <?= Nav::widget([
+        'options' => ['class' => 'navbar-nav'],
+        'items' => [
+            [
+                'encode' => false,
+                'label' => '<i class="fas fa-bars"></i>',
+                'url' => "#",
+                'linkOptions' => [
+                    'data-widget' => 'pushmenu',
+                    'role' => 'button'
+                ]
+            ],
+            [
+                'label' => Yii::t("app", "Home"),
+                'url' => ['site/index'],
+            ],
+            [
+                'label' => Yii::t("app", "Circulation"),
+                'url' => ['/circulation/index']
+            ],
+            [
+                'label' => Yii::t("app", "Check in"),
+                'url' => ['/circulation/reception']
+            ],
+            [
+                'label' => Yii::t("app/reports", "Reports"),
+                'url' => ['/admin/reports']
+            ]
+        ],
+    ]) ?>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -25,25 +51,25 @@ use yii\helpers\Html;
                 <div class="dropdown-divider"></div>
                 <?php
                         $hldCopies = common\models\BiblioHold::find()->limit(5)->all();
-                        if ($hldCopies):
-                                    foreach ($hldCopies as $hld):
-                                        $mbr = \common\models\Member::findOne($hld->mbr_id);
-                                        $copy = \common\models\BiblioCopy::findOne($hld->copyid);
-                                        ?>
+if ($hldCopies):
+    foreach ($hldCopies as $hld):
+        $mbr = \common\models\Member::findOne($hld->mbr_id);
+        $copy = \common\models\BiblioCopy::findOne($hld->copyid);
+        ?>
                 <a href="#" class="dropdown-item">
                     <i class="fas fa-user-circle-o"></i><?php echo "{$mbr->username} ".Yii::t('circulation', 'placed hold copy').' '.$copy->barcode_nmbr; ?>
                 </a>
                 <div class="dropdown-divider"></div>
                 <?php
-                                    endforeach;
-                        else:
-                            ?>
+    endforeach;
+else:
+    ?>
                 <span class="dropdown-item">
                     <i class="fas fa-circle-thin"><?= Yii::t('circulation', 'No new holds'); ?></i>
                 </span>
                 <?php
-                        endif;
-                        ?>
+endif;
+?>
                 <span class="dropdown-footer"></span>
             </div>
         </li>
@@ -62,7 +88,7 @@ use yii\helpers\Html;
         <!-- Staff -->
         <li class="nav-item">
             <a class="nav-link"
-                href="<?= yii\helpers\Url::to(['/user/index']) ?>"
+                href="<?= yii\helpers\Url::to(['/admin/user/index']) ?>"
                 alt="<?= Yii::t('app', 'Staff') ?>"><i
                     class="fas fa-users"></i></a>
         </li>

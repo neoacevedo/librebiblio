@@ -28,7 +28,7 @@ return [
     'Fieldid' => '',
     'ID' => '',
     'Material' => '',
-    'Mbr ID' => '',
+    'Mbr ID' => 'ID de usuario',
     'Member ID' => '',
     'New' => 'Nuevo',
     'No' => 'No',

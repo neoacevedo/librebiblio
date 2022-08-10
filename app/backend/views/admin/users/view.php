@@ -31,13 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <DIV class="box-body">
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <p>
-                    <?= Html::a(Yii::t('app', 'Update'), ['admin/users-update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a(Yii::t('yii', 'Update'), ['admin/users-update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                     <?php
                     if ($model->id !== Yii::$app->user->id) {
                         echo Html::a(Yii::t('app', 'Delete'), ['admin/users-delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [
-                                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                                 'method' => 'post',
                             ],
                         ]);

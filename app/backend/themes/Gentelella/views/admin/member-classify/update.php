@@ -11,7 +11,7 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['admin/settings']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Member Classifies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->description, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="member-classify-update">
 

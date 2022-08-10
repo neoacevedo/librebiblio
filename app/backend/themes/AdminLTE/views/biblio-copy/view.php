@@ -12,15 +12,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id, 'bibid' => $model->bibid], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id, 'bibid' => $model->bibid], ['class' => 'btn btn-primary']) ?>
         <?=
         Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id, 'bibid' => $model->bibid], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ])

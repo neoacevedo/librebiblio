@@ -21,13 +21,14 @@ $this->registerJs("$('.account-view').click(function(e) {"
 ?>
 <div class="member-account-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
     <div class="col-lg-3 col-md-3 col-sm-3">
         <?= $this->render('_sidenav', ['model' => $model]) ?>
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9">
         <?php Pjax::begin(); ?>
-        <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+        <?php // echo $this->render('_search', ['model' => $searchModel]);?>
 
         <?=
         GridView::widget([
@@ -39,7 +40,7 @@ $this->registerJs("$('.account-view').click(function(e) {"
                 'created_at',
                 [
                     'attribute' => 'transaction_type_cd',
-                    'value' => function($model) {
+                    'value' => function ($model) {
                         $value = '';
                         switch ($model->transaction_type_cd) {
                             case '+c':
@@ -64,14 +65,14 @@ $this->registerJs("$('.account-view').click(function(e) {"
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['account-view', 'account_id' => $model->id], [
-                                        'title' => Yii::t('app', 'View'), 'class' => 'account-view'
+                                        'title' => Yii::t('yii', 'View'), 'class' => 'account-view'
                             ]);
                         },
                     ]
                 ],
             ],
         ]);
-        ?>
+?>
         <?php Pjax::end(); ?>
     </div>
 </div>
@@ -91,4 +92,3 @@ yii\bootstrap\Modal::begin([
 echo "<div id='modalContent'></div>";
 #Pjax::end();
 yii\bootstrap\Modal::end();
-?>

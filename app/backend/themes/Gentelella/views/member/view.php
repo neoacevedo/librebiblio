@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 // emulación de data-confirm en elemento "a"
 $js = "\$('#member_delete a').on('click', function(e) {
-        a = confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "');
+        a = confirm('" . Yii::t('yii', 'Are you sure you want to delete this item?') . "');
         return a;
     });";
 $this->registerJs($js);
@@ -25,7 +25,8 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-3">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -35,7 +36,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                     'heading' => $model->username,
                     'items' => [
                         ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
-                        ['label' => Yii::t('app', 'Update'), 'url' => ['member/update', 'id' => $model->id]],
+                        ['label' => Yii::t('yii', 'Update'), 'url' => ['member/update', 'id' => $model->id]],
                         ['label' => Yii::t('app', 'Delete'), 'url' => ['member/delete', 'id' => $model->id],
                             'options' => ['id' => 'member_delete']],
                         ['label' => Yii::t('app', 'History'), 'url' => ['member/history', 'id' => $model->id]],
@@ -96,15 +97,19 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?></h4>
+                        <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?>
+                        </h4>
                     </div>
                     <div class="box-body">
                         <table class="table table-striped table-bordered detail-view table-responsive">
                             <thead>
                                 <tr>
-                                    <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?></th>
-                                    <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?></th>
-                                    <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?></th>
+                                    <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?>
+                                    </th>
+                                    <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?>
+                                    </th>
+                                    <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <th>
@@ -119,13 +124,17 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                                 <?php
                                 foreach ($materialTypeStats as $material):
                                     ?>
-                                    <tr>
-                                        <td><?= Html::encode($material['description']) ?></td>
-                                        <td><?= Html::encode($material['row_count']) ?></td>
-                                        <td><?= Html::encode($material['checkout_limit']) ?></td>
-                                        <td><?= Html::encode($material['renewal_limit']) ?></td>
-                                    </tr>      
-                                    <?php
+                                <tr>
+                                    <td><?= Html::encode($material['description']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['row_count']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['checkout_limit']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['renewal_limit']) ?>
+                                    </td>
+                                </tr>
+                                <?php
                                 endforeach;
                                 ?>
 

@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a('<span class="bi bi-eye"></span>&nbsp;', ["biblio/view", "id" => $model->id], [
-                                        'title' => Yii::t('app', 'View'),
+                                        'title' => Yii::t('yii', 'View'),
                                         'class' => 'text-decoration-none'
                             ]);
                         },
