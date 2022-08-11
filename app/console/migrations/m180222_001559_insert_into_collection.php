@@ -5,17 +5,18 @@ use yii\db\Migration;
 /**
  * Class m180222_001559_insert_into_collection
  */
-class m180222_001559_insert_into_collection extends Migration {
-
+class m180222_001559_insert_into_collection extends Migration
+{
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/collection_dm.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/collection_dm.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/collection_dm.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();
@@ -32,7 +33,8 @@ class m180222_001559_insert_into_collection extends Migration {
     /**
      * {@inheritdoc}
      */
-    public function safeDown() {
+    public function safeDown()
+    {
         return true;
     }
 

@@ -4,12 +4,13 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\MemberClassify;
+use common\models\MemberClassify;
 
 /**
  * MemberClassifySearch represents the model behind the search form about `backend\models\MemberClassify`.

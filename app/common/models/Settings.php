@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
@@ -22,11 +23,12 @@ use Yii;
  * @property integer $hold_max_days
  * @property integer $offline
  * @property integer $items_per_page
+ * @property string $cache_handler
  * @property datetime $created_at
  * @property datetime $updated_at
  */
-class Settings extends \yii\db\ActiveRecord {
-    
+class Settings extends \yii\db\ActiveRecord
+{
     /**
      * @var UploadedFile
      */
@@ -35,19 +37,21 @@ class Settings extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%settings}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['library_hours', 'purge_history_after_months', 'block_checkouts_when_fines_due', 'hold_max_days'], 'required'],
+            [['library_hours', 'purge_history_after_months', 'block_checkouts_when_fines_due', 'hold_max_days', 'cache_handler'], 'required'],
             [['purge_history_after_months', 'hold_max_days', 'offline', 'items_per_page'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['library_name', 'library_hours'], 'string', 'max' => 128],
+            [['library_name', 'library_hours', 'cache_handler'], 'string', 'max' => 128],
             [['library_image_url'], 'string', 'max' => 255],
             [['library_phone'], 'string', 'max' => 49],
             [['block_checkouts_when_fines_due'], 'string', 'max' => 1],
@@ -59,7 +63,8 @@ class Settings extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'library_name' => Yii::t('app', 'Library Name'),
             'library_image_url' => Yii::t('app', 'Library Image Url'),
@@ -70,10 +75,11 @@ class Settings extends \yii\db\ActiveRecord {
             'block_checkouts_when_fines_due' => Yii::t('app', 'Block Checkouts When Fines Due'),
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),
             'offline' => Yii::t('app', 'Offline'),
-            'items_per_page'=> Yii::t('app', 'Items per page')
+            'items_per_page'=> Yii::t('app', 'Items per page'),
+            'cache_handler' => Yii::t("app", "Cache Handler")
         ];
     }
-    
+
     /**
      * Sube un archivo
      * @return boolean

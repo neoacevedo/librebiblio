@@ -30,6 +30,7 @@ return [
     'Bibliographies Currently Checked Out' => '',
     'Bibliographies Currently On Hold' => '',
     'Bibliography Copy Information' => '',
+    'Bibliography Copy Information' => '',
     'Birthdate' => '',
     'Block Checkouts When Fines Due' => '',
     'Blocked' => '',

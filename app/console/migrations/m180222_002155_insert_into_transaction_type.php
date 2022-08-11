@@ -10,12 +10,13 @@ class m180222_002155_insert_into_transaction_type extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/transaction_type_dm.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/transaction_type_dm.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/transaction_type_dm.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();

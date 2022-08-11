@@ -4,11 +4,13 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
 use common\models\MemberClassify;
-use backend\models\MaterialType;
+use common\models\MaterialType;
+
 /**
  * This is the model class for table "{{%checkout_privs}}".
  *
@@ -68,7 +70,7 @@ class CheckoutPrivs extends \yii\db\ActiveRecord
     }
 
     /**
-     * Obtiene el tipo de material 
+     * Obtiene el tipo de material
      * @return \yii\db\ActiveQuery
      */
     public function getMaterialType()

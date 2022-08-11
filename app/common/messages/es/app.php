@@ -52,6 +52,7 @@ return [
     'Bibliographies Currently Checked Out' => 'Bibliografías actualmente seleccionadas',
     'Bibliographies Currently On Hold' => 'Bibliografías actualmente en espera',
     'Bibliography Copy Information' => 'Información de la copia bibliográfica',
+    'Bibliography Information' => 'Información de la bibliogría',
     'Biblios' => 'Catalogación',
     'Block Checkouts When Fines Due' => 'Bloquear préstamos cuando haya pendiente una multa',
     'Blocked' => 'Bloqueado',

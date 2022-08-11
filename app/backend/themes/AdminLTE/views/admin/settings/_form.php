@@ -65,7 +65,7 @@ $this->registerJs($js);
     <fieldset>
         <legend><?= Yii::t("app", "Advanced") ?>
         </legend>
-        <?= $form->field($model, "cache_handler")->dropDownList(["file" => Yii::t("app", "File"), "memcached" => "Memcached", "dummy" => "Dummy"]) ?>
+        <?= $form->field($model, "cache_handler")->dropDownList(["yii\\caching\\FileCache" => Yii::t("app", "File"), "yii\\caching\\ApcCache" => "APC", "yii\\caching\\DummyCache" => "Dummy"]) ?>
     </fieldset>
 
 

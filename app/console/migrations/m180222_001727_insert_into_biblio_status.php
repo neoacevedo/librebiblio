@@ -10,12 +10,13 @@ class m180222_001727_insert_into_biblio_status extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/biblio_status_dm.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/biblio_status_dm.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/biblio_status_dm.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();

@@ -9,7 +9,7 @@
 namespace backend\controllers\admin;
 
 use Yii;
-use backend\models\MemberClassify;
+use common\models\MemberClassify;
 use backend\models\MemberClassifySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -21,7 +21,6 @@ use yii\filters\AccessControl;
  */
 class MemberClassifyController extends Controller
 {
-
     /**
      * @inheritdoc
      */

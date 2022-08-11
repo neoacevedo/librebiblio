@@ -146,7 +146,7 @@ use yii\web\UploadedFile;
  * - backend
  * - - AdminLTE
  * - - - site
- * - - - - es-CO
+ * - - - - es
  *
  * Esto permite la traducción de contenido o texto que no está de manera nativa dentro de la aplicación (dentro de los archivos _messages/[idioma]/file.php_
  * y que no se incluyen en el archivo principal de configuración.
@@ -351,6 +351,9 @@ class ThemeController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     *
+     */
     public function actionRefresh()
     {
         $vendorDir = Yii::$app->getVendorPath();

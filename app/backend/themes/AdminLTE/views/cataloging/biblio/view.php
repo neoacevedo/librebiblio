@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use kartik\sidenav\SideNav;
+use yii\bootstrap4\Nav;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -16,27 +17,32 @@ $usmarc = [
     [
         'attribute' => 'topic1',
         'value' => $model->topic1,
-        'label' => \Yii::t('biblio', 'Topic1')
+        'label' => \Yii::t('biblio', 'Topic1'),
+        'visible' => $model->topic1 != "" ? true : false
     ],
     [
         'attribute' => 'topic2',
         'value' => $model->topic2,
-        'label' => \Yii::t('biblio', 'Topic2')
+        'label' => \Yii::t('biblio', 'Topic2'),
+        'visible' => $model->topic2 != "" ? true : false
     ],
     [
         'attribute' => 'topic3',
         'value' => $model->topic3,
-        'label' => \Yii::t('biblio', 'Topic3')
+        'label' => \Yii::t('biblio', 'Topic3'),
+        'visible' => $model->topic3 != "" ? true : false
     ],
     [
         'attribute' => 'topic4',
         'value' => $model->topic4,
-        'label' => \Yii::t('biblio', 'Topic4')
+        'label' => \Yii::t('biblio', 'Topic4'),
+        'visible' => $model->topic4 != "" ? true : false
     ],
     [
         'attribute' => 'topic5',
         'value' => $model->topic5,
-        'label' => \Yii::t('biblio', 'Topic5')
+        'label' => \Yii::t('biblio', 'Topic5'),
+        'visible' => $model->topic5 != "" ? true : false
     ]
 ];
 foreach ($model->biblioFields as $biblioField) {
@@ -55,8 +61,6 @@ foreach ($model->biblioFields as $biblioField) {
     array_push($usmarc, $field);
 }
 
-Yii::debug($usmarc);
-
 // emulación de data-confirm en elemento "a"
 $js = "\$('#copy_delete a').on('click', function(e) {
         a = confirm('" . Yii::t('yii', 'Are you sure you want to delete this item?') . "');
@@ -65,33 +69,32 @@ $js = "\$('#copy_delete a').on('click', function(e) {
 $this->registerJs($js);
 ?>
 <div class="biblio-view">
+    <div class="card">
+        <nav class="navbar navbar-expand navbar-white navbar-light">
+            <?=
+                Nav::widget([
+                    'options' => ['class' => 'navbar-nav'],
+                    'items' => [
+                        ['label' => Yii::t('app', 'Add Copy'), 'url' => ['biblio-copy/create', 'bibid' => $model->id]],
+                        ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
+                        ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id],
+                            'options' => ['id' => 'copy_delete']
+                        ],
+                        ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
+                        ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
+                        ['label' => Yii::t('app', 'New'), 'url' => ['cataloging/biblio-field/create', 'bibid' => $model->id]],
+                    ]
+                ]) ?>
+        </nav>
+    </div>
 
-    <h1><?= Html::encode($this->title) ?>
-    </h1>
-
-    <div class="box">
-        <div class="box-body">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <?=
-                    SideNav::widget([
-                        'type' => SideNav::TYPE_PRIMARY,
-                        'heading' => Yii::t('app', 'Options'),
-                        'items' => [
-                            ['label' => Yii::t('app', 'Add Copy'), 'url' => ['biblio-copy/create', 'bibid' => $model->id]],
-                            ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
-                            ['label' => Yii::t('app', 'Delete'), 'url' => ['delete', 'id' => $model->id],
-                                'options' => ['id' => 'copy_delete']
-                            ],
-                            ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
-                            ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
-                            ['label' => Yii::t('app', 'New'), 'url' => ['cataloging/biblio-field/create', 'bibid' => $model->id]],
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-9">
+    <div class="card">
+        <div class="card-header">
+            <h3><?= Yii::t('app', 'Bibliography Information') ?>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="col">
                 <?=
                 DetailView::widget([
                     'model' => $model,
@@ -141,81 +144,77 @@ $this->registerJs($js);
                         ]
                     ],
                     'options' => ['class' => 'table table-striped table-bordered table-responsive']
-                ])
-                ?>
+                ]) ?>
             </div>
         </div>
     </div>
-    <div class="box">
-        <div class="box-header">
+    <div class="card">
+        <div class="card-header">
             <h3><?= Yii::t('app', 'Bibliography Copy Information') ?>
             </h3>
         </div>
-        <div class="box-body">
+        <div class="card-body">
             <?php
-            $biblioCopySearch = new \common\models\BiblioCopySearch();
-            $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
+                $biblioCopySearch = new \common\models\BiblioCopySearch();
+$biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
 
-            echo GridView::widget([
-                "dataProvider" => $biblioCopy,
-                'summary' => '',
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    'barcode_nmbr',
-                    'copy_desc',
-                    [
-                        'attribute' => 'status_cd',
-                        'value' => function ($model) {
-                            return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
-                        },
-                        'label' => Yii::t('app', 'Status')
-                    ],
-                    'status_begin_dt',
-                    'due_back_dt',
-                    [
-                        'class' => 'yii\grid\ActionColumn',
-                        'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
-                        'buttons' => [
-                            'view' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['biblio-copy/view', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                            'title' => Yii::t('yii', 'View'),
-                                ]);
-                            },
-                            'update' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                            'title' => Yii::t('yii', 'Update'),
-                                ]);
-                            },
-                            'delete' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                            'title' => Yii::t('app', 'Delete'),
-                                            'data' => [
-                                                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                                'pjax' => 0,
-                                            ],
-                                ]);
-                            }
-                        ],
-                    ],
-                ],
-                'options' => ['class' => 'table table-striped table-bordered table-responsive']
-            ]);
-            ?>
+echo GridView::widget([
+    "dataProvider" => $biblioCopy,
+    'summary' => '',
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+        'barcode_nmbr',
+        'copy_desc',
+        [
+            'attribute' => 'status_cd',
+            'value' => function ($model) {
+                return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+            },
+            'label' => Yii::t('app', 'Status')
+        ],
+        'status_begin_dt',
+        'due_back_dt',
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
+            'buttons' => [
+                'view' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['biblio-copy/view', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                'title' => Yii::t('yii', 'View'),
+                    ]);
+                },
+                'update' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                'title' => Yii::t('yii', 'Update'),
+                    ]);
+                },
+                'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                'title' => Yii::t('app', 'Delete'),
+                                'data' => [
+                                    'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                    'pjax' => 0,
+                                ],
+                    ]);
+                }
+            ],
+        ],
+    ],
+    'options' => ['class' => 'table table-striped table-bordered table-responsive']
+]); ?>
         </div>
     </div>
-    <div class="box">
-        <div class="box-header">
+    <div class="card">
+        <div class="card-header">
             <h3><?= Yii::t('app', 'Additional Bibliographic Information') ?>
             </h3>
         </div>
-        <div class="box-body">
-            <?=
-            DetailView::widget([
+        <div class="card-body">
+            <?= DetailView::widget([
                 "model" => $model,
                 "attributes" => $usmarc,
                 'options' => ['class' => 'table table-striped table-bordered table-responsive']
-            ]);
-            ?>
+            ]) ?>
         </div>
     </div>
 </div>

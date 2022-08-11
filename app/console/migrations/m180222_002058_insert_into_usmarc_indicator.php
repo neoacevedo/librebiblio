@@ -10,12 +10,13 @@ class m180222_002058_insert_into_usmarc_indicator extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_indicator_dm.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/usmarc_indicator_dm.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/usmarc_indicator_dm.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();

@@ -5,24 +5,26 @@ use yii\db\Migration;
 /**
  * Class m180210_022656_insert_auth_assignment_for_admin_user
  */
-class m180210_022656_insert_auth_assignment_for_admin_user extends Migration {
-
+class m180210_022656_insert_auth_assignment_for_admin_user extends Migration
+{
     /**
      * @inheritdoc
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/auth_item.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/auth_item.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/auth_item.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();
         } elseif ($this->db->driverName === "pgsql") {
             $sql_array = explode(";", $sql);
             foreach ($sql_array as $sql) {
-                $this->db->createCommand($sql)->execute();;
+                $this->db->createCommand($sql)->execute();
+                ;
             }
         }
         $this->insert('{{%auth_assignment}}', [
@@ -35,7 +37,8 @@ class m180210_022656_insert_auth_assignment_for_admin_user extends Migration {
     /**
      * @inheritdoc
      */
-    public function safeDown() {
+    public function safeDown()
+    {
         return true;
     }
 

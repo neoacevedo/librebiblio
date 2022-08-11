@@ -16,7 +16,7 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-            'class' => YII_DEBUG ? yii\caching\DummyCache::class: 'yii\caching\FileCache',
+            'class' => $settings['cache_handler'],
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -105,16 +105,11 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
-                'yii' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/messages',
-                    'sourceLanguage' => 'en-US',
-                ]
             ],
         ],
     ],
     'version' => '22.06.29',
-    'name' => $settings[0]['library_name'],
+    'name' => $settings['library_name'],
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
     ]

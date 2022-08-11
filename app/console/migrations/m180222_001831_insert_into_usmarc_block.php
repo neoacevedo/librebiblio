@@ -5,17 +5,18 @@ use yii\db\Migration;
 /**
  * Class m180222_001831_insert_into_usmarc_block
  */
-class m180222_001831_insert_into_usmarc_block extends Migration {
-
+class m180222_001831_insert_into_usmarc_block extends Migration
+{
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $language = str_replace("_", "-", locale_get_default());
         try {
             $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/$language/usmarc_block_dm.sql");
         } catch (Exception $ex) {
-            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es-CO/usmarc_block_dm.sql");
+            $sql = file_get_contents(Yii::getAlias("@console") . "/migrations/sql/es/usmarc_block_dm.sql");
         }
         if ($this->db->driverName === "mysql") {
             $this->db->createCommand($sql)->execute();
@@ -30,7 +31,8 @@ class m180222_001831_insert_into_usmarc_block extends Migration {
     /**
      * {@inheritdoc}
      */
-    public function safeDown() {
+    public function safeDown()
+    {
         return true;
     }
 
