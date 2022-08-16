@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\controllers;
 
 use Yii;
@@ -17,10 +18,10 @@ use common\models\Settings;
 
 /**
  * AdminController implements the CRUD actions for User model.
+ * @deprecated
  */
 class AdminController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -54,7 +55,7 @@ class AdminController extends Controller
             ],
         ];
     }
-    
+
     /**
      * Gestión de errores
      * @return mixed
@@ -67,38 +68,6 @@ class AdminController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
-    }
-    
-    /**
-     * Borra la caché.
-     *
-     * @return mixed
-     */
-    public function actionFlushCache()
-    {
-        $frontendAssetPath = Yii::getAlias("@webroot") . "/../../assets/";
-        $backendAssetPath = Yii::getAlias('@webroot') . '/assets/';
-
-        
-        AdminController::recursiveDelete($frontendAssetPath);
-        AdminController::recursiveDelete($backendAssetPath);
-        
-        if (!is_dir($frontendAssetPath)) {
-            mkdir($frontendAssetPath) or Yii::debug("No es un directorio: $frontendAssetPath");
-        }
-        
-        if (!is_dir($backendAssetPath)) {
-            mkdir($backendAssetPath) or Yii::debug("No es un directorio: $backendAssetPath");
-        }
-        
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if (\Yii::$app->cache->flush()) {
-            \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
-        } else {
-            \Yii::$app->getSession()->setFlash('error', \Yii::t('app', 'Failed to flush cache.'));
-        }
-        
-        return $this->redirect(\Yii::$app->request->referrer);
     }
 
     /**
@@ -114,85 +83,6 @@ class AdminController extends Controller
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
-    }
-
-    /**
-     * Displays a single User model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUsersView(int $id)
-    {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('users/view', [
-                    'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionUsersCreate()
-    {
-        $model = new \backend\models\SignupForm();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'User registered'));
-                return $this->redirect(['admin/users-view', 'id' => $user->id]);
-            } else {
-                array_walk_recursive($model->errors, function ($v, $k) {
-                    Yii::$app->getSession()->setFlash('error', $v);
-                });
-                return $this->render('users/create', [
-                            'model' => $model,
-                ]);
-            }
-        } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            return $this->render('users/create', [
-                        'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUsersUpdate(int $id)
-    {
-        $model = $this->findModel($id);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['admin/users-view', 'id' => $model->id]);
-        } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
-            });
-            return $this->render('users/update', [
-                        'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUsersDelete(int $id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
@@ -254,28 +144,8 @@ class AdminController extends Controller
         if (($model = \common\models\Settings::find()->one()) !== null) {
             return $model;
         } else {
-            $model = new \common\models\Settings;
+            $model = new \common\models\Settings();
             return $model;
-        }
-    }
-              
-    /**
-     * Remove file or directory
-     *
-     * @param string $path
-     * @return boolean
-     */
-    private static function recursiveDelete($path)
-    {
-        if (is_file($path)) {
-            return unlink($path);
-        } elseif (is_dir($path)) {
-            $scan = glob(rtrim($path, '/') . '/*');
-            foreach ($scan as $index => $newPath) {
-                self::recursiveDelete($newPath);
-            }
-
-            return @rmdir($path);
         }
     }
 }

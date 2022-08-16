@@ -24,9 +24,11 @@ class ThemeAsset extends AssetBundle
     public function init()
     {
         parent::init();
+        /** @var \common\models\Theme $theme */
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
 
-        $this->sourcePath = Yii::getAlias("@app/themes/{$theme->name}/assets");
+        // $this->sourcePath = Yii::getAlias("@app/themes/{$theme->name}/assets");
+        $this->sourcePath = Yii::getAlias($theme->sourcePath . "/assets");
 
         $css_files = [];
         $js_files = [];

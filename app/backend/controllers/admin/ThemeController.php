@@ -358,8 +358,35 @@ class ThemeController extends Controller
     {
         $vendorDir = Yii::$app->getVendorPath();
         $settingsFile = \yii\helpers\FileHelper::findFiles($vendorDir, ['only' => ['settings.json']]);
-        Yii::debug($settingsFile);
-        return $this->redirect(['index']);
+
+        foreach ($settingsFile as $settings) {
+            $model = new Theme();
+            $theme = json_decode(file_get_contents($settings));
+            $model->frontend = $theme->frontend;
+            $model->name = $theme->name;
+            $model->active = 0;
+            $model->sourcePath = $theme->sourcePath;
+            if (isset($theme->settings)) {
+                $model->settings = json_encode($theme->settings);
+            }
+            $model->created_at = date('Y-m-d H:i:s');
+
+            if ($model->validate() && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app/theme', 'Theme installed successfully.'));
+            } else {
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->getSession()->setFlash('error', $v);
+                });
+            }
+        }
+
+        $searchModel = new ThemeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

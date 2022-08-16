@@ -1,9 +1,0 @@
-{
-    "name": "Gentelella",
-    "frontend": 0,
-    "sourcePath": "@app/themes/Gentelella",
-    "settings": {
-        "fixed-sidebar": 0,
-        "fixed-footer": 0
-    }
-}

@@ -2,6 +2,8 @@
 
 namespace backend\components;
 
+use Yii;
+
 /**
  * @inheritdoc
  */
@@ -31,10 +33,10 @@ class Theme extends \yii\base\Theme
             $this->theme = $theme->name;
         }
 
-        $this->basePath = '@app/themes/' . $this->theme;
-        $this->baseUrl = '@web/themes/' . $this->theme;
+        $this->basePath = $this->theme == 'default' ? '@app/themes/' . $this->theme : $theme->sourcePath;
+        $this->baseUrl = '@web/themes/' . strtolower($this->theme);
         $this->pathMap = [
-            '@app/views' => '@app/themes/' . $this->theme . "/views",
+            '@app/views' => $this->theme == 'default' ? '@app/themes/' . $this->theme . "/views" : $theme->sourcePath . "/views",
         ];
 
         $this->settings = (array) json_decode($theme->settings);

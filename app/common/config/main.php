@@ -51,15 +51,6 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
-                'rbac*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/messages',
-                    'sourceLanguage' => 'en-US',
-                    'fileMap' => [
-                        'rbac' => 'rbac.php',
-                        'app/error' => 'error.php',
-                    ],
-                ],
                 'cataloging*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',

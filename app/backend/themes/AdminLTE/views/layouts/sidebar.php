@@ -50,7 +50,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "book"
                         ],
                         [
-                            "label" => Yii::t("app", "Reports"),
+                            "label" => Yii::t("app/reports", "Reports"),
                             "url" => ["/admin/report/index"],
                             "icon" => "chart-bar"
                         ],
@@ -61,7 +61,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             'header' => true,
                         ],
                         [
-                            "label" => Yii::t("app", "Members"),
+                            "label" => Yii::t("circulation", "Member Accounts"),
                             "url" => ['/member-account/index'],
                             'icon' => 'users'
                         ],
@@ -132,7 +132,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                                 ],
                                 [
                                     "label" => Yii::t("app/settings", "Flush Cache"),
-                                    "url" => ['/admin/flush-cache'],
+                                    "url" => ['/site/flush-cache'],
                                     'icon' => 'trash'
                                 ],
                             ],
@@ -140,12 +140,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                     ],
             ]) ?>
             <?php
-            echo \yii\widgets\Menu::widget([
-                'options' => [
-                    'class' => 'nav nav-pills sidebar',
-                    'role' => 'menu'
-                ],
-                'linkTemplate' => '<a href="{url}" class="nav-link">{label}</a>',
+            echo Menu::widget([
                 'items' => [
                     ['label' => 'Yii2 PROVIDED', 'header' => true, 'visible' => YII_DEBUG, 'options' => ['class' => 'nav-header']],
                     [
@@ -159,16 +154,16 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         'label' => 'Gii',
                         'icon' => 'file-code',
                         'url' => ['/gii'],
-                        'target' => '_blank',
                         'visible' => YII_DEBUG,
+                        'target' => '_blank',
                         'options' => ['class' => 'nav-item'],
                     ],
                     [
                         'label' => 'Debug',
                         'icon' => 'bug',
                         'url' => ['/debug'],
-                        'target' => '_blank',
                         'visible' => YII_DEBUG,
+                        'target' => '_blank',
                         'options' => ['class' => 'nav-item'],
                     ],
                 ],

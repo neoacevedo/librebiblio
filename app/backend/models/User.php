@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace backend\models;
 
 use Yii;
@@ -33,9 +34,9 @@ use neoacevedo\auditing\behaviors\AuditBehavior;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = -1;
-    const STATUS_BLOCKED = 0;
-    const STATUS_ACTIVE = 10;
+    public const STATUS_DELETED = -1;
+    public const STATUS_BLOCKED = 0;
+    public const STATUS_ACTIVE = 1;
 
     /**
      * @inheritdoc
@@ -90,6 +91,23 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
             ['password_hash', 'required']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'username' => Yii::t('app', 'Username'),
+            'first_name' => Yii::t('app', 'First Name'),
+            'last_name' => Yii::t('app', 'Last Name'),
+            'address' => Yii::t('app', 'Address'),
+            'email' => Yii::t('app', 'Email'),
+            'phone' => Yii::t('app', 'Phone'),
+            'status' => Yii::t('app', 'Status'),
         ];
     }
 
@@ -224,15 +242,11 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    // filter out some fields, best used when you want to inherit the parent implementation
-    // and blacklist some sensitive fields.
-    public function fields()
+    public static function getStatus()
     {
-        $fields = parent::fields();
-
-        // remove fields that contain sensitive information
-        unset($fields['password'], $fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
-
-        return $fields;
+        return  [
+            self::STATUS_BLOCKED => Yii::t("app", "Blocked"),
+            self::STATUS_ACTIVE => Yii::t("app", "Active"),
+        ];
     }
 }

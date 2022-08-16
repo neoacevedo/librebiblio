@@ -37,18 +37,18 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['reset-password'],
-                        'allow' => true,
-                        'roles' => ['?']
-                    ],
-                    [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['@']
+                    ],
+                    [
+                        'actions' => ['flush-cache', 'settings', 'library-settings'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                     [
                         'actions' => ['logout'],
@@ -165,5 +165,87 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * Borra la caché.
+     *
+     * @return mixed
+     */
+    public function actionFlushCache()
+    {
+        $frontendAssetPath = Yii::getAlias("@webroot") . "/../../assets/";
+        $backendAssetPath = Yii::getAlias('@webroot') . '/assets/';
+
+        self::recursiveDelete($frontendAssetPath);
+        self::recursiveDelete($backendAssetPath);
+
+        if (!is_dir($frontendAssetPath)) {
+            mkdir($frontendAssetPath) or Yii::debug("No es un directorio: $frontendAssetPath");
+        }
+
+        if (!is_dir($backendAssetPath)) {
+            mkdir($backendAssetPath) or Yii::debug("No es un directorio: $backendAssetPath");
+        }
+
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        if (\Yii::$app->cache->flush()) {
+            \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
+        } else {
+            \Yii::$app->getSession()->setFlash('error', \Yii::t('app', 'Failed to flush cache.'));
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
+
+    /**
+     * Describe las configuraciones disponibles de la biblioteca.
+     * @return mixed
+     */
+    public function actionSettings()
+    {
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        return $this->render('settings/index');
+    }
+
+    /**
+     * Carga/guarda las configuraciones de la biblioteca.
+     *
+     * Algunas configuraciones específicas de la plataforma se crean/guardan desde los diferentes archivos de configuración.
+     * @return mixed
+     */
+    public function actionLibrarySettings()
+    {
+        $model = $this->findSettingsModel();
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->render('settings/library_settings', ['model' => $model]);
+        } else {
+            array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
+
+            return $this->render('settings/library_settings', ['model' => $model]);
+        }
+    }
+
+    /**
+     * Remove file or directory
+     *
+     * @param string $path
+     * @return boolean
+     */
+    private static function recursiveDelete($path)
+    {
+        if (is_file($path)) {
+            return unlink($path);
+        } elseif (is_dir($path)) {
+            $scan = glob(rtrim($path, '/') . '/*');
+            foreach ($scan as $index => $newPath) {
+                self::recursiveDelete($newPath);
+            }
+
+            return @rmdir($path);
+        }
     }
 }

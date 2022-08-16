@@ -88,7 +88,7 @@ endif;
         <!-- Staff -->
         <li class="nav-item">
             <a class="nav-link"
-                href="<?= yii\helpers\Url::to(['/admin/user/index']) ?>"
+                href="<?= yii\helpers\Url::to(['/user/index']) ?>"
                 alt="<?= Yii::t('app', 'Staff') ?>"><i
                     class="fas fa-users"></i></a>
         </li>
