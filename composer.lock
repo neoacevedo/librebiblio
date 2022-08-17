@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e3030086f54c4005615a5a60d1fedcc",
+    "content-hash": "c9dc8e19127179ee4ec22e6bfafcdc34",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -182,16 +182,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.233.3",
+            "version": "3.233.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0b9277a5c3d2fbccafc16b05a1b53404c9b67d1b"
+                "reference": "4f29c8f14e7833f6e9885d0d82ea98525f1bac1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0b9277a5c3d2fbccafc16b05a1b53404c9b67d1b",
-                "reference": "0b9277a5c3d2fbccafc16b05a1b53404c9b67d1b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4f29c8f14e7833f6e9885d0d82ea98525f1bac1e",
+                "reference": "4f29c8f14e7833f6e9885d0d82ea98525f1bac1e",
                 "shasum": ""
             },
             "require": {
@@ -268,9 +268,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.233.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.233.4"
             },
-            "time": "2022-08-16T18:14:59+00:00"
+            "time": "2022-08-17T18:17:58+00:00"
         },
         {
             "name": "bower-asset/inputmask",
@@ -2903,6 +2903,57 @@
             "time": "2022-08-04T09:53:51+00:00"
         },
         {
+            "name": "neoacevedo/yii2-auditing",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neoacevedo/yii2-auditing.git",
+                "reference": "a7775fcefed9f617b4f26bb83aa2560987f76bc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neoacevedo/yii2-auditing/zipball/a7775fcefed9f617b4f26bb83aa2560987f76bc9",
+                "reference": "a7775fcefed9f617b4f26bb83aa2560987f76bc9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3 || ^8.0",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "neoacevedo\\auditing\\": "neoacevedo/auditing"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Néstor Acevedo",
+                    "email": "clientes@neoacevedo.co"
+                }
+            ],
+            "description": "Registra cambios de sus modelos ActiveRecord de Yii2",
+            "keywords": [
+                "activerecord",
+                "auditing",
+                "extension",
+                "history",
+                "log",
+                "tracking",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/neoacevedo/yii2-auditing/issues",
+                "source": "https://github.com/neoacevedo/yii2-auditing/tree/main"
+            },
+            "time": "2022-07-13T01:16:53+00:00"
+        },
+        {
             "name": "neoacevedo/yii2-rbac-plus",
             "version": "22.08.04",
             "source": {
@@ -5218,10 +5269,10 @@
             "dist": {
                 "type": "path",
                 "url": "./app/vendor/neoacevedo/gentelella",
-                "reference": "d8029ee4640eaada6ed2dcca2def85ccd5d0ac29"
+                "reference": "e606994eaf389129fc558517f9e21223a16f1dd0"
             },
             "require": {
-                "bower-asset/gentelella": "^1.4",
+                "bower-asset/gentelella": "*",
                 "php": ">=7.3",
                 "rmrevin/yii2-fontawesome": "^3.7",
                 "yiisoft/yii2": "~2.0.0",
@@ -5264,57 +5315,6 @@
             "transport-options": {
                 "relative": true
             }
-        },
-        {
-            "name": "neoacevedo/yii2-auditing",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/neoacevedo/yii2-auditing.git",
-                "reference": "a7775fcefed9f617b4f26bb83aa2560987f76bc9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/neoacevedo/yii2-auditing/zipball/a7775fcefed9f617b4f26bb83aa2560987f76bc9",
-                "reference": "a7775fcefed9f617b4f26bb83aa2560987f76bc9",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3 || ^8.0",
-                "yiisoft/yii2": "~2.0.0"
-            },
-            "default-branch": true,
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "neoacevedo\\auditing\\": "neoacevedo/auditing"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Néstor Acevedo",
-                    "email": "clientes@neoacevedo.co"
-                }
-            ],
-            "description": "Registra cambios de sus modelos ActiveRecord de Yii2",
-            "keywords": [
-                "activerecord",
-                "auditing",
-                "extension",
-                "history",
-                "log",
-                "tracking",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/neoacevedo/yii2-auditing/issues",
-                "source": "https://github.com/neoacevedo/yii2-auditing/tree/main"
-            },
-            "time": "2022-07-13T01:16:53+00:00"
         },
         {
             "name": "phar-io/manifest",

@@ -1,21 +1,17 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
+    "name": "neoacevedo/librebiblio",
+    "description": "",
     "keywords": [
         "yii2",
-        "framework",
-        "advanced",
-        "project template"
+        "library",
+        "project"
     ],
     "homepage": "http://www.yiiframework.com/",
     "type": "project",
-    "license": "BSD-3-Clause",
+    "license": "GPL-3.0-or-later",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "issues": "https://neoacevedo.zohodesk.com/",
+        "source": "https://github.com/neoacevedo/librebiblio"
     },
     "minimum-stability": "stable",
     "require": {
@@ -32,6 +28,7 @@
         "kartik-v/yii2-widget-sidenav": "1.0.x-dev",
         "antonyz89/yii2-seeder": "dev-master",
         "kartik-v/yii2-editable": "1.8.x-dev",
+        "neoacevedo/yii2-auditing": "@dev",
         "2amigos/yii2-chartjs-widget": "^3.0"
     },
     "require-dev": {
@@ -40,7 +37,6 @@
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/verify": "~0.5.0 || ~1.1.0",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
-        "neoacevedo/yii2-auditing": "@dev",
         "neoacevedo/gentelella": "@dev"
     },
     "config": {

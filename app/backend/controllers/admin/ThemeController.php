@@ -23,87 +23,24 @@ use yii\web\UploadedFile;
  *
  * Cada tema se instala en el directorio _themes_ de los niveles **frontend** y **backend**.<br />
  * Para entender una parte del manejo de temas, vaya a la sección de Temas de Yii (https://www.yiiframework.com/doc/guide/2.0/es/output-theming).<br />
- * La instalación se realiza desde un archivo ZIP el cual contiene la estructura del tema y un archivo **_settings.json_** con la descripcíon y configuraciones
+ * La instalación se realiza desde un archivo ZIP el cual contiene la estructura del tema y un archivo **_theme.json_** con la descripcíon y configuraciones
  * básicas del tema.
  *
- * El archivo _settings.json_ tiene la siguiente estructura:
+ * El archivo _theme.json_ tiene la siguiente estructura:
  * ```js
  * {
- *   "name": "AdminLTE",
+ *   "name": "Nombre del tema",
  *   "frontend": 0,
- *   "navbar_skins": [
- *       "navbar-primary navbar-dark",
- *       "navbar-secondary navbar-dark",
- *       "navbar-info navbar-dark",
- *       "navbar-succes navbar-darks",
- *       "navbar-danger navbar-dark",
- *       "navbar-indigo navbar-dark",
- *       "navbar-purple navbar-dark",
- *       "navbar-pink navbar-dark",
- *       "navbar-navy navbar-dark",
- *       "navbar-lightblue navbar-dark",
- *       "navbar-teal navbar-dark",
- *       "navbar-cyan navbar-dark",
- *       "navbar-dark",
- *       "navbar-gray-dark navbar-dark",
- *       "navbar-gray navbar-dark",
- *       "navbar-light",
- *       "navbar-white navbar-light": 1
- *   ],
- *   "sidebar_colors": [
- *       "bg-primary": 1,
- *       "bg-warning",
- *       "bg-info",
- *       "bg-danger",
- *       "bg-success",
- **      "bg-indigo",
- *       "bg-lightblue",
- *       "bg-navy",
- *       "bg-purple",
- *       "bg-fuchsia",
- *       "bg-pink",
- *       "bg-maroon",
- *       "bg-orange",
- *       "bg-lime",
- *       "bg-teal",
- *       "bg-olive"
- *   ],
- *   "sidebar_skins": [
- *       "sidebar-dark-primary": 1,
- *       "sidebar-dark-warning",
- *       "sidebar-dark-info",
- *       "sidebar-dark-danger",
- *       "sidebar-dark-success",
- *       "sidebar-dark-indigo",
- *       "sidebar-dark-lightblue",
- *       "sidebar-dark-navy",
- *       "sidebar-dark-purple",
- *       "sidebar-dark-fuchsia",
- *       "sidebar-dark-pink",
- *       "sidebar-dark-maroon",
- *       "sidebar-dark-orange",
- *       "sidebar-dark-lime",
- *       "sidebar-dark-teal",
- *       "sidebar-dark-olive",
- *       "sidebar-light-primary",
- *       "sidebar-light-warning",
- *       "sidebar-light-info",
- *       "sidebar-light-danger",
- *       "sidebar-light-success",
- *       "sidebar-light-indigo",
- *       "sidebar-light-lightblue",
- *       "sidebar-light-navy",
- *       "sidebar-light-purple",
- *       "sidebar-light-fuchsia",
- *       "sidebar-light-pink",
- *       "sidebar-light-maroon",
- *       "sidebar-light-orange",
- *       "sidebar-light-lime",
- *       "sidebar-light-teal",
- *       "sidebar-light-olive"
- *   ]
+ *   "sourcePath": "@app/themes/Tema",
+ *   "settings": {
+ *        "option0": 0
+ *   }
  * }
  * ```
+ * La sección `settings` es opcional y se usa para que cada usuario pueda personalizar las configuraciones del tema para su sesión,
+ * además de simplemente permitir renderizar los campos de un formulario para personalizar la apariencia del tema, pero no se guardarán
+ * los ajustes que haga cada usuario. Estos ajustes se guardan en la sesión del navegador del usuario.
+ * Si el usuario borra los datos del navegador, borra los ajustes para el tema.
  *
  * La estructura de directorios del archivo comprimido del tema es la siguiente:
  *
@@ -240,7 +177,7 @@ class ThemeController extends Controller
                     $zip = new \ZipArchive();
                     $zip->open("$path/tmp/{$model->themeFile->name}");
 
-                    $theme = json_decode($zip->getFromName("{$model->themeFile->baseName}/settings.json"));
+                    $theme = json_decode($zip->getFromName("{$model->themeFile->baseName}/theme.json"));
                     $model->frontend = $theme->frontend;
                     $model->name = $theme->name;
                     $model->active = 0;
@@ -307,21 +244,8 @@ class ThemeController extends Controller
         $post = [];
         $post["Theme"] = @$this->request->post("Theme")[$editableIndex];
 
-        $array_settings = [];
-        $json_settings = "";
-
         $success = false;
         $message = "";
-
-        if ($model->frontend == 0) {
-            $array_settings = json_decode($model->settings, true);
-            $array_settings = array_merge($array_settings, $this->request->post("settings", ["dark-mode" => 0]));
-            $json_settings = Json::encode($array_settings);
-        } else {
-            $array_settings = json_decode(file_get_contents(Yii::getAlias($model->sourcePath) . "/settings.json"), true);
-        }
-
-        $post["Theme"]["settings"] = $json_settings;
 
         if ($model->load($post) && $model->save()) {
             if ($tema_activo->id !== $model->id) {
@@ -357,7 +281,7 @@ class ThemeController extends Controller
     public function actionRefresh()
     {
         $vendorDir = Yii::$app->getVendorPath();
-        $settingsFile = \yii\helpers\FileHelper::findFiles($vendorDir, ['only' => ['settings.json']]);
+        $settingsFile = \yii\helpers\FileHelper::findFiles($vendorDir, ['only' => ['theme.json']]);
 
         foreach ($settingsFile as $settings) {
             $model = new Theme();
