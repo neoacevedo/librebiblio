@@ -1,6 +1,6 @@
 {
     "name": "neoacevedo/librebiblio",
-    "description": "",
+    "description": "LibreBiblio es un sistema de Gestión Bibliotecaria. Este es un sistema bibliotecario automatizado y un Catálogo en Línea (OPAC) desarrollado con Yii Framework.",
     "keywords": [
         "yii2",
         "library",
@@ -36,8 +36,7 @@
         "yiisoft/yii2-gii": "~2.2.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/verify": "~0.5.0 || ~1.1.0",
-        "symfony/browser-kit": ">=2.7 <=4.2.4",
-        "neoacevedo/gentelella": "@dev"
+        "symfony/browser-kit": ">=2.7 <=4.2.4"
     },
     "config": {
         "process-timeout": 1800,
@@ -50,10 +49,6 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        {
-            "type": "path",
-            "url": "./app/vendor/neoacevedo/gentelella"
         }
     ]
 }
