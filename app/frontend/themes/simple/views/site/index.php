@@ -20,21 +20,21 @@ $this->registerJs(""
             echo "<h1>$this->title</h1>";
         } else {
             if ($settings->use_image_flg === 0) {
-                echo "<h1>" . Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $this->title, 'class' => 'img-responsive', 'style' => 'width: 96px; padding: 0 0; display: inline-block']);
+                echo "<h1>" . Html::img($settings->library_image_url, ['alt' => $this->title, 'class' => 'img-fluid', 'style' => 'width: 96px; padding: 0 0; display: inline-block']);
                 echo "$this->title</h1>";
             } else {
-                echo Html::img('@web/images/logo/' . $settings->library_image_url, ['alt' => $this->title, 'class' => 'img-responsive', 'style' => 'display: inline-block']);
+                echo Html::img($settings->library_image_url, ['alt' => $this->title, 'class' => 'img-fluid mx-auto', 'style' => 'display: inline-block; width: 240px;']);
             }
         }
-        ?>
+?>
         <div class="row">&nbsp;</div>
         <?php
-                $form = ActiveForm::begin([
-                            'action' => ['search'],
-                            'method' => 'get',
-                            'options' => ['id' => 'search']
-                ]);
-        ?>
+        $form = ActiveForm::begin([
+                    'action' => ['search'],
+                    'method' => 'get',
+                    'options' => ['id' => 'search']
+        ]);
+?>
         <div class="form-row">
             <div class="col-2">&nbsp;</div>
             <div class="col">

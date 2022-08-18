@@ -31,7 +31,7 @@ class UserController extends Controller
                             'allow' => true,
                         ],
                         [
-                            'actions' => ['flush-cache', 'create','update', 'delete', 'view'],
+                            'actions' => ['index', 'flush-cache', 'create','update', 'delete', 'view'],
                             'allow' => true,
                             'roles' => ['admin'],
                         ],
@@ -90,12 +90,20 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post())) {
+            $model->generateAuthKey();
+            $model->setPassword(time());
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', Yii::t("app", "User registered successfully."));
+                return $this->redirect(['index']);
+            } else {
+                $message = "<ul>";
+                foreach ($model->errors as $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+                Yii::$app->session->setFlash('error', $message);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [

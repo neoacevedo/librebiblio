@@ -8,6 +8,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%settings}}".
@@ -78,20 +79,5 @@ class Settings extends \yii\db\ActiveRecord
             'items_per_page'=> Yii::t('app', 'Items per page'),
             'cache_handler' => Yii::t("app", "Cache Handler")
         ];
-    }
-
-    /**
-     * Sube un archivo
-     * @return boolean
-     */
-    public function upload()
-    {
-        if ($this->validate()) {
-            $frontend = Yii::getAlias("@frontend");
-            $this->imageFile->saveAs("$frontend/web/images/logo/" . $this->imageFile->baseName . '.' . $this->imageFile->extension, false);
-            return true;
-        } else {
-            return false;
-        }
     }
 }

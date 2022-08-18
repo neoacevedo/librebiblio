@@ -90,11 +90,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'created_at',
                                 [
                                     'class' => 'yii\grid\ActionColumn',
-                                    'visibleButtons' => [
-                                        'delete' => function ($model, $key, $index) {
-                                            return !preg_match('#^vendor/#', $model->sourcePath) ? true : false;
-                                        }
-                                    ],
+                                    // 'visibleButtons' => [
+                                    //     'delete' => function ($model, $key, $index) {
+                                    //         return !preg_match('#^@vendor/#', $model->sourcePath) ? true : false;
+                                    //     }
+                                    // ],
                                     'template' => '{delete}',
                                 ],
                             ],

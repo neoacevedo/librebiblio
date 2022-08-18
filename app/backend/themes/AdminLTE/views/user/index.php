@@ -51,15 +51,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'email:email',
                     'status',
                     'phone',
-                    'created_at',
+                    [
+                        'attribute' => 'created_at',
+                        'format' => ['date', 'php:Y-m-d H:i:s']
+                    ],
                     //'updated_at',
                     //'verification_token',
                     [
                         'class' => ActionColumn::class,
+                        'template' => '{update} {delete}',
+                        'visibleButtons' => [
+                            'delete' => function (User $model, $key, $index) {
+                                return Yii::$app->user->id !== $model->id;
+                            }
+                        ],
                         'urlCreator' => function ($action, User $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         }
-                    ],
+                    ]
                 ],
             ]); ?>
 

@@ -22,7 +22,6 @@ use yii\web\UploadedFile;
  */
 class MaterialTypeController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -134,14 +133,14 @@ class MaterialTypeController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save($fileModel)) {
-                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->name);
+                    $model->image_file = Yii::$app->storage->getUrl($fileModel->uploadedFile->name);
                 } else {
                     $message = "<ul>";
                     foreach ($fileModel->errors as $key => $error) {
                         $message .= "<li>{$error[0]}</li>";
                     }
                     $message .= "</ul>";
-        
+
                     Yii::$app->session->setFlash('error', $message);
                 }
             }
@@ -154,7 +153,7 @@ class MaterialTypeController extends Controller
                     $message .= "<li>{$error[0]}</li>";
                 }
                 $message .= "</ul>";
-    
+
                 Yii::$app->session->setFlash('error', $message);
             }
         }
@@ -185,10 +184,10 @@ class MaterialTypeController extends Controller
             "bi bi-newspaper fas fa-newspaper" => Yii::t("app/settings", "Newspaper"),
             "bi bi-map fas fa-map" => Yii::t("app/settings", "Maps"),
         ];
-        
+
         // Uploaded file instance.
         $fileModel = Yii::$app->storage->getFileManager();
-        
+
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
@@ -200,7 +199,7 @@ class MaterialTypeController extends Controller
                         $message .= "<li>{$error[0]}</li>";
                     }
                     $message .= "</ul>";
-    
+
                     Yii::$app->session->setFlash('error', $message);
                 }
             } else {
@@ -221,7 +220,7 @@ class MaterialTypeController extends Controller
                 Yii::$app->session->setFlash('error', $message);
             }
         }
-        
+
         return $this->render('update', [
             'model' => $model,
             "material_type_list" => $material_type_list,

@@ -46,7 +46,9 @@ class AdminController extends Controller
                 echo $this->ansiFormat("Lo sentimos, no podemos restablecer la contraseña para la dirección de correo electrónico proporcionada.\n", Console::BG_RED, Console::BOLD);
             }
         } else {
-            echo $this->ansiFormat(\json_encode($model->getErrors()) . "\n", Console::BG_RED, Console::BOLD);
+            foreach ($model->errors as $key => $error) {
+                echo $this->ansiFormat($error[0] . "\n", Console::FG_RED, Console::BOLD);
+            }
         }
     }
 

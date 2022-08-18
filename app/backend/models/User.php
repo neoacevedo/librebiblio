@@ -24,6 +24,7 @@ use neoacevedo\auditing\behaviors\AuditBehavior;
  * @property string phone
  * @property string $password_hash
  * @property string $password_reset_token
+ * @property string $verification_token
  * @property string $email
  * @property string $auth_key
  * @property integer $status
@@ -108,6 +109,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Yii::t('app', 'Email'),
             'phone' => Yii::t('app', 'Phone'),
             'status' => Yii::t('app', 'Status'),
+            'created_at' => Yii::t('app', 'Created At'),
         ];
     }
 
@@ -240,6 +242,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Generates new token for email verification
+     */
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     public static function getStatus()

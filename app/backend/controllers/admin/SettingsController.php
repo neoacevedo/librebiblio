@@ -95,42 +95,66 @@ class SettingsController extends Controller
      */
     public function actionLibrarySettings()
     {
+        /** @var \common\models\Settings */
         $model = $this->findModel();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $files = \yii\helpers\FileHelper::findFiles(Yii::getAlias("@frontend/../../images/logo/"), ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
+
         foreach ($files as $file) {
             $file_name = "/images/logo/" .  substr($file, strrpos($file, "/") + 1);
             $files_list[$file_name] = substr($file, strrpos($file, "/") + 1);
         }
         // primer elemento en el array
-        array_unshift($files_list, Yii::t('app', 'Choose an option'));
+        array_unshift($files_list, "--" . Yii::t('app', 'Choose an option') . "--");
         // último elemento en el array
         array_push($files_list, Yii::t('app', 'Upload File:'));
 
+        $fileModel = Yii::$app->storage->getFileManager();
+
+        Yii::$app->storage->prefix .= "logo/";
+
         if ($model->load(Yii::$app->request->post())) {
-            $model->imageFile = UploadedFile::getInstanceByName('imageFile');
-            if ($model->imageFile) {
-                if ($model->upload()) {
-                    $model->library_image_url = $model->imageFile->name;
+            // $model->imageFile = UploadedFile::getInstanceByName('imageFile');
+            if (null !== $fileModel->uploadedFile) {
+                if (Yii::$app->storage->save($fileModel)) {
+                    $model->library_image_url = Yii::$app->storage->getUrl($fileModel->uploadedFile->name);
+                } else {
+                    $message = "<ul>";
+                    foreach ($model->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('error', $message);
                 }
 
                 if ($model->save()) {
+                    Yii::$app->getSession()->setFlash('success', Yii::t('app/settings', 'Settings changed successfuly.'));
                     return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
+                } else {
+                    $message = "<ul>";
+                    foreach ($model->errors as $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('error', $message);
                 }
             } else {
                 if ($model->save()) {
                     Yii::$app->getSession()->setFlash('success', Yii::t('app/settings', 'Settings changed successfuly.'));
                     return $this->redirect(['admin/settings']); #$this->render('library_settings', ['model' => $model]);
+                } else {
+                    $message = "<ul>";
+                    foreach ($model->errors as $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('error', $message);
                 }
-            }
-        } else {
-            foreach ($model->errors as $error) {
-                Yii::$app->getSession()->setFlash('error', $error);
             }
         }
 
-        return $this->render('library_settings', ['model' => $model, 'files' => $files_list]);
+        return $this->render('library_settings', ['model' => $model, 'files' => $files_list, "fileModel" => $fileModel]);
     }
 
     /**

@@ -24,7 +24,7 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.jpg" type="image/jpg" />
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?>
     </title>
@@ -43,49 +43,49 @@ $bodyClass = (isset($this->context->bodyClass)) ? $this->context->bodyClass : ""
                     'class' => 'navbar-expand-md navbar-default fixed-top',
                 ],
             ]);
-            $menuItems = [
-                ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
-                /* ['label' => 'About', 'url' => ['/site/about']], */
-                ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
-            ];
-            if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
-            } else {
-                $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
-                $menuItems[] = [
-                    'label' => Yii::$app->user->identity->username,
-                    'items' => [
-                        ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
-                        '<li>'
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                            Yii::t('app', 'Logout'),
-                            ['class' => 'btn btn-link logout']
-                        )
-                        . Html::endForm()
-                        . '</li>'
-                ]];
-            }
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav ml-auto'],
-                'items' => $menuItems,
-            ]);
-            NavBar::end();
-            ?>
+$menuItems = [
+    ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+    /* ['label' => 'About', 'url' => ['/site/about']], */
+    ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
+];
+if (Yii::$app->user->isGuest) {
+    $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
+    $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
+} else {
+    $menuItems[] = ['label' => Yii::t('app', 'Cart'), 'url' => ['/circulation/cart']];
+    $menuItems[] = [
+        'label' => Yii::$app->user->identity->username,
+        'items' => [
+            ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
+            '<li>'
+            . Html::beginForm(['/site/logout'], 'post')
+            . Html::submitButton(
+                Yii::t('app', 'Logout'),
+                ['class' => 'btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>'
+    ]];
+}
+echo Nav::widget([
+    'options' => ['class' => 'navbar-nav ml-auto'],
+    'items' => $menuItems,
+]);
+NavBar::end();
+?>
 
         <div class="container">
             <div class="row">&nbsp;</div>
             <div class="row">
                 <div class="col">
                     <?=
-                        Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'options' => [
-                                'class' => 'breadcrumb'
-                            ]
-                        ])
-                        ?>
+            Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'options' => [
+                    'class' => 'breadcrumb'
+                ]
+            ])
+?>
                 </div>
             </div>
             <?= Alert::widget() ?>

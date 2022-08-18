@@ -37,12 +37,10 @@ $this->registerJs($js);
             <img id="library_img" src="" class="img img-thumbnail img-responsive">
         </div>
         <div class="col">
-            <?=
-                $form->field($model, 'library_image_url')->dropDownList($files, ['id' => 'file_list', 'class' => 'form-control'])
-?>
+            <?= $form->field($model, 'library_image_url')->dropDownList($files, ['id' => 'file_list', 'class' => 'form-control']) ?>
         </div>
     </div>
-    <?= Html::fileInput('imageFile', '', ['id' => 'file', 'style' => ['display' => 'none']]) ?>
+    <?= $form->field($fileModel, 'uploadedFile')->fileInput(['id' => 'file', 'class' => 'form-control', 'style' => ['display' => 'none']])->label("") ?>
 
     <div class="checkbox">
         <?= $form->field($model, "use_image_flg")->checkbox(['value' => 1]) ?>
