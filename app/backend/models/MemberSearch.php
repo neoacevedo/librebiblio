@@ -16,25 +16,27 @@ use common\models\Member;
 /**
  * MemberSearch represents the model behind the search form about `common\models\Member`.
  */
-class MemberSearch extends Member {
-
-    public $classification;
+class MemberSearch extends Member
+{
+    // public $classification;
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['pin'], 'double'],
-            [['username', 'first_name', 'last_name', 'email', 'phone', 'classification'], 'safe'],
+            [['id', 'status', 'classification_id', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'first_name', 'last_name', 'address', 'email', 'phone'], 'safe'],
+            [['pin'], 'number'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -46,12 +48,11 @@ class MemberSearch extends Member {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = Member::find();
 
         // add conditions that should always apply here
-
-        $query->join('left join', '{{%mbr_classify_dm}}', '{{%mbr_classify_dm}}.id = {{%member}}.classification_id');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -73,18 +74,20 @@ class MemberSearch extends Member {
         $query->andFilterWhere([
             'id' => $this->id,
             'pin' => $this->pin,
+            'phone' => $this->phone,
             'status' => $this->status,
+            'classification_id' => $this->classification_id
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
                 ->andFilterWhere(['like', 'first_name', $this->first_name])
                 ->andFilterWhere(['like', 'last_name', $this->last_name])
                 ->andFilterWhere(['like', 'email', $this->email])
+                ->andFilterWhere(['like', 'address', $this->address])
                 ->andFilterWhere(['like', 'phone', $this->phone]);
 
 
 
         return $dataProvider;
     }
-
 }

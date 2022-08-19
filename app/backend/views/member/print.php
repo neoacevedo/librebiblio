@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ListView;
+
 ?>
 
 <div class="row">
@@ -38,6 +39,6 @@ use yii\widgets\ListView;
                 'tag' => false,
             ],
         ]);
-        ?>
+?>
     </div>
 </div>

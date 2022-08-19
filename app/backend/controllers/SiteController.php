@@ -115,6 +115,8 @@ class SiteController extends Controller
         $logs = new \yii\data\ActiveDataProvider([
             'query' => \neoacevedo\auditing\models\Auditing::find()
                 ->select(["description", "created_at"])
+                ->groupBy(["event", "model", "created_at"])
+                ->orderBy(['id' => SORT_DESC])
                 ->limit(5),
             'pagination' => false,
             'sort' => false

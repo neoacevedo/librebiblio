@@ -6,15 +6,17 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Signup';
+$this->title = Yii::t('app', 'Signup');
 $this->params['breadcrumbs'][] = $this->title;
 
 $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
 ?>
 <div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
 
-    <p><?= Yii::t('app', 'Please fill out the following fields to signup:') ?></p>
+    <p><?= Yii::t('app', 'Please fill out the following fields to signup:') ?>
+    </p>
 
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-3">&nbsp;</div>
@@ -41,7 +43,7 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
             <?= $form->field($model, 'phone')->textInput() ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
-            
+
             <?= $form->field($model, 'classification_id')->dropDownList(\yii\helpers\ArrayHelper::map($mbr_classify, 'id', 'description')) ?>
 
             <div class="form-group">

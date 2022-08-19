@@ -33,7 +33,7 @@ use yii\helpers\Html;
             ],
             [
                 'label' => Yii::t("app/reports", "Reports"),
-                'url' => ['/admin/reports']
+                'url' => ['/admin/report/index']
             ]
         ],
     ]) ?>

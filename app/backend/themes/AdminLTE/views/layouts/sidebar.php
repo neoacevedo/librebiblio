@@ -50,6 +50,11 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "book"
                         ],
                         [
+                            "label" => Yii::t("app", "Biblio Copies"),
+                            "url" => ["/biblio-copy/index"],
+                            "icon" => "book"
+                        ],
+                        [
                             "label" => Yii::t("app/reports", "Reports"),
                             "url" => ["/admin/report/index"],
                             "icon" => "chart-bar"
@@ -66,9 +71,9 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             'icon' => 'users'
                         ],
                         [
-                            "label" => Yii::t("app", "New Member"),
-                            "url" => ['/member/create'],
-                            'icon' => 'user-plus'
+                            "label" => Yii::t("app", "Members"),
+                            "url" => ['/member/index'],
+                            'icon' => 'users'
                         ],
                         [
                             "label" => Yii::t("app", "RBAC"),

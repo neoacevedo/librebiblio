@@ -15,8 +15,8 @@ use common\models\User;
 /**
  * Signup form
  */
-class SignupForm extends Model {
-
+class SignupForm extends Model
+{
     public $username;
     public $first_name;
     public $last_name;
@@ -30,7 +30,8 @@ class SignupForm extends Model {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             ['first_name', 'trim'],
             ['first_name', 'required'],
@@ -61,11 +62,12 @@ class SignupForm extends Model {
             ['classification_id', 'number']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         parent::attributeLabels();
         return [
             'first_name' => Yii::t('app', 'First Name'),
@@ -74,7 +76,8 @@ class SignupForm extends Model {
             'pin' => Yii::t('member', 'Pin'),
             'address' => Yii::t('app', 'Address'),
             'email' => Yii::t('app', 'Email'),
-            'classification_id' => Yii::t('checkout', 'Classification ID'),  
+            'classification_id' => Yii::t('checkout', 'Classification ID'),
+            'password' => Yii::t("app", "Password")
         ];
     }
 
@@ -83,7 +86,8 @@ class SignupForm extends Model {
      *
      * @return Member|null the saved model or null if saving fails
      */
-    public function signup() {
+    public function signup()
+    {
         if (!$this->validate()) {
             return null;
         }
@@ -104,9 +108,9 @@ class SignupForm extends Model {
         if ($user->save()) {
             return $user;
         } else {
-            @array_walk_recursive($user->errors, function($v, $k) {
-                        \Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            @array_walk_recursive($user->errors, function ($v, $k) {
+                \Yii::$app->getSession()->setFlash('error', $v);
+            });
             return null;
         }
     }
@@ -116,7 +120,8 @@ class SignupForm extends Model {
      * @param int $length
      * @return string
      */
-    public function generateUniqueRandomString(int $length = 32) {
+    public function generateUniqueRandomString(int $length = 32)
+    {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
     }
@@ -126,7 +131,8 @@ class SignupForm extends Model {
      * @param int $id
      * @return boolean
      */
-    public function sendEmail(int $id) {
+    public function sendEmail(int $id)
+    {
         $user = Member::findOne($id);
 
         if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
@@ -138,12 +144,12 @@ class SignupForm extends Model {
 
         return \Yii::$app->mailer
                         ->compose(
-                                ['html' => 'userSignup-html', 'text' => 'userSignup-text'], ['user' => $user]
+                            ['html' => 'userSignup-html', 'text' => 'userSignup-text'],
+                            ['user' => $user]
                         )
                         ->setTo($user->email)
                         ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
                         ->setSubject('Signup Confirmation')
                         ->send();
     }
-
 }

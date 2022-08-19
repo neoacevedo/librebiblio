@@ -88,6 +88,22 @@ class MemberController extends Controller
     }
 
     /**
+     * Lists all Member models.
+     *
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $searchModel = new MemberSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Registrar un miembro de la biblioteca desde la administración.
      * @return mixed
      */

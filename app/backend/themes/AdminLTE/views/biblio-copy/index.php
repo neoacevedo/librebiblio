@@ -11,15 +11,12 @@ $this->title = Yii::t('biblio', 'Biblio Copies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
+        <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>"
+            target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
     </p>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -31,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'bibid',
                         'label' => Yii::t('app', 'Title'),
-                        'value' => function($model) {
+                        'value' => function ($model) {
                             return $model->biblio->title;
                         }
                     ],
@@ -50,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'table table-striped table-bordered table-responsive'
                 ],
             ]);
-            ?>
+?>
         </div>
     </div>
 </div>
