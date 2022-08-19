@@ -12,6 +12,7 @@ use Yii;
 use common\models\BiblioCopy;
 use yii\filters\AccessControl;
 use common\models\BiblioCopySearch;
+use kartik\mpdf\Pdf;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,7 +22,6 @@ use yii\filters\VerbFilter;
  */
 class BiblioCopyController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -179,20 +179,33 @@ class BiblioCopyController extends Controller
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        // return $this->render('copies-print', [
+        //     'dataProvider' => $dataProvider,
+        // ]);
         $html = $this->renderPartial('copies-print', [
             'dataProvider' => $dataProvider,
         ]);
-        $pdf = Yii::$app->pdf;
+        $pdf = new Pdf([
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+            'options' => [
+                'title' => '',
+                'margin_left' => 25,
+                'margin_right' => 25,
+                'margin_top' => 25,
+                'margin_bottom' => 25,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                //'showBarcodeNumbers' => TRUE
+            ]
+        ]);
         $pdf->content = $html;
-        $pdf->options = [
-            'margin_left' => 15,
-            'margin_right' => 15,
-            'margin_top' => 25,
-            'margin_bottom' => 25,
-            'margin_header' => 10,
-            'margin_footer' => 10,
-            //'showBarcodeNumbers' => TRUE
-        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
