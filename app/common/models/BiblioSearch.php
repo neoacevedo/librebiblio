@@ -55,10 +55,8 @@ class BiblioSearch extends Biblio
      */
     public function search($params)
     {
-        $query = Biblio::find();
-
-        // join a la tabla user
-        $query->joinWith(['user', 'materialType', 'collection']);
+        $query = Biblio::find()
+            ->joinWith(['user', 'materialType', 'collection']);
 
         // add conditions that should always apply here
 
@@ -68,8 +66,6 @@ class BiblioSearch extends Biblio
 
         $dataProvider->setSort([
             'attributes' => [
-                'barcode_nmbr',
-                'title',
                 'user' => [
                     'asc' => ["{{%user}}.firstName" => SORT_ASC, "{{%user}}.lastName" => SORT_ASC],
                     'desc' => ["{{%user}}.firstName" => SORT_DESC, "{{%user}}.lastName" => SORT_DESC],
@@ -82,10 +78,10 @@ class BiblioSearch extends Biblio
                     'asc' => ["{{%collection_dm}}.firstName" => SORT_ASC],
                     'desc' => ["{{%collection_dm}}.firstName" => SORT_DESC],
                 ],
-                'author',
-                'due_back_dt',
             ]
         ]);
+
+        Yii::debug($dataProvider->sort->attributes);
 
         $this->load($params);
 

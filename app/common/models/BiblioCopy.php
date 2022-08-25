@@ -33,7 +33,6 @@ use Yii;
  */
 class BiblioCopy extends \yii\db\ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -150,7 +149,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
             return false; // ilimitado
         }
 
-        $count = (new \yii\db\Query)
+        $count = (new \yii\db\Query())
             ->select("*")
             ->from('{{%biblio_copy}} c')
             ->leftJoin('{{%biblio}} b', 'c.bibid = b.id')

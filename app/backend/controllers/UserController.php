@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\User;
 use backend\models\UserSearch;
+use console\models\PasswordResetRequest;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -92,8 +93,25 @@ class UserController extends Controller
 
         if ($model->load($this->request->post())) {
             $model->generateAuthKey();
+            $model->generateEmailVerificationToken();
             $model->setPassword(time());
             if ($model->save()) {
+                $passwordResetRequest = new PasswordResetRequest();
+                $passwordResetRequest->email = $model->email;
+                if ($passwordResetRequest->validate()) {
+                    if ($passwordResetRequest->sendEmail()) {
+                        Yii::$app->session->setFlash('success', Yii::t("app", "Mail sent to user."));
+                    } else {
+                        Yii::$app->session->setFlash('warning', Yii::t("app", "Mail couldn't be sent."));
+                    }
+                } else {
+                    $message = "<ul>";
+                    foreach ($passwordResetRequest->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('error', $message);
+                }
                 Yii::$app->session->setFlash('success', Yii::t("app", "User registered successfully."));
                 return $this->redirect(['index']);
             } else {
@@ -121,14 +139,29 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $editableIndex = Yii::$app->request->post("editableIndex");
+        $post = [];
+        $post["User"] = Yii::$app->request->post("User")[$editableIndex];
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($post) && $model->validate()) {
+            if ($model->save()) {
+                return $this->asJson(['success' => true]);
+            } else {
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+                return $this->asJson(['success' => false, "message" => $message]);
+            }
+        } else {
+            $message = "<ul>";
+            foreach ($model->errors as $key => $error) {
+                $message .= "<li>{$error[0]}</li>";
+            }
+            $message .= "</ul>";
+            return $this->asJson(['success' => false, "message" => $message]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**

@@ -42,7 +42,6 @@ use neoacevedo\auditing\behaviors\AuditBehavior;
  */
 class Biblio extends \yii\db\ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -97,7 +96,7 @@ class Biblio extends \yii\db\ActiveRecord
             'title_remainder' => Yii::t('app', 'Title Remainder'),
             'image_file' => Yii::t('app', 'Image File'),
             'responsibility_stmt' => Yii::t('app', 'Responsibility Stmt'),
-            'author' => Yii::t('biblio', 'Author'),
+            'author' => Yii::t('app', 'Author'),
             'topic1' => Yii::t('biblio', 'Topic1'),
             'topic2' => Yii::t('biblio', 'Topic2'),
             'topic3' => Yii::t('biblio', 'Topic3'),

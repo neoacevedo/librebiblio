@@ -4,19 +4,24 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\BiblioCopy;
+use DateTime;
 
 /**
  * BiblioCopySearch represents the model behind the search form about `common\models\BiblioCopy`.
  */
 class BiblioCopySearch extends BiblioCopy
 {
-    public $biblio;
+    public $title;
+    public $author;
+    public $material;
+    public $days_late;
 
     /**
      * @inheritdoc
@@ -24,8 +29,8 @@ class BiblioCopySearch extends BiblioCopy
     public function rules()
     {
         return [
-            [['id', 'barcode_nmbr', 'bibid', 'mbr_id', 'renewal_count'], 'integer'],
-            [['created_at', 'mbr_id', 'biblio', 'updated_at', 'copy_desc', 'barcode_nmbr', 'status_cd', 'status_begin_dt', 'due_back_dt'], 'safe'],
+            [['id', 'barcode_nmbr', 'bibid', 'mbr_id', 'renewal_count', 'days_late'], 'integer'],
+            [['created_at', 'mbr_id', "title", "author", "material", 'updated_at', 'copy_desc', 'barcode_nmbr', 'status_cd', 'status_begin_dt', 'due_back_dt'], 'safe'],
         ];
     }
 
@@ -47,36 +52,35 @@ class BiblioCopySearch extends BiblioCopy
      */
     public function search($params)
     {
-        $query = BiblioCopy::find();
+        $query = BiblioCopy::find()
+            ->joinWith(['biblio']);
 
-        // add conditions that should always apply here
-        $query->joinWith(['biblio']);
+        $datetime1 = new DateTime($this->due_back_dt);
+        $datetime2 = new DateTime('now');
+        $interval = $datetime1->diff($datetime2);
+        $cero = 0;
+        $diff = (int)$interval->format('%r%a');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->setSort([
-            'attributes' => [
-                'barcode_nmbr',
-                'biblio.title' => [
-                    'asc' => ["{{%biblio}}.title" => SORT_ASC],
-                    'desc' => ["{{%biblio}}.title" => SORT_DESC],
-                    'label' => Yii::t("app", "Title")
-                ],
-                'biblio.author' => [
-                    'asc' => ["{{%biblio}}.author" => SORT_ASC],
-                    'desc' => ["{{%biblio}}.author" => SORT_DESC],
-                    'label' => Yii::t('app', 'Author')
-                ],
-                'biblio.material_cd' => [
-                    'asc' => ["{{%biblio}}.material_cd" => SORT_ASC],
-                    'desc' => ["{{%biblio}}.material_cd" => SORT_DESC],
-                    'label' => Yii::t('app', 'Material Cd')
-                ],
-                'due_back_dt',
-            ]
-        ]);
+        $dataProvider->sort->attributes["title"] = [
+            'asc' => ["{{%biblio}}.title" => SORT_ASC],
+            'desc' => ["{{%biblio}}.title" => SORT_DESC],
+            'label' => Yii::t('app', 'Title')
+        ];
+
+        $dataProvider->sort->attributes["author"] = [
+            'asc' => ["{{%biblio}}.author" => SORT_ASC],
+            'desc' => ["{{%biblio}}.author" => SORT_DESC],
+            'label' => Yii::t('app', 'Author')
+        ];
+
+        $dataProvider->sort->attributes["material"] = [
+            'asc' => ["{{%biblio}}.material_cd" => SORT_ASC],
+            'desc' => ["{{%biblio}}.material_cd" => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -96,6 +100,7 @@ class BiblioCopySearch extends BiblioCopy
                 ->andFilterWhere(
                     ['<=', 'date({{%biblio_copy}}.updated_at)', $this->updated_at]
                 )
+                ->andFilterWhere(["{{%biblio}}.material_cd" => $this->material])
                 ->andFilterWhere(['<=', 'date(status_begin_dt)', $this->status_begin_dt])
                 ->andFilterWhere(['<=', 'date(due_back_dt)', $this->due_back_dt])
                 ->andFilterWhere(['mbr_id' => $this->mbr_id,
@@ -105,9 +110,10 @@ class BiblioCopySearch extends BiblioCopy
         $query->andFilterWhere(['like', 'copy_desc', $this->copy_desc])
                 ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
                 ->andFilterWhere(['like', 'status_cd', $this->status_cd])
-                ->andFilterWhere(['like', '{{%biblio}}.title', $this->biblio])
-                ->andFilterWhere(['like', '{{%biblio}}.author', $this->biblio]);
-        
+                ->andFilterWhere(['like', '{{%biblio}}.title', $this->title])
+                ->andFilterWhere(['like', '{{%biblio}}.author', $this->author])
+        ;
+
         return $dataProvider;
     }
 }

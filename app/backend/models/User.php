@@ -67,31 +67,18 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
+            [['username', 'first_name', 'last_name', 'email', 'address', 'phone', 'password', 'password_hash'], 'required'],
+            [['username', 'first_name', 'last_name', 'email', 'address', 'phone'], 'trim'],
             ['username', 'string', 'min' => 6, 'max' => 255],
             ['username', 'unique', 'targetClass' => '\backend\models\User', 'message' => Yii::t('app', 'This username has already been taken.')],
-            ['first_name', 'trim'],
-            ['first_name', 'required'],
-            ['first_name', 'string', 'min' => 4, 'max' => 255],
-            ['last_name', 'trim'],
-            ['last_name', 'required'],
-            ['last_name', 'string', 'min' => 4, 'max' => 255],
-            ['phone', 'trim'],
-            ['phone', 'required'],
+            [['first_name', 'last_name', 'address'], 'string', 'min' => 4, 'max' => 255],
             ['phone', 'string', 'min' => 4, 'max' => 32],
-            ['address', 'trim'],
-            ['address', 'required'],
-            ['address', 'string', 'min' => 5, 'max' => 255],
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\backend\models\User', 'message' => Yii::t('app', 'This email address has already been taken.')],
+            ['email', 'unique'],
+            ['email', 'email'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
             ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
-            ['password_hash', 'required']
         ];
     }
 

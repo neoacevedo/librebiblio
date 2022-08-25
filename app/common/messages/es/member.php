@@ -18,7 +18,7 @@
  */
 return [
     'Pin' => 'Número de Identificación Personal',
-    'This username has already been taken.' => 'Este usuario ya se encuentra registrado.',
+    'This username has already been taken.' => 'Este socio ya se encuentra registrado.',
     'This email address has already been taken.' => 'Esta dirección de correo ya se encuentra registrada.',
     'This PIN number has already registered.' => 'Este PIN ya se encuentra registrado.',
 ];

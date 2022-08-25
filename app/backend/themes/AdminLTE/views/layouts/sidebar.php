@@ -80,22 +80,22 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "filter",
                             "items" => [
                                 [
-                                    "label" => Yii::t("app/rbac", "Permissions Manager"),
+                                    "label" => Yii::t("rbac", "Permissions Manager"),
                                     "url" => ['/rbac/permission'],
                                     "icon" => "check-square",
                                 ],
                                 [
-                                    "label" => Yii::t("app/rbac", "Role Manager"),
+                                    "label" => Yii::t("rbac", "Roles Manager"),
                                     "url" => ["/rbac/role"],
                                     "icon" => "users"
                                 ],
                                 [
-                                    "label" => Yii::t("app/rbac", "Rules Manager"),
+                                    "label" => Yii::t("rbac", "Rules Manager"),
                                     "url" => ["/rbac/rule"],
                                     "icon" => "list"
                                 ],
                                 [
-                                    "label" => Yii::t("app/rbac", "Asignment"),
+                                    "label" => Yii::t("rbac", "Asignment"),
                                     "url" => ["/rbac/assignment"],
                                     "icon" => "user-plus"
                                 ],

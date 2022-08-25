@@ -61,7 +61,7 @@ return [
     'Create Collection' => '',
     'Create Material Type' => '',
     'Create Member Classify' => '',
-    'Create User' => '',
+    'Create User' => 'Create Staff',
     'Create Userid' => '',
     'Created At' => '',
     'Daily Late Fee' => '',
