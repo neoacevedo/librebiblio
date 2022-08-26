@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -25,6 +25,79 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
             'columns' => [
+                [
+                    'class' => 'kartik\grid\ExpandRowColumn',
+                    'width' => '50px',
+                    'value' => function ($model, $key, $index) {
+                        return kartik\grid\GridView::ROW_COLLAPSED;
+                    },
+                    'detailRowCssClass' => GridView::TYPE_DEFAULT,
+                    // uncomment below and comment detail if you need to render via ajax
+                    // 'detailUrl' => Url::to(['/site/book-details']),
+                    'detail' => function (common\models\Biblio $model, $key, $index, $column) {
+                        $biblioCopySearch = new \common\models\BiblioCopySearch();
+                        $biblioCopySearch->bibid = $model->id;
+                        $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
+
+                        return GridView::widget([
+                            "dataProvider" => $biblioCopy,
+                            'summary' => '',
+                            'columns' => [
+                                'barcode_nmbr',
+                                [
+                                    'attribute' => 'status_cd',
+                                    'value' => function (\common\models\BiblioCopy $model) {
+                                        return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                                    },
+                                    'label' => Yii::t('app', 'Status')
+                                ],
+                                [
+                                    'class' => 'yii\grid\ActionColumn',
+                                    'headerOptions' => ['style' => 'color:#337ab7'],
+                                    'template' => '{add-to-cart}{placehold}',
+                                    'contentOptions' => ['class' => 'text-center align-middle', 'style' => 'font-size: 1.5rem'],
+                                    'buttons' => [
+                                        'checkout' => function ($url, $model) {
+                                            return Html::a('<span class="bi bi-eye"></span>&nbsp;', $url, [
+                                                        'title' => Yii::t('yii', 'View'),
+                                                        'class' => 'text-decoration-none'
+                                            ]);
+                                        },
+                                        'placehold' => function ($url, $model) {
+                                            return Html::a('<span class="bi bi-check"></span>&nbsp;', $url, [
+                                                        'title' => Yii::t('app', 'Place Hold'),
+                                                        'class' => 'text-decoration-none'
+                                            ]);
+                                        },
+                                        'urlCreator' => function ($action, $model, $key, $index) {
+                                            if ($action == "add-to-cart") {
+                                                return yii\helpers\Url::to([
+                                                    "circulation/$action",
+                                                    "copyid" => $model->id,
+                                                    'bibid' => $model->bibid,
+                                                    'status' => 'crt'
+                                                ]);
+                                            }
+
+                                            if ($action == "placehold") {
+                                                return yii\helpers\Url::to([
+                                                    "circulation/$action",
+                                                    "copyid" => $model->id,
+                                                    'bibid' => $model->bibid
+                                                ]);
+                                            }
+                                        }
+                                    ],
+                                ],
+                            ],
+                        ]);
+                    },
+                    'headerOptions' => ['class' => 'kartik-sheet-style'],
+                    'expandOneOnly' => true,
+                    'allowBatchToggle' => true,
+                    'expandIcon' => '<i class="bi bi-arrows-expand"></i>',
+                    'collapseIcon' => '<i class="bi bi-arrows-collapse"></i>',
+                ],
                 ['class' => 'yii\grid\SerialColumn'],
                 // 'collection_cd',
                 // 'call_nmbr1',
@@ -32,12 +105,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'call_nmbr3',
                 [
                     'attribute' => 'image_file',
-                    'value' => function ($model) {
-                        return Html::img("/" .$model->image_file, ['alt' => $model->title,
-                                    'title' => $model->title,
-                                    'class' => 'img-thumbnail',
-                                    'style' => 'width: 200px'
-                                ]);
+                    'value' => function (\common\models\Biblio $model) {
+                        if ($model->image_file !== "") {
+                            return Html::img("/" .$model->image_file, ['alt' => $model->title,
+                                        'title' => $model->title,
+                                        'class' => 'img-thumbnail',
+                                        'style' => 'width: 200px'
+                                    ]);
+                        }
                     },
                     'format' => 'raw',
                     'label' => 'Image',
@@ -47,34 +122,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'materialType',
-                    'value' => function ($model) {
-                        if ($model->icon != "") {
+                    'value' => function (\common\models\Biblio $model) {
+                        if ($model->materialType->icon !== null) {
                             return Html::tag("span", "", [
-                                    'title' => $model->materialType->description,
-                                    'class' => $model->icon
-                                ]);
-                        } else {
-                            if ($model->image_file != "") {
-                                return Html::img($model->img_file, [
-                                    'title' => $model->materialType->description,
-                                    'style' => 'max-width: 25px'
-                                ]);
-                            }
+                                'title' => $model->materialType->description,
+                                'class' => $model->materialType->icon
+                            ]);
+                        } elseif ($model->materialType->image_file !== null) {
+                            return Html::img($model->materialType->image_file, [
+                                'title' => $model->materialType->description,
+                                'style' => 'max-width: 25px'
+                            ]);
                         }
                     },
                     'label' => 'Material',
                     'format' => 'html',
                     'contentOptions' => ['class' => 'text-center align-middle', 'style' => 'font-size: 2rem'],
                 ],
-                [
-                    'label' => Yii::t('app', 'Title'),
-                    'attribute' => 'title',
-                    'value' => function ($model) {
-                        return "<h5>$model->title</h5><h6>$model->title_remainder</h6>";
-                    },
-                    'format' => 'raw'
-                ],
-                // 'responsibility_stmt:ntext',
+                'title:ntext',
                 'author:ntext',
                 [
                     'label' => Yii::t('app', 'Number of copies'),
@@ -92,34 +157,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'topic4:ntext',
                 // 'topic5:ntext',
                 // 'opac_flg',
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'headerOptions' => ['style' => 'color:#337ab7'],
-                    'template' => '{view}{placehold}',
-                    'contentOptions' => ['class' => 'text-center align-middle', 'style' => 'font-size: 2rem'],
-                    'buttons' => [
-                        'view' => function ($url, $model) {
-                            return Html::a('<span class="bi bi-eye"></span>&nbsp;', ["biblio/view", "id" => $model->id], [
-                                        'title' => Yii::t('yii', 'View'),
-                                        'class' => 'text-decoration-none'
-                            ]);
-                        },
-                        'placehold' => function ($url, $model) {
-                            return Html::a('<span class="bi bi-check"></span>&nbsp;', $url, [
-                                        'title' => Yii::t('app', 'Place Hold'),
-                                        'class' => 'text-decoration-none'
-                            ]);
-                        },
-                    ],
-                    // 'urlCreator' => function ($action, $model, $key, $index) {
-                    //     if ($action === 'view') {
-                    //         return yii\helpers\Url::to(["biblio/view", "id" => $model->id]);
-                    //     }
-                    // }
-                ],
             ],
         ]);
-        ?>
+?>
     </div>
     <?php Pjax::end(); ?>
 </div>

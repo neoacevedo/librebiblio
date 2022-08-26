@@ -13,13 +13,17 @@ use common\models\MaterialType;
 use backend\models\Collection;
 use common\models\BiblioField;
 use neoacevedo\auditing\behaviors\AuditBehavior;
+use yii\behaviors\AttributeBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%biblio}}".
  *
  * @property integer $id
- * @property string $created_at
- * @property string $updated_at
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property integer $updated_userid
  * @property integer $material_cd
  * @property integer $collection_cd
@@ -57,6 +61,22 @@ class Biblio extends \yii\db\ActiveRecord
     {
         return [
             AuditBehavior::class,
+            TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'updated_userid',
+                'updatedByAttribute' => 'updated_userid',
+            ],
+            [
+                'class' => AttributeBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_AFTER_FIND => 'created_at'
+                ],
+                'value' => function ($event) {
+                    // Any Format you want
+                    return date('Y-m-d H:i:s', strtotime($this->created_at));
+                }
+            ]
         ];
     }
 
@@ -66,9 +86,8 @@ class Biblio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['updated_userid', 'material_cd', 'collection_cd'], 'integer'],
+            [['updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
+            [['updated_userid', 'material_cd', 'collection_cd', 'created_at', 'updated_at'], 'integer'],
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string'],
             [['image_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],

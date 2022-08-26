@@ -7,6 +7,7 @@
 
 namespace common\models;
 
+use neoacevedo\auditing\behaviors\AuditBehavior;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -54,6 +55,10 @@ class Member extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::class,
+            [
+                'class' => AuditBehavior::class,
+                'ignored' => ['created_at', 'updated_at', 'password_hash', 'password_reset_token', 'auth_key', 'verification_token']
+            ]
         ];
     }
 

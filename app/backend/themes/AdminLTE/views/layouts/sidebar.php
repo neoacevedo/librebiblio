@@ -42,16 +42,11 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         [
                             "label" => Yii::t("app", "Home"),
                             "url" => ['/cataloging/biblio/index'],
-                            "icon" => "check-square"
+                            "icon" => "home"
                         ],
                         [
                             "label" => Yii::t("app", "Create Biblio"),
                             "url" => ["/cataloging/biblio/create"],
-                            "icon" => "book"
-                        ],
-                        [
-                            "label" => Yii::t("app", "Biblio Copies"),
-                            "url" => ["/biblio-copy/index"],
                             "icon" => "book"
                         ],
                         [
@@ -64,11 +59,6 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "address-book",
                             'options' => ['class' => 'nav-header'],
                             'header' => true,
-                        ],
-                        [
-                            "label" => Yii::t("circulation", "Member Accounts"),
-                            "url" => ['/member-account/index'],
-                            'icon' => 'users'
                         ],
                         [
                             "label" => Yii::t("app", "Members"),

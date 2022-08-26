@@ -30,9 +30,10 @@ class BiblioSearch extends Biblio
     {
         return [
             [['id'], 'integer'],
+            [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string'],
             [[
-                'user', 'image_file', 'materialType', 'collection', 'created_at', 'updated_at', 'call_nmbr1', 'call_nmbr2', 'call_nmbr3',
-                'title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'opac_flg', 'biblioFields'
+                'user', 'image_file', 'materialType', 'collection', 'created_at', 'updated_at',
+                'opac_flg', 'biblioFields'
             ], 'safe'],
         ];
     }
@@ -64,24 +65,20 @@ class BiblioSearch extends Biblio
             'query' => $query,
         ]);
 
-        $dataProvider->setSort([
-            'attributes' => [
-                'user' => [
+        $dataProvider->sort->attributes['user'] = [
                     'asc' => ["{{%user}}.firstName" => SORT_ASC, "{{%user}}.lastName" => SORT_ASC],
                     'desc' => ["{{%user}}.firstName" => SORT_DESC, "{{%user}}.lastName" => SORT_DESC],
-                ],
-                'materialType' => [
+        ];
+
+        $dataProvider->sort->attributes['materialType'] = [
                     'asc' => ["{{%material_type_dm}}.description" => SORT_ASC],
                     'desc' => ["{{%material_type_dm}}.description" => SORT_DESC],
-                ],
-                'collection' => [
+        ];
+
+        $dataProvider->sort->attributes['collection'] = [
                     'asc' => ["{{%collection_dm}}.firstName" => SORT_ASC],
                     'desc' => ["{{%collection_dm}}.firstName" => SORT_DESC],
-                ],
-            ]
-        ]);
-
-        Yii::debug($dataProvider->sort->attributes);
+        ];
 
         $this->load($params);
 

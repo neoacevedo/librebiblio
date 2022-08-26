@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use backend\models\Collection;
 use common\models\MaterialType;
@@ -24,17 +24,52 @@ $this->params['breadcrumbs'][] = $this->title;
                 GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'panel' => [
+                        'type'=>'default',
+                    ],
+                    'toolbar'=> false,
                     'columns' => [
-                        ['class' => yii\grid\SerialColumn::class],
-                        'id',
-                        'title:ntext',
-                        'created_at',
-                        'updated_at',
                         [
-                            'attribute' => 'user',
-                            'value' => 'user.username',
-                            'label' => \Yii::t('app', 'Updated by')
+                            'class' => 'kartik\grid\ExpandRowColumn',
+                            'width' => '50px',
+                            'value' => function ($model, $key, $index) {
+                                return kartik\grid\GridView::ROW_COLLAPSED;
+                            },
+                            'detailRowCssClass' => GridView::TYPE_DEFAULT,
+                            // uncomment below and comment detail if you need to render via ajax
+                            // 'detailUrl' => Url::to(['/site/book-details']),
+                            'detail' => function (common\models\Biblio $model, $key, $index, $column) {
+                                $biblioCopySearch = new \common\models\BiblioCopySearch();
+                                $biblioCopySearch->bibid = $model->id;
+                                $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
+
+                                return GridView::widget([
+                                    "dataProvider" => $biblioCopy,
+                                    'summary' => '',
+                                    'panel' => [
+                                        'type'=>'default',
+                                        'heading' => Yii::t('app', 'Bibliography Copy Information')
+                                    ],
+                                    'toolbar'=> false,
+                                    'columns' => [
+                                        'barcode_nmbr',
+                                        [
+                                            'attribute' => 'status_cd',
+                                            'value' => function ($model) {
+                                                return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                                            },
+                                            'label' => Yii::t('app', 'Status')
+                                        ],
+                                    ],
+                                ]);
+                            },
+                            'headerOptions' => ['class' => 'kartik-sheet-style'],
+                            'expandOneOnly' => true,
+                            'allowBatchToggle' => true,
                         ],
+                        ['class' => yii\grid\SerialColumn::class],
+                        'title:ntext',
+                        'author:ntext',
                         [
                             'attribute' => 'materialType',
                             'value' => 'materialType.description',
@@ -56,29 +91,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => Yii::t('app', 'Collection')
                         ],
                         [
-                            'value' => function ($model) {
-                                $biblioCopySearch = new \common\models\BiblioCopySearch();
-                                $biblioCopySearch->bibid = $model->id;
-                                $biblioCopy = $biblioCopySearch->search(Yii::$app->request->queryParams);
-
-                                return GridView::widget([
-                                    "dataProvider" => $biblioCopy,
-                                    'summary' => '',
-                                    'columns' => [
-                                        ['class' => 'yii\grid\SerialColumn'],
-                                        'barcode_nmbr',
-                                        [
-                                            'attribute' => 'status_cd',
-                                            'value' => function ($model) {
-                                                return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
-                                            },
-                                            'label' => Yii::t('app', 'Status')
-                                        ],
-                                    ],
-                                ]);
-                            },
-                            'label' => 'Copias',
-                            'format' => 'raw'
+                            'attribute' => 'user',
+                            'value' => 'user.username',
+                            'label' => \Yii::t('app', 'Updated by')
                         ],
                         // 'collection_cd',
                         // 'call_nmbr1',
@@ -86,16 +101,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         // 'call_nmbr3',
                         // 'title_remainder:ntext',
                         // 'responsibility_stmt:ntext',
-                        // 'author:ntext',
+
                         // 'topic1:ntext',
                         // 'topic2:ntext',
                         // 'topic3:ntext',
                         // 'topic4:ntext',
                         // 'topic5:ntext',
                         // 'opac_flg',
+                        [
+                            'attribute' => 'created_at',
+                            'format' => ['date', 'php:Y-m-d H:i:s'],
+                        ],
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
-                    'options' => ['class' => 'table table-responsive']
+                    'options' => ['class' => 'table-responsive']
                 ]);
 ?>
             <?php Pjax::end(); ?>

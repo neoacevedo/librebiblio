@@ -119,13 +119,13 @@ class MaterialTypeController extends Controller
 
         $material_type_list = [
             "" => "--",
-            'bi bi-disk fas fa-compact-disc' => "CD",
-            "bi bi-cassete fas fa-tape" => Yii::t("app/settings", "Audio Tapes"),
-            "bi bi-book fas fa-book" => Yii::t("app/settings", "Books"),
-            "bi bi-pc fas fa-laptop" => Yii::t("app/settings", "Equipment"),
-            "bi bi-journal fas fa-magazine" => Yii::t("app/settings", "Magazines"),
-            "bi bi-newspaper fas fa-newspaper" => Yii::t("app/settings", "Newspaper"),
-            "bi bi-map fas fa-map" => Yii::t("app/settings", "Maps"),
+            'bi bi-disc' => "CD",
+            "bi bi-cassete" => Yii::t("app/settings", "Audio Tapes"),
+            "bi bi-book" => Yii::t("app/settings", "Books"),
+            "bi bi-pc" => Yii::t("app/settings", "Equipment"),
+            "bi bi-journal" => Yii::t("app/settings", "Magazines"),
+            "bi bi-newspaper" => Yii::t("app/settings", "Newspaper"),
+            "bi bi-map" => Yii::t("app/settings", "Maps"),
         ];
 
         $fileModel = Yii::$app->storage->getFileManager();
@@ -176,13 +176,13 @@ class MaterialTypeController extends Controller
         $model = $this->findModel($id);
         $material_type_list = [
             "" => "--",
-            'bi bi-disk fas fa-compact-disc' => "CD",
-            "bi bi-cassete fas fa-tape" => Yii::t("app/settings", "Audio Tapes"),
-            "bi bi-book fas fa-book" => Yii::t("app/settings", "Books"),
-            "bi bi-pc fas fa-laptop" => Yii::t("app/settings", "Equipment"),
-            "bi bi-journal fas fa-magazine" => Yii::t("app/settings", "Magazines"),
-            "bi bi-newspaper fas fa-newspaper" => Yii::t("app/settings", "Newspaper"),
-            "bi bi-map fas fa-map" => Yii::t("app/settings", "Maps"),
+            'bi bi-disc' => "CD",
+            "bi bi-cassete" => Yii::t("app/settings", "Audio Tapes"),
+            "bi bi-book" => Yii::t("app/settings", "Books"),
+            "bi bi-pc" => Yii::t("app/settings", "Equipment"),
+            "bi bi-journal" => Yii::t("app/settings", "Magazines"),
+            "bi bi-newspaper" => Yii::t("app/settings", "Newspaper"),
+            "bi bi-map" => Yii::t("app/settings", "Maps"),
         ];
 
         // Uploaded file instance.
@@ -209,7 +209,7 @@ class MaterialTypeController extends Controller
             }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', Yii::t("app/settings", "Material Type created/updated successfully."));
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             } else {
                 $message = "<ul>";
                 foreach ($model->errors as $key => $error) {

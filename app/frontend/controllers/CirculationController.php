@@ -21,7 +21,7 @@ use yii\web\NotFoundHttpException;
 
 /**
  * CirculationController implementa la lógica para los préstamos y reservas de materiales bibliográficos.
- * 
+ *
  * Incluye el listado del carrito con los materiales que se pretenden solicitar en préstamo.
  */
 class CirculationController extends Controller
@@ -91,7 +91,7 @@ class CirculationController extends Controller
 
     /**
      * Agrega el artículo al carro.
-     * 
+     *
      * El artículo es la copia del material bibliográfico.
      * @param int $copyid el ID de la copia
      * @param int $bibid el ID del material bibliográfico
@@ -109,7 +109,7 @@ class CirculationController extends Controller
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // agregar al carro
         if (($cart = \frontend\models\Cart::findOne(['bibid' => $bibid, 'copyid' => $copyid, 'mbr_id' => $id])) === null) {
-            $newCart = new \frontend\models\Cart;
+            $newCart = new \frontend\models\Cart();
             $newCart->bibid = $bibid;
             $newCart->copyid = $copyid;
             $newCart->mbr_id = $id;
@@ -130,10 +130,10 @@ class CirculationController extends Controller
 
     /**
      * Muestra el listado con los materiales bibliográficos para solicitar en préstamo.
-     * 
-     * El listado de los materiales se obtiene desde variables de sesión, por lo que al cerrar la sesión 
+     *
+     * El listado de los materiales se obtiene desde variables de sesión, por lo que al cerrar la sesión
      * e iniciar de nuevo sesión, el listado desaparece.
-     * 
+     *
      * @return Response
      */
     public function actionCart()
@@ -203,8 +203,7 @@ class CirculationController extends Controller
             // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
         } else {
-
-            $biblioHold = new \common\models\BiblioHold;
+            $biblioHold = new \common\models\BiblioHold();
             $biblioHold->bibid = $bibid;
             $biblioHold->copyid = $copyid;
             $biblioHold->mbr_id = $id;
@@ -225,7 +224,7 @@ class CirculationController extends Controller
 
     /**
      * Solicita el préstamo de las copias bibliográficas seleccionadas.
-     * 
+     *
      * Se verifica si el usuario tiene deudas pendientes.
      * El método tiene una iteración interna por cada copia bibliográfica seleccionada. <br />
      * Después de esto actualiza la lista de las copias en el carrito.
@@ -322,7 +321,7 @@ class CirculationController extends Controller
                 });
             } else {
                 // crear el historial para el miembro
-                $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+                $biblioStatusHistory = new \common\models\BiblioStatusHistory();
                 $biblioStatusHistory->bibid = $biblioCopy->bibid;
                 $biblioStatusHistory->copyid = $copyid;
                 $biblioStatusHistory->mbr_id = $id;
@@ -402,10 +401,10 @@ class CirculationController extends Controller
 
     /**
      * Actualiza la deuda del usuario.
-     * 
-     * Si el usuario tiene algún material en préstamo y ha excedido el tiempo límite de entrega, 
+     *
+     * Si el usuario tiene algún material en préstamo y ha excedido el tiempo límite de entrega,
      * se actualiza esa información, se genera la deuda y se bloquea la cuenta del usuario para nuevos préstamos.
-     * 
+     *
      */
     protected function updateMemberAccount()
     {
@@ -415,7 +414,6 @@ class CirculationController extends Controller
         $biblioCopies = \common\models\BiblioCopy::find()->where(['mbr_id' => $id])->all();
 
         foreach ($biblioCopies as $biblioCopy) {
-
             $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
             // encontrar el cargo por día de retraso
             $fee = $biblio->getCollection()->one()->daily_late_fee;
@@ -431,7 +429,7 @@ class CirculationController extends Controller
             }
 
             if ($id != "" and $late > 0 and $fee > 0) {
-                $trans = new \common\models\MemberAccount;
+                $trans = new \common\models\MemberAccount();
                 $trans->mbr_id = $id;
                 $trans->create_userid = Yii::$app->user->id;
                 $trans->created_at = date('Y-m-d H:i:s');

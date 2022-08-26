@@ -25,7 +25,6 @@ use backend\models\Collection;
  */
 class BiblioController extends Controller
 {
-
     /**
      *
      * @var \common\models\UsmarcSubfield[]
@@ -232,13 +231,6 @@ class BiblioController extends Controller
             $message .= "</ul>";
 
             Yii::$app->session->setFlash('error', $message);
-            // array_walk_recursive($modelBiblioField, function ($model, $k) use ($message) {
-            //     foreach ($model->errors as $key => $error) {
-            //         $message .= $error[0] . "\n";
-            //     }
-
-            //     Yii::$app->session->setFlash('error', $message);
-            // });
         }
 
         return false;
@@ -259,7 +251,7 @@ class BiblioController extends Controller
         Yii::$app->storage->prefix .= "covers/";
 
         $this->usmarc = $this->getUsMarc();
-        
+
         $modelBiblioFields[] = new \common\models\BiblioField();
 
         $materialType = MaterialType::find($model->material_cd)->one();
@@ -267,7 +259,7 @@ class BiblioController extends Controller
             $materialType->default_flg = 'N';
             $materialType->save();
         }
-        Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        // Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save($fileModel)) {
@@ -282,7 +274,7 @@ class BiblioController extends Controller
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
-                    array_walk_recursive($model->errors, function ($v, $k) {
+                    @array_walk_recursive($model->errors, function ($v, $k) {
                         Yii::$app->session->setFlash('error', $v);
                     });
                 }
@@ -310,18 +302,18 @@ class BiblioController extends Controller
             }
 
             #return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
-            for ($i = 1; $i < count($this->usmarc); $i++) {
-                $biblioField = \common\models\BiblioField::findOne([
-                    'bibid' => $id,
-                    "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd
-                ]);
-                if ($biblioField !== null) {
-                    $modelBiblioFields[] = $biblioField;
-                } else {
-                    $modelBiblioFields[] = new \common\models\BiblioField();
-                }
+        }
+
+        //dentro del for, buscar si existe un bibliofield con el id de biblio y con el tag del campo marc y asignarlo.
+        for ($i = 1; $i < count($this->usmarc); $i++) {
+            $biblioField = \common\models\BiblioField::findOne([
+                'bibid' => $id,
+                "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd
+            ]);
+            if ($biblioField !== null) {
+                $modelBiblioFields[] = $biblioField;
+            } else {
+                $modelBiblioFields[] = new \common\models\BiblioField();
             }
         }
 

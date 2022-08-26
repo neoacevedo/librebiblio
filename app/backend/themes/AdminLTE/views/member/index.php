@@ -50,6 +50,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'updated_at',
                     [
                         'class' => ActionColumn::class,
+                        'template' => '{view}{account}{delete}',
+                        'buttons' => [
+                            'account' => function ($url, $model) {
+                                return Html::a(
+                                    '<i class="fas fa-eye"></i>',
+                                    [
+                                        "/member-account/view", "mbr_id" => $model->id
+                                    ],
+                                    [
+                                        'data-pjax' => 0,
+                                        'title' => Yii::t("app", "Member Account")
+                                    ]
+                                );
+                            }
+                        ],
                         'urlCreator' => function ($action, Member $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         }

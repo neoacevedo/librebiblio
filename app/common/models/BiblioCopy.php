@@ -10,6 +10,7 @@ namespace common\models;
 
 use neoacevedo\auditing\behaviors\AuditBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%biblio_copy}}".
@@ -48,6 +49,10 @@ class BiblioCopy extends \yii\db\ActiveRecord
     {
         return [
             AuditBehavior::class,
+            [
+                'class' => TimestampBehavior::class,
+                'value' => date('Y-m-d H:i:s')
+            ],
         ];
     }
 
