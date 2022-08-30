@@ -10,15 +10,13 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('biblio', 'Biblio Copies'), 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             $this->render('_form', [
                 'model' => $model,
             ])
-            ?>
+?>
         </div>
     </div>
 </div>

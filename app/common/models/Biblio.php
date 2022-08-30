@@ -27,21 +27,26 @@ use yii\db\ActiveRecord;
  * @property integer $updated_userid
  * @property integer $material_cd
  * @property integer $collection_cd
- * @property string $image_file
- * @property string $call_nmbr1
- * @property string $call_nmbr2
- * @property string $call_nmbr3
- * @property string $title
- * @property string $title_remainder
- * @property string $responsibility_stmt
- * @property string $author
- * @property string $topic1
- * @property string $topic2
- * @property string $topic3
- * @property string $topic4
- * @property string $topic5
+ * @property string|null $call_nmbr1
+ * @property string|null $call_nmbr2
+ * @property string|null $call_nmbr3
+ * @property string|null $title
+ * @property string|null $title_remainder
+ * @property string|null $image_file
+ * @property string|null $responsibility_stmt
+ * @property string|null $author
+ * @property string|null $topic1
+ * @property string|null $topic2
+ * @property string|null $topic3
+ * @property string|null $topic4
+ * @property string|null $topic5
  * @property string $opac_flg
  *
+ * @property BiblioCopy[] $biblioCopies
+ * @property BiblioField[] $biblioFields
+ * @property BiblioStatusHist[] $biblioStatusHists
+ * @property CollectionDm $collectionCd
+ * @property MaterialTypeDm $materialCd
  * @property User $updatedUser
  */
 class Biblio extends \yii\db\ActiveRecord
@@ -61,22 +66,18 @@ class Biblio extends \yii\db\ActiveRecord
     {
         return [
             AuditBehavior::class,
-            TimestampBehavior::class,
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
             [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'updated_userid',
                 'updatedByAttribute' => 'updated_userid',
             ],
-            [
-                'class' => AttributeBehavior::class,
-                'attributes' => [
-                    ActiveRecord::EVENT_AFTER_FIND => 'created_at'
-                ],
-                'value' => function ($event) {
-                    // Any Format you want
-                    return date('Y-m-d H:i:s', strtotime($this->created_at));
-                }
-            ]
         ];
     }
 
@@ -126,34 +127,18 @@ class Biblio extends \yii\db\ActiveRecord
     }
 
     /**
-     * Devuelve el ID del usuario que modificó la información del material bibliográfico
+     * Gets query for [[BiblioCopies]].
+     *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getBiblioCopies()
     {
-        return $this->hasOne(\backend\models\User::class, ['id' => 'updated_userid']);
+        return $this->hasMany(BiblioCopy::class, ['bibid' => 'id']);
     }
 
     /**
-     * Obtiene el tipo de material de la bibliografía
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMaterialType()
-    {
-        return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
-    }
-
-    /**
-     * Obtiene la colección de la bibliografía
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCollection()
-    {
-        return $this->hasOne(Collection::class, ['id' => 'collection_cd']);
-    }
-
-    /**
-     * Obtiene los campos bibliográficos
+     * Gets query for [[BiblioFields]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getBiblioFields()
@@ -161,6 +146,45 @@ class Biblio extends \yii\db\ActiveRecord
         return $this->hasMany(BiblioField::class, ['bibid' => 'id']);
     }
 
+    /**
+     * Gets query for [[BiblioStatusHists]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBiblioStatusHists()
+    {
+        return $this->hasMany(BiblioStatusHistory::class, ['bibid' => 'id']);
+    }
+
+    /**
+     * Gets query for [[CollectionCd]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollectionCd()
+    {
+        return $this->hasOne(Collection::class, ['id' => 'collection_cd']);
+    }
+
+    /**
+     * Gets query for [[MaterialCd]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaterialCd()
+    {
+        return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
+    }
+
+    /**
+     * Gets query for [[UpdatedUser]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_userid']);
+    }
     /**
      * Sube el archivo de imagen.
      * @param \yii\web\UploadedFile $imageFile

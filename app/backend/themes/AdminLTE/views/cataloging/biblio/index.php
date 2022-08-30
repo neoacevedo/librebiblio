@@ -95,24 +95,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => 'user.username',
                             'label' => \Yii::t('app', 'Updated by')
                         ],
-                        // 'collection_cd',
-                        // 'call_nmbr1',
-                        // 'call_nmbr2',
-                        // 'call_nmbr3',
-                        // 'title_remainder:ntext',
-                        // 'responsibility_stmt:ntext',
-
-                        // 'topic1:ntext',
-                        // 'topic2:ntext',
-                        // 'topic3:ntext',
-                        // 'topic4:ntext',
-                        // 'topic5:ntext',
-                        // 'opac_flg',
                         [
                             'attribute' => 'created_at',
-                            'format' => ['date', 'php:Y-m-d H:i:s'],
+                            // 'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
-                        ['class' => 'yii\grid\ActionColumn'],
+                        ['class' => 'kartik\grid\ActionColumn'],
                     ],
                     'options' => ['class' => 'table-responsive']
                 ]);

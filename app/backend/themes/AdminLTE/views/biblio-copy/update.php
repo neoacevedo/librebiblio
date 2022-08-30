@@ -13,16 +13,13 @@ $this->params['breadcrumbs'][] = ['label' => $model->barcode_nmbr, 'url' => ['vi
 $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="biblio-copy-update">
-
-    <h1><?= Html::encode($this->title) ?>
-    </h1>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             $this->render('_form', [
                 'model' => $model,
             ])
-            ?>
+?>
         </div>
     </div>
 </div>

@@ -29,7 +29,7 @@ class BiblioTableSeeder extends TableSeeder
                 "image_file" => "",
                 "responsibility_stmt" => "Craig Larman",
                 "author" => "Larman, Craig",
-                "topic1", "Object-Oriented",
+                "topic1" => "Object-Oriented",
                 "topic2" => "Programming",
                 "topic3" => "Software Design",
                 "topic4" => "UML",
@@ -154,24 +154,24 @@ class BiblioTableSeeder extends TableSeeder
 
         loop(function ($i) use ($biblios) {
             $this->insert(Biblio::tableName(), [
-                'updated_userid' => $biblios[$i]["updated_userid"],
-                'material_cd' => $biblios[$i]["material_cd"],
-                'collection_cd' => $biblios[$i]["collection_cd"],
-                'call_nmbr1' => $biblios[$i]["call_nmbr1"],
-                'call_nmbr2' => $biblios[$i]["call_nmbr2"],
-                'call_nmbr3' => $biblios[$i]["call_nmbr3"],
-                'title' => $biblios[$i]["title"],
-                'title_remainder' => $biblios[$i]["title_remainder"],
-                'image_file' => $biblios[$i]["image_file"],
-                'responsibility_stmt' => $biblios[$i]["responsibility_stmt"],
-                'author' => $biblios[$i]["author"],
-                'topic1' => $biblios[$i]["topic1"],
-                'topic2' => $biblios[$i]["topic2"],
-                'topic3' => $biblios[$i]["topic3"],
-                'topic4' => $biblios[$i]["topic4"],
-                'topic5' => $biblios[$i]["topic5"],
-                'opac_flg' => $biblios[$i]["opac_flg"],
+                'updated_userid' => $biblios[$i - 1]["updated_userid"],
+                'material_cd' => $biblios[$i - 1]["material_cd"],
+                'collection_cd' => $biblios[$i - 1]["collection_cd"],
+                'call_nmbr1' => $biblios[$i - 1]["call_nmbr1"],
+                'call_nmbr2' => $biblios[$i - 1]["call_nmbr2"],
+                'call_nmbr3' => $biblios[$i - 1]["call_nmbr3"],
+                'title' => $biblios[$i - 1]["title"],
+                'title_remainder' => $biblios[$i - 1]["title_remainder"],
+                'image_file' => $biblios[$i - 1]["image_file"],
+                'responsibility_stmt' => $biblios[$i - 1]["responsibility_stmt"],
+                'author' => $biblios[$i - 1]["author"],
+                'topic1' => $biblios[$i - 1]["topic1"],
+                'topic2' => $biblios[$i - 1]["topic2"],
+                'topic3' => $biblios[$i - 1]["topic3"],
+                'topic4' => $biblios[$i - 1]["topic4"],
+                'topic5' => $biblios[$i - 1]["topic5"],
+                'opac_flg' => $biblios[$i - 1]["opac_flg"],
             ]);
-        }, count($biblios) - 1);
+        }, count($biblios));
     }
 }

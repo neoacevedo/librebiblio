@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioCopySearch */
@@ -23,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'id',
                     'barcode_nmbr',
                     [
                         'attribute' => 'bibid',
@@ -35,13 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'created_at',
                     'updated_at',
                     'copy_desc',
-                    // 'barcode_nmbr',
-                    // 'status_cd',
-                    // 'status_begint_dt',
-                    // 'due_back_dt',
-                    // 'mbr_id',
-                    // 'renewal_count',
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                    ],
                 ],
                 'options' => [
                     'class' => 'table table-striped table-bordered table-responsive'

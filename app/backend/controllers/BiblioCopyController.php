@@ -122,13 +122,13 @@ class BiblioCopyController extends Controller
         $model = new BiblioCopy();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
+            return $this->redirect($this->request->referrer);
         } else {
             @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->session->setFlash('error', $v);
             });
         }
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -145,13 +145,13 @@ class BiblioCopyController extends Controller
         $model = $this->findModel($id, $bibid);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'bibid' => $model->bibid]);
+            return $this->redirect($this->request->referrer);
         } else {
             @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->session->setFlash('error', $v);
             });
         }
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }

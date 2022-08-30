@@ -22,7 +22,6 @@ use yii\filters\AccessControl;
  */
 class CirculationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -147,7 +146,7 @@ class CirculationController extends Controller
     }
 
     /**
-     * Cambia el estado de la copia a disponible y muestra una lista de copias 
+     * Cambia el estado de la copia a disponible y muestra una lista de copias
      * bibliográficas que estén en el carrito.
      * @param int $copyid
      * @param int $bibid
@@ -179,10 +178,10 @@ class CirculationController extends Controller
      * <li><i>out</i> En préstamo</li>
      * <li><i>in</i> Disponible</li>
      * </ul>
-     * @param int $bibid
-     * @param int $copyid
+     * @param int $bibid ID del material
+     * @param int $copyid ID de la copia
      * @param string $status
-     * @param int $id
+     * @param int $id ID del socio de la biblioteca que solicita el préstamo o reserva.
      * @return mixed
      */
     public function actionCreate(int $bibid, int $copyid, string $status, int $id)
@@ -205,7 +204,7 @@ class CirculationController extends Controller
                 break;
         }
 
-        $this->redirect(['member/view', 'id' => $id]);
+        $this->redirect($this->request->referrer);
     }
 
     /**
@@ -369,7 +368,7 @@ class CirculationController extends Controller
                 }
             }
 
-            $biblioHold = new \common\models\BiblioHold;
+            $biblioHold = new \common\models\BiblioHold();
             $biblioHold->bibid = $bibid;
             $biblioHold->copyid = $copyid;
             $biblioHold->mbr_id = $id;
@@ -390,14 +389,14 @@ class CirculationController extends Controller
 
     /**
      * Realiza el préstamo de un material bibliográfico.
-     * Verifica si al miembro al que se le va a prestar el material tiene alguna deuda; si la tiene, 
+     * Verifica si al miembro al que se le va a prestar el material tiene alguna deuda; si la tiene,
      * no se realiza el préstamo.
      * También verifica si el material está en préstamo y si el material lo tiene otro miembro para proceder al préstamo.
      * Valida también si el tipo de material ha alcanzado el límite de préstamos por parte del usuario.
      * @param int $bibid
      * @param int $copyid
      * @param int $id
-     * @return boolean false si el miembro tiene una deuda, el material ya ha sido prestado o si el tipo de material ya ha alcanzado 
+     * @return boolean false si el miembro tiene una deuda, el material ya ha sido prestado o si el tipo de material ya ha alcanzado
      * el límite de préstamos por parte del usuario.
      */
     protected function checkout(int $bibid, int $copyid, int $id)
@@ -443,7 +442,6 @@ class CirculationController extends Controller
         }
 
         if ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id == $id) {
-
             // el miembro tiene el material. Buscar si ya alcanzó el límite de renovaciones.
             if ($biblioCopy->hasReachedRenewalLimit(Member::findOne($id)->classification_id)) {
                 // el miembro ya alcanzó el límite de renovaciones
@@ -486,7 +484,7 @@ class CirculationController extends Controller
         }
 
         // crear el historial para el miembro
-        $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+        $biblioStatusHistory = new \common\models\BiblioStatusHistory();
         $biblioStatusHistory->bibid = $bibid;
         $biblioStatusHistory->copyid = $copyid;
         $biblioStatusHistory->mbr_id = $id;
@@ -516,12 +514,12 @@ class CirculationController extends Controller
 
     /**
      * Pone el material bibliográfico en el carrito y Cambia el estado de la copia bibliográfica.
-     * El estado de la copia puede ser: 
+     * El estado de la copia puede ser:
      * <ul>
      *  <li><i>crt</i>: En el carrito</li>
      *  <li><i>hld</i>: Rservado</li>
      * </ul>
-     * Este es el paso previo a devolverlo a la estantería, prestarlo o marcarlo con algún otro estado diferente 
+     * Este es el paso previo a devolverlo a la estantería, prestarlo o marcarlo con algún otro estado diferente
      * dependiendo de las condiciones en que haya sido devuelto el material bibliográfico.
      * @param int $bibid
      * @param int $copyid
@@ -553,7 +551,7 @@ class CirculationController extends Controller
         }
 
         // crear el historial para el miembro
-        $biblioStatusHistory = new \common\models\BiblioStatusHistory;
+        $biblioStatusHistory = new \common\models\BiblioStatusHistory();
         $biblioStatusHistory->bibid = $bibid;
         $biblioStatusHistory->copyid = $copyid;
         $biblioStatusHistory->mbr_id = $id;
@@ -574,8 +572,8 @@ class CirculationController extends Controller
 
     /**
      * Cambia el estado del material bibliográfico a disponible.
-     * 
-     * Se evalúa si el miembro que devuelve el libro lo devuelve en una fecha posterior a la establecida, 
+     *
+     * Se evalúa si el miembro que devuelve el libro lo devuelve en una fecha posterior a la establecida,
      * genera la multa correspondiente y bloquea la cuenta del usuario para nuevos préstamos externos.
      * @param int $bibid
      * @param int $copyid
@@ -600,7 +598,7 @@ class CirculationController extends Controller
         $biblioCopy->mbr_id = null;
 
         if ($late > 0 && $fee > 0) {
-            $trans = new \common\models\MemberAccount;
+            $trans = new \common\models\MemberAccount();
             $trans->mbr_id = $id;
             $trans->create_userid = Yii::$app->user->id;
             $trans->created_at = date('Y-m-d H:i:s');

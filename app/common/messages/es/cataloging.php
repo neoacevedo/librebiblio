@@ -22,7 +22,7 @@ return [
     'Create Biblio Field' => 'Crear Campo Bibliográfico',
     'Create MARC Field' => 'Crear Campo MARC',
     'Delete' => 'Borrar',
-    'EDIT MARC' => 'EDITAR CMARC',
+    'EDIT MARC' => 'Editar MARC',
     'Field Data' => '',
     'Ind1 Cd' => '',
     'Ind2 Cd' => '',

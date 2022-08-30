@@ -2,9 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\grid\GridView;
-use kartik\sidenav\SideNav;
+use kartik\grid\GridView;
+use Mpdf\Writer\JavaScriptWriter;
+use yii\bootstrap4\Modal;
 use yii\bootstrap4\Nav;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -62,27 +64,46 @@ foreach ($model->biblioFields as $biblioField) {
 }
 
 // emulación de data-confirm en elemento "a"
-$js = "\$('#copy_delete a').on('click', function(e) {
-        a = confirm('" . Yii::t('yii', 'Are you sure you want to delete this item?') . "');
-        return a;
-    });";
-$this->registerJs($js);
+$js = <<<JAVASCRIPT
+    document.getElementById("btnModal").addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch(this.getAttribute('href'), {
+            method: 'GET',
+        }).then(response => response.text())
+        .then(text => {
+            document.getElementById("modalContent").innerHTML = text;
+            $("#modal").modal('show');
+        });
+    });
+
+    var btnUpdates = document.getElementsByClassName("btnUpdate");
+    
+    Array.from(btnUpdates).forEach(element => element.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch(this.getAttribute('href'), {
+            method: 'GET',
+        }).then(response => response.text())
+        .then(text => {
+            document.getElementById("modalContentUpdate").innerHTML = text;
+            $("#modalUpdate").modal('show');
+        });
+    }));
+JAVASCRIPT;
+
+$this->registerJs($js, yii\web\View::POS_END);
 ?>
 <div class="biblio-view">
     <div class="card">
         <nav class="navbar navbar-expand navbar-white navbar-light">
-            <?=
-                Nav::widget([
+            <?= Nav::widget([
                     'options' => ['class' => 'navbar-nav'],
                     'items' => [
-                        ['label' => Yii::t('app', 'Add Copy'), 'url' => ['biblio-copy/create', 'bibid' => $model->id]],
                         ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
                         ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id],
                             'options' => ['id' => 'copy_delete']
                         ],
                         ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
                         ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
-                        ['label' => Yii::t('app', 'New'), 'url' => ['cataloging/biblio-field/create', 'bibid' => $model->id]],
                     ]
                 ]) ?>
         </nav>
@@ -100,8 +121,14 @@ $this->registerJs($js);
                     'model' => $model,
                     'attributes' => [
                         'id',
-                        'created_at',
-                        'updated_at',
+                        [
+                            'attribute' => 'created_at',
+                            'format' => ['date', 'php:Y-m-d H:i:s']
+                        ],
+                        [
+                            'attribute' => 'updated_at',
+                            'format' => ['date', 'php:Y-m-d H:i:s']
+                        ],
                         [
                             'attribute' => 'user',
                             'value' => $model->user->username,
@@ -127,10 +154,12 @@ $this->registerJs($js);
                         [
                             'attribute' => 'image_file',
                             'value' => function ($model) {
-                                return Html::img($model->image_file, ['alt' => $model->title,
-                                            'title' => $model->title,
-                                            'class' => 'image-thumbnail center-block',
-                                            'style' => 'width: 140px']);
+                                if ($model->image_file !== "") {
+                                    return Html::img($model->image_file, ['alt' => $model->title,
+                                                'title' => $model->title,
+                                                'class' => 'image-thumbnail center-block',
+                                                'style' => 'width: 100px']);
+                                }
                             },
                             'format' => 'raw'
                         ],
@@ -157,10 +186,26 @@ $this->registerJs($js);
             <?php
                 $biblioCopySearch = new \common\models\BiblioCopySearch();
 $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
-
+Pjax::begin();
 echo GridView::widget([
     "dataProvider" => $biblioCopy,
-    'summary' => '',
+    'panel' => [
+        'type'=>'default',
+    ],
+    'toolbar'=> [
+        'content' => Html::a(
+            '<i class="fas fa-plus"></i>',
+            ['biblio-copy/create', 'bibid' => $model->id],
+            [
+                'id' => 'btnModal',
+                'title' => Yii::t('app', 'Add Copy'),
+                'class' => 'btn btn-success',
+                'data-pjax' => 1,
+                'data-toggle' => 'modal',
+                'data-target' => '#modal',
+            ]
+        )
+    ],
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'barcode_nmbr',
@@ -176,24 +221,20 @@ echo GridView::widget([
         'due_back_dt',
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
+            'template' => '{update}&nbsp;&nbsp;{delete}',
             'buttons' => [
-                'view' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['biblio-copy/view', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                'title' => Yii::t('yii', 'View'),
-                    ]);
-                },
                 'update' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
+                    return Html::a('<span class="fas fa-pen"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
                                 'title' => Yii::t('yii', 'Update'),
+                                'class' => 'btnUpdate'
                     ]);
                 },
                 'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
+                    return Html::a('<span class="fas fa-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
                                 'title' => Yii::t('app', 'Delete'),
                                 'data' => [
                                     'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                    'pjax' => 0,
+                                    'pjax' => 1,
                                 ],
                     ]);
                 }
@@ -201,7 +242,9 @@ echo GridView::widget([
         ],
     ],
     'options' => ['class' => 'table table-striped table-bordered table-responsive']
-]); ?>
+]);
+Pjax::end();
+?>
         </div>
     </div>
     <div class="card">
@@ -218,3 +261,21 @@ echo GridView::widget([
         </div>
     </div>
 </div>
+<?php
+Modal::begin([
+    'id' => 'modal',
+    'title' => Yii::t('app', 'Add Copy')
+]);
+?>
+<div id="modalContent"></div>
+<?php
+Modal::end();
+
+Modal::begin([
+    'id' => 'modalUpdate',
+    'title' => Yii::t('yii', 'Update')
+]);
+?>
+<div id="modalContentUpdate"></div>
+<?php
+Modal::end();
