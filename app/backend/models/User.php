@@ -24,7 +24,7 @@ use neoacevedo\auditing\behaviors\AuditBehavior;
  * @property string phone
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string $verification_token
+ * @property string|null $verification_token
  * @property string $email
  * @property string $auth_key
  * @property integer $status
@@ -72,8 +72,9 @@ class User extends ActiveRecord implements IdentityInterface
             ['username', 'string', 'min' => 6, 'max' => 255],
             ['username', 'unique', 'targetClass' => '\backend\models\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             [['first_name', 'last_name', 'address'], 'string', 'min' => 4, 'max' => 255],
+            [['password_reset_token'], 'unique'],
             ['phone', 'string', 'min' => 4, 'max' => 32],
-            ['email', 'string', 'max' => 255],
+            [['password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             ['email', 'unique'],
             ['email', 'email'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],

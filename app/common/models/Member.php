@@ -25,6 +25,7 @@ use yii\web\IdentityInterface;
  * @property string phone
  * @property string $password_hash
  * @property string $password_reset_token
+ * @property string|null $verification_token
  * @property string $email
  * @property string $address
  * @property string $auth_key
@@ -68,35 +69,19 @@ class Member extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['first_name', 'trim'],
-            ['first_name', 'required'],
-            ['first_name', 'string', 'min' => 4, 'max' => 255],
-            ['last_name', 'trim'],
-            ['last_name', 'required'],
-            ['last_name', 'string', 'min' => 4, 'max' => 255],
-            ['pin', 'number'],
-            ['pin', 'required'],
-            ['pin', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This PIN number has already registered.')],
-            ['phone', 'trim'],
-            ['phone', 'required'],
-            ['phone', 'string', 'min' => 4, 'max' => 32],
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This username has already been taken.')],
-            ['username', 'string', 'min' => 4, 'max' => 255],
-            ['address', 'trim'],
-            ['address', 'required'],
-            ['address', 'string', 'min' => 5, 'max' => 255],
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\Member', 'message' => Yii::t('member', 'This email address has already been taken.')],
+            [['username', 'first_name', 'last_name'], 'trim'],
+            [['username', 'first_name', 'last_name', 'pin', 'address', 'auth_key', 'password_hash', 'email', 'phone', 'classification_id'], 'required'],
+            [['pin'], 'number'],
+            [['status', 'classification_id', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'first_name', 'last_name', 'address', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED, self::STATUS_DELETED]],
-            ['status', 'integer', 'message' => Yii::t('app', 'This is not a valid status.')],
-            ['classification_id', 'required'],
-            ['password_hash', 'required']
+            [['auth_key', 'phone'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['pin'], 'unique'],
+            [['password_reset_token'], 'unique'],
+            [['classification_id'], 'exist', 'skipOnError' => true, 'targetClass' => MemberClassify::class, 'targetAttribute' => ['classification_id' => 'id']],
         ];
     }
 
@@ -211,6 +196,26 @@ class Member extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Gets query for [[BiblioHolds]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBiblioHolds()
+    {
+        return $this->hasMany(BiblioHold::class, ['mbr_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Classification]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassification()
+    {
+        return $this->hasOne(MemberClassify::class, ['id' => 'classification_id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public function validateAuthKey($authKey)
@@ -253,6 +258,14 @@ class Member extends ActiveRecord implements IdentityInterface
     public function generatePasswordResetToken()
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Generates new token for email verification
+     */
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**

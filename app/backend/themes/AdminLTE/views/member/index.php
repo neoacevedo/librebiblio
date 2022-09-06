@@ -29,7 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'toolbar' => [
                     [
                         'content' =>
-                            Html::a('<i class="fas fa-plus"></i>', ['create'], [
+                            Html::a('<i class="fas fa-print"></i>', ["print"], [
+                                'class' => 'btn btn-default',
+                                'title' => Yii::t('circulation', 'Print List'),
+                                'target' => '_blank',
+                                'data-pjax' => 0,
+                            ])
+                            . Html::a('<i class="fas fa-plus"></i>', ['create'], [
                                 'class' => 'btn btn-success',
                                 'title' => Yii::t('app', 'Create Member'),
                             ])
@@ -50,21 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'updated_at',
                     [
                         'class' => ActionColumn::class,
-                        'template' => '{view}{account}{delete}',
-                        'buttons' => [
-                            'account' => function ($url, $model) {
-                                return Html::a(
-                                    '<i class="fas fa-eye"></i>',
-                                    [
-                                        "/member-account/view", "mbr_id" => $model->id
-                                    ],
-                                    [
-                                        'data-pjax' => 0,
-                                        'title' => Yii::t("app", "Member Account")
-                                    ]
-                                );
-                            }
-                        ],
+                        'template' => '{view}&nbsp;{delete}',
                         'urlCreator' => function ($action, Member $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         }

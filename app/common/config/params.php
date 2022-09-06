@@ -30,7 +30,7 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
-    'user.passwordMinLength' => 8,
+    'user.passwordMinLength' => 16,
     'bsVersion' => '4.x',
     'library_hours' => $settings['library_hours'],
     'library_phone' => $settings['library_phone'],

@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\Member;
 use Yii;
 use yii\base\Model;
 use common\models\User;
@@ -12,9 +13,14 @@ use common\models\User;
 class SignupForm extends Model
 {
     public $username;
+    public $first_name;
+    public $last_name;
+    public $pin;
+    public $phone;
+    public $address;
     public $email;
     public $password;
-
+    public $classification_id;
 
     /**
      * {@inheritdoc}
@@ -22,17 +28,16 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
-
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
-
+            [['username', 'first_name', 'last_name'], 'trim'],
+            [['username', 'first_name', 'last_name', 'pin', 'address', 'email', 'phone', 'classification_id'], 'required'],
+            [['pin'], 'number'],
+            [['classification_id'], 'integer'],
+            [['username', 'first_name', 'last_name', 'address', 'email'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['pin'], 'unique'],
+            [['classification_id'], 'exist', 'skipOnError' => false, 'targetClass' => MemberClassify::class, 'targetAttribute' => ['classification_id' => 'id']],
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
@@ -48,33 +53,46 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
-        $user = new User();
+
+        $user = new Member();
         $user->username = $this->username;
+        $user->first_name = $this->first_name;
+        $user->last_name = $this->last_name;
+        $user->pin = $this->pin;
+        $user->phone = $this->phone;
         $user->email = $this->email;
+        $user->address = $this->address;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->status = Member::STATUS_ACTIVE;
+        $user->classification_id = $this->classification_id;
 
         return $user->save() && $this->sendEmail($user);
     }
 
     /**
-     * Sends confirmation email to user
-     * @param User $user user model to with email should be send
-     * @return bool whether the email was sent
+     * Envía un correo electrónico con la información para crear la contraseña.
+     * @param Member $user
+     * @return boolean
      */
-    protected function sendEmail($user)
+    public function sendEmail(Member $user)
     {
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
+        if (!Member::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        return \Yii::$app->mailer
+                        ->compose(
+                            ['html' => 'userSignup-html', 'text' => 'userSignup-text'],
+                            ['user' => $user]
+                        )
+                        ->setTo($user->email)
+                        ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
+                        ->setSubject('Signup Confirmation')
+                        ->send();
     }
 }

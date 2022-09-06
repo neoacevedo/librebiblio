@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model common\models\MemberAccount */
 
@@ -11,12 +10,12 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('circulation', 'Member Accou
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="member-account-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-        'transactionType' => $transactionType
-    ]) ?>
-
+    <div class="card">
+        <div class="card-body">
+            <?= $this->render('_form', [
+                'model' => $model,
+                'transactionType' => $transactionType
+            ]) ?>
+        </div>
+    </div>
 </div>

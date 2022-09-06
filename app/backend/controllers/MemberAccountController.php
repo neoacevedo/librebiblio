@@ -129,7 +129,7 @@ class MemberAccountController extends Controller
             @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
                 'transactionType' => $transactionType
             ]);

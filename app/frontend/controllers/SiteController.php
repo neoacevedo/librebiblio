@@ -18,6 +18,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\ContactForm;
 use common\models\BiblioSearch;
+use common\models\Member;
 use yii\base\InvalidArgumentException;
 
 /**
@@ -25,7 +26,6 @@ use yii\base\InvalidArgumentException;
  */
 class SiteController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -180,18 +180,22 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        $model = new \common\models\SignupForm();
+        $model = new \frontend\models\SignupForm();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post())) {
-            if (($user = $model->signup())) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
+
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            $user = Member::findByUsername($model->username);
+            if (Yii::$app->getUser()->login($user)) {
+                return $this->goHome();
             } else {
-                @array_walk_recursive($model->errors, function ($v, $k) {
+                @array_walk_recursive($user->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
+
+            return $this->render('signup', [
+                'model' => $model,
+            ]);
         } else {
             @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);

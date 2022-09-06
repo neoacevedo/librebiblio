@@ -14,6 +14,8 @@ use common\models\Member;
 use common\models\MemberAccount;
 use common\models\MemberAccountSearch;
 use backend\models\MemberSearch;
+use frontend\models\PasswordResetRequestForm;
+use kartik\mpdf\Pdf;
 use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -109,19 +111,33 @@ class MemberController extends Controller
      */
     public function actionCreate()
     {
-        $model = new \common\models\SignupForm();
+        $model = new \common\models\Member();
         $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if ($model->sendEmail($user->id)) {
-                    Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Email sent to user'));
+        if ($model->load($this->request->post())) {
+            $model->generateAuthKey();
+            $model->generateEmailVerificationToken();
+            $model->setPassword(time());
+            if ($model->save()) {
+                $passwordResetRequest = new PasswordResetRequestForm();
+                $passwordResetRequest->email = $model->email;
+                if ($passwordResetRequest->validate()) {
+                    if ($passwordResetRequest->sendEmail()) {
+                        Yii::$app->session->setFlash('success', Yii::t("app", "Mail sent to user."));
+                    } else {
+                        Yii::$app->session->setFlash('warning', Yii::t("app", "Mail couldn't be sent."));
+                    }
                 } else {
-                    Yii::$app->getSession()->setFlash('warning', 'Failed, contact Admin!');
+                    $message = "<ul>";
+                    foreach ($passwordResetRequest->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('error', $message);
                 }
-                return $this->redirect(['circulation/index']);
+                return $this->redirect(['index']);
             } else {
-                array_walk_recursive($model->errors, function ($v, $k) {
+                @array_walk_recursive($model->errors, function ($v, $k) {
                     Yii::$app->getSession()->setFlash('error', $v);
                 });
             }
@@ -155,25 +171,53 @@ class MemberController extends Controller
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        /* return $this->render('members-print', [
-          'dataProvider' => $dataProvider,
-          ]); */
-        $html = $this->renderPartial('print', [
+        // return $this->render('print', [
+        //   'dataProvider' => $dataProvider,
+        // ]);
+        $html = $this->renderAjax('print', [
             'dataProvider' => $dataProvider,
         ]);
-        $pdf = Yii::$app->pdf;
+
+        $css = ".kv-heading-1{font-size:18px} 
+                *, *::before, *::after{box-sizing: border-box} 
+                .col-6 {
+                    padding-right: 7.5px;
+                    padding-left: 7.5px;
+                    width: 50%;
+                    height: auto;
+                }
+                .barcode {
+                    display: block;
+                    margin-left: 15px;
+                    margin-right: 15px;
+                }
+                .fila {
+                    margin-right: -7.5px;
+                    margin-left: -7.5px;
+                }";
+
+        $pdf = new Pdf([
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => $css,
+            'options' => [
+                'margin_left' => 20,
+                'margin_right' => 15,
+                'margin_top' => 25,
+                'margin_bottom' => 25,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'showBarcodeNumbers' => false,
+            ]
+        ]);
         $pdf->content = $html;
-        $pdf->options = [
-            'margin_left' => 20,
-            'margin_right' => 15,
-            'margin_top' => 25,
-            'margin_bottom' => 25,
-            'margin_header' => 10,
-            'margin_footer' => 10,
-            'showBarcodeNumbers' => false
-        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
+            'SetTitle' => Yii::t('circulation', 'Print List'),
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
         ];
 
@@ -291,23 +335,31 @@ class MemberController extends Controller
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
 
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        $html = $this->renderPartial('account-view', [
+        $html = $this->renderAjax('account-view', [
             'memberAccount' => $memberAccount,
         ]);
 
         $html = str_replace('<div class="row">', '<div class="hidden">', $html);
 
-        $pdf = Yii::$app->pdf;
+        $pdf = new Pdf([
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+            'options' => [
+                'margin_left' => 20,
+                'margin_right' => 15,
+                'margin_top' => 25,
+                'margin_bottom' => 25,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'showBarcodeNumbers' => false
+            ]
+        ]);
         $pdf->content = $html;
-        $pdf->options = [
-            'margin_left' => 20,
-            'margin_right' => 15,
-            'margin_top' => 25,
-            'margin_bottom' => 25,
-            'margin_header' => 10,
-            'margin_footer' => 10,
-            'showBarcodeNumbers' => false
-        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
@@ -334,14 +386,14 @@ class MemberController extends Controller
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['member-view', 'id' => $model->id]);
         } else {
-            array_walk_recursive($model->errors, function ($v, $k) {
+            @array_walk_recursive($model->errors, function ($v, $k) {
                 Yii::$app->getSession()->setFlash('error', $v);
             });
-            return $this->render('update', [
-                'model' => $model,
-                'mbr_classify' => $mbr_classify
-            ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+            'mbr_classify' => $mbr_classify
+        ]);
     }
 
     /**

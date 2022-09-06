@@ -47,7 +47,7 @@ use yii\db\ActiveRecord;
  * @property BiblioStatusHist[] $biblioStatusHists
  * @property CollectionDm $collectionCd
  * @property MaterialTypeDm $materialCd
- * @property User $updatedUser
+ * @property User $user
  */
 class Biblio extends \yii\db\ActiveRecord
 {
@@ -181,9 +181,9 @@ class Biblio extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedUser()
+    public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'updated_userid']);
+        return $this->hasOne(\backend\models\User::class, ['id' => 'updated_userid']);
     }
     /**
      * Sube el archivo de imagen.
