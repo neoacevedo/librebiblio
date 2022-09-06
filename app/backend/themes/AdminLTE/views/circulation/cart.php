@@ -5,71 +5,67 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\BiblioSearch */
+/* @var $searchModel common\models\BiblioCopySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = Yii::t('app', 'Cart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<section class="content">
-    <div class="circulation-index">
-        <div class="bibliosearch-index">
-            <h1><?= Html::encode($this->title) ?></h1>
-
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <?php
-                Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
+<div class="circulation-index">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <?php Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
                         'replace' => false]
-                ]);
-                ?>
-                <?=
-                GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'id' => 'checkout',
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'barcode_nmbr',
-                        [
-                            'attribute' => 'biblio',
-                            'value' => 'biblio.title',
-                            'label' => Yii::t('app', 'Title'),
-                        ],
-                        [
-                            'label' => Yii::t('app', 'Author'),
-                            'value' => 'biblio.author'
-                        ],
-                        [
-                            'attribute' => 'material_cd',
-                            'value' => function($model) {
-                                $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
-                                return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
-                            },
-                            'label' => 'Material'
-                        ],
-                        'updated_at',
-                        ['class' => 'yii\grid\ActionColumn',
-                            'template' => '{checkin}',
-                            'buttons' => [
-                                'checkin' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
-                                                'title' => Yii::t('app', 'Check in'),
-                                    ]);
-                                }
+                    ]); ?>
+                    <?= GridView::widget([
+                            'dataProvider' => $dataProvider,
+                            'filterModel' => $searchModel,
+                            'id' => 'checkout',
+                            'columns' => [
+                                ['class' => 'yii\grid\SerialColumn'],
+                                'barcode_nmbr',
+                                [
+                                    'attribute' => 'title',
+                                    'value' => 'biblio.title',
+                                    'label' => Yii::t('app', 'Title'),
+                                ],
+                                [
+                                    'attribute' => 'author',
+                                    'label' => Yii::t('app', 'Author'),
+                                    'value' => 'biblio.author'
+                                ],
+                                [
+                                    'attribute' => 'material',
+                                    'value' => 'biblio.materialType.description',
+                                ],
+                                [
+                                    'attribute' => 'updated_at',
+                                    'format' => ['date', 'php:Y-m-d H:i:s']
+                                ],
+                                ['class' => 'yii\grid\ActionColumn',
+                                    'template' => '{checkin}',
+                                    'buttons' => [
+                                        'checkin' => function ($url, $model) {
+                                            return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
+                                                        'title' => Yii::t('app', 'Check in'),
+                                            ]);
+                                        }
+                                    ],
+                                    'urlCreator' => function ($action, $model, $key, $index) {
+                                        if ($action === 'checkin') {
+                                            $url = "index.php?r=circulation/checkin&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=0";
+                                            return $url;
+                                        }
+                                    }],
                             ],
-                            'urlCreator' => function ($action, $model, $key, $index) {
-                                if ($action === 'checkin') {
-                                    $url = "index.php?r=circulation/checkin&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=0";
-                                    return $url;
-                                }
-                            }],
-                    ],
-                    'options' => ['class' => 'box table-responsive']
-                ]);
-                ?>
+                            'options' => ['class' => 'box table-responsive']
+                        ]); ?>
 
-                <?php Pjax::end(); ?>
+                    <?php Pjax::end(); ?>
+                </div>
             </div>
         </div>
     </div>
-</section>
+</div>

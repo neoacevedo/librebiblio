@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'created_at',
-                            // 'format' => ['date', 'php:Y-m-d H:i:s'],
+                            'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
                         ['class' => 'kartik\grid\ActionColumn'],
                     ],

@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 use pceuropa\menu\Menu;
 
 /* @var $this yii\web\View */
-/** @var common\models\BiblioSearch $searchModel */
+/** @var common\models\BiblioCopySearch $searchModel */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = Yii::t('app', 'Check in');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
@@ -15,13 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="circulation-index">
     <div class="card">
         <div class="card-body">
-            <?php
-                Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
+            <?php Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
                         'replace' => false]
-                ]);
-                ?>
-            <?=
-                GridView::widget([
+            ]); ?>
+            <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'id' => 'checkout',
@@ -35,15 +32,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         'barcode_nmbr',
-                        'biblio.title',
-                        'biblio.author',
                         [
-                            'attribute' => 'biblio.material_cd',
-                            'value' => function ($model) {
-                                $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
-                                return \common\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
-                            },
-                            'label' => 'Material'
+                            'attribute' => 'title',
+                            'value' => 'biblio.title',
+                            'label' => Yii::t('app', 'Title'),
+                        ],
+                        [
+                            'attribute' => 'author',
+                            'label' => Yii::t('app', 'Author'),
+                            'value' => 'biblio.author'
+                        ],
+                        [
+                            'attribute' => 'material',
+                            'value' => 'biblio.materialType.description',
                         ],
                         [
                             'attribute' => 'due_back_dt',
@@ -54,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{checkin}',
                             'buttons' => [
                                 'checkin' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
+                                    return Html::a('<span class="fas fa-check"></span>', $url, [
                                                 'title' => Yii::t('app', 'Check in'),
                                     ]);
                                 }
@@ -67,8 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }],
                     ],
                     'options' => ['class' => 'table table-responsive']
-                ]);
-            ?>
+                ]); ?>
             <?php Pjax::end(); ?>
         </div>
     </div>

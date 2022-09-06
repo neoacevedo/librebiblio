@@ -24,8 +24,8 @@ use yii\helpers\Html;
                 'url' => ['site/index'],
             ],
             [
-                'label' => Yii::t("app", "Circulation"),
-                'url' => ['/circulation/index']
+                'label' => Yii::t("app", "Check in"),
+                'url' => ['/circulation/reception']
             ],
             [
                 'label' => Yii::t("app/reports", "Reports"),

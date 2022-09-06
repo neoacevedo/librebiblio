@@ -190,6 +190,7 @@ class MemberController extends Controller
                     display: block;
                     margin-left: 15px;
                     margin-right: 15px;
+                    margin-bottom: 15px;
                 }
                 .fila {
                     margin-right: -7.5px;

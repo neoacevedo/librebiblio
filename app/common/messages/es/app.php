@@ -45,7 +45,6 @@ return [
     'Add Copy' => 'Agregar Copia',
     'Additional Bibliographic Information' => 'Información bibliográfica adicional',
     'Address' => 'Dirección',
-    'Are you sure you want to delete this item?' => '¿Está seguro que desea borrar este ítem?',
     'Assignment' => 'Asignación',
     'Author' => 'Autor',
     'Biblio Search' => 'Búsqueda Bibliográfica',
@@ -102,7 +101,6 @@ return [
     'Home' => 'Inicio',
     'Image File' => 'Archivo de imagen',
     'Inactive' => 'Inactivo',
-    'Incorrect username or password.' => 'Usuario o contraseña incorrecto.',
     'Install' => 'Instalar',
     'Items per page' => 'Artículos por página',
     'Last Name' => 'Apellido',
@@ -160,7 +158,6 @@ return [
     'Status Cd' => 'Estado',
     'Tag' => 'Etiqueta',
     'Thank you for contacting us. We will respond to you as soon as possible.' => 'Gracias por contactarnos. Le responderemos lo más rápido posible.',
-    'The requested page does not exist.' => 'La página solicitada no existe',
     'There is no user with this email address.' => 'No hay un usuario conestar dirección de correo',
     'There was an error sending your message.' => 'Hubo un error al enviar su mensaje',
     // 'This email address has already been taken.' => '@@Esta dirección de correo ya ha sido tomada.@@',
@@ -181,5 +178,5 @@ return [
     'View' => 'Ver',
     'Yes' => 'Sí',
     'You must select at least one element' => 'Debe seleccionar al menos un elemento',
-    '{modelClass} History: ' => 'Historial de {modelClass}:'
+    'Member Checkouts History: ' => 'Historial de préstamos del Socio: '
 ];

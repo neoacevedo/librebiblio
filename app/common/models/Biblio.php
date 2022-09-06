@@ -147,31 +147,31 @@ class Biblio extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[BiblioStatusHists]].
+     * Gets query for [[BiblioStatusHistory]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBiblioStatusHists()
+    public function getBiblioStatusHistories()
     {
         return $this->hasMany(BiblioStatusHistory::class, ['bibid' => 'id']);
     }
 
     /**
-     * Gets query for [[CollectionCd]].
+     * Gets query for [[Collection]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCollectionCd()
+    public function getCollection()
     {
         return $this->hasOne(Collection::class, ['id' => 'collection_cd']);
     }
 
     /**
-     * Gets query for [[MaterialCd]].
+     * Gets query for [[MaterialType]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMaterialCd()
+    public function getMaterialType()
     {
         return $this->hasOne(MaterialType::class, ['id' => 'material_cd']);
     }
