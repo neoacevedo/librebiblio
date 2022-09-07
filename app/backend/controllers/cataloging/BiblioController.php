@@ -202,9 +202,8 @@ class BiblioController extends Controller
      */
     public function actionCreateFromThis(int $id)
     {
-        $model = $this->findModel($id);
-        $model->id = null;
-        $model->isNewRecord = true;
+        $model = new Biblio();
+
         // este método es solo para crear los campos en el formulario
         $this->usmarc = $this->getUsMarc();
         // Uploaded file instance.
@@ -258,6 +257,17 @@ class BiblioController extends Controller
             if ($this->createBiblioField($model->id, $modelBiblioFields)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
+        }
+
+        $model->load($this->findModel($id)->getAttributes(null, ['id', 'created_at', 'updated_at']), '');
+        if (!$model->validate()) {
+            $message = "<ul>";
+            foreach ($model->errors as $key => $error) {
+                $message .= "<li>{$error[0]}</li>";
+            }
+            $message .= "</ul>";
+
+            Yii::$app->session->setFlash('error', $message);
         }
 
         return $this->render('create', [

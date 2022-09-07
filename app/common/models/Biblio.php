@@ -11,6 +11,7 @@ namespace common\models;
 use Yii;
 use common\models\MaterialType;
 use backend\models\Collection;
+use backend\models\User;
 use common\models\BiblioField;
 use neoacevedo\auditing\behaviors\AuditBehavior;
 use yii\behaviors\AttributeBehavior;
@@ -40,7 +41,7 @@ use yii\db\ActiveRecord;
  * @property string|null $topic3
  * @property string|null $topic4
  * @property string|null $topic5
- * @property string $opac_flg
+ * @property int $opac_flg
  *
  * @property BiblioCopy[] $biblioCopies
  * @property BiblioField[] $biblioFields
@@ -87,13 +88,14 @@ class Biblio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
-            [['updated_userid', 'material_cd', 'collection_cd', 'created_at', 'updated_at'], 'integer'],
+            [['material_cd', 'collection_cd', 'opac_flg'], 'required'],
+            [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'integer'],
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string'],
-            [['image_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],
-            [['opac_flg'], 'string', 'max' => 1],
-            [['updated_userid'], 'exist', 'skipOnError' => true, 'targetClass' => \backend\models\User::class, 'targetAttribute' => ['updated_userid' => 'id']],
+            [['image_file'], 'string', 'max' => 128],
+            [['collection_cd'], 'exist', 'skipOnError' => false, 'targetClass' => Collection::class, 'targetAttribute' => ['collection_cd' => 'id']],
+            [['material_cd'], 'exist', 'skipOnError' => false, 'targetClass' => MaterialType::class, 'targetAttribute' => ['material_cd' => 'id']],
+            [['updated_userid'], 'exist', 'skipOnError' => false, 'targetClass' => User::class, 'targetAttribute' => ['updated_userid' => 'id']],
         ];
     }
 

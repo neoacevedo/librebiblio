@@ -50,9 +50,9 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "book"
                         ],
                         [
-                            "label" => Yii::t("app/reports", "Reports"),
-                            "url" => ["/admin/report/index"],
-                            "icon" => "chart-bar"
+                            "label" => Yii::t("cataloging", "Create MARC Field"),
+                            "url" => ["/cataloging/biblio-field/create"],
+                            "icon" => "plus"
                         ],
                         [
                             "label" => Yii::t("app", "Circulation"),

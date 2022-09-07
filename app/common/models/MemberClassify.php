@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
@@ -61,5 +62,19 @@ class MemberClassify extends \yii\db\ActiveRecord
     public function getCheckoutPrivs()
     {
         return $this->hasMany(CheckoutPrivs::class, ['classification_id' => 'id']);
+    }
+
+    /**
+     * Devuelve los tipos de material como array.
+     * @return array
+     */
+    public static function asArray(): array
+    {
+        $classifies = MemberClassify::find()->select('id, description')->asArray()->all();
+        foreach ($classifies as $index => $value) {
+            $classify[$value['description']] = $value['description'];
+        }
+
+        return $classify;
     }
 }

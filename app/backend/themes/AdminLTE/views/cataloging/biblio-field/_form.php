@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -21,25 +21,25 @@ $blockKey = ArrayHelper::map(array_merge([''], array_values($marcBlocks)), 'bloc
         <label for="block">Block</label>
         <?=
         Html::dropDownList('blocks', null, $blockKey, [
-            'id' => 'block', 
+            'id' => 'block',
             'class' => 'form-control',
             'onchange' => '
                 $.post( "index.php?r=cataloging/biblio-field/usmarc-tags-options&block=' . '"+$(this).val(), function( data ) {
                 $("#bibliofield-tag").html("<option value=\'\'></option>" + data);
             });'
         ])
-        ?>
+?>
     </div>
 
     <?=
     $form->field($model, 'tag')->dropDownList([], [
-        'onchange' => '
+'onchange' => '
             $.post( "index.php?r=cataloging/biblio-field/usmarc-subfields-options&tag=' . '"+$(this).val(), function( data ) {
                 $("#bibliofield-subfield_cd").html("<option value=\'\'></option>" + data);
             });
             '
     ])
-    ?>    
+?>
 
     <?= $form->field($model, 'subfield_cd')->dropDownList([]) ?>
 
