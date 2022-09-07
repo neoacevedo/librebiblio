@@ -78,6 +78,7 @@ return [
     'Create Biblio' => '',
     'Create Biblio Copy' => '',
     'Create Collection' => '',
+    'Create from This' => '',
     'Create Material Type' => '',
     'Create Member Classify' => '',
     'Create User' => '',

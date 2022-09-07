@@ -196,6 +196,81 @@ class BiblioController extends Controller
     }
 
     /**
+     * Registra el material bibliográfico, usando los datos de uno existente.
+     * @param int $id ID del material original.
+     * @return mixed
+     */
+    public function actionCreateFromThis(int $id)
+    {
+        $model = $this->findModel($id);
+        $model->id = null;
+        $model->isNewRecord = true;
+        // este método es solo para crear los campos en el formulario
+        $this->usmarc = $this->getUsMarc();
+        // Uploaded file instance.
+        $fileModel = Yii::$app->storage->getFileManager();
+
+        Yii::$app->storage->prefix .= "covers/";
+
+        $modelBiblioFields[] = new \common\models\BiblioField();
+
+        for ($i = 1; $i < count($this->usmarc); $i++) {
+            $modelBiblioFields[] = new \common\models\BiblioField();
+        }
+        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        if ($model->load(Yii::$app->request->post())) {
+            if (null !== $fileModel->uploadedFile) {
+                if (Yii::$app->storage->save($fileModel)) {
+                    $model->image_file = Yii::$app->storage->getUrl(Yii::$app->storage->prefix . $fileModel->uploadedFile->name);
+                } else {
+                    $message = "<ul>";
+                    foreach ($fileModel->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+
+                    Yii::$app->session->setFlash('error', $message);
+                }
+            } else {
+                $message = "<ul>";
+                foreach ($fileModel->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
+            }
+            if ($model->save()) {
+                // file is uploaded successfully
+                $materialType = MaterialType::find($model->material_cd)->one();
+                $materialType->default_flg = 'Y';
+                $materialType->save();
+            } else {
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
+            }
+
+            if ($this->createBiblioField($model->id, $modelBiblioFields)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'modelBiblioFields' => $modelBiblioFields,
+            'usmarc' => $this->usmarc,
+            'fileModel' => $fileModel,
+            'materialType' => MaterialType::find()->all(),
+            'collection' => Collection::find()->all()
+        ]);
+    }
+
+    /**
      * Borra los registros si los hay de la tabla BiblioField de acuerdo al id del
      * campo bibid el cual es la relación con la tabla Biblio y procede a crear nuevos
      * para ese mismo modelo.

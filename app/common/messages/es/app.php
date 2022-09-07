@@ -79,6 +79,7 @@ return [
     'Create Biblio' => 'Nuevo Material',
     'Create Biblio Copy' => 'Crear Copia Bibliográfica',
     'Create Collection' => 'Crear Colección',
+    'Create from This' => 'Crear desde este material',
     'Create Material Type' => 'Crear tipo de material',
     'Create Member Classify' => 'Crear Clasificación de Socio',
     'Create User' => 'Registrar personal',

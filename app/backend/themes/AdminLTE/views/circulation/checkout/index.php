@@ -1,5 +1,6 @@
 <?php
 
+use common\models\MaterialType;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -31,6 +32,7 @@ use yii\widgets\Pjax;
             [
                 'attribute' => 'material',
                 'value' => 'biblio.materialType.description',
+                'filter' => MaterialType::asArray(),
                 'label' => Yii::t('app', 'Material Cd')
             ],
             'due_back_dt',
@@ -47,15 +49,6 @@ use yii\widgets\Pjax;
                     //greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late
                 }
             ]
-        /* ['class' => 'yii\grid\ActionColumn',
-            'buttons' => [
-            'renew-item' => function($url, $model) {
-            return Html::a('<span class="glyphicon glyphicon-reload"></span>', ['renew-item', 'id' => $model->id], [
-            'title' => Yii::t('app', 'Renew item'),
-            'id' => "modal"
-            ]);
-            }
-            ]], */
         ],
     ]); ?>
 </div>

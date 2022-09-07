@@ -1,14 +1,15 @@
 <?php
 
+use common\models\MaterialType;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioCopySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = Yii::t('app', 'Cart');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['member/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="circulation-index">
@@ -39,23 +40,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => 'material',
                                     'value' => 'biblio.materialType.description',
+                                    'filter' => MaterialType::asArray(),
                                 ],
                                 [
                                     'attribute' => 'updated_at',
-                                    'format' => ['date', 'php:Y-m-d H:i:s']
+                                    'format' => ['date', 'php:Y-m-d H:i:s'],
+                                    'filterType' => GridView::FILTER_DATE,
+                                    'label' => 'Fecha de escaneo'
                                 ],
                                 ['class' => 'yii\grid\ActionColumn',
                                     'template' => '{checkin}',
                                     'buttons' => [
                                         'checkin' => function ($url, $model) {
-                                            return Html::a('<span class="glyphicon glyphicon-check"></span>', $url, [
+                                            return Html::a('<span class="fas fa-check"></span>', $url, [
                                                         'title' => Yii::t('app', 'Check in'),
                                             ]);
                                         }
                                     ],
                                     'urlCreator' => function ($action, $model, $key, $index) {
                                         if ($action === 'checkin') {
-                                            $url = "index.php?r=circulation/checkin&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=0";
+                                            $url = "index.php?r=circulation/checkin&copyid=$model->id&bibid=$model->bibid&status=in&id=$model->mbr_id&data-pjax=1";
                                             return $url;
                                         }
                                     }],

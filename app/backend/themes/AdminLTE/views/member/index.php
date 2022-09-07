@@ -49,11 +49,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pin',
                     'address',
                     'email:email',
-                    //'status',
-                    //'phone',
-                    //'classification_id',
-                    //'created_at',
-                    //'updated_at',
+                    [
+                        'attribute' => 'status',
+                        'value' => function ($model) {
+                            switch ($model->status) {
+                                case $model::STATUS_ACTIVE:
+                                    return Yii::t('app', 'Active');
+                                case $model::STATUS_BLOCKED:
+                                    return Yii::t('app', 'Blocked');
+                                case $model::STATUS_DELETED:
+                                    return Yii::t('app', 'Deleted');
+                            }
+                        }
+                    ],
                     [
                         'class' => ActionColumn::class,
                         'template' => '{view}&nbsp;{delete}',

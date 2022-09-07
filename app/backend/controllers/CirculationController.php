@@ -99,21 +99,6 @@ class CirculationController extends Controller
     }
 
     /**
-     * Busca un modelo Member que coincida con ciertas especificaciones.
-     * @return mixed
-     */
-    public function actionSearch()
-    {
-        $searchModel = new MemberSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        return $this->render('search', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
      * Lista todos los materiales bibliográficos que se encuentran en el carrito.
      * @return mixed
      */

@@ -8,7 +8,7 @@ use yii\bootstrap4\Nav;
 /* @var $model common\models\User */
 
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // emulación de data-confirm en elemento "a"

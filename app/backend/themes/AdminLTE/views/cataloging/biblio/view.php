@@ -99,9 +99,8 @@ $this->registerJs($js, yii\web\View::POS_END);
                     'options' => ['class' => 'navbar-nav'],
                     'items' => [
                         ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
-                        ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id],
-                            'options' => ['id' => 'copy_delete']
-                        ],
+                        ['label' => Yii::t('app', 'Create from This'), 'url' => ['create-from-this', 'id' => $model->id]],
+                        ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id]],
                         ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
                         ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
                     ]

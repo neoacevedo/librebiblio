@@ -27,7 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'panel' => [
                         'type'=>'default',
                     ],
-                    'toolbar'=> false,
+                    'toolbar' => [
+                        [
+                            'content' =>
+                                Html::a('<i class="fas fa-plus"></i>', ['create'], [
+                                    'class' => 'btn btn-success',
+                                    'title' => Yii::t('app', 'Create Biblio'),
+                                ])
+                        ],
+                    ],
                     'columns' => [
                         [
                             'class' => 'kartik\grid\ExpandRowColumn',

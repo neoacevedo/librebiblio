@@ -1,5 +1,6 @@
 <?php
 
+use common\models\MaterialType;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -37,6 +38,7 @@ Yii::debug($searchModel);
             [
                 'attribute' => 'material',
                 'value' => 'biblio.materialType.description',
+                'filter' => MaterialType::asArray(),
                 'label' => Yii::t('app', 'Material Cd')
             ],
             [
