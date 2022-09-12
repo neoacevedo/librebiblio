@@ -21,7 +21,6 @@ use yii\filters\VerbFilter;
  */
 class BiblioFieldController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -40,7 +39,6 @@ class BiblioFieldController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
-
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
@@ -122,20 +120,26 @@ class BiblioFieldController extends Controller
      * @param integer $bibid
      * @return mixed
      */
-    public function actionCreate($bibid)
+    public function actionCreate()
     {
         $model = new BiblioField();
-        $biblio = \common\models\Biblio::findOne($bibid);
         $marcBlocks = \common\models\Usmarc::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([
-                'index',
-                'bibid' => $model->bibid
-            ]);
+            return $this->redirect(['index']);
+        } else {
+            if ($model->errors) {
+                $message = "<ul>";
+                foreach ($model->errors as $key => $error) {
+                    $message .= "<li>{$error[0]}</li>";
+                }
+                $message .= "</ul>";
+
+                Yii::$app->session->setFlash('error', $message);
+            }
         }
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('create', [
-            'model' => $model, 'biblio' => $biblio, 'marcBlocks' => $marcBlocks
+            'model' => $model, 'marcBlocks' => $marcBlocks
         ]);
     }
 

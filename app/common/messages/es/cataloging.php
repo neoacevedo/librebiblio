@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Are you sure you want to delete this item?' => '',
+    'Autogenerate' => 'Autogenerar',
     'Biblio Fields' => 'Campos Bibliográficos',
     'Create Biblio Field' => 'Crear Campo Bibliográfico',
     'Create MARC Field' => 'Crear Campo MARC',

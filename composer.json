@@ -43,7 +43,10 @@
         "fxp-asset": {
             "enabled": false
         },
-        "vendor-dir": "app/vendor"
+        "vendor-dir": "app/vendor",
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "repositories": [
         {

@@ -120,16 +120,27 @@ class BiblioCopyController extends Controller
     public function actionCreate()
     {
         $model = new BiblioCopy();
+        $biblio_status = \common\models\BiblioStatusDm::find()->all();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect($this->request->referrer);
-        } else {
-            @array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->session->setFlash('error', $v);
-            });
+        $post = $this->request->post();
+        if ($this->request->post('autoqrcode')) {
+            $nzeros = "5";
+            $copy_number = BiblioCopy::find()->where(['bibid' => $this->request->post("BiblioCopy")['bibid']])->max("id") + 1;
+            $post['BiblioCopy']['barcode_nmbr'] = sprintf("%0".$nzeros."s", $this->request->post("BiblioCopy")['bibid']) . $copy_number;
+        }
+
+        if ($model->load($post)) {
+            if (!$model->save()) {
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->session->setFlash('error', $v);
+                });
+            }
+            Yii::$app->session->setFlash('success', 'Copy registered correctly.');
+            return $this->goBack($this->request->referrer);
         }
         return $this->renderAjax('create', [
             'model' => $model,
+            'biblio_status' => $biblio_status
         ]);
     }
 
@@ -143,16 +154,25 @@ class BiblioCopyController extends Controller
     public function actionUpdate(int $id, int $bibid)
     {
         $model = $this->findModel($id, $bibid);
+        $biblio_status = \common\models\BiblioStatusDm::find()->all();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect($this->request->referrer);
-        } else {
-            @array_walk_recursive($model->errors, function ($v, $k) {
-                Yii::$app->session->setFlash('error', $v);
-            });
+        if ($this->request->get('autoqrcode')) {
+            $nzeros = "5";
+            $copy_number = BiblioCopy::find()->where(['bibid' => $model->bibid])->max("id") + 1;
+            $model->barcode_nmbr = sprintf("%0".$nzeros."s", $model->bibid) . $copy_number;
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            if (!$model->save()) {
+                @array_walk_recursive($model->errors, function ($v, $k) {
+                    Yii::$app->session->setFlash('error', $v);
+                });
+            }
+            Yii::$app->session->setFlash('success', 'Copy registered correctly.');
+            return $this->goBack($this->request->referrer);
         }
         return $this->renderAjax('update', [
             'model' => $model,
+            'biblio_status' => $biblio_status
         ]);
     }
 

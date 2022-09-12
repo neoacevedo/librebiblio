@@ -102,7 +102,6 @@ $this->registerJs($js, yii\web\View::POS_END);
                         ['label' => Yii::t('app', 'Create from This'), 'url' => ['create-from-this', 'id' => $model->id]],
                         ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id]],
                         ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
-                        ['label' => Yii::t('yii', 'View'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
                     ]
                 ]) ?>
         </nav>
@@ -194,7 +193,7 @@ echo GridView::widget([
     'toolbar'=> [
         'content' => Html::a(
             '<i class="fas fa-plus"></i>',
-            ['biblio-copy/create', 'bibid' => $model->id],
+            ['biblio-copy/create', 'bibid' => $model->id, 'data-pjax' => 1],
             [
                 'id' => 'btnModal',
                 'title' => Yii::t('app', 'Add Copy'),

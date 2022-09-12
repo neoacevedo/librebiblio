@@ -12,22 +12,27 @@ $fechas = [];
 
 $fechas[] = "";
 $totales[] = "";
-if (count($checkout_stats) >= 1) {
+if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
     // Hay por lo menos uno. Se itera en ese o esos, y luego se rellena.
-    $count = 0;
-    // iteración para días anteriores.
-    for ($count = count($checkout_stats); $count >= 1; $count--) {
-        $fechas[] = date('Y-m-d', strtotime("-$count day"));
-        $totales[] = 0;
-    }
     // iteración de los actuales.
     foreach ($checkout_stats as $checkout) {
         $fechas[] = $checkout['checkoutsPerDay'];
         $totales[] = $checkout['checkoutCount'];
     }
+
+    $origin = new DateTimeImmutable($fechas[count($fechas) - 1]);
+    $actual = new DateTimeImmutable("now");
+    $date_diff = $actual->diff($origin);
+    $count = $date_diff->days - 1 ?? 1;
+
+    // iteración para días siguientes a la última fecha.
+    for ($i = 1; $i < $count; $i++) {
+        $fechas[] = date('Y-m-d', strtotime("+$i day", $origin->getTimestamp()));
+        $totales[] = 0;
+    }
 } else {
     // No hay. Se rellena la información.
-    for ($count = 4; $count >= 1; $count--) {
+    for ($count = 4; $count = 1; $count--) {
         $fechas[] = date('Y-m-d', strtotime("-$count day"));
         $totales[] = 0;
     }

@@ -51,8 +51,8 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         ],
                         [
                             "label" => Yii::t("cataloging", "Create MARC Field"),
-                            "url" => ["/cataloging/biblio-field/create"],
-                            "icon" => "plus"
+                            "url" => ["/cataloging/biblio-field/bulk-create"],
+                            "icon" => "file-csv"
                         ],
                         [
                             "label" => Yii::t("app", "Circulation"),

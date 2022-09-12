@@ -32,7 +32,6 @@ return [
     'Member ID' => '',
     'New' => 'Nuevo',
     'No' => 'No',
-    'No results found.' => 'No se encontraron resultados.',
     'Roles' => '',
     'Topic1' => '',
     'Topic2' => '',
