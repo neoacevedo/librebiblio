@@ -101,7 +101,7 @@ $this->registerJs($js, yii\web\View::POS_END);
                         ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
                         ['label' => Yii::t('app', 'Create from This'), 'url' => ['create-from-this', 'id' => $model->id]],
                         ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id]],
-                        ['label' => Yii::t('cataloging', 'EDIT MARC'), 'active' => 'edit-marc'],
+                        ['label' => Yii::t('cataloging', 'EDIT MARC'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
                     ]
                 ]) ?>
         </nav>

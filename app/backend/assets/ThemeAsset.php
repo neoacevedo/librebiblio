@@ -40,7 +40,7 @@ class ThemeAsset extends AssetBundle
         }
 
         if (file_exists($this->sourcePath . "/js")) {
-            $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js'], 'except' => ['customize.js', 'demo.js']]);
+            $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js'], 'except' => ['customize.js', 'custom.js', 'demo.js']]);
             $js_files = str_replace($this->sourcePath . "/js", "js", $js_files);
             natsort($js_files);
         }

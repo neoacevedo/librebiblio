@@ -29,7 +29,8 @@
         "antonyz89/yii2-seeder": "dev-master",
         "kartik-v/yii2-editable": "1.8.x-dev",
         "neoacevedo/yii2-auditing": "@dev",
-        "2amigos/yii2-chartjs-widget": "^3.0"
+        "2amigos/yii2-chartjs-widget": "^3.0",
+        "yiisoft/yii2-jui": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

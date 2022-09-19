@@ -403,7 +403,7 @@ class CirculationController extends Controller
             if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) !== null) {
                 // el miembro fue quien reservó el material
                 $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
-                $datetime1 = new DateTime($hold->created_at);
+                $datetime1 = new DateTime($hold->hold_begin_dt);
                 $datetime2 = new DateTime('now');
                 $interval = $datetime1->diff($datetime2);
                 $diff = (int) $interval->format('%r%a');
@@ -416,12 +416,12 @@ class CirculationController extends Controller
                     $hold->delete();
                 } else {
                     // si otro miembro reservó antes el material
-                    Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+                    Yii::$app->session->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
                     return false;
                 }
             } else {
                 // si otro miembro reservó antes el material
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+                Yii::$app->session->setFlash('warning', Yii::t('circulation', "Item {n, number} is on hold to another member.", ['n' => $biblioCopy->barcode_nmbr]));
                 return false;
             }
         }
@@ -430,13 +430,13 @@ class CirculationController extends Controller
             // el miembro tiene el material. Buscar si ya alcanzó el límite de renovaciones.
             if ($biblioCopy->hasReachedRenewalLimit(Member::findOne($id)->classification_id)) {
                 // el miembro ya alcanzó el límite de renovaciones
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} has reached its renewal limit.", ['n' => $biblioCopy->barcode_nmbr]));
+                Yii::$app->session->setFlash('warning', Yii::t('circulation', "Item {n, number} has reached its renewal limit.", ['n' => $biblioCopy->barcode_nmbr]));
                 return false;
             }
 
             if ($biblioCopy->due_back_dt < date('Y-m-d', strtotime('now'))) {
                 // el material no ha sido devuelto en el tiempo establecido.
-                Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is late and cannot be renewed.", ['n' => $biblioCopy->barcode_nmbr]));
+                Yii::$app->session->setFlash('warning', Yii::t('circulation', "Item {n, number} is late and cannot be renewed.", ['n' => $biblioCopy->barcode_nmbr]));
                 return false;
             }
             $biblioCopy->renewal_count = $biblioCopy->renewal_count + 1;
@@ -445,7 +445,7 @@ class CirculationController extends Controller
             $biblioCopy->due_back_dt = date('Y-m-d H:i:s', strtotime($biblioCopy->due_back_dt) + $collection->days_due_back);
         } elseif ($biblioCopy->status_cd == 'out' && $biblioCopy->mbr_id != $id) {
             // si otro miembro tiene el material
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Item {n, number} is already checked out to another member.", ['n' => $biblioCopy->barcode_nmbr]));
+            Yii::$app->session->setFlash('warning', Yii::t('circulation', "Item {n, number} is already checked out to another member.", ['n' => $biblioCopy->barcode_nmbr]));
             return false;
         } elseif ($biblioCopy->status_cd == 'in') {
             // nadie tiene el material. Se puede prestar.
@@ -455,7 +455,7 @@ class CirculationController extends Controller
 
         // verificar si el miembro ya alcanzó el límite de pŕestamos.
         if ($biblioCopy->hasReachedCheckoutLimit($id, Member::findOne($id)->classification_id)) {
-            Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
+            Yii::$app->session->setFlash('warning', Yii::t('circulation', "Member has reached checkout limit for this collection."));
             return $this->redirect(['member/view', 'id' => $id]);
         }
         $biblioCopy->mbr_id = $id;
@@ -479,7 +479,7 @@ class CirculationController extends Controller
 
         if (!$biblioStatusHistory->save()) {
             array_walk_recursive($biblioStatusHistory->errors, function ($v, $k) {
-                Yii::$app->getSession()->setFlash('error', $v);
+                Yii::$app->session->setFlash('error', $v);
             });
         }
         // antes de hacer la purga, se debe revisar si tiene alguna deuda.

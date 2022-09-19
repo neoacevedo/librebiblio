@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
@@ -15,6 +16,8 @@ use Yii;
  * @property string $subfield_cd
  * @property string $description
  * @property string $repeatable_flg
+ *
+ * @property UsmarTagDm[] $usmarTagDm
  */
 class UsmarcSubfield extends \yii\db\ActiveRecord
 {
@@ -36,6 +39,7 @@ class UsmarcSubfield extends \yii\db\ActiveRecord
             [['tag'], 'integer'],
             [['subfield_cd', 'repeatable_flg'], 'string', 'max' => 1],
             [['description'], 'string', 'max' => 80],
+            [['tag'], 'exist', 'skipOnError' => false, 'targetClass' => UsmarcTagDm::class, 'targetAttribute' => ['tag' => 'tag']]
         ];
     }
 
@@ -50,5 +54,14 @@ class UsmarcSubfield extends \yii\db\ActiveRecord
             'description' => Yii::t('usmarc', 'Description'),
             'repeatable_flg' => Yii::t('usmarc', 'Repeatable Flg'),
         ];
+    }
+
+    /**
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsmarcTagDm()
+    {
+        return $this->hasMany(UsmarcTagDm::class, ['tag' => 'tag']);
     }
 }

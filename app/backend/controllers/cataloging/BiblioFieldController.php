@@ -12,6 +12,9 @@ use Yii;
 use yii\filters\AccessControl;
 use common\models\BiblioField;
 use common\models\BiblioFieldSearch;
+use common\models\Usmarc;
+use yii\db\Expression;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -123,7 +126,24 @@ class BiblioFieldController extends Controller
     public function actionCreate()
     {
         $model = new BiblioField();
-        $marcBlocks = \common\models\Usmarc::find()->all();
+        // $marcBlocks = (new Query())
+        //     ->select([
+        //         "{{%usmarc_block_dm}}.block_mbr",
+        //         "{{%usmarc_block_dm}}.description as block_description",
+        //         "{{%usmarc_tag_dm}}.tag",
+        //         "{{%usmarc_tag_dm}}.description as tag_description",
+        //         "{{%usmarc_subfield_dm}}.subfield_cd",
+        //         "{{%usmarc_subfield_dm}}.description as subfield_description",
+        //     ])
+        //     ->from(["{{%usmarc_block_dm}}", "{{%usmarc_tag_dm}}", "{{%usmarc_subfield_dm}}"])
+        //     ->where([
+        //         "{{%usmarc_tag_dm}}.block_nmbr" => new Expression("{{%usmarc_block_dm}}.block_mbr"),
+        //         "{{%usmarc_subfield_dm}}.tag" => new Expression("{{%usmarc_tag_dm}}.tag")
+        //         ])
+        //     ->all();
+
+        $marcBlocks = Usmarc::find()->all();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {

@@ -2,6 +2,7 @@
 
 use yii\bootstrap4\Nav;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <!-- Navbar -->
@@ -52,7 +53,8 @@ if ($hldCopies):
         $mbr = \common\models\Member::findOne($hld->mbr_id);
         $copy = \common\models\BiblioCopy::findOne($hld->copyid);
         ?>
-                <a href="#" class="dropdown-item">
+                <a href="<?= Url::to(['member/view', 'id' => $mbr->id]) ?>"
+                    class="dropdown-item">
                     <i class="fas fa-user-circle-o"></i><?php echo "{$mbr->username} ".Yii::t('circulation', 'placed hold copy').' '.$copy->barcode_nmbr; ?>
                 </a>
                 <div class="dropdown-divider"></div>

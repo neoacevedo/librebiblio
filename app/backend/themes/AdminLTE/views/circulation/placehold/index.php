@@ -9,7 +9,6 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\BiblioHoldSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-Yii::debug($searchModel);
 ?>
 <div class="biblio-index">
     <?= Html::button(Yii::t('app', 'Place Hold'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'hld']),

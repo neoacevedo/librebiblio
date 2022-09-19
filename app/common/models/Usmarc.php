@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $block_mbr
  * @property string $description
+ *
+ * @property UsmarcTagDm[] $usmarcTags
  */
 class Usmarc extends \yii\db\ActiveRecord
 {
@@ -42,5 +44,15 @@ class Usmarc extends \yii\db\ActiveRecord
             'block_mbr' => Yii::t('usmarc', 'Block Mbr'),
             'description' => Yii::t('usmarc', 'Description'),
         ];
+    }
+
+    /**
+     * Gets query for [[UsmarcTagDm]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsmarcTags()
+    {
+        return $this->hasMany(UsmarcTagDm::class, ['block_nmbr' => 'block_mbr']);
     }
 }
