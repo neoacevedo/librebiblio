@@ -21,7 +21,7 @@ use yii\jui\AutoComplete;
     <div class="form-row">
         <div class="col-4">
             <label for="bibliofield-tag" class="form-label"><?= $model->getAttributeLabel("tag") ?></label>
-            <select class="form-control" name="BiblioField[tag]" id="bibliofield-tag" aria-required="true">
+            <select class="form-control" name="BiblioField[tag]" id="bibliofield-tag" aria-required="true" required>
                 <option value="">--</option>
                 <?php foreach($marcBlocks as $block): ?>
                 <optgroup

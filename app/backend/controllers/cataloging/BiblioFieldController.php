@@ -18,6 +18,7 @@ use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * BiblioFieldController implements the CRUD actions for BiblioField model.
@@ -119,7 +120,7 @@ class BiblioFieldController extends Controller
 
     /**
      * Creates a new BiblioField model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'index' page.
      * @param integer $bibid
      * @return mixed
      */
@@ -161,6 +162,53 @@ class BiblioFieldController extends Controller
         return $this->render('create', [
             'model' => $model, 'marcBlocks' => $marcBlocks
         ]);
+    }
+
+    /**
+     * Importa masivamente datos de un archivo CSV para crear modelos BiblioField.
+     * If creation is successful, the browser will be redirected to the 'index' page.
+     * @return mixed
+     */
+    public function actionBulkCreate()
+    {
+        if (($importer = UploadedFile::getInstanceByName('usmarc_data')) !== null) {
+            $handle = fopen($importer, "r");
+            while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
+                $model = new \common\models\BiblioField();
+                $model->bibid = $fileop[0];
+                $model->fieldid = $fileop[1];
+                $model->ind1_cd = $fileop[2];
+                $model->ind2_cd = $fileop[3];
+                $model->subfield_cd = $fileop[4];
+                $model->field_data = $fileop[4];
+
+                if (!$model->validate()) {
+                    $message = "<ul>";
+                    foreach ($model->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+
+                    Yii::$app->session->setFlash('error', $message);
+                    break;
+                }
+
+                if (!$model->save()) {
+                    $message = "<ul>";
+                    foreach ($model->errors as $key => $error) {
+                        $message .= "<li>{$error[0]}</li>";
+                    }
+                    $message .= "</ul>";
+
+                    Yii::$app->session->setFlash('error', $message);
+                    break;
+                }
+            }
+            Yii::$app->session->setFlash('success', Yii::t("cataloging", "Data imported successfully."));
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('bulk-create');
     }
 
     /**

@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2020 Néstor Acevedo
  * @license https://www.neoacevedo.co/license
  */
+
 namespace common\models;
 
 use Yii;
@@ -19,7 +20,7 @@ use Yii;
  * @property string $subfield_cd
  * @property string $field_data
  *
- * @property Biblio $bib
+ * @property Biblio $biblio
  */
 class BiblioField extends \yii\db\ActiveRecord
 {
@@ -65,7 +66,7 @@ class BiblioField extends \yii\db\ActiveRecord
      * Devuelve la bibliografía a la que pertenece el campo.
      * @return \yii\db\ActiveQuery
      */
-    public function getBib()
+    public function getBiblio()
     {
         return $this->hasOne(Biblio::class, ['id' => 'bibid']);
     }
