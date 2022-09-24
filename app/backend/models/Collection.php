@@ -66,9 +66,9 @@ class Collection extends \yii\db\ActiveRecord
      */
     public static function asArray(): array
     {
-        $collections = Collection::find()->select('description')->asArray()->all();
+        $collections = Collection::find()->select('id, description')->asArray()->all();
         foreach ($collections as $index => $value) {
-            $collection[$value['description']] = $value['description'];
+            $collection[$value['id']] = $value['description'];
         }
 
         return $collection;

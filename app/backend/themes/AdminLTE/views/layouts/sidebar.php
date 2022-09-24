@@ -50,7 +50,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                             "icon" => "book"
                         ],
                         [
-                            "label" => Yii::t("cataloging", "Create MARC Field"),
+                            "label" => Yii::t("app", "Upload"),
                             "url" => ["/cataloging/biblio-field/bulk-create"],
                             "icon" => "file-csv"
                         ],

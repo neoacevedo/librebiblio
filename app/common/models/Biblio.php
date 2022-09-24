@@ -88,10 +88,10 @@ class Biblio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['material_cd', 'collection_cd', 'opac_flg'], 'required'],
+            [['title', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
             [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'integer'],
-            [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string'],
-            [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'max' => 20],
+            [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string', 'min' => 1],
+            [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'min' => 1, 'max' => 20],
             [['image_file'], 'string', 'max' => 128],
             [['collection_cd'], 'exist', 'skipOnError' => false, 'targetClass' => Collection::class, 'targetAttribute' => ['collection_cd' => 'id']],
             [['material_cd'], 'exist', 'skipOnError' => false, 'targetClass' => MaterialType::class, 'targetAttribute' => ['material_cd' => 'id']],

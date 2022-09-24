@@ -32,13 +32,13 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
     }
 } else {
     // No hay. Se rellena la información.
-    for ($count = 4; $count = 1; $count--) {
-        $fechas[] = date('Y-m-d', strtotime("-$count day"));
-        $totales[] = 0;
-    }
 
     $fechas[] = date('Y-m-d');
     $totales[] = 0;
+    for ($count = 1; $count < 4; $count++) {
+        $fechas[] = date('Y-m-d', strtotime("+$count day", time()));
+        $totales[] = 0;
+    }
 }
 ?>
 <div class="site-index">

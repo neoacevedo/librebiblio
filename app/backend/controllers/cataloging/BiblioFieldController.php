@@ -8,6 +8,7 @@
 
 namespace backend\controllers\cataloging;
 
+use common\models\Biblio;
 use Yii;
 use yii\filters\AccessControl;
 use common\models\BiblioField;
@@ -171,44 +172,148 @@ class BiblioFieldController extends Controller
      */
     public function actionBulkCreate()
     {
-        if (($importer = UploadedFile::getInstanceByName('usmarc_data')) !== null) {
-            $handle = fopen($importer, "r");
-            while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
-                $model = new \common\models\BiblioField();
-                $model->bibid = $fileop[0];
-                $model->fieldid = $fileop[1];
-                $model->ind1_cd = $fileop[2];
-                $model->ind2_cd = $fileop[3];
-                $model->subfield_cd = $fileop[4];
-                $model->field_data = $fileop[4];
+        $models = [];
+        if ($this->request->isPost) {
+            $importer = UploadedFile::getInstanceByName('usmarc_data');
+            if ($importer !== null) {
+                $handle = fopen($importer->tempName, "r");
+                if ($this->request->post("test") == 0) {
+                    while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
+                        $biblio = new Biblio();
+                        $biblio->material_cd = $this->request->post('material_cd');
+                        $biblio->collection_cd = $this->request->post('collection_cd');
+                        $biblio->call_nmbr1 = @$fileop[0];
+                        $biblio->call_nmbr2 = @$fileop[1];
+                        $biblio->call_nmbr3 = @$fileop[2];
+                        $biblio->opac_flg = $this->request->post('opac_flg', 0);
+                        $biblio->title = @$fileop[3];
+                        $biblio->title_remainder = @$fileop[4];
+                        $biblio->responsibility_stmt = @$fileop[5];
+                        $biblio->author = @$fileop[6];
+                        $biblio->topic1 = @$fileop[7];
+                        $biblio->topic2 = @$fileop[8];
+                        $biblio->topic3 = @$fileop[9];
+                        $biblio->topic4 = @$fileop[10];
+                        $biblio->topic5 = @$fileop[11];
 
-                if (!$model->validate()) {
-                    $message = "<ul>";
-                    foreach ($model->errors as $key => $error) {
-                        $message .= "<li>{$error[0]}</li>";
+                        if (!$biblio->validate()) {
+                            $message = "<ul>";
+                            foreach ($biblio->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
+
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
+
+                        if (!$biblio->save()) {
+                            $message = "<ul>";
+                            foreach ($biblio->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
+
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
+
+                        $model = new \common\models\BiblioField();
+                        $model->bibid = $biblio->id;
+                        $model->fieldid = @$fileop[12];
+                        $model->ind1_cd = @$fileop[13];
+                        $model->ind2_cd = @$fileop[14];
+                        $model->subfield_cd = @$fileop[15];
+                        $model->field_data = @$fileop[16];
+
+                        if (!$model->validate()) {
+                            $message = "<ul>";
+                            foreach ($model->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
+
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
+
+                        if (!$model->save()) {
+                            $message = "<ul>";
+                            foreach ($model->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
+
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
                     }
-                    $message .= "</ul>";
+                    Yii::$app->session->setFlash('success', Yii::t("cataloging", "Data imported successfully."));
+                    return $this->redirect(['index']);
+                } else {
+                    while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
+                        $biblio = new Biblio();
+                        $biblio->material_cd = $this->request->post('material_cd');
+                        $biblio->collection_cd = $this->request->post('collection_cd');
+                        $biblio->call_nmbr1 = @$fileop[0];
+                        $biblio->call_nmbr2 = @$fileop[1];
+                        $biblio->call_nmbr3 = @$fileop[2];
+                        $biblio->opac_flg = $this->request->post('opac_flg', 0);
+                        $biblio->title = @$fileop[3];
+                        $biblio->title_remainder = @$fileop[4];
+                        $biblio->responsibility_stmt = @$fileop[5];
+                        $biblio->author = @$fileop[6];
+                        $biblio->topic1 = @$fileop[7];
+                        $biblio->topic2 = @$fileop[8];
+                        $biblio->topic3 = @$fileop[9];
+                        $biblio->topic4 = @$fileop[10];
+                        $biblio->topic5 = @$fileop[11];
 
-                    Yii::$app->session->setFlash('error', $message);
-                    break;
-                }
+                        if (!$biblio->validate()) {
+                            $message = "<ul>";
+                            foreach ($biblio->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
 
-                if (!$model->save()) {
-                    $message = "<ul>";
-                    foreach ($model->errors as $key => $error) {
-                        $message .= "<li>{$error[0]}</li>";
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
+
+                        $model = new \common\models\BiblioField();
+                        $model->bibid = rand(0, 10);
+                        $model->fieldid = @$fileop[12];
+                        $model->ind1_cd = @$fileop[13];
+                        $model->ind2_cd = @$fileop[14];
+                        $model->subfield_cd = @$fileop[15];
+                        $model->field_data = @$fileop[16];
+
+                        if (!$model->validate()) {
+                            $message = "<ul>";
+                            foreach ($model->errors as $key => $error) {
+                                $message .= "<li>{$error[0]}</li>";
+                            }
+                            $message .= "</ul>";
+
+                            Yii::$app->session->setFlash('error', $message);
+                            break;
+                        }
+
+                        array_push($models, $biblio);
+                        array_push($models, $model);
                     }
-                    $message .= "</ul>";
-
-                    Yii::$app->session->setFlash('error', $message);
-                    break;
                 }
+            } else {
+                Yii::$app->session->setFlash('error', "Error");
             }
-            Yii::$app->session->setFlash('success', Yii::t("cataloging", "Data imported successfully."));
-            return $this->redirect(['index']);
         }
 
-        return $this->render('bulk-create');
+        $arrayDataProvider = new \yii\data\ArrayDataProvider([
+            'allModels' => $models
+        ]);
+
+
+        return $this->render('bulk-create', ['dataProvider' => $arrayDataProvider]);
     }
 
     /**

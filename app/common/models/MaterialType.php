@@ -76,7 +76,7 @@ class MaterialType extends \yii\db\ActiveRecord
     {
         $materials = MaterialType::find()->select('id, description')->asArray()->all();
         foreach ($materials as $index => $value) {
-            $material[$value['description']] = $value['description'];
+            $material[$value['id']] = $value['description'];
         }
 
         return $material;

@@ -23,7 +23,7 @@ return [
     'Create MARC Field' => 'Crear Campo MARC',
     'Delete' => 'Borrar',
     'EDIT MARC' => 'Editar MARC',
-    'Field Data' => '',
+    'Field Data' => 'Datos de Campo',
     'Ind1 Cd' => '',
     'Ind2 Cd' => '',
     'Print List' => 'Imprimir Lista',
@@ -32,4 +32,5 @@ return [
     'Subfield Cd' => 'Subcampo',
     'Update' => 'Actualizar',
     'Update Biblio Field: {nameAttribute}' => 'Actualizar Campo Bibliográfico: {nameAttribute}',
+    'Test Load' => 'Carga de prueba'
 ];
