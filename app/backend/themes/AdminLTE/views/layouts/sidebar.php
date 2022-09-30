@@ -51,7 +51,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
                         ],
                         [
                             "label" => Yii::t("app", "Upload"),
-                            "url" => ["/cataloging/biblio-field/bulk-create"],
+                            "url" => ["/cataloging/biblio/bulk-create"],
                             "icon" => "file-csv"
                         ],
                         [

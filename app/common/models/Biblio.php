@@ -88,7 +88,7 @@ class Biblio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
+            [['title', 'author', 'material_cd', 'collection_cd', 'opac_flg'], 'required'],
             [['created_at', 'updated_at', 'updated_userid', 'material_cd', 'collection_cd', 'opac_flg'], 'integer'],
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5'], 'string', 'min' => 1],
             [['call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string', 'min' => 1, 'max' => 20],

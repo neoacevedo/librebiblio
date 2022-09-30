@@ -58,8 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'dataProvider' => $dataProvider,
                         'columns' => [
-                            'biblio.materialCd.description',
-                            'biblio.collectionCd.description',
+                            [
+                                'label' => 'Material',
+                            ],
+                            [
+                                'label' => 'Descripción'
+                            ]
                         ]
                     ]
                 ) ?>
