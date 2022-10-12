@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BiblioCopySearch */
@@ -11,46 +12,38 @@ $this->title = Yii::t('biblio', 'Biblio Copies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-copy-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>" target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
+        <a href="<?= \yii\helpers\Url::to(["biblio-copy/copies-print"]) ?>"
+            target="_blank" class="btn btn-block btn-primary"><?= Yii::t('cataloging', 'Print List') ?></a>
     </p>
-    <div class="box">
-        <div class="box-body">
+    <div class="card">
+        <div class="card-body">
             <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'id',
                     'barcode_nmbr',
                     [
                         'attribute' => 'bibid',
                         'label' => Yii::t('app', 'Title'),
-                        'value' => function($model) {
+                        'value' => function ($model) {
                             return $model->biblio->title;
                         }
                     ],
                     'created_at',
                     'updated_at',
                     'copy_desc',
-                    // 'barcode_nmbr',
-                    // 'status_cd',
-                    // 'status_begint_dt',
-                    // 'due_back_dt',
-                    // 'mbr_id',
-                    // 'renewal_count',
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                    ],
                 ],
                 'options' => [
                     'class' => 'table table-striped table-bordered table-responsive'
                 ],
             ]);
-            ?>
+?>
         </div>
     </div>
 </div>

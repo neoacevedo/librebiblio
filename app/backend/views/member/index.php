@@ -15,47 +15,64 @@ $this->title = Yii::t('app', 'Members');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="member-index">
+    <div class="card">
+        <div class="card-body">
 
-    <h1><?= Html::encode($this->title) ?>
-    </h1>
+            <?php Pjax::begin(); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Member'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'panel' => [
+                    'type'=>'default',
+                ],
+                'toolbar' => [
+                    [
+                        'content' =>
+                            Html::a('<i class="fas fa-print"></i>', ["print"], [
+                                'class' => 'btn btn-default',
+                                'title' => Yii::t('circulation', 'Print List'),
+                                'target' => '_blank',
+                                'data-pjax' => 0,
+                            ])
+                            . Html::a('<i class="fas fa-plus"></i>', ['create'], [
+                                'class' => 'btn btn-success',
+                                'title' => Yii::t('app', 'Create Member'),
+                            ])
+                    ],
+                ],
+                'columns' => [
+                    'id',
+                    'username',
+                    'first_name',
+                    'last_name',
+                    'pin',
+                    'address',
+                    'email:email',
+                    [
+                        'attribute' => 'status',
+                        'value' => function ($model) {
+                            switch ($model->status) {
+                                case $model::STATUS_ACTIVE:
+                                    return Yii::t('app', 'Active');
+                                case $model::STATUS_BLOCKED:
+                                    return Yii::t('app', 'Blocked');
+                                case $model::STATUS_DELETED:
+                                    return Yii::t('app', 'Deleted');
+                            }
+                        }
+                    ],
+                    [
+                        'class' => ActionColumn::class,
+                        'template' => '{view}&nbsp;{delete}',
+                        'urlCreator' => function ($action, Member $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'id' => $model->id]);
+                        }
+                    ],
+                ],
+            ]); ?>
 
-    <?php Pjax::begin(); ?>
-
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'pin',
-            //'address',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
-            //'email:email',
-            //'status',
-            //'phone',
-            //'classification_id',
-            //'created_at',
-            //'updated_at',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Member $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
-            ],
-        ],
-    ]); ?>
-
-    <?php Pjax::end(); ?>
-
+            <?php Pjax::end(); ?>
+        </div>
+    </div>
 </div>

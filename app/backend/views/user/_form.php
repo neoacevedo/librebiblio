@@ -1,8 +1,8 @@
 <?php
 
-use backend\models\User;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\User */

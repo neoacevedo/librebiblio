@@ -639,15 +639,7 @@ class BiblioController extends Controller
 
         $arrayDataProvider = new \yii\data\ArrayDataProvider([
             'allModels' => $models,
-            // 'keys' => [
-            //     'biblio.material_cd'
-            // ],
-            // 'sort' => [
-            //     'attributes' => ['id', 'name'],
-            // ],
         ]);
-
-        Yii::debug($arrayDataProvider);
 
         return $this->render('bulk-create', ['dataProvider' => $arrayDataProvider]);
     }

@@ -7,7 +7,7 @@ use kartik\sidenav\SideNav;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\UserSearch */
+/* @var $searchModel common\models\MemberSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Circulation');
@@ -53,20 +53,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'class' => 'yii\grid\ActionColumn',
                                 'headerOptions' => ['style' => 'color:#337ab7'],
-                                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
+                                'template' => '{view}&nbsp;{update}&nbsp;{delete}',
                                 'buttons' => [
                                     'view' => function ($url, $model) {
-                                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['member/view', 'id' => $model->id], [
+                                        return Html::a('<span class="fas fa-eye"></span>', ['member/view', 'id' => $model->id], [
                                                     'title' => Yii::t('yii', 'View'),
                                         ]);
                                     },
                                     'update' => function ($url, $model) {
-                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['member/update', 'id' => $model->id], [
+                                        return Html::a('<span class="fas fa-pen"></span>', ['member/update', 'id' => $model->id], [
                                                     'title' => Yii::t('yii', 'Update'),
                                         ]);
                                     },
                                     'delete' => function ($url, $model) {
-                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['member/delete', 'id' => $model->id], [
+                                        return Html::a('<span class="fas fa-trash"></span>', ['member/delete', 'id' => $model->id], [
                                                     'title' => Yii::t('app', 'Delete'),
                                                     'data' => [
                                                         'confirm' => Yii::t('circulation', 'Are you absolutely sure? You will lose all the information about this user with this action.'),
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'options' => ['class' => 'table table-responsive']
                     ]);
-                    ?>
+?>
                     <?php Pjax::end(); ?>
                 </div>
             </div>

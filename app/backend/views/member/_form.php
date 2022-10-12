@@ -1,10 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Member */
+/** @var common\models\Member $model */
 /* @var $form yii\widgets\ActiveForm */
 
 $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
@@ -48,11 +48,11 @@ $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}
             </div>
 
             <div class="d-none">
-                <?= $form->field($model, 'password')->hiddenInput(['value' => $model->generateUniqueRandomString(12)])->label('') ?>
+                <?= $form->field($model, 'password')->hiddenInput(['value' => Yii::$app->security->generateRandomString(16)])->label('') ?>
             </div>
 
             <div class="form-group">
-                <?= Html::submitButton(Yii::t("app", 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <?= Html::submitButton(Yii::t("app", 'Save'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

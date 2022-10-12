@@ -15,7 +15,8 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 <div class="member-classify-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
+    </h1>
     <div class="box">
         <div class="box-body">
             <?=

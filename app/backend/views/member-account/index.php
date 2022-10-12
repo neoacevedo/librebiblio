@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -12,29 +12,33 @@ $this->title = Yii::t('circulation', 'Member Accounts');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="member-account-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    </h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
-    <?php
-    if (isset(Yii::$app->request->queryParams['mbr_id'])):
-        ?>
-        <p>
-            <?= Html::a(Yii::t('circulation', 'Create Member Account'), ['create', 'mbr_id' => Yii::$app->request->queryParams['mbr_id']], ['class' => 'btn btn-success']) ?>
-        </p>
-        <?php
-    endif;
-    ?>
-    <div class="box">
-        <div class="box-body">
-            <?=
-            GridView::widget([
+    <div class="card">
+        <div class="card-body">
+            <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'panel' => [
+                    'type'=>'default',
+                ],
+                'toolbar' => [
+                    [
+                        'content' =>
+                            isset(Yii::$app->request->queryParams['mbr_id'])
+                                ? Html::a(
+                                    '<i class="fas fa-plus"></i>',
+                                    ['create', 'mbr_id' => Yii::$app->request->queryParams['mbr_id']],
+                                    [
+                                        'class' => 'btn btn-success',
+                                        'title' => Yii::t('circulation', 'Create Member Account'),
+                                    ]
+                                )
+                                : ""
+                    ],
+                ],
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
                     'id',
-                    'mbr_id',
                     'created_at',
                     //'create_userid',
                     [
@@ -43,10 +47,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => \Yii::t('app', 'Updated by')
                     ],
                     [
-                      'attribute' => 'transaction_type_cd',
-                        'value' => function($model) {
+                    'attribute' => 'transaction_type_cd',
+                        'value' => function ($model) {
                             $value = '';
-                            switch($model->transaction_type_cd) {
+                            switch ($model->transaction_type_cd) {
                                 case '+c':
                                     $value = Yii::t('circulation', 'Charge');
                                     break;
@@ -57,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $value = Yii::t('circulation', 'Credit');
                                     break;
                             }
-                            
+
                             return $value;
                         }
                     ],
@@ -66,8 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\ActionColumn'],
                 ],
                 'options' => ['class' => 'table table-striped table-bordered table-responsive']
-            ]);
-            ?>
+            ]) ?>
             <?php Pjax::end(); ?>
         </div>
     </div>

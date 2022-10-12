@@ -12,15 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-field-view">
 
-    <h1><?= Html::encode($this->title) ?>
-    </h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'bibid' => $model->bibid, 'fieldid' => $model->fieldid], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'bibid' => $model->bibid, 'fieldid' => $model->fieldid], [
+        <?= Html::a(Yii::t('cataloging', 'Update'), ['update', 'bibid' => $model->bibid, 'fieldid' => $model->fieldid], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('cataloging', 'Delete'), ['delete', 'bibid' => $model->bibid, 'fieldid' => $model->fieldid], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('cataloging', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>

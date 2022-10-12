@@ -3,6 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 
+$this->title = Yii::t('circulation', 'Print List');
+
+if (YII_DEBUG) {
+    $this->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+}
 ?>
 
 <div class="row">

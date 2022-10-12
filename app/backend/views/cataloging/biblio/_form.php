@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $view */
 /** @var common\models\Biblio $model */
@@ -11,15 +11,6 @@ use yii\widgets\ActiveForm;
 /** @var array|common\models\Collection $collection */
 /** @var \common\models\BiblioField[] $modelBiblioFields */
 
-?>
-<?php
-if (Yii::$app->session->hasFlash("error")):
-    ?>
-<div class="alert alert-danger">
-    <?= Yii::$app->session->getFlash("error") ?>
-</div>
-<?php
-endif;
 ?>
 <div class="biblio-form">
 
@@ -47,16 +38,10 @@ endif;
     <?= $form->field($model, 'title_remainder')->textInput(['maxlength' => true, 'data-value' => '245b']) ?>
 
     <?= $form->field($fileModel, 'uploadedFile')->fileInput() ?>
-    <?=
-    /* Html::img(Yii::$app->params['baseUrlFrontend'] . "/images/covers/{$model->image_file}", ['alt' => $model->title,
-      'title' => $model->title,
-      'class' => 'image-thumbnail center-block',
-      'style' => 'width: 140px']) */
-    Html::img($model->image_file, ['alt' => $model->title,
+    <?= Html::img($model->image_file, ['alt' => $model->title,
         'title' => $model->title,
         'class' => 'image-thumbnail center-block',
-        'style' => 'width: 140px'])
-    ?>
+        'style' => 'width: 140px']) ?>
 
     <?= $form->field($model, 'responsibility_stmt')->textInput(['maxlength' => true, 'data-value' => '245c']) ?>
 
@@ -93,15 +78,7 @@ endif;
     </div>
     <?php
     endforeach;
-    ?>
-
-    <!-- // -->
-    <div class="d-none">
-        <?= $form->field($model, 'updated_userid')->label('')->hiddenInput(['value' => \Yii::$app->user->id]) ?>
-        <?= $form->field($model, 'created_at')->label('')->hiddenInput(['value' => ($model->created_at === null) ? date('Y-m-d H:i:s') : $model->created_at]) ?>
-        <?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => date("Y-m-d H:i:s")]) ?>
-    </div>
-
+?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

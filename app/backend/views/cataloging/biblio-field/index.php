@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Biblio */
@@ -14,21 +14,24 @@ $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['catalogin
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="biblio-field-index">
-    <div class="box">
-        <div class="box-header">
-            <h1><?= Html::encode($this->title . " | ". $model->title) ?></h1>
-        </div>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-        <div class="box-body">
-            <p>
-                <?= Html::a(Yii::t('cataloging', 'Create MARC Field'), ['create', 'bibid' => $model->id], ['class' => 'btn btn-success']) ?>
-            </p>
-
+    <div class="card">
+        <div class="card-body">
             <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'panel' => [
+                    'type'=>'default',
+                ],
+                'toolbar' => [
+                    [
+                        'content' =>
+                            Html::a('<i class="fas fa-plus"></i>', ['create', 'bibid' => $model->id], [
+                                'class' => 'btn btn-success',
+                                'title' => Yii::t('app', 'Create MARC Field'),
+                            ])
+                    ],
+                ],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     //'bibid',
@@ -41,8 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\ActionColumn', 'template' => '{update}&nbsp;&nbsp;{delete}'],
                 ],
             ]);
-            ?>
+?>
         </div>
     </div>
 </div>
-

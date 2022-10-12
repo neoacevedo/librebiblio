@@ -6,39 +6,42 @@
 use dosamigos\chartjs\ChartJs;
 use yii\grid\GridView;
 
-$this->title = Yii::$app->name;
+$this->title = Yii::t('app', 'Dashboard');
 $totales = [];
 $fechas = [];
 
 $fechas[] = "";
 $totales[] = "";
-if (count($checkout_stats) >= 1) {
+if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
     // Hay por lo menos uno. Se itera en ese o esos, y luego se rellena.
-    $count = 0;
-    // iteración para días anteriores.
-    for ($count = count($checkout_stats); $count >= 1; $count--) {
-        $fechas[] = date('Y-m-d', strtotime("-$count day"));
-        $totales[] = 0;
-    }
     // iteración de los actuales.
     foreach ($checkout_stats as $checkout) {
         $fechas[] = $checkout['checkoutsPerDay'];
         $totales[] = $checkout['checkoutCount'];
     }
-} else {
-    // No hay. Se rellena la información.
-    for ($count = 4; $count >= 1; $count--) {
-        $fechas[] = date('Y-m-d', strtotime("-$count day"));
+
+    $origin = new DateTimeImmutable($fechas[count($fechas) - 1]);
+    $actual = new DateTimeImmutable("now");
+    $date_diff = $actual->diff($origin);
+    $count = $date_diff->days - 1 ?? 1;
+
+    // iteración para días siguientes a la última fecha.
+    for ($i = 1; $i < $count; $i++) {
+        $fechas[] = date('Y-m-d', strtotime("+$i day", $origin->getTimestamp()));
         $totales[] = 0;
     }
-    
+} else {
+    // No hay. Se rellena la información.
+
     $fechas[] = date('Y-m-d');
     $totales[] = 0;
+    for ($count = 1; $count < 4; $count++) {
+        $fechas[] = date('Y-m-d', strtotime("+$count day", time()));
+        $totales[] = 0;
+    }
 }
 ?>
 <div class="site-index">
-    <h1><?= Yii::t('app', 'Dashboard') ?>
-    </h1>
     <div class="row">
         <div class="col">
             <!-- small box -->
@@ -50,7 +53,7 @@ if (count($checkout_stats) >= 1) {
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-bag"></i>
+                    <i class="fas fa-shopping-bag"></i>
                 </div>
                 <a href="<?= \yii\helpers\Url::to(['admin/report/search', 'type' => 'Checkouts']) ?>"
                     class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -68,7 +71,7 @@ if (count($checkout_stats) >= 1) {
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="fas fa-user-plus"></i>
                 </div>
                 <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -84,7 +87,7 @@ if (count($checkout_stats) >= 1) {
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-dollar"></i>
+                    <i class="fas fa-dollar-sign"></i>
                 </div>
                 <a href="<?= \yii\helpers\Url::to(['admin/report/search', 'type' => 'Overdue']) ?>"
                     class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -134,7 +137,7 @@ if (count($checkout_stats) >= 1) {
                             ]
                         ]
                     ]);
-                    ?>
+?>
                 </div>
             </div>
         </section>
@@ -147,13 +150,13 @@ if (count($checkout_stats) >= 1) {
                 </div>
                 <div class="card-body">
                     <?= GridView::widget([
-                        'dataProvider' => $logs,
-                        'columns' => [
-                            'description',
-                            'created_at:date'
-                        ]
-                    ])
-                    ?>
+    'dataProvider' => $logs,
+    'columns' => [
+        'description',
+        'created_at:date'
+    ]
+])
+?>
                 </div>
             </div>
         </section>

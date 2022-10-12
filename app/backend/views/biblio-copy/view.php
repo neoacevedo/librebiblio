@@ -18,36 +18,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id, 'bibid' => $model->bibid], ['class' => 'btn btn-primary']) ?>
         <?=
-        Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id, 'bibid' => $model->bibid], [
+        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id, 'bibid' => $model->bibid], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ])
-?>
+        ?>
     </p>
     <div class="box">
         <div class="box-body">
             <?=
-    DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'bibid',
-            'created_at',
-            'updated_at',
-            'copy_desc',
-            'barcode_nmbr',
-            'status_cd',
-            'status_begin_dt',
-            'due_back_dt',
-            'mbr_id',
-            'renewal_count',
-        ],
-        'options' => ['class' => 'table table-striped table-bordered table-responsive']
-    ])
-?>
+            DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'id',
+                    'bibid',
+                    'created_at',
+                    'updated_at',
+                    'copy_desc',
+                    'barcode_nmbr',
+                    'status_cd',
+                    'status_begin_dt',
+                    'due_back_dt',
+                    'mbr_id',
+                    'renewal_count',
+                ],
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ])
+            ?>
         </div>
     </div>
 </div>

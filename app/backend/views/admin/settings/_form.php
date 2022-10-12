@@ -1,11 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Settings $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
 
 $js = <<<JAVASCRIPT
 (function() {
@@ -63,7 +64,7 @@ $this->registerJs($js);
     <fieldset>
         <legend><?= Yii::t("app", "Advanced") ?>
         </legend>
-        <?= $form->field($model, "cache_handler")->dropDownList(["file" => Yii::t("app", "File"), "memcached" => "Memcached", "dummy" => "Dummy"]) ?>
+        <?= $form->field($model, "cache_handler")->dropDownList(["yii\\caching\\FileCache" => Yii::t("app", "File"), "yii\\caching\\ApcCache" => "APC", "yii\\caching\\DummyCache" => "Dummy"]) ?>
     </fieldset>
 
 

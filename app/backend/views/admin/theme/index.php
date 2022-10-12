@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="row">
                     <div class="col">
-                        <?php Pjax::begin(); ?>
+                        <?php #Pjax::begin();?>
                         <?=
                         GridView::widget([
                             'dataProvider' => $dataProvider,
@@ -90,17 +90,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'created_at',
                                 [
                                     'class' => 'yii\grid\ActionColumn',
-                                    'visibleButtons' => [
-                                        'delete' => function ($model, $key, $index) {
-                                            return !preg_match('#^vendor/#', $model->sourcePath) ? true : false;
-                                        }
-                                    ],
+                                    // 'visibleButtons' => [
+                                    //     'delete' => function ($model, $key, $index) {
+                                    //         return !preg_match('#^@vendor/#', $model->sourcePath) ? true : false;
+                                    //     }
+                                    // ],
                                     'template' => '{delete}',
                                 ],
                             ],
                             'options' => ['class' => 'table table-striped table-bordered table-responsive']
                         ]); ?>
-                        <?php Pjax::end(); ?>
+                        <?php #Pjax::end();?>
                     </div>
                 </div>
             </div>

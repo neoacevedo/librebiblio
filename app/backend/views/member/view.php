@@ -2,16 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\jui\Accordion;
-use kartik\sidenav\SideNav;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+use yii\bootstrap4\Nav;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Circulation'), 'url' => ['/circulation/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // emulación de data-confirm en elemento "a"
@@ -24,32 +21,26 @@ $this->registerJs($js);
 $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
 ?>
 <div class="user-view">
-
-    <h1><?= Html::encode($this->title) ?>
-    </h1>
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-3">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <?=
-                SideNav::widget([
-                    'type' => SideNav::TYPE_PRIMARY,
-                    'heading' => $model->username,
+    <div class="card">
+        <nav class="navbar navbar-expand navbar-white navbar-light">
+            <?= Nav::widget([
+                    'options' => ['class' => 'navbar-nav'],
                     'items' => [
                         ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
                         ['label' => Yii::t('yii', 'Update'), 'url' => ['member/update', 'id' => $model->id]],
                         ['label' => Yii::t('app', 'Delete'), 'url' => ['member/delete', 'id' => $model->id],
-                            'options' => ['id' => 'member_delete']],
+                            'options' => ['id' => 'member_delete']
+                        ],
                         ['label' => Yii::t('app', 'History'), 'url' => ['member/history', 'id' => $model->id]],
                     ]
-                ]);
-                ?>
-            </div>
-        </div>
-        <div class="col-lg-9 col-md-9 col-sm-9">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="box">
-                    <?=
-                    DetailView::widget([
+                ]); ?>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
                             'id',
@@ -67,7 +58,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                             'phone',
                             [
                                 'attribute' => 'status',
-                                'value' => function($model) {
+                                'value' => function ($model) {
                                     switch ($model->status) {
                                         case $model::STATUS_ACTIVE:
                                             return Yii::t('app', 'Active');
@@ -90,113 +81,122 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                             ],
                         ],
                         'options' => ['class' => 'table table-striped table-bordered detail-view table-responsive']
-                    ])
-                    ?>
+                    ]) ?>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?>
-                        </h4>
-                    </div>
-                    <div class="box-body">
-                        <table class="table table-striped table-bordered detail-view table-responsive">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?>
-                                    </th>
-                                    <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?>
-                                    </th>
-                                    <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <?= Yii::t('app', 'Checkout') ?>
-                                    </th>
-                                    <th>
-                                        <?= Yii::t('app', 'Renewal') ?>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($materialTypeStats as $material):
-                                    ?>
-                                <tr>
-                                    <td><?= Html::encode($material['description']) ?>
-                                    </td>
-                                    <td><?= Html::encode($material['row_count']) ?>
-                                    </td>
-                                    <td><?= Html::encode($material['checkout_limit']) ?>
-                                    </td>
-                                    <td><?= Html::encode($material['renewal_limit']) ?>
-                                    </td>
-                                </tr>
-                                <?php
-                                endforeach;
-                                ?>
-
-                            </tbody>
-                        </table>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="heading"><?= Yii::t('app', 'Checkout Stats') ?>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered detail-view table-responsive">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: middle"><?= Html::encode('Material') ?>
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle"><?= Yii::t('app', 'Count') ?>
+                                </th>
+                                <th colspan="2" style="text-align: center"><?= Yii::t('app', 'Limits') ?>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <?= Yii::t('app', 'Checkout') ?>
+                                </th>
+                                <th>
+                                    <?= Yii::t('app', 'Renewal') ?>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($materialTypeStats as $material): ?>
+                            <tr>
+                                <td><?= Html::encode($material['description']) ?>
+                                </td>
+                                <td><?= Html::encode($material['row_count']) ?>
+                                </td>
+                                <td><?= Html::encode($material['checkout_limit']) ?>
+                                </td>
+                                <td><?= Html::encode($material['renewal_limit']) ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <?=
-                    Accordion::widget([
-                        'items' => [
-                            [
-                                'header' => Yii::t('app', 'Bibliographies Currently Checked Out'),
-                                'content' => $this->render('/circulation/checkout/index', [
+    <div class="row">
+        <div class="col">
+            <div class="card card-primary card-outline card-outline-tabs">
+                <div class="card-header p-0 border-bottom-0">
+                    <?= Nav::widget([
+                            'options' => ['class' => 'nav-tabs', 'role' => 'tablist'],
+                            'items' => [
+                                [
+                                    'label' => Yii::t('app', 'Bibliographies Currently Checked Out'),
+                                    'url' => '#bibliography-checked-out',
+                                    'active' => true,
+                                    'linkOptions' => [
+                                        'id' => 'checked-out-tab',
+                                        'data-toggle' => 'pill',
+                                        'role' => 'tab',
+                                        'aria-controls' => 'bibliography-checked-out',
+                                        'aria-selected' => true,
+                                    ],
+                                ],
+                                [
+                                    'label' => Yii::t('app', 'Bibliographies Currently On Hold'),
+                                    'url' => "#bibliography-placehold",
+                                    'linkOptions' => [
+                                        'id' => 'placehold-tab',
+                                        'data-toggle' => 'pill',
+                                        'aria-controls' => 'bibliography-placehold',
+                                        'role' => 'tab'
+                                    ]
+                                ],
+                            ]
+                        ]); ?>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="bibliography-tabContent">
+                        <div class="tab-pane fade active show" role="tabpanel" id="bibliography-checked-out"
+                            aria-labelledby="checked-out-tab">
+                            <?= $this->render('/circulation/checkout/index', [
                                     'searchModel' => $biblioCopySearch[0],
                                     'dataProvider' => $biblioCopy[0],
                                     'id' => $model->id
-                                ]),
-                            ],
-                            [
-                                'header' => Yii::t('app', 'Bibliographies Currently On Hold'),
-                                'headerOptions' => ['tag' => 'h3'],
-                                'content' => $this->render('/circulation/placehold/index', [
+                            ]) ?>
+                        </div>
+                        <div class="tab-pane fade" role="tabpanel" id="bibliography-placehold"
+                            aria-labelledby="placehold-tab">
+                            <?= $this->render('/circulation/placehold/index', [
                                     'searchModel' => $biblioCopySearch[1],
                                     'dataProvider' => $biblioCopy[1],
                                     'id' => $model->id
-                                ]),
-                            ],
-                        ],
-                        'options' => ['tag' => 'div'],
-                        'itemOptions' => ['tag' => 'div'],
-                        'headerOptions' => ['tag' => 'h3'],
-                        'clientOptions' => ['collapsible' => false],
-                    ]);
-                    ?>
+                            ]) ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <?php
-// modal checkout
-yii\bootstrap\Modal::begin([
-    'header' => '<span id="modalHeaderTitle"></span>',
-    'headerOptions' => ['id' => 'modalHeader'],
-    'id' => 'modal',
-    'size' => 'modal-lg',
-    'closeButton' => ['class' => 'close'],
-    //keeps from closing modal with esc key or by clicking out of the modal.
-    // user must click cancel or X to close
-    'clientOptions' => ['backdrop' => 'static', 'keyboard' => false]
-]);
+    // modal checkout
+    yii\bootstrap4\Modal::begin([
+        'title' => '',
+        'id' => 'modal',
+        'size' => 'modal-lg',
+        //keeps from closing modal with esc key or by clicking out of the modal.
+        // user must click cancel or X to close
+        'clientOptions' => ['backdrop' => 'static', 'keyboard' => false]
+    ]);
 #Pjax::begin(['id' => 'pjax', 'timeout' => 500]);
 echo "<div id='modalContent'></div>";
 #Pjax::end();
-yii\bootstrap\Modal::end();
-?>
-</div>
+yii\bootstrap4\Modal::end();
