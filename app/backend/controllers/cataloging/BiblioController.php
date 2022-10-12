@@ -19,6 +19,7 @@ use yii\web\UploadedFile;
 use neoacevedo\yii2\Storage;
 use common\models\MaterialType;
 use backend\models\Collection;
+use common\models\UsmarcSubfield;
 
 /**
  * BiblioController implements the CRUD actions for Biblio model.
@@ -101,7 +102,6 @@ class BiblioController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         #if (\Yii::$app->user->can('view')) {
-        Yii::debug($dataProvider);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -293,6 +293,7 @@ class BiblioController extends Controller
             $importer = UploadedFile::getInstanceByName('usmarc_data');
             if ($importer !== null) {
                 $handle = fopen($importer->tempName, "r");
+                $fieldId = \common\models\BiblioField::find()->orderBy(["fieldid" => SORT_DESC])->one()->fieldid + 1 ?? 1;
                 if ($this->request->post("test") == 0) {
                     while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
                         $biblio = new Biblio();
@@ -334,14 +335,167 @@ class BiblioController extends Controller
                             break;
                         }
 
-                        if ($fileop[12]) {
+                        if (array_key_exists(12, $fileop)) {
+                            $marc_data = explode("|", $fileop[12]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
                             $model = new \common\models\BiblioField();
                             $model->bibid = $biblio->id;
-                            $model->fieldid = @$fileop[12];
-                            $model->ind1_cd = @$fileop[13];
-                            $model->ind2_cd = @$fileop[14];
-                            $model->subfield_cd = @$fileop[15];
-                            $model->field_data = @$fileop[16];
+                            $model->fieldid = $fieldId;
+                            $model->tag = $marc_data[0];
+                            $model->ind1_cd = $marc_data[1];
+                            $model->ind2_cd = $marc_data[2];
+                            $model->subfield_cd = $usmarc_subfield->subfield_cd;
+                            $model->field_data = $marc_data[4];
+
+                            if (!$model->validate()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+
+                            if (!$model->save()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+                        }
+
+                        if (array_key_exists(13, $fileop)) {
+                            $marc_data = explode("|", $fileop[13]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $model = new \common\models\BiblioField();
+                            $model->bibid = $biblio->id;
+                            $model->fieldid = $fieldId;
+                            $model->tag = $marc_data[0];
+                            $model->ind1_cd = $marc_data[1];
+                            $model->ind2_cd = $marc_data[2];
+                            $model->subfield_cd = $usmarc_subfield->subfield_cd;
+                            $model->field_data = $marc_data[4];
+
+                            if (!$model->validate()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+
+                            if (!$model->save()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+                        }
+
+                        if (array_key_exists(14, $fileop)) {
+                            $marc_data = explode("|", $fileop[14]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $model = new \common\models\BiblioField();
+                            $model->bibid = $biblio->id;
+                            $model->fieldid = $fieldId;
+                            $model->tag = $marc_data[0];
+                            $model->ind1_cd = $marc_data[1];
+                            $model->ind2_cd = $marc_data[2];
+                            $model->subfield_cd = $usmarc_subfield->subfield_cd;
+                            $model->field_data = $marc_data[4];
+
+                            if (!$model->validate()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+
+                            if (!$model->save()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+                        }
+
+                        if (array_key_exists(15, $fileop)) {
+                            $marc_data = explode("|", $fileop[15]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $model = new \common\models\BiblioField();
+                            $model->bibid = $biblio->id;
+                            $model->fieldid = $fieldId;
+                            $model->tag = $marc_data[0];
+                            $model->ind1_cd = $marc_data[1];
+                            $model->ind2_cd = $marc_data[2];
+                            $model->subfield_cd = $usmarc_subfield->subfield_cd;
+                            $model->field_data = $marc_data[4];
+
+                            if (!$model->validate()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+
+                            if (!$model->save()) {
+                                $message = "<ul>";
+                                foreach ($model->errors as $key => $error) {
+                                    $message .= "<li>{$error[0]}</li>";
+                                }
+                                $message .= "</ul>";
+
+                                Yii::$app->session->setFlash('error', $message);
+                                break;
+                            }
+                        }
+
+                        if (array_key_exists(16, $fileop)) {
+                            $marc_data = explode("|", $fileop[16]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $model = new \common\models\BiblioField();
+                            $model->bibid = $biblio->id;
+                            $model->fieldid = $fieldId;
+                            $model->tag = $marc_data[0];
+                            $model->ind1_cd = $marc_data[1];
+                            $model->ind2_cd = $marc_data[2];
+                            $model->subfield_cd = $usmarc_subfield->subfield_cd;
+                            $model->field_data = $marc_data[4];
 
                             if (!$model->validate()) {
                                 $message = "<ul>";
@@ -370,26 +524,28 @@ class BiblioController extends Controller
                     return $this->redirect(['index']);
                 } else {
                     while (($fileop = fgetcsv($handle, 0, ",")) !== false) {
-                        $biblio = new Biblio();
-                        $biblio->material_cd = $this->request->post('material_cd');
-                        $biblio->collection_cd = $this->request->post('collection_cd');
-                        $biblio->call_nmbr1 = @$fileop[0];
-                        $biblio->call_nmbr2 = @$fileop[1];
-                        $biblio->call_nmbr3 = @$fileop[2];
-                        $biblio->opac_flg = $this->request->post('opac_flg', 0);
-                        $biblio->title = @$fileop[3];
-                        $biblio->title_remainder = @$fileop[4];
-                        $biblio->responsibility_stmt = @$fileop[5];
-                        $biblio->author = @$fileop[6];
-                        $biblio->topic1 = @$fileop[7];
-                        $biblio->topic2 = @$fileop[8];
-                        $biblio->topic3 = @$fileop[9];
-                        $biblio->topic4 = @$fileop[10];
-                        $biblio->topic5 = @$fileop[11];
+                        $biblio = [];
+                        $biblio['material_cd'] = $this->request->post('material_cd');
+                        $biblio['collection_cd'] = $this->request->post('collection_cd');
+                        $biblio['call_nmbr1'] = @$fileop[0];
+                        $biblio['call_nmbr2'] = @$fileop[1];
+                        $biblio['call_nmbr3'] = @$fileop[2];
+                        $biblio['opac_flg'] = $this->request->post('opac_flg', 0);
+                        $biblio['title'] = @$fileop[3];
+                        $biblio['title_remainder'] = @$fileop[4];
+                        $biblio['responsibility_stmt'] = @$fileop[5];
+                        $biblio['author'] = @$fileop[6];
+                        $biblio['topic1'] = @$fileop[7];
+                        $biblio['topic2'] = @$fileop[8];
+                        $biblio['topic3'] = @$fileop[9];
+                        $biblio['topic4'] = @$fileop[10];
+                        $biblio['topic5'] = @$fileop[11];
 
-                        if (!$biblio->validate()) {
+                        $model = new Biblio($biblio);
+
+                        if (!$model->validate()) {
                             $message = "<ul>";
-                            foreach ($biblio->errors as $key => $error) {
+                            foreach ($model->errors as $key => $error) {
                                 $message .= "<li>{$error[0]}</li>";
                             }
                             $message .= "</ul>";
@@ -398,29 +554,82 @@ class BiblioController extends Controller
                             break;
                         }
 
-                        array_push($models, $biblio);
+                        $biblio['material_cd'] = MaterialType::findOne($this->request->post('material_cd'))->description;
+                        $biblio['collection_cd'] = Collection::findOne($this->request->post('collection_cd'))->description;
 
                         if (array_key_exists(12, $fileop)) {
-                            $model = new \common\models\BiblioField();
-                            $model->bibid = rand(0, 10);
-                            $model->fieldid = @$fileop[12];
-                            $model->ind1_cd = @$fileop[13];
-                            $model->ind2_cd = @$fileop[14];
-                            $model->subfield_cd = @$fileop[15];
-                            $model->field_data = @$fileop[16];
+                            $marc_data = explode("|", $fileop[12]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $biblio['usmarc'] = [];
+                            $biblio['usmarc'][0]['tag'] = $marc_data[0];
+                            $biblio['usmarc'][0]['ind1_cd'] = $marc_data[1];
+                            $biblio['usmarc'][0]['ind2_cd'] = $marc_data[2];
+                            $biblio['usmarc'][0]['subfield_cd'] = $usmarc_subfield->subfield_cd;
+                            $biblio['usmarc'][0]['field_data'] = $marc_data[4];
 
-                            if (!$model->validate()) {
-                                $message = "<ul>";
-                                foreach ($model->errors as $key => $error) {
-                                    $message .= "<li>{$error[0]}</li>";
-                                }
-                                $message .= "</ul>";
+                            // if (!$biblio->biblioFields[0]->validate()) {
+                            //     $message = "<ul>";
+                            //     foreach ($biblio->biblioFields[0]->errors as $key => $error) {
+                            //         $message .= "<li>{$error[0]}</li>";
+                            //     }
+                            //     $message .= "</ul>";
 
-                                Yii::$app->session->setFlash('error', $message);
-                                break;
-                            }
-                            array_push($models, $model);
+                            //     Yii::$app->session->setFlash('error', $message);
+                            //     break;
+                            // }
                         }
+
+                        if (array_key_exists(13, $fileop)) {
+                            $marc_data = explode("|", $fileop[13]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $biblio['usmarc'][1]['tag'] = $marc_data[0];
+                            $biblio['usmarc'][1]['ind1_cd'] = $marc_data[1];
+                            $biblio['usmarc'][1]['ind2_cd'] = $marc_data[2];
+                            $biblio['usmarc'][1]['subfield_cd'] = $usmarc_subfield->subfield_cd;
+                            $biblio['usmarc'][1]['field_data'] = $marc_data[4];
+                        }
+
+                        if (array_key_exists(14, $fileop)) {
+                            $marc_data = explode("|", $fileop[14]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $biblio['usmarc'][1]['tag'] = $marc_data[0];
+                            $biblio['usmarc'][1]['ind1_cd'] = $marc_data[1];
+                            $biblio['usmarc'][1]['ind2_cd'] = $marc_data[2];
+                            $biblio['usmarc'][1]['subfield_cd'] = $usmarc_subfield->subfield_cd;
+                            $biblio['usmarc'][1]['field_data'] = $marc_data[4];
+                        }
+
+                        if (array_key_exists(15, $fileop)) {
+                            $marc_data = explode("|", $fileop[15]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $biblio['usmarc'][1]['tag'] = $marc_data[0];
+                            $biblio['usmarc'][1]['ind1_cd'] = $marc_data[1];
+                            $biblio['usmarc'][1]['ind2_cd'] = $marc_data[2];
+                            $biblio['usmarc'][1]['subfield_cd'] = $usmarc_subfield->subfield_cd;
+                            $biblio['usmarc'][1]['field_data'] = $marc_data[4];
+                        }
+
+                        if (array_key_exists(16, $fileop)) {
+                            $marc_data = explode("|", $fileop[16]);
+                            /** @var UsmarcSubfield */
+                            $usmarc_subfield = UsmarcSubfield::find()
+                                ->where(["tag" => $marc_data[0], "subfield_cd" => $marc_data[3]])->one();
+                            $biblio['usmarc'][1]['tag'] = $marc_data[0];
+                            $biblio['usmarc'][1]['ind1_cd'] = $marc_data[1];
+                            $biblio['usmarc'][1]['ind2_cd'] = $marc_data[2];
+                            $biblio['usmarc'][1]['subfield_cd'] = $usmarc_subfield->subfield_cd;
+                            $biblio['usmarc'][1]['field_data'] = $marc_data[4];
+                        }
+
+                        array_push($models, $biblio);
                     }
                 }
             } else {

@@ -28,19 +28,19 @@ use yii\db\ActiveRecord;
  * @property integer $updated_userid
  * @property integer $material_cd
  * @property integer $collection_cd
- * @property string|null $call_nmbr1
- * @property string|null $call_nmbr2
+ * @property string|null $call_nmbr1 [099 a]
+ * @property string|null $call_nmbr2 [099 a]
  * @property string|null $call_nmbr3
- * @property string|null $title
- * @property string|null $title_remainder
+ * @property string|null $title [245 a]
+ * @property string|null $title_remainder [245 b]
  * @property string|null $image_file
- * @property string|null $responsibility_stmt
- * @property string|null $author
- * @property string|null $topic1
- * @property string|null $topic2
- * @property string|null $topic3
- * @property string|null $topic4
- * @property string|null $topic5
+ * @property string|null $responsibility_stmt [245 c]
+ * @property string|null $author [100 a]
+ * @property string|null $topic1 [650 a]
+ * @property string|null $topic2 [650 a1]
+ * @property string|null $topic3 [650 a2]
+ * @property string|null $topic4 [650 a3]
+ * @property string|null $topic5 [650 a4]
  * @property int $opac_flg
  *
  * @property BiblioCopy[] $biblioCopies
