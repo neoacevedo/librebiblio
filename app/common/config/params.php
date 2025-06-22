@@ -1,28 +1,22 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
- * @copyright Copyright (c) 2022 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * @copyright Copyright (c) 2020 Néstor Acevedo
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$config = require(__DIR__ . "/main-local.php");
-array_shift($config['components']['db']);
-
-try {
-    $connection = new \yii\db\Connection($config['components']['db']);
-    $connection->open();
-    $tableName = "{$connection->tablePrefix}settings";
-    $settings = $connection->createCommand("select * from {{%settings}} limit 1")->cache(86400)->queryOne(PDO::FETCH_ASSOC);
-} catch (Exception $ex) {
-    $message = $ex->getMessage();
-    $settings['library_name'] = "LibreBiblio";
-    $settings['library_hours'] = "L-V 09:00 - 17:00";
-    $settings['library_phone'] = "+57 601234567";
-    $settings['library_image_url'] = null;
-    $settings['use_image_flg'] = 0;
-    $settings['cache_handler'] = yii\caching\FileCache::class;
-}
 
 return [
     'adminEmail' => 'admin@example.com',
@@ -32,8 +26,9 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 16,
     'bsVersion' => '4.x',
-    'library_hours' => $settings['library_hours'],
-    'library_phone' => $settings['library_phone'],
-    'library_image_url' => $settings['library_image_url'],
-    'use_image_flg' => $settings['use_image_flg'],
+    'library_hours' => "L-V 09:00 - 17:00",
+    'library_phone' => "+57 601234567",
+    'library_image_url' => null,
+    'use_image_flg' => 0,
+    'cache_handler' => yii\caching\FileCache::class
 ];

@@ -7,18 +7,18 @@ basado en [OpenBiblio](http://obiblio.sourceforge.net/), desarrollado por Dave S
 Cuenta con características conocidas de OpenBiblio como Circulación, Catalogación, Administración de personal y usuarios. 
 Además permite el registro de miembros desde la parte administrativa y la pública.
 
-[![Latest Stable Version](https://poser.pugx.org/neoacevedo/librebiblio/v/stable)](https://packagist.org/packages/neoacevedo/librebiblio)
+<!-- [![Latest Stable Version](https://poser.pugx.org/neoacevedo/librebiblio/v/stable)](https://packagist.org/packages/neoacevedo/librebiblio)
 [![Total Downloads](https://poser.pugx.org/neoacevedo/librebiblio/downloads)](https://packagist.org/packages/neoacevedo/librebiblio)
 [![Latest Unstable Version](https://poser.pugx.org/neoacevedo/librebiblio/v/unstable)](https://packagist.org/packages/neoacevedo/librebiblio)
 [![License](https://poser.pugx.org/neoacevedo/librebiblio/license)](https://packagist.org/packages/neoacevedo/librebiblio)
 [![Monthly Downloads](https://poser.pugx.org/neoacevedo/librebiblio/d/monthly)](https://packagist.org/packages/neoacevedo/librebiblio)
-[![Daily Downloads](https://poser.pugx.org/neoacevedo/librebiblio/d/daily)](https://packagist.org/packages/neoacevedo/librebiblio)
+[![Daily Downloads](https://poser.pugx.org/neoacevedo/librebiblio/d/daily)](https://packagist.org/packages/neoacevedo/librebiblio) -->
 
 INSTALACIÓN
 ===========
 ## Requerimientos
 
-+ PHP >= 7.4
++ PHP >= 8.3
 + MySQL, MariaDB, PostgresSQL (Por ahora)
 + PHP7 bcmath
 
