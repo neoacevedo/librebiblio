@@ -1,8 +1,19 @@
 <?php
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace common\models;
@@ -76,7 +87,7 @@ class Settings extends \yii\db\ActiveRecord
             'block_checkouts_when_fines_due' => Yii::t('app', 'Block Checkouts When Fines Due'),
             'hold_max_days' => Yii::t('app', 'Hold Max Days'),
             'offline' => Yii::t('app', 'Offline'),
-            'items_per_page'=> Yii::t('app', 'Items per page'),
+            'items_per_page' => Yii::t('app', 'Items per page'),
             'cache_handler' => Yii::t("app", "Cache Handler")
         ];
     }

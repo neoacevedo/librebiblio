@@ -1,9 +1,20 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace backend\reports;
@@ -16,14 +27,16 @@ use backend\reports\PopularBiblios;
 /**
  * PopularBibliosSearch represents the model behind the search form about `backend\reports\PopularBiblios`.
  */
-class PopularBibliosSearch extends PopularBiblios {
+class PopularBibliosSearch extends PopularBiblios
+{
 
     public $groupBy;
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id', 'checkoutCount'], 'integer'],
             [['barcode_nmbr', 'title', 'author'], 'safe'],
@@ -33,7 +46,8 @@ class PopularBibliosSearch extends PopularBiblios {
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -45,7 +59,8 @@ class PopularBibliosSearch extends PopularBiblios {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = PopularBiblios::find();
 
         // add conditions that should always apply here
@@ -73,7 +88,7 @@ class PopularBibliosSearch extends PopularBiblios {
 
 
         $query->andFilterWhere(['like', 'title', $this->title])
-                ->andFilterWhere(['like', 'author', $this->author]);
+            ->andFilterWhere(['like', 'author', $this->author]);
         if ($params['groupBy'] === "copy") {
             $query->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr]);
         }

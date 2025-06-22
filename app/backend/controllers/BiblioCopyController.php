@@ -1,9 +1,20 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace backend\controllers;
@@ -126,7 +137,7 @@ class BiblioCopyController extends Controller
         if ($this->request->post('autoqrcode')) {
             $nzeros = "5";
             $copy_number = BiblioCopy::find()->where(['bibid' => $this->request->post("BiblioCopy")['bibid']])->max("id") + 1;
-            $post['BiblioCopy']['barcode_nmbr'] = sprintf("%0".$nzeros."s", $this->request->post("BiblioCopy")['bibid']) . $copy_number;
+            $post['BiblioCopy']['barcode_nmbr'] = sprintf("%0" . $nzeros . "s", $this->request->post("BiblioCopy")['bibid']) . $copy_number;
         }
 
         if ($model->load($post)) {
@@ -159,7 +170,7 @@ class BiblioCopyController extends Controller
         if ($this->request->get('autoqrcode')) {
             $nzeros = "5";
             $copy_number = BiblioCopy::find()->where(['bibid' => $model->bibid])->max("id") + 1;
-            $model->barcode_nmbr = sprintf("%0".$nzeros."s", $model->bibid) . $copy_number;
+            $model->barcode_nmbr = sprintf("%0" . $nzeros . "s", $model->bibid) . $copy_number;
         }
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->save()) {

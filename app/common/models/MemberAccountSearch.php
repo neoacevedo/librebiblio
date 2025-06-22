@@ -1,8 +1,19 @@
 <?php
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace common\models;
 
@@ -14,14 +25,16 @@ use common\models\MemberAccount;
 /**
  * MemberAccountSearch represents the model behind the search form of `common\models\MemberAccount`.
  */
-class MemberAccountSearch extends MemberAccount {
+class MemberAccountSearch extends MemberAccount
+{
 
     public $user;
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id', 'mbr_id'], 'integer'],
             [['mbr_id', 'user', 'created_at', 'transaction_type_cd', 'description'], 'safe'],
@@ -32,7 +45,8 @@ class MemberAccountSearch extends MemberAccount {
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -44,7 +58,8 @@ class MemberAccountSearch extends MemberAccount {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = MemberAccount::find();
 
         $query->joinWith(['user']);
@@ -54,7 +69,7 @@ class MemberAccountSearch extends MemberAccount {
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        
+
         $dataProvider->sort->attributes['user'] = [
             // The tables are the ones our relation are configured to
             // in my case they are prefixed with "tbl_"
@@ -79,8 +94,8 @@ class MemberAccountSearch extends MemberAccount {
         ]);
 
         $query->andFilterWhere(['like', 'transaction_type_cd', $this->transaction_type_cd])
-                ->andFilterWhere(['like', '{{%user}}.username', $this->user])
-                ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', '{{%user}}.username', $this->user])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

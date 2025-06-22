@@ -20,7 +20,7 @@ INSTALACIÓN
 
 + PHP >= 8.3
 + MySQL, MariaDB, PostgresSQL (Por ahora)
-+ PHP7 bcmath
++ PHP8 bcmath
 
 ## Configuración
 
@@ -94,6 +94,7 @@ backend
     web/                 contains the backend entry script and Web resources
 app
     common
+        components/          contiene los componentes del sistema
         config/              contains shared configurations
         mail/                contains view files for e-mails
         models/              contains model classes used in both backend and frontend
@@ -106,6 +107,7 @@ app
         runtime/             contains files generated during runtime
     backend
         assets/              contains application assets such as JavaScript and CSS
+        components/          contiene los componentes del nivel de backend
         config/              contains backend configurations
         controllers/         contains Web controller classes
         reports/             contiene clases modelo específicas para la generación de reportes 
@@ -117,6 +119,7 @@ app
         views/               contains view files for the Web application
     frontend
         assets/              contains application assets such as JavaScript and CSS
+        components/          contiene los componentes del nivel de frontend
         config/              contains frontend configurations
         controllers/         contains Web controller classes
         models/              contains frontend-specific model classes

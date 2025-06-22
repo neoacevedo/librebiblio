@@ -1,9 +1,20 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace common\models;
@@ -31,10 +42,19 @@ class BiblioSearch extends Biblio
         return [
             [['id'], 'integer'],
             [['title', 'title_remainder', 'responsibility_stmt', 'author', 'topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'call_nmbr1', 'call_nmbr2', 'call_nmbr3'], 'string'],
-            [[
-                'user', 'image_file', 'materialType', 'collection', 'created_at', 'updated_at',
-                'opac_flg', 'biblioFields'
-            ], 'safe'],
+            [
+                [
+                    'user',
+                    'image_file',
+                    'materialType',
+                    'collection',
+                    'created_at',
+                    'updated_at',
+                    'opac_flg',
+                    'biblioFields'
+                ],
+                'safe'
+            ],
         ];
     }
 
@@ -66,18 +86,18 @@ class BiblioSearch extends Biblio
         ]);
 
         $dataProvider->sort->attributes['user'] = [
-                    'asc' => ["{{%user}}.firstName" => SORT_ASC, "{{%user}}.lastName" => SORT_ASC],
-                    'desc' => ["{{%user}}.firstName" => SORT_DESC, "{{%user}}.lastName" => SORT_DESC],
+            'asc' => ["{{%user}}.firstName" => SORT_ASC, "{{%user}}.lastName" => SORT_ASC],
+            'desc' => ["{{%user}}.firstName" => SORT_DESC, "{{%user}}.lastName" => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['materialType'] = [
-                    'asc' => ["{{%material_type_dm}}.description" => SORT_ASC],
-                    'desc' => ["{{%material_type_dm}}.description" => SORT_DESC],
+            'asc' => ["{{%material_type_dm}}.description" => SORT_ASC],
+            'desc' => ["{{%material_type_dm}}.description" => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['collection'] = [
-                    'asc' => ["{{%collection_dm}}.firstName" => SORT_ASC],
-                    'desc' => ["{{%collection_dm}}.firstName" => SORT_DESC],
+            'asc' => ["{{%collection_dm}}.firstName" => SORT_ASC],
+            'desc' => ["{{%collection_dm}}.firstName" => SORT_DESC],
         ];
 
         $this->load($params);

@@ -1,8 +1,19 @@
 <?php
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace backend\models;
 
@@ -14,12 +25,14 @@ use backend\models\User;
 /**
  * UserSearch represents the model behind the search form about `common\models\User`.
  */
-class UserSearch extends User {
+class UserSearch extends User
+{
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
@@ -29,7 +42,8 @@ class UserSearch extends User {
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -41,7 +55,8 @@ class UserSearch extends User {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = User::find();
 
         //
@@ -76,10 +91,10 @@ class UserSearch extends User {
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
-                ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-                ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-                ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-                ->andFilterWhere(['like', 'email', $this->email]);
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
+            ->andFilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;
     }

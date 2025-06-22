@@ -1,11 +1,23 @@
 <?php
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace frontend\controllers;
 
+use common\models\BiblioStatusHistory;
 use Yii;
 use common\models\Member;
 use common\models\MemberAccount;
@@ -18,13 +30,14 @@ use yii\filters\AccessControl;
 /**
  * MemberController implementa las operaciones CRUD para el modelo Member
  */
-class MemberController extends Controller 
+class MemberController extends Controller
 {
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::class,
@@ -58,7 +71,8 @@ class MemberController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions() {
+    public function actions()
+    {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
@@ -71,10 +85,11 @@ class MemberController extends Controller
      * Muestra el historial de préstamos o reservas del miembro.
      * @return mixed
      */
-    public function actionHistory() {
+    public function actionHistory()
+    {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
+        $biblioStatusHist = BiblioStatusHistory::find()->where(['mbr_id' => $id]);
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $biblioStatusHist,
             'sort' => [
@@ -91,8 +106,8 @@ class MemberController extends Controller
         ]);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -100,12 +115,13 @@ class MemberController extends Controller
      * Muestra el perfil del miembro.
      * @return mixed
      */
-    public function actionProfile() {
+    public function actionProfile()
+    {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('profile', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -122,7 +138,8 @@ class MemberController extends Controller
      * </ul>
      * @return mixed
      */
-    public function actionAccount() {
+    public function actionAccount()
+    {
 
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
@@ -133,9 +150,9 @@ class MemberController extends Controller
 
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('account', [
-                    'model' => $model,
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -144,13 +161,14 @@ class MemberController extends Controller
      * @param integer $account_id
      * @return mixed
      */
-    public function actionAccountView(int $account_id) {
+    public function actionAccountView(int $account_id)
+    {
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->renderAjax('account-view', [
-                    'memberAccount' => $memberAccount,
+            'memberAccount' => $memberAccount,
         ]);
     }
 
@@ -160,7 +178,8 @@ class MemberController extends Controller
      * @param int $account_id
      * @return mixed
      */
-    public function actionAccountPrint(int $account_id) {
+    public function actionAccountPrint(int $account_id)
+    {
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
@@ -173,13 +192,15 @@ class MemberController extends Controller
 
         $pdf = Yii::$app->pdf;
         $pdf->content = $html;
-        $pdf->options = ['margin_left' => 20,
+        $pdf->options = [
+            'margin_left' => 20,
             'margin_right' => 15,
             'margin_top' => 25,
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE];
+            'showBarcodeNumbers' => FALSE
+        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
@@ -191,22 +212,23 @@ class MemberController extends Controller
             return ($e->getMessage());
         }
     }
-    
+
     /**
      * Muestra todas las reservas del miembro.
      * @return mixed
      */
-    public function actionPlaceholds() {
+    public function actionPlaceholds()
+    {
         $id = Yii::$app->user->id;
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         $biblioCopySearch = new \common\models\BiblioHoldSearch();
         $biblioCopySearch->mbr_id = $id;
         $biblioCopy = $biblioCopySearch->search([]);
-        
+
         return $this->render('placeholds', [
-                    'model' => $this->findModel($id),
-                    'searchModel' => $biblioCopySearch,
-                    'dataProvider' => $biblioCopy
+            'model' => $this->findModel($id),
+            'searchModel' => $biblioCopySearch,
+            'dataProvider' => $biblioCopy
         ]);
     }
 
@@ -215,7 +237,8 @@ class MemberController extends Controller
      * Actualiza la información del miembro.
      * @return mixed
      */
-    public function actionUpdate() {
+    public function actionUpdate()
+    {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -223,11 +246,11 @@ class MemberController extends Controller
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['account']);
         } else {
-            @array_walk_recursive($model->errors, function($v, $k) {
-                        Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            @array_walk_recursive($model->errors, function ($v, $k) {
+                Yii::$app->getSession()->setFlash('error', $v);
+            });
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -239,7 +262,8 @@ class MemberController extends Controller
      * @return Member the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel(int $id) {
+    protected function findModel(int $id)
+    {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {

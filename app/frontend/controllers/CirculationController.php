@@ -1,13 +1,32 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace frontend\controllers;
 
+use common\models\Biblio;
+use common\models\BiblioCopy;
+use common\models\BiblioHold;
+use common\models\Collection;
+use common\models\MemberAccount;
+use common\models\Settings;
+use frontend\models\Cart;
+use frontend\models\CartSearch;
 use Yii;
 use DateTime;
 use common\models\Member;
@@ -15,7 +34,6 @@ use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\BiblioSearch;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
 
@@ -104,12 +122,12 @@ class CirculationController extends Controller
      */
     public function actionAddToCart(int $copyid, int $bibid, string $status)
     {
-        $id = \Yii::$app->user->id;
+        $id = Yii::$app->user->id;
 
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         // agregar al carro
-        if (($cart = \frontend\models\Cart::findOne(['bibid' => $bibid, 'copyid' => $copyid, 'mbr_id' => $id])) === null) {
-            $newCart = new \frontend\models\Cart();
+        if (($cart = Cart::findOne(['bibid' => $bibid, 'copyid' => $copyid, 'mbr_id' => $id])) === null) {
+            $newCart = new Cart();
             $newCart->bibid = $bibid;
             $newCart->copyid = $copyid;
             $newCart->mbr_id = $id;
@@ -134,13 +152,13 @@ class CirculationController extends Controller
      * El listado de los materiales se obtiene desde variables de sesión, por lo que al cerrar la sesión
      * e iniciar de nuevo sesión, el listado desaparece.
      *
-     * @return Response
+     * @return string
      */
-    public function actionCart()
+    public function actionCart(): string
     {
         $id = Yii::$app->user->id;
-        $model = \common\models\Member::findOne($id);
-        $searchModel = new \frontend\models\CartSearch();
+        $model = Member::findOne($id);
+        $searchModel = new CartSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('cart', [
@@ -158,7 +176,7 @@ class CirculationController extends Controller
      */
     public function actionDelete(int $id)
     {
-        \frontend\models\Cart::findOne($id)->delete();
+        Cart::findOne($id)->delete();
         return $this->redirect(Yii::$app->request->referrer);
     }
 
@@ -172,19 +190,19 @@ class CirculationController extends Controller
     public function actionPlacehold(int $bibid, int $copyid)
     {
         $id = Yii::$app->user->id;
-        $this->updateMemberAccount($id);
+        $this->updateMemberAccount();
 
-        $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
+        $memberDebt = MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
-            if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
+            if (Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                 return $this->redirect(Yii::$app->request->referrer);
             }
         }
         //$due_back = 7 * 24 * 60 * 60; // Esto será configurable. Determinará el tiempo de devolución
-        $biblioCopy = \common\models\BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
+        $biblioCopy = BiblioCopy::findOne(["id" => $copyid, "bibid" => $bibid]);
         // El artículo no se encuentra prestado o reservado.
         if ($biblioCopy->status_cd !== "out" && $biblioCopy->status_cd !== "hld") {
             // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
@@ -198,12 +216,12 @@ class CirculationController extends Controller
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        if (null !== \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
+        if (null !== BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $bibid, 'mbr_id' => $id])) {
             // si el miembro ya ha reservado el material, se devuelve un aviso y no se reserva de nuevo el material.
             // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "This member already has that item placed hold -- not placing hold."));
         } else {
-            $biblioHold = new \common\models\BiblioHold();
+            $biblioHold = new BiblioHold();
             $biblioHold->bibid = $bibid;
             $biblioHold->copyid = $copyid;
             $biblioHold->mbr_id = $id;
@@ -236,30 +254,30 @@ class CirculationController extends Controller
         // array temporal para guardar los id del array del carro seleccionado (los de la sesión).
         $copy_array = [];
         // los checkbox seleccionados
-        $selection = \Yii::$app->request->post('selection');
+        $selection = Yii::$app->request->post('selection');
 
         $this->updateMemberAccount();
 
-        $memberDebt = \common\models\MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
+        $memberDebt = MemberAccount::find()->where(['mbr_id' => $id, "transaction_type_cd" => "+c"])->sum('amount');
         if ($memberDebt > 0) {
             // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
             Yii::$app->getSession()->setFlash('warning', Yii::t('circulation', "Note: Member has an outstanding account balance of {0, number, currency}", $memberDebt));
             // validar si no se permite que al usuario se le preste bibliografía si tiene deuda
-            if (\common\models\Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
+            if (Settings::find()->one()->block_checkouts_when_fines_due == 'Y') {
                 return $this->redirect(Yii::$app->request->referrer);
             }
         }
         // iteración por cada selección del carro.
         foreach ($selection as $copyid) {
-            $biblioCopy = \common\models\BiblioCopy::findOne($copyid);
-            $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
-            $collection = \backend\models\Collection::findOne($biblio->collection_cd);
+            $biblioCopy = BiblioCopy::findOne($copyid);
+            $biblio = Biblio::findOne($biblioCopy->bibid);
+            $collection = Collection::findOne($biblio->collection_cd);
 
             if ($biblioCopy->status_cd === 'hld') {
                 // si la copia está reservada
-                if (($hold = \common\models\BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $biblioCopy->bibid, 'mbr_id' => $id])) !== null) {
+                if (($hold = BiblioHold::findOne(['copyid' => $copyid, 'bibid' => $biblioCopy->bibid, 'mbr_id' => $id])) !== null) {
                     // el miembro fue quien reservó el material
-                    $holdMaxDays = \common\models\Settings::find()->one()->hold_max_days;
+                    $holdMaxDays = Settings::find()->one()->hold_max_days;
                     $datetime1 = new DateTime($hold->hold_begin_dt);
                     $datetime2 = new DateTime('now');
                     $interval = $datetime1->diff($datetime2);
@@ -335,7 +353,7 @@ class CirculationController extends Controller
                     });
                 } else {
                     // se borra el material del carro
-                    \frontend\models\Cart::findOne(['bibid' => $biblioCopy->bibid, 'copyid' => $biblioCopy->id, 'mbr_id' => $id])->delete();
+                    Cart::findOne(['bibid' => $biblioCopy->bibid, 'copyid' => $biblioCopy->id, 'mbr_id' => $id])->delete();
                     // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
                     Yii::$app->getSession()->setFlash('success', Yii::t('circulation', "Item {barcode} checked out.", ['barcode' => $biblioCopy->barcode_nmbr]));
                     // añadir el código de la copia en el array.
@@ -351,7 +369,7 @@ class CirculationController extends Controller
                 ['html' => 'memberCheckouts-html', 'text' => 'memberCheckouts-text'],
                 ['member' => $this->findModel($id), 'copies' => $copy_array]
             )
-            ->setFrom([Yii::$app->params['adminEmail'] => \common\models\Settings::find()->one()->library_name])
+            ->setFrom([Yii::$app->params['adminEmail'] => Settings::find()->one()->library_name])
             ->setTo(Yii::$app->params['supportEmail'])
             ->setSubject('New Member Checkout')
             ->send();
@@ -368,8 +386,8 @@ class CirculationController extends Controller
      */
     public function actionHoldDelete(int $hld_id)
     {
-        $biblioHold = \common\models\BiblioHold::findOne($hld_id);
-        $biblioCopy = \common\models\BiblioCopy::findOne(['bibid' => $biblioHold->bibid, 'id' => $biblioHold->copyid]);
+        $biblioHold = BiblioHold::findOne($hld_id);
+        $biblioCopy = BiblioCopy::findOne(['bibid' => $biblioHold->bibid, 'id' => $biblioHold->copyid]);
         $biblioHold->delete();
         $biblioCopy->status_cd = "crt";
         if ($biblioCopy->save()) {
@@ -411,10 +429,10 @@ class CirculationController extends Controller
         $id = Yii::$app->user->id;
         $late = $fee = 0; // se definen estas dos variables de tipo entero
 
-        $biblioCopies = \common\models\BiblioCopy::find()->where(['mbr_id' => $id])->all();
+        $biblioCopies = BiblioCopy::find()->where(['mbr_id' => $id])->all();
 
         foreach ($biblioCopies as $biblioCopy) {
-            $biblio = \common\models\Biblio::findOne($biblioCopy->bibid);
+            $biblio = Biblio::findOne($biblioCopy->bibid);
             // encontrar el cargo por día de retraso
             $fee = $biblio->getCollection()->one()->daily_late_fee;
             $dueBack = strtotime($biblioCopy->due_back_dt);
@@ -429,7 +447,7 @@ class CirculationController extends Controller
             }
 
             if ($id != "" and $late > 0 and $fee > 0) {
-                $trans = new \common\models\MemberAccount();
+                $trans = new MemberAccount();
                 $trans->mbr_id = $id;
                 $trans->create_userid = Yii::$app->user->id;
                 $trans->created_at = date('Y-m-d H:i:s');

@@ -1,8 +1,19 @@
 <?php
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace backend\models;
 
@@ -13,7 +24,8 @@ use backend\models\User;
 /**
  * Signup form
  */
-class SignupForm extends Model {
+class SignupForm extends Model
+{
 
     public $username;
     public $first_name;
@@ -27,7 +39,8 @@ class SignupForm extends Model {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             ['first_name', 'trim'],
             ['first_name', 'required'],
@@ -55,11 +68,12 @@ class SignupForm extends Model {
             ['status', 'required']
         ];
     }
-    
-        /**
+
+    /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         parent::attributeLabels();
         return [
             'first_name' => Yii::t('app', 'First Name'),
@@ -69,13 +83,14 @@ class SignupForm extends Model {
             'email' => Yii::t('app', 'Email'),
         ];
     }
-    
+
     /**
      * Signs user up.
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup() {
+    public function signup()
+    {
         if (!$this->validate()) {
             return null;
         }
@@ -94,9 +109,9 @@ class SignupForm extends Model {
         if ($user->save()) {
             return $user;
         } else {
-            @array_walk_recursive($user->errors, function($v, $k) {
-                        \Yii::$app->getSession()->setFlash('error', $v);
-                    });
+            @array_walk_recursive($user->errors, function ($v, $k) {
+                \Yii::$app->getSession()->setFlash('error', $v);
+            });
             return null;
         }
     }
@@ -106,7 +121,8 @@ class SignupForm extends Model {
      * @param int $length
      * @return string
      */
-    public function generateUniqueRandomString(int $length = 32) {
+    public function generateUniqueRandomString(int $length = 32)
+    {
         $randomString = \Yii::$app->getSecurity()->generateRandomString($length);
         return $randomString;
     }

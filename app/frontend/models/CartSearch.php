@@ -1,9 +1,20 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace frontend\models;
@@ -16,11 +27,11 @@ use frontend\models\Cart;
 /**
  * CartSearch represents the model behind the search form about `frontend\models\Cart`.
  */
-class CartSearch extends Cart 
+class CartSearch extends Cart
 {
     public $biblio;
     public $biblioCopy;
-    
+
     /**
      * @inheritdoc
      */
@@ -32,7 +43,7 @@ class CartSearch extends Cart
             [['biblio', 'biblioCopy'], 'safe'],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -41,7 +52,7 @@ class CartSearch extends Cart
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -60,7 +71,7 @@ class CartSearch extends Cart
             'query' => $query,
             'sort' => [
                 'attributes' => [
-                    'biblio'=> [
+                    'biblio' => [
                         // The tables are the ones our relation are configured to
                         // in my case they are prefixed with "tbl_"
                         'asc' => ['{{%biblio}}.title' => SORT_ASC],
@@ -73,7 +84,7 @@ class CartSearch extends Cart
                 ]
             ]
         ]);
-         
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -86,7 +97,7 @@ class CartSearch extends Cart
         $query->andFilterWhere([
             'status' => $this->status,
             '{{%cart}}.mbr_id' => \Yii::$app->user->id,
-            '{{%biblio_copy}}.barcode_nmbr'=> $this->biblioCopy
+            '{{%biblio_copy}}.barcode_nmbr' => $this->biblioCopy
         ]);
 
         $query->andFilterWhere(['like', '{{%biblio}}.title', $this->biblio]);

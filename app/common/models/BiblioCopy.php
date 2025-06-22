@@ -1,9 +1,20 @@
 <?php
 
 /**
- * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2020 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace common\models;
@@ -29,7 +40,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $renewal_count
  *
  * @property Biblio $biblio
- * @property BiblioStatusHist[] $biblioStatusHists
+ * @property BiblioStatusHistory[] $biblioStatusHists
  * @property Biblio[] $bibs
  */
 class BiblioCopy extends \yii\db\ActiveRecord
@@ -66,9 +77,14 @@ class BiblioCopy extends \yii\db\ActiveRecord
             [['bibid', 'mbr_id', 'renewal_count'], 'integer'],
             [['created_at', 'updated_at', 'status_begin_dt'], 'safe'],
             [['due_back_dt'], 'date', 'format' => 'php:Y-m-d H:i:s', 'skipOnEmpty' => true],
-            [['copy_desc'], 'string', 'max' => 160, 'isEmpty' => function ($model) {
-                return null;
-            }],
+            [
+                ['copy_desc'],
+                'string',
+                'max' => 160,
+                'isEmpty' => function ($model) {
+                    return null;
+                }
+            ],
             [['barcode_nmbr'], 'string', 'max' => 20],
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::class, 'targetAttribute' => ['bibid' => 'id']],
@@ -129,7 +145,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
      */
     public function hasReachedRenewalLimit($classification_id)
     {
-        $checkoutPrivs = \common\models\CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
+        $checkoutPrivs = CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
         if ($checkoutPrivs->renewal_limit == 0) {
             return false; // ilimitado
         }
@@ -149,7 +165,7 @@ class BiblioCopy extends \yii\db\ActiveRecord
      */
     public function hasReachedCheckoutLimit(int $mbr_id, int $classification_id)
     {
-        $checkoutPrivs = \common\models\CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
+        $checkoutPrivs = CheckoutPrivs::findOne(['classification_id' => $classification_id, 'material_cd' => $this->biblio->material_cd]);
         if ($checkoutPrivs->checkout_limit == 0) {
             return false; // ilimitado
         }
