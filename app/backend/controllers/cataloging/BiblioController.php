@@ -731,7 +731,7 @@ class BiblioController extends Controller
 
         $modelBiblioFields[] = new \common\models\BiblioField();
 
-        $materialType = MaterialType::find($model->material_cd)->one();
+        $materialType = MaterialType::find()->where(['id' => $model->material_cd])->one();
         if ($materialType->hasMany(Biblio::class, ['material_cd' => 'id'])->count() == 1) {
             $materialType->default_flg = 'N';
             $materialType->save();
@@ -747,7 +747,7 @@ class BiblioController extends Controller
                     });
                 }
                 if ($model->save()) {
-                    $materialType = MaterialType::find($model->material_cd)->one();
+                    $materialType = MaterialType::find()->where(['id' => $model->material_cd])->one();
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
@@ -758,7 +758,7 @@ class BiblioController extends Controller
             } else {
                 $model->image_file = $current_image_file;
                 if ($model->save()) {
-                    $materialType = MaterialType::find($model->material_cd)->one();
+                    $materialType = MaterialType::find()->where(['id' => $model->material_cd])->one();
                     $materialType->default_flg = 'Y';
                     $materialType->save();
                 } else {
