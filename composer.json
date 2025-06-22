@@ -13,6 +13,12 @@
         "issues": "https://github.com/neoacevedo/librebiblio/issues",
         "source": "https://github.com/neoacevedo/librebiblio"
     },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/neoacevedo"
+        }
+    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.3",
