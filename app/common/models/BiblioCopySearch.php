@@ -55,12 +55,6 @@ class BiblioCopySearch extends BiblioCopy
         $query = BiblioCopy::find()
             ->joinWith(['biblio']);
 
-        $datetime1 = new DateTime($this->due_back_dt);
-        $datetime2 = new DateTime('now');
-        $interval = $datetime1->diff($datetime2);
-        $cero = 0;
-        $diff = (int)$interval->format('%r%a');
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -92,26 +86,28 @@ class BiblioCopySearch extends BiblioCopy
 
         // grid filtering conditions
         $query->andFilterWhere([
-                    '{{%biblio_copy}}.id' => $this->id,
-                    '{{%biblio_copy}}.bibid' => $this->bibid])
-                ->andFilterWhere(
-                    ['<=', 'date({{%biblio_copy}}.created_at)', $this->created_at]
-                )
-                ->andFilterWhere(
-                    ['<=', 'date({{%biblio_copy}}.updated_at)', $this->updated_at]
-                )
-                ->andFilterWhere(["{{%biblio}}.material_cd" => $this->material])
-                ->andFilterWhere(['<=', 'date(status_begin_dt)', $this->status_begin_dt])
-                ->andFilterWhere(['<=', 'date(due_back_dt)', $this->due_back_dt])
-                ->andFilterWhere(['mbr_id' => $this->mbr_id,
-                    'renewal_count' => $this->renewal_count,
-        ]);
+            '{{%biblio_copy}}.id' => $this->id,
+            '{{%biblio_copy}}.bibid' => $this->bibid
+        ])
+            ->andFilterWhere(
+                ['<=', 'date({{%biblio_copy}}.created_at)', $this->created_at]
+            )
+            ->andFilterWhere(
+                ['<=', 'date({{%biblio_copy}}.updated_at)', $this->updated_at]
+            )
+            ->andFilterWhere(["{{%biblio}}.material_cd" => $this->material])
+            ->andFilterWhere(['<=', 'date(status_begin_dt)', $this->status_begin_dt])
+            ->andFilterWhere(['<=', 'date(due_back_dt)', $this->due_back_dt])
+            ->andFilterWhere([
+                'mbr_id' => $this->mbr_id,
+                'renewal_count' => $this->renewal_count,
+            ]);
 
         $query->andFilterWhere(['like', 'copy_desc', $this->copy_desc])
-                ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
-                ->andFilterWhere(['like', 'status_cd', $this->status_cd])
-                ->andFilterWhere(['like', '{{%biblio}}.title', $this->title])
-                ->andFilterWhere(['like', '{{%biblio}}.author', $this->author])
+            ->andFilterWhere(['like', 'barcode_nmbr', $this->barcode_nmbr])
+            ->andFilterWhere(['like', 'status_cd', $this->status_cd])
+            ->andFilterWhere(['like', '{{%biblio}}.title', $this->title])
+            ->andFilterWhere(['like', '{{%biblio}}.author', $this->author])
         ;
 
         return $dataProvider;

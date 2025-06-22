@@ -10,7 +10,7 @@
     "type": "project",
     "license": "GPL-3.0-or-later",
     "support": {
-        "issues": "https://neoacevedo.zohodesk.com/",
+        "issues": "https://github.com/neoacevedo/librebiblio/issues",
         "source": "https://github.com/neoacevedo/librebiblio"
     },
     "minimum-stability": "stable",
@@ -21,16 +21,18 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "kartik-v/yii2-mpdf": "dev-master",
         "kartik-v/yii2-export": "@dev",
-        "neoacevedo/yii2-storage": "*",
+        "aws/aws-sdk-php": "^3.169",
+        "microsoft/azure-storage-blob": "^1.5",
+        "google/cloud-storage": "^1.20",
+        "guzzlehttp/psr7": "^1.8",
         "mpdf/qrcode": "^1.2",
-        "neoacevedo/yii2-rbac-plus": "*",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-widget-sidenav": "1.0.x-dev",
         "antonyz89/yii2-seeder": "dev-master",
         "kartik-v/yii2-editable": "1.8.x-dev",
-        "neoacevedo/yii2-auditing": "@dev",
-        "2amigos/yii2-chartjs-widget": "^3.0",
-        "yiisoft/yii2-jui": "^2.0"
+        "neoacevedo/yii2-auditing": "*",
+        "yiisoft/yii2-jui": "^2.0",
+        "yiisoft/yii2-symfonymailer": "^4.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

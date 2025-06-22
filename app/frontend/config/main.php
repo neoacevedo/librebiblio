@@ -17,7 +17,7 @@ return [
     'components' => [
         'view' => [
             'theme' => [
-                'class' => 'frontend\components\Theme',
+                'class' => 'frontend\components\Theme'
             ],
         ],
         'request' => [

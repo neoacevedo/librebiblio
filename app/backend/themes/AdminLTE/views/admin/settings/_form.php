@@ -6,7 +6,7 @@ use yii\bootstrap4\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\Settings $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
+/** @var common\components\storage\models\FileManager $fileModel */
 
 $js = <<<JAVASCRIPT
 (function() {

@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /** @var array $files */
-/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
+/** @var ommon\components\storage\models\FileManager $fileModel */
 
 
 $this->title = Yii::t('app/settings', 'Library Settings');

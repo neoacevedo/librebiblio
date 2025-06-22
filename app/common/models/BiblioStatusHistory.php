@@ -11,6 +11,7 @@ use Yii;
 /**
  * This is the model class for table "{{%biblio_status_hist}}".
  *
+ * @property integer $id
  * @property integer $bibid
  * @property integer $copyid
  * @property string $status_cd
@@ -19,9 +20,9 @@ use Yii;
  * @property string $due_back_dt
  * @property integer $mbr_id
  *
- * @property Biblio $bib
- * @property BiblioCopy $copy
- * @property Member $mbr
+ * @property Biblio $biblio
+ * @property BiblioCopy $biblioCopy
+ * @property Member $member
  */
 class BiblioStatusHistory extends \yii\db\ActiveRecord
 {
@@ -45,7 +46,7 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
             [['status_cd'], 'string', 'max' => 3],
             [['bibid'], 'exist', 'skipOnError' => true, 'targetClass' => Biblio::class, 'targetAttribute' => ['bibid' => 'id']],
             [['copyid'], 'exist', 'skipOnError' => true, 'targetClass' => BiblioCopy::class, 'targetAttribute' => ['copyid' => 'id']],
-            //[['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::class, 'targetAttribute' => ['mbr_id' => 'id']],
+            [['mbr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Member::class, 'targetAttribute' => ['mbr_id' => 'id']],
         ];
     }
 
@@ -81,5 +82,14 @@ class BiblioStatusHistory extends \yii\db\ActiveRecord
     public function getBiblioCopy()
     {
         return $this->hasOne(BiblioCopy::class, ['id' => 'copyid']);
+    }
+
+    /**
+     * Obtiene el miembro de la biblioteca en el historial
+     * @return Yii\db\ActiveQuery
+     */
+    public function getMember()
+    {
+        return $this->hasOne(Member::class, ['id' => 'mbr_id']);
     }
 }

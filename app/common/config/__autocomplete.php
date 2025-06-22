@@ -11,7 +11,8 @@
  * }
  * ```
  */
-class Yii {
+class Yii
+{
     /**
      * @var \yii\web\Application|\yii\console\Application|__Application
      */
@@ -21,13 +22,15 @@ class Yii {
 /**
  * @property yii\rbac\DbManager $authManager 
  * @property \yii\web\User|__WebUser $user
- * 
+ * @property common\components\storage\AzureStorage|common\components\storage\GoogleCloudStorage|common\components\storage\LocalStorage|common\components\storage\S3Storage $storage
  */
-class __Application {
+class __Application
+{
 }
 
 /**
- * @property app\models\User $identity
+ * @property backend\models\User|common\models\Member $identity
  */
-class __WebUser {
+class __WebUser
+{
 }

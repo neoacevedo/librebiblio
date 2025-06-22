@@ -47,9 +47,11 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3><?= $checkouts ?>
+                    <h3>
+                        <?= $checkouts ?>
                     </h3>
-                    <p><?= Yii::t("app", "Current Checkouts") ?>
+                    <p>
+                        <?= Yii::t("app", "Current Checkouts") ?>
                     </p>
                 </div>
                 <div class="icon">
@@ -64,10 +66,12 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3><?= $new_members ?>
+                    <h3>
+                        <?= $new_members ?>
                     </h3>
 
-                    <p><?= Yii::t("app", "New Registered Members") ?>
+                    <p>
+                        <?= Yii::t("app", "New Registered Members") ?>
                     </p>
                 </div>
                 <div class="icon">
@@ -81,9 +85,11 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3><?= Yii::$app->formatter->asCurrency($bills ?: 0) ?>
+                    <h3>
+                        <?= Yii::$app->formatter->asCurrency($bills ?: 0) ?>
                     </h3>
-                    <p><?= Yii::t("app", "Members Bills") ?>
+                    <p>
+                        <?= Yii::t("app", "Members Bills") ?>
                     </p>
                 </div>
                 <div class="icon">
@@ -100,44 +106,45 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
         <section class="col-sm connectedSortable ui-sortable">
             <div class="card">
                 <div class="card-header">
-                    <h5><?= Yii::t("app", "Statistics") ?>
+                    <h5>
+                        <?= Yii::t("app", "Statistics") ?>
                     </h5>
                 </div>
                 <div class="card-body">
-                    <?=
-                    ChartJs::widget([
-                        'type' => 'line',
-                        /* 'options' => [
-                        'height' => 400,
-                        'width' => 400
-                        ], */
-                        'data' => [
-                            'labels' => array_values($fechas),
-                            'datasets' => [
-                                [
-                                    'label' => Yii::t("app", "Checkouts per day"),
-                                    'backgroundColor' => "#ffffff",
-                                    'borderColor' => "#00c0ef",
-                                    'pointBackgroundColor' => "#00c0ef",
-                                    'pointBorderColor' => "#fff",
-                                    'pointHoverBackgroundColor' => "#fff",
-                                    'pointHoverBorderColor' => "#00c0ef",
-                                    'data' => array_values($totales)
-                                ],
-                            /* [
-                            'label' => "My Second dataset",
-                            'backgroundColor' => "rgba(255,99,132,0.2)",
-                            'borderColor' => "rgba(255,99,132,1)",
-                            'pointBackgroundColor' => "rgba(255,99,132,1)",
-                            'pointBorderColor' => "#fff",
-                            'pointHoverBackgroundColor' => "#fff",
-                            'pointHoverBorderColor' => "rgba(255,99,132,1)",
-                            'data' => [28, 48, 40, 19, 96, 27, 100]
-                            ] */
-                            ]
-                        ]
-                    ]);
-?>
+                    <?php
+                    // ChartJs::widget([
+                    //     'type' => 'line',
+                    //     /* 'options' => [
+                    //     'height' => 400,
+                    //     'width' => 400
+                    //     ], */
+                    //     'data' => [
+                    //         'labels' => array_values($fechas),
+                    //         'datasets' => [
+                    //             [
+                    //                 'label' => Yii::t("app", "Checkouts per day"),
+                    //                 'backgroundColor' => "#ffffff",
+                    //                 'borderColor' => "#00c0ef",
+                    //                 'pointBackgroundColor' => "#00c0ef",
+                    //                 'pointBorderColor' => "#fff",
+                    //                 'pointHoverBackgroundColor' => "#fff",
+                    //                 'pointHoverBorderColor' => "#00c0ef",
+                    //                 'data' => array_values($totales)
+                    //             ],
+                    //         /* [
+                    //         'label' => "My Second dataset",
+                    //         'backgroundColor' => "rgba(255,99,132,0.2)",
+                    //         'borderColor' => "rgba(255,99,132,1)",
+                    //         'pointBackgroundColor' => "rgba(255,99,132,1)",
+                    //         'pointBorderColor' => "#fff",
+                    //         'pointHoverBackgroundColor' => "#fff",
+                    //         'pointHoverBorderColor' => "rgba(255,99,132,1)",
+                    //         'data' => [28, 48, 40, 19, 96, 27, 100]
+                    //         ] */
+                    //         ]
+                    //     ]
+                    // ]);
+                    ?>
                 </div>
             </div>
         </section>
@@ -145,18 +152,19 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
         <section class="col-sm">
             <div class="card">
                 <div class="card-header">
-                    <h5><?= Yii::t("app", "Recent Activity") ?>
+                    <h5>
+                        <?= Yii::t("app", "Recent Activity") ?>
                     </h5>
                 </div>
                 <div class="card-body">
                     <?= GridView::widget([
-    'dataProvider' => $logs,
-    'columns' => [
-        'description',
-        'created_at:date'
-    ]
-])
-?>
+                        'dataProvider' => $logs,
+                        'columns' => [
+                            'description',
+                            'created_at:date'
+                        ]
+                    ])
+                        ?>
                 </div>
             </div>
         </section>

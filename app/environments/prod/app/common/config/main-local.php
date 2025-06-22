@@ -16,17 +16,8 @@ return [
             'enableQueryCache' => true
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@common/mail',
-            'useFileTransport' => false, //for the testing purpose, you need to enable this
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => '', // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => '',
-                'password' => '',
-                'port' => '587', // Port 25 is a very common port too
-                'encryption' => 'tls', // It is often used, check your provider or mail server specs
-            ],
         ],
     ]
 ];

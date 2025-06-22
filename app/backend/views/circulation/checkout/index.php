@@ -38,6 +38,7 @@ use yii\widgets\Pjax;
             'due_back_dt',
             'renewal_count',
             [
+                'attribute' => 'days_late',
                 'label' => Yii::t('app', 'Days Late'),
                 'value' => function ($model) {
                     $datetime1 = new DateTime($model->due_back_dt);

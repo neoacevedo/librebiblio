@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use common\models\BiblioStatusHistorySearch;
 use Yii;
 use DateTime;
 use common\models\Member;
@@ -111,7 +112,7 @@ class MemberController extends Controller
      */
     public function actionCreate()
     {
-        $model = new \common\models\Member();
+        $model = new Member();
         $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         if ($model->load($this->request->post())) {
@@ -225,31 +226,30 @@ class MemberController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            return($e->getMessage());
         }
     }
 
     /**
-     * Muestra el historial de préstamos del miembro.
-     * @param integer $id
+     * Muestra el historial de préstamos del miembro de la biblioteca.
      * @return mixed
      */
-    public function actionHistory(int $id)
+    public function actionHistory()
     {
-        $model = $this->findModel($id);
-        $biblioStatusHist = \common\models\BiblioStatusHistory::find()->where(['mbr_id' => $id]);
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $biblioStatusHist,
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC,
-                ]
-            ],
-        ]);
+        $searchModel = new BiblioStatusHistorySearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        // $dataProvider = new \yii\data\ActiveDataProvider([
+        //     'query' => $biblioStatusHist,
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'created_at' => SORT_DESC,
+        //         ]
+        //     ],
+        // ]);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('history', [
-            'model' => $model,
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
     }
 
@@ -265,8 +265,10 @@ class MemberController extends Controller
         // estadísticas del usuario con los tipos de material registrados en la biblioteca
         if (Yii::$app->db->driverName === "mysql") {
             $materialTypeStats = (new \yii\db\Query())->select([
-                "mat.*", "ifnull(privs.checkout_limit, 0) checkout_limit",
-                "ifnull(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+                "mat.*",
+                "ifnull(privs.checkout_limit, 0) checkout_limit",
+                "ifnull(privs.renewal_limit, 0) renewal_limit",
+                "count(mbrout.copyid) row_count"
             ])->from("{{%material_type_dm}} mat")
                 ->join('join', '{{%member}}')
                 ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id=member.classification_id')
@@ -278,8 +280,10 @@ class MemberController extends Controller
                 ->all();
         } elseif (Yii::$app->db->driverName === "pgsql") {
             $materialTypeStats = (new \yii\db\Query())->select([
-                "mat.*", "nullif(privs.checkout_limit, 0) checkout_limit",
-                "nullif(privs.renewal_limit, 0) renewal_limit", "count(mbrout.copyid) row_count"
+                "mat.*",
+                "nullif(privs.checkout_limit, 0) checkout_limit",
+                "nullif(privs.renewal_limit, 0) renewal_limit",
+                "count(mbrout.copyid) row_count"
             ])->from("{{%material_type_dm}} mat")
                 ->join('cross join', '{{%member}}')
                 ->leftJoin('{{%checkout_privs}} privs', 'privs.material_cd = mat.id and privs.classification_id = {{%member}}.classification_id')
@@ -369,7 +373,7 @@ class MemberController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            return($e->getMessage());
         }
     }
 

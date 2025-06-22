@@ -13,22 +13,22 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-        'rbac' => [
-            'class' => 'neoacevedo\rbacplus\Module',
-            'userModelClassName' => null,
-            'userModelIdField' => 'id',
-            'userModelLoginField' => 'username',
-            'userModelLoginFieldLabel' => null,
-            'userModelExtraDataColumls' => null,
-            //            'userModelExtraDataColumls' => [
-            //                [
-            //                    'attributes' => 'created_at',
-            //                    'value' => function($model) {
-            //                        return date('m/d/Y', $model->created_at);
-            //                    }
-            //                ]
-            //            ],
-        ],
+        // 'rbac' => [
+        //     'class' => 'neoacevedo\rbacplus\Module',
+        //     'userModelClassName' => null,
+        //     'userModelIdField' => 'id',
+        //     'userModelLoginField' => 'username',
+        //     'userModelLoginFieldLabel' => null,
+        //     'userModelExtraDataColumls' => null,
+        //     //            'userModelExtraDataColumls' => [
+        //     //                [
+        //     //                    'attributes' => 'created_at',
+        //     //                    'value' => function($model) {
+        //     //                        return date('m/d/Y', $model->created_at);
+        //     //                    }
+        //     //                ]
+        //     //            ],
+        // ],
     ],
     'components' => [
         'view' => [

@@ -50,7 +50,7 @@ use yii\db\ActiveRecord;
  * @property MaterialTypeDm $materialCd
  * @property User $user
  */
-class Biblio extends \yii\db\ActiveRecord
+class Biblio extends ActiveRecord
 {
     /**
      * @inheritdoc

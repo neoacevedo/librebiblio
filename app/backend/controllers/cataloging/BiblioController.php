@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 use neoacevedo\yii2\Storage;
 use common\models\MaterialType;
@@ -26,16 +27,13 @@ use common\models\UsmarcSubfield;
  */
 class BiblioController extends Controller
 {
-    /**
-     *
-     * @var \common\models\UsmarcSubfield[]
-     */
+    /** @var \common\models\UsmarcSubfield[] */
     private $usmarc;
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -57,7 +55,7 @@ class BiblioController extends Controller
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (\Yii::$app->user->can($route)) {
+                            if (Yii::$app->user->can($route)) {
                                 return true;
                             }
                         },
@@ -82,9 +80,8 @@ class BiblioController extends Controller
      * Gestión de errores
      * @return mixed
      */
-    public function actions()
+    public function actions(): array
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -96,7 +93,7 @@ class BiblioController extends Controller
      * Lists all Biblio models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -114,7 +111,7 @@ class BiblioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): string
     {
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('view', [
@@ -126,9 +123,9 @@ class BiblioController extends Controller
      * Registra el material bibliográfico.
      * Primero llena los atributos USMarc del controlador, asigna el tipo de material
      * y luego realiza el registro.
-     * @return string
+     * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate(): string|Response
     {
         $model = new Biblio();
         // este método es solo para crear los campos en el formulario
@@ -168,7 +165,7 @@ class BiblioController extends Controller
             }
             if ($model->save()) {
                 // file is uploaded successfully
-                $materialType = MaterialType::find($model->material_cd)->one();
+                $materialType = MaterialType::find()->where(['id' => $model->material_cd])->one();
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
@@ -199,9 +196,9 @@ class BiblioController extends Controller
     /**
      * Registra el material bibliográfico, usando los datos de uno existente.
      * @param int $id ID del material original.
-     * @return mixed
+     * @return string|Response
      */
-    public function actionCreateFromThis(int $id)
+    public function actionCreateFromThis(int $id): Response|string
     {
         $model = new Biblio();
 
@@ -242,7 +239,7 @@ class BiblioController extends Controller
             }
             if ($model->save()) {
                 // file is uploaded successfully
-                $materialType = MaterialType::find($model->material_cd)->one();
+                $materialType = MaterialType::find()->where(['id' => $model->material_cd])->one();
                 $materialType->default_flg = 'Y';
                 $materialType->save();
             } else {
@@ -286,7 +283,7 @@ class BiblioController extends Controller
      * If creation is successful, the browser will be redirected to the 'index' page.
      * @return mixed
      */
-    public function actionBulkCreate()
+    public function actionBulkCreate(): Response|string
     {
         $models = [];
         if ($this->request->isPost) {
@@ -641,7 +638,27 @@ class BiblioController extends Controller
             'allModels' => $models,
         ]);
 
-        return $this->render('bulk-create', ['dataProvider' => $arrayDataProvider]);
+        $searchAttributes = ['material_cd', 'collection_cd', 'title', 'title_remainder'];
+        $searchModel = [];
+        $searchColumns = [];
+
+        foreach ($searchAttributes as $searchAttribute) {
+            $filterName = $searchAttribute;
+            $filterValue = Yii::$app->request->getQueryParam($filterName, '');
+            $searchModel[$searchAttribute] = $filterValue;
+            $searchColumns[] = [
+                'attribute' => $searchAttribute,
+                'filter' => '<input class="form-control" name="' . $filterName . '" value="' . $filterValue . '" type="text">',
+                'value' => $searchAttribute,
+            ];
+            $models = array_filter($models, function ($item) use ($filterValue, $searchAttribute) {
+                return strlen($filterValue) > 0 ? stripos('/^' . strtolower($item[$searchAttribute]) . '/', strtolower($filterValue)) : true;
+            });
+
+            Yii::debug($models);
+        }
+
+        return $this->render('bulk-create', ['dataProvider' => $arrayDataProvider, 'searchModel' => $searchModel, 'searchColumns' => $searchColumns]);
     }
 
     /**
@@ -757,7 +774,8 @@ class BiblioController extends Controller
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $biblioField = \common\models\BiblioField::findOne([
                 'bibid' => $id,
-                "tag" => $this->usmarc[$i]->tag, "subfield_cd" => $this->usmarc[$i]->subfield_cd
+                "tag" => $this->usmarc[$i]->tag,
+                "subfield_cd" => $this->usmarc[$i]->subfield_cd
             ]);
             if ($biblioField !== null) {
                 $modelBiblioFields[] = $biblioField;
@@ -806,10 +824,15 @@ class BiblioController extends Controller
             ->orWhere(["tag" => 82, "subfield_cd" => ['a', '2']])
             ->orWhere(["tag" => 260, "subfield_cd" => ['a', 'b', 'c']])
             ->orWhere(["tag" => 520, "subfield_cd" => 'a'])
-            ->orWhere(["tag" => 300, "subfield_cd" => [
-                'a', 'b', 'c',
-                'e'
-            ]])
+            ->orWhere([
+                "tag" => 300,
+                "subfield_cd" => [
+                    'a',
+                    'b',
+                    'c',
+                    'e'
+                ]
+            ])
             ->orWhere(["tag" => 541, "subfield_cd" => 'h'])->all();
     }
 

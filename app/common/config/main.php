@@ -23,7 +23,7 @@ return [
             //'defaultRoles' => ['admin', 'staff', 'user'],
         ],
         'storage' => [
-            'class' => 'neoacevedo\yii2\storage\LocalStorage',
+            'class' => 'common\components\storage\LocalStorage',
             'config' => [
                 'baseUrl' => '/',
                 'directory' => dirname(__DIR__, 3) . "/", // reemplace @webroot por @frontend o @backend según sea el caso. La ruta debe terminar con una barra diagonal

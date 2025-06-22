@@ -53,7 +53,7 @@ class CollectionSearch extends Collection
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => Yii::$app->params['pagination']
+                'pageSize' => 5 #Yii::$app->params['pagination']
             ]
         ]);
 

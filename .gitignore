@@ -5,3 +5,4 @@
 /robots.txt
 /.vscode
 /composer.lock
+docker-compose.yml
