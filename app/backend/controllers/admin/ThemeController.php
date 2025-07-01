@@ -149,8 +149,8 @@ class ThemeController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -186,18 +186,21 @@ class ThemeController extends Controller
                         $model->settings = json_encode($theme->settings);
                     }
                     $model->created_at = date('Y-m-d H:i:s');
-                    if ($theme->frontend == 1) {
-                        if ($zip->extractTo(Yii::getAlias("@frontend") . "/themes/")) {
-                            $zip->close();
-                        } else {
-                            Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
-                        }
-                    } else {
-                        if ($zip->extractTo(Yii::getAlias("@backend") . "/themes/")) {
-                            $zip->close();
-                        } else {
-                            Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
-                        }
+                    switch ($theme->frontend) {
+                        case 1:
+                            if ($zip->extractTo(Yii::getAlias("@frontend") . "/themes/")) {
+                                $zip->close();
+                            } else {
+                                Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
+                            }
+                            break;
+                        default:
+                            if ($zip->extractTo(Yii::getAlias("@backend") . "/themes/")) {
+                                $zip->close();
+                            } else {
+                                Yii::$app->getSession()->setFlash('error', Yii::t('app/theme', 'Could not copy theme files.'));
+                            }
+                            break;
                     }
 
                     if ($model->validate() && $model->save()) {
@@ -308,8 +311,8 @@ class ThemeController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

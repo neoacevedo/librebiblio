@@ -152,10 +152,10 @@ class AdminController extends Controller
      */
     private function findSettingsModel()
     {
-        if (($model = \common\models\Settings::find()->one()) !== null) {
+        if (($model = Settings::find()->one()) !== null) {
             return $model;
         } else {
-            $model = new \common\models\Settings();
+            $model = new Settings();
             return $model;
         }
     }

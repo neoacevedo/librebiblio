@@ -23,10 +23,10 @@ $this->registerCssFile('https://code.ionicframework.com/ionicons/2.0.1/css/ionic
 </head>
 
 <body class="hold-transition login-page">
-    <?php  $this->beginBody() ?>
+    <?php $this->beginBody() ?>
     <div class="login-box">
         <div class="login-logo">
-            <a href="<?=Yii::$app->homeUrl?>"><?= Yii::$app->name ?></a>
+            <a href="<?= Yii::$app->homeUrl ?>"><?= Yii::$app->name ?></a>
         </div>
         <!-- /.login-logo -->
 

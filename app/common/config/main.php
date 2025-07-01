@@ -25,13 +25,32 @@ return [
         '@npm' => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'container' => [
+        'definitions' => [
+            \ScssPhp\ScssPhp\Compiler::class => function () {
+                // You can also use a child class here:
+                $compiler = new \ScssPhp\ScssPhp\Compiler();
+                $compiler->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
+                return $compiler;
+            }
+        ],
+    ],
     'components' => [
         'cache' => [
-            'class' => $settings['cache_handler'],
+            'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             //'defaultRoles' => ['admin', 'staff', 'user'],
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
+            ],
+            'appendTimestamp' => true,
+            'converter' => 'lucidtaz\yii2scssphp\ScssAssetConverter',
         ],
         'storage' => [
             'class' => 'common\components\storage\LocalStorage',
@@ -110,8 +129,7 @@ return [
             ],
         ],
     ],
-    'version' => '22.06.29',
-    'name' => $settings['library_name'],
+    'name' => 'LibreBiblio',
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
     ]

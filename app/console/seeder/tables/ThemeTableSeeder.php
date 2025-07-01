@@ -30,7 +30,7 @@ class ThemeTableSeeder extends TableSeeder
 
     public function insertBackendThemeSettings()
     {
-        $theme = \common\models\Theme::find()->where(['name' => 'AdminLTE'])->one();
+        $theme = Theme::find()->where(['name' => 'AdminLTE'])->one();
 
         $settings = '
         {
@@ -100,7 +100,7 @@ class ThemeTableSeeder extends TableSeeder
 
     public function insertFrontendThemeSettings()
     {
-        $theme = \common\models\Theme::find()->where(['name' => 'simple'])->one();
+        $theme = Theme::find()->where(['name' => 'simple'])->one();
 
         $theme->sourcePath = "@frontend/themes/simple";
 

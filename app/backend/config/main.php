@@ -53,7 +53,11 @@ return [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'exportInterval' => YII_DEBUG ? 1 : 10,
+                    'levels' => YII_DEBUG ? ['error', 'warning', 'info', 'trace'] : ['error', 'warning'],
+                    'except' => [
+                        'yii\web\HttpException:404',
+                    ],
                 ],
             ],
         ],

@@ -24,20 +24,27 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\Member',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'lb-front',
+            'class' => 'yii\web\Session',
+            'cookieParams' => ['httponly' => true],
+            'useCookies' => true
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'exportInterval' => YII_DEBUG ? 1 : 10,
+                    'levels' => YII_DEBUG ? ['error', 'warning', 'info', 'trace'] : ['error', 'warning'],
+                    'except' => [
+                        'yii\web\HttpException:404',
+                    ],
                 ],
             ],
         ],

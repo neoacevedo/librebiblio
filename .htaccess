@@ -140,6 +140,7 @@ RewriteCond %{HTTP_USER_AGENT} ZyBorg
 RewriteRule ^.* - [F,L]
 
 # if a directory or a file exists, use the request directly
+RewriteCond $1 !^(index\.php|assets|robots\.txt|favicon\.png)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # otherwise forward the request to index.php

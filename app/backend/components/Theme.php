@@ -33,10 +33,10 @@ class Theme extends \yii\base\Theme
             $this->theme = $theme->name;
         }
 
-        $this->basePath = $this->theme == 'default' ? '@app/themes/' . $this->theme : $theme->sourcePath;
+        $this->basePath = $this->theme == 'default' ? "@app/themes/{$this->theme}" : $theme->sourcePath;
         $this->baseUrl = '@web/themes/' . strtolower($this->theme);
         $this->pathMap = [
-            '@app/views' => $this->theme == 'default' ? '@app/themes/' . $this->theme . "/views" : $theme->sourcePath . "/views",
+            '@app/views' => $this->theme == 'default' ? "@app/themes/{$this->theme}/views" : "{$theme->sourcePath}/views",
         ];
 
         $this->settings = (array) json_decode($theme->settings);

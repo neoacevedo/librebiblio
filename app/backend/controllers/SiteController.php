@@ -24,8 +24,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\LoginForm;
-use backend\models\ResetPasswordForm;
-use backend\reports;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -146,7 +145,7 @@ class SiteController extends Controller
     /**
      * Login action.
      *
-     * @return string
+     * @return Response|string
      */
     public function actionLogin()
     {

@@ -2,7 +2,7 @@
 /* @var $content string */
 
 use common\widgets\Alert;
-use yii\bootstrap4\Breadcrumbs;
+use yii\bootstrap5\Breadcrumbs;
 
 ?>
 <div class="content-wrapper">

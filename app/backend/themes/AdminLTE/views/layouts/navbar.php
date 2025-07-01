@@ -1,6 +1,6 @@
 <?php
 
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Nav;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -41,33 +41,35 @@ use yii\helpers\Url;
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-danger navbar-badge"><?= count(common\models\BiblioHold::find()->all()); ?></span>
+                <span
+                    class="badge badge-danger navbar-badge"><?= count(common\models\BiblioHold::find()->all()); ?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header"><?= Yii::t('app', 'Bibliographies Currently On Hold'); ?></span>
+                <span
+                    class="dropdown-item dropdown-header"><?= Yii::t('app', 'Bibliographies Currently On Hold'); ?></span>
                 <div class="dropdown-divider"></div>
                 <?php
-                        $hldCopies = common\models\BiblioHold::find()->limit(5)->all();
-if ($hldCopies):
-    foreach ($hldCopies as $hld):
-        $mbr = \common\models\Member::findOne($hld->mbr_id);
-        $copy = \common\models\BiblioCopy::findOne($hld->copyid);
-        ?>
-                <a href="<?= Url::to(['member/view', 'id' => $mbr->id]) ?>"
-                    class="dropdown-item">
-                    <i class="fas fa-user-circle-o"></i><?php echo "{$mbr->username} ".Yii::t('circulation', 'placed hold copy').' '.$copy->barcode_nmbr; ?>
-                </a>
-                <div class="dropdown-divider"></div>
-                <?php
-    endforeach;
-else:
-    ?>
-                <span class="dropdown-item">
-                    <i class="fas fa-circle-thin"><?= Yii::t('circulation', 'No new holds'); ?></i>
-                </span>
-                <?php
-endif;
-?>
+                $hldCopies = common\models\BiblioHold::find()->limit(5)->all();
+                if ($hldCopies):
+                    foreach ($hldCopies as $hld):
+                        $mbr = \common\models\Member::findOne($hld->mbr_id);
+                        $copy = \common\models\BiblioCopy::findOne($hld->copyid);
+                        ?>
+                        <a href="<?= Url::to(['member/view', 'id' => $mbr->id]) ?>" class="dropdown-item">
+                            <i
+                                class="fas fa-user-circle-o"></i><?php echo "{$mbr->username} " . Yii::t('circulation', 'placed hold copy') . ' ' . $copy->barcode_nmbr; ?>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <?php
+                    endforeach;
+                else:
+                    ?>
+                    <span class="dropdown-item">
+                        <i class="fas fa-circle-thin"><?= Yii::t('circulation', 'No new holds'); ?></i>
+                    </span>
+                    <?php
+                endif;
+                ?>
                 <span class="dropdown-footer"></span>
             </div>
         </li>
@@ -75,20 +77,18 @@ endif;
 
         <!-- carrito -->
         <li class="nav-item">
-            <a class="nav-link"
-                href="<?= yii\helpers\Url::to(['/circulation/cart']); ?>">
+            <a class="nav-link" href="<?= yii\helpers\Url::to(['/circulation/cart']); ?>">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="badge badge-info navbar-badge"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])); ?></span>
+                <span
+                    class="badge badge-info navbar-badge"><?= count(common\models\BiblioCopy::findAll(['status_cd' => 'crt'])); ?></span>
             </a>
         </li>
         <!-- // -->
 
         <!-- Staff -->
         <li class="nav-item">
-            <a class="nav-link"
-                href="<?= yii\helpers\Url::to(['/user/index']) ?>"
-                alt="<?= Yii::t('app', 'Staff') ?>"><i
-                    class="fas fa-users"></i></a>
+            <a class="nav-link" href="<?= yii\helpers\Url::to(['/user/index']) ?>"
+                alt="<?= Yii::t('app', 'Staff') ?>"><i class="fas fa-users"></i></a>
         </li>
 
         <li class="nav-item">

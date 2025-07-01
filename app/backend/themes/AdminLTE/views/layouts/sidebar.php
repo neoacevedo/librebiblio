@@ -8,7 +8,7 @@ $picture = Yii::$app->user->identity->picture ?? "$assetDir/img/user2-160x160.jp
 ?>
 <aside class="main-sidebar elevation-4 sidebar-dark-primary">
     <!-- Brand Logo -->
-    <a href="<?= \yii\helpers\Url::to(['index']) ?>" class="brand-link">
+    <a href="<?= Url::to(['index']) ?>" class="brand-link">
         <img src="<?= $assetDir ?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">

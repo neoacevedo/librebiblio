@@ -105,6 +105,7 @@ app
         migrations/          contains database migrations
         models/              contains console-specific model classes
         runtime/             contains files generated during runtime
+        seeder/              contiene seeders para las tablas Theme y Biblio
     backend
         assets/              contains application assets such as JavaScript and CSS
         components/          contiene los componentes del nivel de backend
