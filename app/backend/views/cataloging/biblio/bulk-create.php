@@ -1,8 +1,8 @@
 <?php
 
-use backend\models\Collection;
+use common\models\Collection;
 use common\models\MaterialType;
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
@@ -31,13 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="form-group">
                 <label for=""><?= Yii::t('app', 'Material Cd') ?></label>
                 <?= Html::dropDownList("material_cd", null, MaterialType::asArray(), [
-                "class" => 'form-control col-4', 'prompt' => '--', 'label' => Yii::t('app', 'Material Cd'), 'required' => true
+                    "class" => 'form-control col-4',
+                    'prompt' => '--',
+                    'label' => Yii::t('app', 'Material Cd'),
+                    'required' => true
                 ]) ?>
             </div>
             <div class="form-group">
                 <label for=""><?= Yii::t('app', 'Collection Cd') ?></label>
                 <?= Html::dropDownList("collection_cd", null, Collection::asArray(), [
-                "class" => 'form-control col-4', 'prompt' => '--', 'label' => Yii::t('app', 'Collection Cd'), 'required' => true
+                    "class" => 'form-control col-4',
+                    'prompt' => '--',
+                    'label' => Yii::t('app', 'Collection Cd'),
+                    'required' => true
                 ]) ?>
             </div>
             <div class="form-group">
@@ -55,104 +61,104 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-body">
             <div class="table-responsive">
                 <?=
-                GridView::widget(
-                    [
-                        'dataProvider' => $dataProvider,
-                        'columns' => [
-                            [
-                                'label' => Yii::t("app", "Material Cd"),
-                                'value' => function ($model) {
-                                    return $model['material_cd'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Collection Cd"),
-                                'value' => function ($model) {
-                                    return $model['collection_cd'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Title"),
-                                'value' => function ($model) {
-                                    return $model['title'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Title Remainder"),
-                                'value' => function ($model) {
-                                    return $model['title_remainder'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Call Nmbr"),
-                                'value' => function ($model) {
-                                    return "{$model['call_nmbr1']} {$model['call_nmbr2']} {$model['call_nmbr3']}";
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Responsibility Stmt"),
-                                'value' => function ($model) {
-                                    return $model['responsibility_stmt'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Author"),
-                                'value' => function ($model) {
-                                    return $model['author'];
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("app", "Topical Term"),
-                                'format' => 'html',
-                                'value' => function ($model) {
-                                    $html = Html::beginTag("ul");
-                                    $html .= $model['topic1'] != "" ? Html::tag("li", $model['topic1']) : "";
-                                    $html .= $model['topic2'] != "" ? Html::tag("li", $model['topic2']) : "";
-                                    $html .= $model['topic3'] != "" ? Html::tag("li", $model['topic3']) : "";
-                                    $html .= $model['topic4'] != "" ? Html::tag("li", $model['topic4']) : "";
-                                    $html .= $model['topic5'] != "" ? Html::tag("li", $model['topic5']) : "";
-                                    $html .= Html::endTag("ul");
+                    GridView::widget(
+                        [
+                            'dataProvider' => $dataProvider,
+                            'columns' => [
+                                [
+                                    'label' => Yii::t("app", "Material Cd"),
+                                    'value' => function ($model) {
+                                        return $model['material_cd'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Collection Cd"),
+                                    'value' => function ($model) {
+                                        return $model['collection_cd'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Title"),
+                                    'value' => function ($model) {
+                                        return $model['title'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Title Remainder"),
+                                    'value' => function ($model) {
+                                        return $model['title_remainder'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Call Nmbr"),
+                                    'value' => function ($model) {
+                                        return "{$model['call_nmbr1']} {$model['call_nmbr2']} {$model['call_nmbr3']}";
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Responsibility Stmt"),
+                                    'value' => function ($model) {
+                                        return $model['responsibility_stmt'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Author"),
+                                    'value' => function ($model) {
+                                        return $model['author'];
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("app", "Topical Term"),
+                                    'format' => 'html',
+                                    'value' => function ($model) {
+                                        $html = Html::beginTag("ul");
+                                        $html .= $model['topic1'] != "" ? Html::tag("li", $model['topic1']) : "";
+                                        $html .= $model['topic2'] != "" ? Html::tag("li", $model['topic2']) : "";
+                                        $html .= $model['topic3'] != "" ? Html::tag("li", $model['topic3']) : "";
+                                        $html .= $model['topic4'] != "" ? Html::tag("li", $model['topic4']) : "";
+                                        $html .= $model['topic5'] != "" ? Html::tag("li", $model['topic5']) : "";
+                                        $html .= Html::endTag("ul");
 
-                                    return $html;
-                                }
-                            ],
-                            [
-                                'label' => Yii::t("biblio", "USMarc Fields:"),
-                                'format' => 'html',
-                                'value' => function ($model) {
-                                    $arrayDataProvider = new \yii\data\ArrayDataProvider([
-                                        'allModels' => $model['usmarc'],
+                                        return $html;
+                                    }
+                                ],
+                                [
+                                    'label' => Yii::t("biblio", "USMarc Fields:"),
+                                    'format' => 'html',
+                                    'value' => function ($model) {
+                                        $arrayDataProvider = new \yii\data\ArrayDataProvider([
+                                            'allModels' => $model['usmarc'],
                                         ]);
-                                    $html = GridView::widget([
-                                        'dataProvider' => $arrayDataProvider,
-                                        'columns' => [
-                                            [
-                                                'label' => Yii::t("app", "Tag"),
-                                                'value' => function ($model) {
-                                                    return $model['tag'];
-                                                }
-                                            ],
-                                            [
-                                                'label' => Yii::t("cataloging", "Subfield Cd"),
-                                                'value' => function ($model) {
-                                                    return $model['subfield_cd'];
-                                                }
-                                            ],
-                                            [
-                                                'label' => Yii::t("cataloging", "Field Data"),
-                                                'value' => function ($model) {
-                                                    return $model['field_data'];
-                                                }
+                                        $html = GridView::widget([
+                                            'dataProvider' => $arrayDataProvider,
+                                            'columns' => [
+                                                [
+                                                    'label' => Yii::t("app", "Tag"),
+                                                    'value' => function ($model) {
+                                            return $model['tag'];
+                                        }
+                                                ],
+                                                [
+                                                    'label' => Yii::t("cataloging", "Subfield Cd"),
+                                                    'value' => function ($model) {
+                                            return $model['subfield_cd'];
+                                        }
+                                                ],
+                                                [
+                                                    'label' => Yii::t("cataloging", "Field Data"),
+                                                    'value' => function ($model) {
+                                            return $model['field_data'];
+                                        }
+                                                ]
                                             ]
-                                        ]
-                                    ]);
+                                        ]);
 
-                                    return $html;
-                                }
-                            ],
+                                        return $html;
+                                    }
+                                ],
+                            ]
                         ]
-                    ]
-                ) ?>
+                    ) ?>
             </div>
 
         </div>

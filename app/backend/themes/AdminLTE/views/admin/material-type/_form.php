@@ -1,13 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model backend\models\MaterialType */
-/* @var $form yii\widgets\ActiveForm */
+use yii\bootstrap5\ActiveForm;
+/** @var yii\web\View $this */
+/** @var common\models\MaterialType $model */
+/** @var yii\widgets\ActiveForm $form */
 /** @var array $material_type_list */
-/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
+/** @var common\components\storage\models\FileManager $fileModel */
 ?>
 
 <div class="material-type-form">
@@ -25,8 +24,6 @@ use yii\bootstrap4\ActiveForm;
             <?= $form->field($fileModel, 'uploadedFile')->fileInput(['class' => 'form-control'])->label(Yii::t('app', 'Image File')) ?>
         </div>
     </div>
-
-
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

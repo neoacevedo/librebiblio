@@ -2,10 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Nav;
 
 /** @var yii\web\View $this */
 /** @var \common\models\Member $model */
+/** @var \common\models\BiblioCopySearch[] $biblioCopySearch */
+/** @var \common\models\BiblioCopy[] $biblioCopy */
 
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
@@ -198,7 +200,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
 </div>
 <?php
 // modal checkout
-yii\bootstrap4\Modal::begin([
+yii\bootstrap5\Modal::begin([
     'title' => '',
     'id' => 'modal',
     'size' => 'modal-lg',
@@ -209,4 +211,4 @@ yii\bootstrap4\Modal::begin([
 #Pjax::begin(['id' => 'pjax', 'timeout' => 500]);
 echo "<div id='modalContent'></div>";
 #Pjax::end();
-yii\bootstrap4\Modal::end();
+yii\bootstrap5\Modal::end();

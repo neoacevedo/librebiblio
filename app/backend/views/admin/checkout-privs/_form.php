@@ -2,7 +2,7 @@
 
 use common\models\MaterialType;
 use common\models\MemberClassify;
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */

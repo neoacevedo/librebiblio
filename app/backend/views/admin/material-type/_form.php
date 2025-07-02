@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\MaterialType */
 /* @var $form yii\widgets\ActiveForm */
 /** @var array $material_type_list */
-/** @var neoacevedo\yii2\storage\models\FileManager $fileModel */
+/** @var common\components\storage\models\FileManager $fileModel */
 ?>
 
 <div class="material-type-form">

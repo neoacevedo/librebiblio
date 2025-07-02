@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-use yii\bootstrap4\Dropdown;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Dropdown;
 use yii\helpers\ArrayHelper;
 use yii\jui\AutoComplete;
 
@@ -23,20 +23,18 @@ use yii\jui\AutoComplete;
             <label for="bibliofield-tag" class="form-label"><?= $model->getAttributeLabel("tag") ?></label>
             <select class="form-control" name="BiblioField[tag]" id="bibliofield-tag" aria-required="true" required>
                 <option value="">--</option>
-                <?php foreach($marcBlocks as $block): ?>
-                <optgroup
-                    label="<?= $block->block_mbr . " - " . $block->description ?>">
-                    <?php foreach($block->usmarcTags as $tag): ?>
-                <optgroup
-                    label="&nbsp;<?= $tag->tag . " - " . $tag->description ?>">
-                    <?php foreach($tag->usmarcSubfields as $subfield): ?>
-                    <option value="<?= $subfield->subfield_cd ?>">
-                        <?= $subfield->subfield_cd . " - " . $subfield->description ?>
-                    </option>
+                <?php foreach ($marcBlocks as $block): ?>
+                    <optgroup label="<?= $block->block_mbr . " - " . $block->description ?>">
+                        <?php foreach ($block->usmarcTags as $tag): ?>
+                        <optgroup label="&nbsp;<?= $tag->tag . " - " . $tag->description ?>">
+                            <?php foreach ($tag->usmarcSubfields as $subfield): ?>
+                                <option value="<?= $subfield->subfield_cd ?>">
+                                    <?= $subfield->subfield_cd . " - " . $subfield->description ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </optgroup>
                     <?php endforeach; ?>
-                </optgroup>
-                <?php endforeach; ?>
-                </optgroup>
+                    </optgroup>
                 <?php endforeach; ?>
             </select>
             <div class="invalid-feedback"></div>

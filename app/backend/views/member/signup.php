@@ -4,7 +4,7 @@
 /* @var $model \frontend\models\SignupForm */
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use kartik\sidenav\SideNav;
 
 $this->title = Yii::t('app', 'New Member');

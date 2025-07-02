@@ -2,9 +2,9 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Nav;
+use yii\bootstrap5\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -43,42 +43,43 @@ if (Yii::$app->params['use_image_flg'] == 0) {
 
     <div class="wrap">
         <?php
-            NavBar::begin([
-                'brandLabel' => $brandLabel,
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-expand-md navbar-default bg-dark fixed-top',
-                ],
-            ]);
-            $menuItems = [
-                ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
-                /*['label' => 'About', 'url' => ['/site/about']],*/
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+        NavBar::begin([
+            'brandLabel' => $brandLabel,
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => [
+                'class' => 'navbar-expand-md navbar-default bg-dark fixed-top',
+            ],
+        ]);
+        $menuItems = [
+            ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']],
+            /*['label' => 'About', 'url' => ['/site/about']],*/
+            ['label' => 'Contact', 'url' => ['/site/contact']],
+        ];
+        if (Yii::$app->user->isGuest) {
+            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+            $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
+        } else {
+            $menuItems[] = [
+                'label' => Yii::$app->user->identity->username,
+                'items' => [
+                    ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
+                    '<li>'
+                    . Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton(
+                        Yii::t('app', 'Logout'),
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                ]
             ];
-            if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
-            } else {
-                $menuItems[] = [
-                    'label' => Yii::$app->user->identity->username,
-                    'items' => [
-                        ['label' => Yii::t('app', 'My Profile'), 'url' => ['/member/profile']],
-                        '<li>'
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                            Yii::t('app', 'Logout'),
-                            ['class' => 'btn btn-link logout']
-                        )
-                        . Html::endForm()
-                        . '</li>'
-                ]];
-            }
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav ml-auto'],
-                'items' => $menuItems,
-            ]);
-            NavBar::end();
-            ?>
+        }
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav ml-auto'],
+            'items' => $menuItems,
+        ]);
+        NavBar::end();
+        ?>
 
         <div class="container">
             <?=
@@ -94,17 +95,20 @@ if (Yii::$app->params['use_image_flg'] == 0) {
     <footer class="footer">
         <div class="container">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="col-md-4"><?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Date') . ": " . Yii::$app->formatter->asDate("now", "full") ?>
                 </div>
-                <div class="col-md-4"><?= Yii::t('library', 'Library Hours') . ": " . Yii::$app->params['library_image_url'] ?>
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Library Hours') . ": " . Yii::$app->params['library_image_url'] ?>
                 </div>
-                <div class="col-md-4"><?= Yii::t('library', 'Library Phone') . ": " . Yii::$app->params['library_image_url'] ?>
+                <div class="col-md-4">
+                    <?= Yii::t('library', 'Library Phone') . ": " . Yii::$app->params['library_image_url'] ?>
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="col-lg-4 col-md-4 col-sm-4">OpenBiblio. &copy; 2002-2005 Dave Stevens, et al.</div>
                 <div class="col-lg-4 col-md-4 col-sm-4">LibreBiblio. &copy; <?= date('Y') ?> N&eacute;stor
-                    Acevedo. <?= 'v'.Yii::$app->version ?>
+                    Acevedo. <?= 'v' . Yii::$app->version ?>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4"><a href="http://www.yiiframework.com/" rel="external"><?= \Yii::t(
                     'yii',
@@ -120,4 +124,4 @@ if (Yii::$app->params['use_image_flg'] == 0) {
 </body>
 
 </html>
-<?php $this->endPage() ;
+<?php $this->endPage();

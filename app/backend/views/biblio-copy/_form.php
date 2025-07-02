@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BiblioCopy */
@@ -16,7 +16,7 @@ use yii\bootstrap4\ActiveForm;
     <?= $form->field($model, 'barcode_nmbr')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::checkbox('autoqrcode', false, ['id' => 'autoqrcode'])  ?>
+        <?= Html::checkbox('autoqrcode', false, ['id' => 'autoqrcode']) ?>
         <label for="autoqrcode"><?= Yii::t("cataloging", "Autogenerate") ?></label>
     </div>
 

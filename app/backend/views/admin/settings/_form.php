@@ -1,12 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Settings $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var ommon\components\storage\models\FileManager $fileModel */
+/** @var common\components\storage\models\FileManager $fileModel */
 
 $js = <<<JAVASCRIPT
 (function() {
@@ -30,7 +30,7 @@ $this->registerJs($js);
     <?php $form = ActiveForm::begin([
         'options' => ['enctype' => 'multipart/form-data']
     ]);
-?>
+    ?>
 
     <?= $form->field($model, "library_name") ?>
     <div class="form-row">

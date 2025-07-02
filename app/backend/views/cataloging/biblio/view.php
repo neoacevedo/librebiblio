@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use kartik\grid\GridView;
 use Mpdf\Writer\JavaScriptWriter;
-use yii\bootstrap4\Modal;
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Modal;
+use yii\bootstrap5\Nav;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -96,14 +96,14 @@ $this->registerJs($js, yii\web\View::POS_END);
     <div class="card">
         <nav class="navbar navbar-expand navbar-white navbar-light">
             <?= Nav::widget([
-                    'options' => ['class' => 'navbar-nav'],
-                    'items' => [
-                        ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
-                        ['label' => Yii::t('app', 'Create from This'), 'url' => ['create-from-this', 'id' => $model->id]],
-                        ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id]],
-                        ['label' => Yii::t('cataloging', 'EDIT MARC'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
-                    ]
-                ]) ?>
+                'options' => ['class' => 'navbar-nav'],
+                'items' => [
+                    ['label' => Yii::t('yii', 'Update'), 'url' => ['update', 'id' => $model->id]],
+                    ['label' => Yii::t('app', 'Create from This'), 'url' => ['create-from-this', 'id' => $model->id]],
+                    ['label' => Yii::t('yii', 'Delete'), 'url' => ['delete', 'id' => $model->id]],
+                    ['label' => Yii::t('cataloging', 'EDIT MARC'), 'url' => ['cataloging/biblio-field/index', 'bibid' => $model->id]],
+                ]
+            ]) ?>
         </nav>
     </div>
 
@@ -115,63 +115,65 @@ $this->registerJs($js, yii\web\View::POS_END);
         <div class="card-body">
             <div class="col">
                 <?=
-                DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-                        'id',
-                        [
-                            'attribute' => 'created_at',
-                            'format' => ['date', 'php:Y-m-d H:i:s']
-                        ],
-                        [
-                            'attribute' => 'updated_at',
-                            'format' => ['date', 'php:Y-m-d H:i:s']
-                        ],
-                        [
-                            'attribute' => 'user',
-                            'value' => $model->user->username,
-                            'label' => \Yii::t('app', 'Updated by')
-                        ],
-                        [
-                            'attribute' => 'materialType',
-                            'value' => $model->materialType->description,
-                            'label' => 'Material'
-                        ],
-                        [
-                            'attribute' => 'collection',
-                            'value' => $model->collection->description,
-                            'label' => Yii::t('app', 'Collection')
-                        ],
-                        [
-                            'attribute' => 'call_nmbr1',
-                            'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
-                            'label' => Yii::t('biblio', 'Call Nmbr1')
-                        ],
-                        'title:ntext',
-                        'title_remainder:ntext',
-                        [
-                            'attribute' => 'image_file',
-                            'value' => function ($model) {
-                                if ($model->image_file !== "") {
-                                    return Html::img($model->image_file, ['alt' => $model->title,
+                    DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'id',
+                            [
+                                'attribute' => 'created_at',
+                                'format' => ['date', 'php:Y-m-d H:i:s']
+                            ],
+                            [
+                                'attribute' => 'updated_at',
+                                'format' => ['date', 'php:Y-m-d H:i:s']
+                            ],
+                            [
+                                'attribute' => 'user',
+                                'value' => $model->user->username,
+                                'label' => \Yii::t('app', 'Updated by')
+                            ],
+                            [
+                                'attribute' => 'materialType',
+                                'value' => $model->materialType->description,
+                                'label' => 'Material'
+                            ],
+                            [
+                                'attribute' => 'collection',
+                                'value' => $model->collection->description,
+                                'label' => Yii::t('app', 'Collection')
+                            ],
+                            [
+                                'attribute' => 'call_nmbr1',
+                                'value' => "$model->call_nmbr1 $model->call_nmbr2 $model->call_nmbr3",
+                                'label' => Yii::t('biblio', 'Call Nmbr1')
+                            ],
+                            'title:ntext',
+                            'title_remainder:ntext',
+                            [
+                                'attribute' => 'image_file',
+                                'value' => function ($model) {
+                                        if ($model->image_file !== "") {
+                                            return Html::img($model->image_file, [
+                                                'alt' => $model->title,
                                                 'title' => $model->title,
                                                 'class' => 'image-thumbnail center-block',
-                                                'style' => 'width: 100px']);
-                                }
-                            },
-                            'format' => 'raw'
+                                                'style' => 'width: 100px'
+                                            ]);
+                                        }
+                                    },
+                                'format' => 'raw'
+                            ],
+                            'responsibility_stmt:ntext',
+                            'author:ntext',
+                            [
+                                'attribute' => 'opac_flg',
+                                'value' => function ($model) {
+                                        return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
+                                    },
+                            ]
                         ],
-                        'responsibility_stmt:ntext',
-                        'author:ntext',
-                        [
-                            'attribute' => 'opac_flg',
-                            'value' => function ($model) {
-                                return ($model->opac_flg == 1) ? Yii::t('app', 'Yes') : Yii::t('app', 'No');
-                            },
-                        ]
-                    ],
-                    'options' => ['class' => 'table table-striped table-bordered table-responsive']
-                ]) ?>
+                        'options' => ['class' => 'table table-striped table-bordered table-responsive']
+                    ]) ?>
             </div>
         </div>
     </div>
@@ -182,67 +184,67 @@ $this->registerJs($js, yii\web\View::POS_END);
         </div>
         <div class="card-body">
             <?php
-                $biblioCopySearch = new \common\models\BiblioCopySearch();
-$biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
-Pjax::begin();
-echo GridView::widget([
-    "dataProvider" => $biblioCopy,
-    'panel' => [
-        'type'=>'default',
-    ],
-    'toolbar'=> [
-        'content' => Html::a(
-            '<i class="fas fa-plus"></i>',
-            ['biblio-copy/create', 'bibid' => $model->id, 'data-pjax' => 1],
-            [
-                'id' => 'btnModal',
-                'title' => Yii::t('app', 'Add Copy'),
-                'class' => 'btn btn-success',
-                'data-pjax' => 1,
-                'data-toggle' => 'modal',
-                'data-target' => '#modal',
-            ]
-        )
-    ],
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-        'barcode_nmbr',
-        'copy_desc',
-        [
-            'attribute' => 'status_cd',
-            'value' => function ($model) {
-                return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
-            },
-            'label' => Yii::t('app', 'Status')
-        ],
-        'status_begin_dt',
-        'due_back_dt',
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{update}&nbsp;&nbsp;{delete}',
-            'buttons' => [
-                'update' => function ($url, $model) {
-                    return Html::a('<span class="fas fa-pen"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                'title' => Yii::t('yii', 'Update'),
-                                'class' => 'btnUpdate'
-                    ]);
-                },
-                'delete' => function ($url, $model) {
-                    return Html::a('<span class="fas fa-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
-                                'title' => Yii::t('app', 'Delete'),
-                                'data' => [
-                                    'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                    'pjax' => 1,
-                                ],
-                    ]);
-                }
-            ],
-        ],
-    ],
-    'options' => ['class' => 'table table-striped table-bordered table-responsive']
-]);
-Pjax::end();
-?>
+            $biblioCopySearch = new \common\models\BiblioCopySearch();
+            $biblioCopy = $biblioCopySearch->search(['BiblioCopySearch' => ['bibid' => $model->id]]);
+            Pjax::begin();
+            echo GridView::widget([
+                "dataProvider" => $biblioCopy,
+                'panel' => [
+                    'type' => 'default',
+                ],
+                'toolbar' => [
+                    'content' => Html::a(
+                        '<i class="fas fa-plus"></i>',
+                        ['biblio-copy/create', 'bibid' => $model->id, 'data-pjax' => 1],
+                        [
+                            'id' => 'btnModal',
+                            'title' => Yii::t('app', 'Add Copy'),
+                            'class' => 'btn btn-success',
+                            'data-pjax' => 1,
+                            'data-toggle' => 'modal',
+                            'data-target' => '#modal',
+                        ]
+                    )
+                ],
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'barcode_nmbr',
+                    'copy_desc',
+                    [
+                        'attribute' => 'status_cd',
+                        'value' => function ($model) {
+                            return common\models\BiblioStatusDm::findOne(['code' => $model->status_cd])->description;
+                        },
+                        'label' => Yii::t('app', 'Status')
+                    ],
+                    'status_begin_dt',
+                    'due_back_dt',
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{update}&nbsp;&nbsp;{delete}',
+                        'buttons' => [
+                            'update' => function ($url, $model) {
+                                return Html::a('<span class="fas fa-pen"></span>', ['biblio-copy/update', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                    'title' => Yii::t('yii', 'Update'),
+                                    'class' => 'btnUpdate'
+                                ]);
+                            },
+                            'delete' => function ($url, $model) {
+                                return Html::a('<span class="fas fa-trash"></span>', ['biblio-copy/delete', 'id' => $model->id, 'bibid' => $model->bibid], [
+                                    'title' => Yii::t('app', 'Delete'),
+                                    'data' => [
+                                        'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                        'pjax' => 1,
+                                    ],
+                                ]);
+                            }
+                        ],
+                    ],
+                ],
+                'options' => ['class' => 'table table-striped table-bordered table-responsive']
+            ]);
+            Pjax::end();
+            ?>
         </div>
     </div>
     <div class="card">

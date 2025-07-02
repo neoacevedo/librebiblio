@@ -2,10 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\bootstrap4\Nav;
+use yii\bootstrap5\Nav;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\User */
+/** @var yii\web\View $this */
+/** @var \common\models\Member $model */
+/** @var \common\models\BiblioCopySearch[] $biblioCopySearch */
+/** @var \common\models\BiblioCopy[] $biblioCopy */
 
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
@@ -24,16 +26,18 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
     <div class="card">
         <nav class="navbar navbar-expand navbar-white navbar-light">
             <?= Nav::widget([
-                    'options' => ['class' => 'navbar-nav'],
-                    'items' => [
-                        ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
-                        ['label' => Yii::t('yii', 'Update'), 'url' => ['member/update', 'id' => $model->id]],
-                        ['label' => Yii::t('app', 'Delete'), 'url' => ['member/delete', 'id' => $model->id],
-                            'options' => ['id' => 'member_delete']
-                        ],
-                        ['label' => Yii::t('app', 'History'), 'url' => ['member/history', 'id' => $model->id]],
-                    ]
-                ]); ?>
+                'options' => ['class' => 'navbar-nav'],
+                'items' => [
+                    ['label' => Yii::t("circulation", "Account"), 'url' => ['member-account/index', 'mbr_id' => $model->id]],
+                    ['label' => Yii::t('yii', 'Update'), 'url' => ['member/update', 'id' => $model->id]],
+                    [
+                        'label' => Yii::t('app', 'Delete'),
+                        'url' => ['member/delete', 'id' => $model->id],
+                        'options' => ['id' => 'member_delete']
+                    ],
+                    ['label' => Yii::t('app', 'History'), 'url' => ['member/history', 'id' => $model->id]],
+                ]
+            ]); ?>
         </nav>
     </div>
     <div class="row">
@@ -59,15 +63,15 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                             [
                                 'attribute' => 'status',
                                 'value' => function ($model) {
-                                    switch ($model->status) {
-                                        case $model::STATUS_ACTIVE:
-                                            return Yii::t('app', 'Active');
-                                        case $model::STATUS_BLOCKED:
-                                            return Yii::t('app', 'Blocked');
-                                        case $model::STATUS_DELETED:
-                                            return Yii::t('app', 'Deleted');
-                                    }
-                                }
+                                            switch ($model->status) {
+                                                case $model::STATUS_ACTIVE:
+                                                    return Yii::t('app', 'Active');
+                                                case $model::STATUS_BLOCKED:
+                                                    return Yii::t('app', 'Blocked');
+                                                case $model::STATUS_DELETED:
+                                                    return Yii::t('app', 'Deleted');
+                                            }
+                                        }
                             ],
                             [
                                 'attribute' => 'created_at',
@@ -113,16 +117,16 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                         </thead>
                         <tbody>
                             <?php foreach ($materialTypeStats as $material): ?>
-                            <tr>
-                                <td><?= Html::encode($material['description']) ?>
-                                </td>
-                                <td><?= Html::encode($material['row_count']) ?>
-                                </td>
-                                <td><?= Html::encode($material['checkout_limit']) ?>
-                                </td>
-                                <td><?= Html::encode($material['renewal_limit']) ?>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><?= Html::encode($material['description']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['row_count']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['checkout_limit']) ?>
+                                    </td>
+                                    <td><?= Html::encode($material['renewal_limit']) ?>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -135,49 +139,49 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
             <div class="card card-primary card-outline card-outline-tabs">
                 <div class="card-header p-0 border-bottom-0">
                     <?= Nav::widget([
-                            'options' => ['class' => 'nav-tabs', 'role' => 'tablist'],
-                            'items' => [
-                                [
-                                    'label' => Yii::t('app', 'Bibliographies Currently Checked Out'),
-                                    'url' => '#bibliography-checked-out',
-                                    'active' => true,
-                                    'linkOptions' => [
-                                        'id' => 'checked-out-tab',
-                                        'data-toggle' => 'pill',
-                                        'role' => 'tab',
-                                        'aria-controls' => 'bibliography-checked-out',
-                                        'aria-selected' => true,
-                                    ],
+                        'options' => ['class' => 'nav-tabs', 'role' => 'tablist'],
+                        'items' => [
+                            [
+                                'label' => Yii::t('app', 'Bibliographies Currently Checked Out'),
+                                'url' => '#bibliography-checked-out',
+                                'active' => true,
+                                'linkOptions' => [
+                                    'id' => 'checked-out-tab',
+                                    'data-toggle' => 'pill',
+                                    'role' => 'tab',
+                                    'aria-controls' => 'bibliography-checked-out',
+                                    'aria-selected' => true,
                                 ],
-                                [
-                                    'label' => Yii::t('app', 'Bibliographies Currently On Hold'),
-                                    'url' => "#bibliography-placehold",
-                                    'linkOptions' => [
-                                        'id' => 'placehold-tab',
-                                        'data-toggle' => 'pill',
-                                        'aria-controls' => 'bibliography-placehold',
-                                        'role' => 'tab'
-                                    ]
-                                ],
-                            ]
-                        ]); ?>
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Bibliographies Currently On Hold'),
+                                'url' => "#bibliography-placehold",
+                                'linkOptions' => [
+                                    'id' => 'placehold-tab',
+                                    'data-toggle' => 'pill',
+                                    'aria-controls' => 'bibliography-placehold',
+                                    'role' => 'tab'
+                                ]
+                            ],
+                        ]
+                    ]); ?>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="bibliography-tabContent">
                         <div class="tab-pane fade active show" role="tabpanel" id="bibliography-checked-out"
                             aria-labelledby="checked-out-tab">
                             <?= $this->render('/circulation/checkout/index', [
-                                    'searchModel' => $biblioCopySearch[0],
-                                    'dataProvider' => $biblioCopy[0],
-                                    'id' => $model->id
+                                'searchModel' => $biblioCopySearch[0],
+                                'dataProvider' => $biblioCopy[0],
+                                'id' => $model->id
                             ]) ?>
                         </div>
                         <div class="tab-pane fade" role="tabpanel" id="bibliography-placehold"
                             aria-labelledby="placehold-tab">
                             <?= $this->render('/circulation/placehold/index', [
-                                    'searchModel' => $biblioCopySearch[1],
-                                    'dataProvider' => $biblioCopy[1],
-                                    'id' => $model->id
+                                'searchModel' => $biblioCopySearch[1],
+                                'dataProvider' => $biblioCopy[1],
+                                'id' => $model->id
                             ]) ?>
                         </div>
                     </div>
@@ -187,16 +191,16 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
     </div>
 </div>
 <?php
-    // modal checkout
-    yii\bootstrap4\Modal::begin([
-        'title' => '',
-        'id' => 'modal',
-        'size' => 'modal-lg',
-        //keeps from closing modal with esc key or by clicking out of the modal.
-        // user must click cancel or X to close
-        'clientOptions' => ['backdrop' => 'static', 'keyboard' => false]
-    ]);
+// modal checkout
+yii\bootstrap5\Modal::begin([
+    'title' => '',
+    'id' => 'modal',
+    'size' => 'modal-lg',
+    //keeps from closing modal with esc key or by clicking out of the modal.
+    // user must click cancel or X to close
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => false]
+]);
 #Pjax::begin(['id' => 'pjax', 'timeout' => 500]);
 echo "<div id='modalContent'></div>";
 #Pjax::end();
-yii\bootstrap4\Modal::end();
+yii\bootstrap5\Modal::end();

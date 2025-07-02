@@ -2,7 +2,7 @@
 
 use common\models\Collection;
 use common\models\MaterialType;
-use yii\bootstrap4\Html;
+use yii\bootstrap5\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
