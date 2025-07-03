@@ -170,7 +170,7 @@ class SiteController extends Controller
     /**
      * Logout action.
      *
-     * @return string
+     * @return Response
      */
     public function actionLogout()
     {
@@ -182,9 +182,9 @@ class SiteController extends Controller
     /**
      * Borra la caché.
      *
-     * @return mixed
+     * @return Response
      */
-    public function actionFlushCache()
+    public function actionFlushCache(): Response
     {
         $frontendAssetPath = Yii::getAlias("@webroot") . "/../../assets/";
         $backendAssetPath = Yii::getAlias('@webroot') . '/assets/';
@@ -200,14 +200,13 @@ class SiteController extends Controller
             mkdir($backendAssetPath) or Yii::debug("No es un directorio: $backendAssetPath");
         }
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        if (\Yii::$app->cache->flush()) {
-            \Yii::$app->getSession()->setFlash('success', \Yii::t('app', 'Cache has been flushed.'));
+        if (Yii::$app->cache->flush()) {
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Cache has been flushed.'));
         } else {
-            \Yii::$app->getSession()->setFlash('error', \Yii::t('app', 'Failed to flush cache.'));
+            Yii::$app->getSession()->setFlash('error', Yii::t('app', 'Failed to flush cache.'));
         }
 
-        return $this->redirect(\Yii::$app->request->referrer);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -247,7 +246,7 @@ class SiteController extends Controller
      * @param string $path
      * @return boolean
      */
-    private static function recursiveDelete($path)
+    private static function recursiveDelete($path): bool
     {
         if (is_file($path)) {
             return unlink($path);
@@ -259,5 +258,7 @@ class SiteController extends Controller
 
             return @rmdir($path);
         }
+
+        return false;
     }
 }

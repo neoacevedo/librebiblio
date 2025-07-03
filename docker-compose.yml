@@ -1,0 +1,72 @@
+networks:
+  app_net:
+    ipam:
+      config:
+        - subnet: 172.23.4.0/29
+services:
+  mariadb:
+    image: mariadb
+    container_name: librebiblio_mariadb
+    environment:
+      - MYSQL_DATABASE=librebiblio
+      - TZ=America/Bogota
+      - MYSQL_USER=librebibilio
+      - MYSQL_PASSWORD=librebiblio
+      - MYSQL_ROOT_PASSWORD=librebiblio
+    ports:
+      - '3315:3306'
+    networks:
+      app_net:
+        ipv4_address: 172.23.4.2
+    deploy:
+      resources:
+        limits:
+          cpus: '0.17'
+          memory: 1G
+        reservations:
+          cpus: '0.175'
+          memory: 512M
+  frontend:
+    image: 'webdevops/php-apache-dev:8.3-alpine'
+    container_name: librebiblio_frontend
+    working_dir: /app
+    depends_on:
+      - mariadb
+    volumes:
+      - './:/app:cached'
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+    ports:
+      - '8080:80'
+    networks:
+      app_net:
+        ipv4_address: 172.23.4.3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.17'
+          memory: 1G
+        reservations:
+          cpus: '0.175'
+          memory: 512M
+  backend:
+    image: 'webdevops/php-apache-dev:8.3-alpine'
+    container_name: librebiblio_backend
+    working_dir: /app
+    depends_on:
+      - mariadb
+    volumes:
+      - './:/app:cached'
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+    ports:
+      - '21080:80'
+    networks:
+      app_net:
+        ipv4_address: 172.23.4.3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.17'
+          memory: 1G
+        reservations:
+          cpus: '0.175'
+          memory: 512M

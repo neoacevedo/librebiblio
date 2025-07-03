@@ -4,5 +4,3 @@
 /backend/web/index-test.php
 /robots.txt
 /.vscode
-/composer.lock
-docker-compose.yml
