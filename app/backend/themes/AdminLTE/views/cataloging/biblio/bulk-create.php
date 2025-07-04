@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="form-group">
-                <label for="usmarc_data">USMarc Input File:</label>
+                <label for="usmarc_data"><?= Yii::t('cataloging', 'USMarc Input File:') ?></label>
                 <input type="file" name="usmarc_data" id="usmarc_data" required="true" class="form-control">
             </div>
             <div class="form-group">

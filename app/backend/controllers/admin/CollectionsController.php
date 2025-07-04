@@ -20,8 +20,8 @@
 namespace backend\controllers\admin;
 
 use Yii;
-use backend\models\Collection;
-use backend\models\CollectionSearch;
+use common\models\Collection;
+use common\models\CollectionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

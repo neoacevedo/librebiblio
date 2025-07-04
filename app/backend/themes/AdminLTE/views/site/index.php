@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /** @var yii\data\ActiveDataProvider $logs  */
 
-use dosamigos\chartjs\ChartJs;
+use neoacevedo\chartjs\ChartJs;
 use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Dashboard');
@@ -112,38 +112,38 @@ if (count($checkout_stats) >= 1 && count($checkout_stats) < 7) {
                 </div>
                 <div class="card-body">
                     <?php
-                    // ChartJs::widget([
-                    //     'type' => 'line',
-                    //     /* 'options' => [
-                    //     'height' => 400,
-                    //     'width' => 400
-                    //     ], */
-                    //     'data' => [
-                    //         'labels' => array_values($fechas),
-                    //         'datasets' => [
-                    //             [
-                    //                 'label' => Yii::t("app", "Checkouts per day"),
-                    //                 'backgroundColor' => "#ffffff",
-                    //                 'borderColor' => "#00c0ef",
-                    //                 'pointBackgroundColor' => "#00c0ef",
-                    //                 'pointBorderColor' => "#fff",
-                    //                 'pointHoverBackgroundColor' => "#fff",
-                    //                 'pointHoverBorderColor' => "#00c0ef",
-                    //                 'data' => array_values($totales)
-                    //             ],
-                    //         /* [
-                    //         'label' => "My Second dataset",
-                    //         'backgroundColor' => "rgba(255,99,132,0.2)",
-                    //         'borderColor' => "rgba(255,99,132,1)",
-                    //         'pointBackgroundColor' => "rgba(255,99,132,1)",
-                    //         'pointBorderColor' => "#fff",
-                    //         'pointHoverBackgroundColor' => "#fff",
-                    //         'pointHoverBorderColor' => "rgba(255,99,132,1)",
-                    //         'data' => [28, 48, 40, 19, 96, 27, 100]
-                    //         ] */
-                    //         ]
-                    //     ]
-                    // ]);
+                    echo ChartJs::widget([
+                        'type' => 'line',
+                        /* 'options' => [
+                        'height' => 400,
+                        'width' => 400
+                        ], */
+                        'data' => [
+                            'labels' => array_values($fechas),
+                            'datasets' => [
+                                [
+                                    'label' => Yii::t("app", "Checkouts per day"),
+                                    'backgroundColor' => "#ffffff",
+                                    'borderColor' => "#00c0ef",
+                                    'pointBackgroundColor' => "#00c0ef",
+                                    'pointBorderColor' => "#fff",
+                                    'pointHoverBackgroundColor' => "#fff",
+                                    'pointHoverBorderColor' => "#00c0ef",
+                                    'data' => array_values($totales)
+                                ],
+                                /* [
+                                'label' => "My Second dataset",
+                                'backgroundColor' => "rgba(255,99,132,0.2)",
+                                'borderColor' => "rgba(255,99,132,1)",
+                                'pointBackgroundColor' => "rgba(255,99,132,1)",
+                                'pointBorderColor' => "#fff",
+                                'pointHoverBackgroundColor' => "#fff",
+                                'pointHoverBorderColor' => "rgba(255,99,132,1)",
+                                'data' => [28, 48, 40, 19, 96, 27, 100]
+                                ] */
+                            ]
+                        ]
+                    ]);
                     ?>
                 </div>
             </div>

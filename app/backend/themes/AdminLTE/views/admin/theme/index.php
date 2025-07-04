@@ -31,9 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'dataProvider' => $dataProvider,
                                 'filterModel' => $searchModel,
                                 'pjax' => true,
-                                'condensed' => true,
+                                'bordered' => true,
+                                'resizableColumns' => false,
                                 'responsive' => true,
                                 'responsiveWrap' => false,
+                                'hover' => true,
                                 'panel' => [
                                     'type' => 'default',
                                 ],
@@ -55,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'options' => ['class' => 'btn-group mr-2 me-2']
                                     ],
                                 ],
+                                'headerRowOptions' => ['class' => 'kv-table-header'],
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
                                     'name',

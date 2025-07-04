@@ -32,5 +32,7 @@ return [
     'Subfield Cd' => 'Subcampo',
     'Update' => 'Actualizar',
     'Update Biblio Field: {nameAttribute}' => 'Actualizar Campo Bibliográfico: {nameAttribute}',
+    'Upload Marc Data' => 'Subir Datos Marc',
+    'USMarc Input File:' => 'Campo de Archivo USMarc:',
     'Test Load' => 'Carga de prueba'
 ];
