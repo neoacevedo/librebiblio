@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ad5aeb49b30b13e3257e5ddece968a7",
+    "content-hash": "b89fb0eb71dd2c3d98a9f7e588903acf",
     "packages": [
         {
             "name": "antonyz89/yii2-seeder",
@@ -3212,6 +3212,18 @@
             "type": "npm-asset",
             "license": [
                 "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/fontawesome-free",
+            "version": "1.0.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/fontawesome-free/-/fontawesome-free-1.0.4.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
             ]
         },
         {

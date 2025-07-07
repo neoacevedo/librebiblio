@@ -30,6 +30,7 @@ use frontend\models\PasswordResetRequestForm;
 use kartik\mpdf\Pdf;
 use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -61,14 +62,12 @@ class MemberController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -93,7 +92,7 @@ class MemberController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -125,7 +124,7 @@ class MemberController extends Controller
     {
         $model = new Member();
         $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load($this->request->post())) {
             $model->generateAuthKey();
             $model->generateEmailVerificationToken();
@@ -176,16 +175,14 @@ class MemberController extends Controller
 
     /**
      * Genera un PDF con un diseño básico con la información de los miembros de la biblioteca.
-     * @return mixed
+     * @return string
+     * @throws HttpException
      */
-    public function actionPrint()
+    public function actionPrint(): string
     {
         $searchModel = new MemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
-        // return $this->render('print', [
-        //   'dataProvider' => $dataProvider,
-        // ]);
+
         $html = $this->renderAjax('print', [
             'dataProvider' => $dataProvider,
         ]);
@@ -237,27 +234,19 @@ class MemberController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            throw new HttpException($e->getMessage());
         }
     }
 
     /**
      * Muestra el historial de préstamos del miembro de la biblioteca.
-     * @return mixed
+     * @return string
      */
     public function actionHistory()
     {
         $searchModel = new BiblioStatusHistorySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        // $dataProvider = new \yii\data\ActiveDataProvider([
-        //     'query' => $biblioStatusHist,
-        //     'sort' => [
-        //         'defaultOrder' => [
-        //             'created_at' => SORT_DESC,
-        //         ]
-        //     ],
-        // ]);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('history', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
@@ -268,11 +257,11 @@ class MemberController extends Controller
      * Muestra los datos del miembro como su información básica, los materiales en préstamo o
      * reservados y las estadísticas en la biblioteca.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         // estadísticas del usuario con los tipos de material registrados en la biblioteca
         if (Yii::$app->db->driverName === "mysql") {
             $materialTypeStats = (new \yii\db\Query())->select([
@@ -344,13 +333,14 @@ class MemberController extends Controller
      * Convierte a PDF los detalles de la cuenta (multa, pago, etc) del miembro.
      * @param int $id
      * @param int $mbr_id
-     * @return mixed
+     * @return string
+     * @throws HttpException
      */
     public function actionAccountPrint($id, $mbr_id)
     {
         $memberAccount = MemberAccount::findOne(['id' => $id, 'mbr_id' => $mbr_id]);
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $html = $this->renderAjax('account-view', [
             'memberAccount' => $memberAccount,
         ]);
@@ -384,7 +374,7 @@ class MemberController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            throw new HttpException(status: 500, message: $e->getMessage());
         }
     }
 
@@ -397,7 +387,7 @@ class MemberController extends Controller
     {
         $model = $this->findModel($id);
         $mbr_classify = Yii::$app->db->createCommand("Select * from {{%mbr_classify_dm}}")->queryAll();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['member-view', 'id' => $model->id]);
@@ -424,7 +414,7 @@ class MemberController extends Controller
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }

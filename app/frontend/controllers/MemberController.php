@@ -18,11 +18,13 @@
 namespace frontend\controllers;
 
 use common\models\BiblioStatusHistory;
+use kartik\mpdf\Pdf;
 use Yii;
 use common\models\Member;
 use common\models\MemberAccount;
 use common\models\MemberAccountSearch;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -73,7 +75,7 @@ class MemberController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -83,9 +85,9 @@ class MemberController extends Controller
 
     /**
      * Muestra el historial de préstamos o reservas del miembro.
-     * @return mixed
+     * @return string
      */
-    public function actionHistory()
+    public function actionHistory(): string
     {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
@@ -104,7 +106,7 @@ class MemberController extends Controller
                 ]
             ]
         ]);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('history', [
             'model' => $model,
             'dataProvider' => $dataProvider,
@@ -113,13 +115,13 @@ class MemberController extends Controller
 
     /**
      * Muestra el perfil del miembro.
-     * @return mixed
+     * @return string
      */
-    public function actionProfile()
+    public function actionProfile(): string
     {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('profile', [
             'model' => $model,
         ]);
@@ -136,9 +138,9 @@ class MemberController extends Controller
      *   <li>Pago</li>
      *   <li>Crédito.</li>
      * </ul>
-     * @return mixed
+     * @return string
      */
-    public function actionAccount()
+    public function actionAccount(): string
     {
 
         $id = Yii::$app->user->id;
@@ -148,7 +150,7 @@ class MemberController extends Controller
         $searchModel->mbr_id = $id;
         $dataProvider = $searchModel->search([]);
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('account', [
             'model' => $model,
             'searchModel' => $searchModel,
@@ -159,14 +161,14 @@ class MemberController extends Controller
     /**
      * Muestra los detalles de la cuenta actual del miembro.
      * @param integer $account_id
-     * @return mixed
+     * @return string
      */
-    public function actionAccountView(int $account_id)
+    public function actionAccountView(int $account_id): string
     {
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->renderAjax('account-view', [
             'memberAccount' => $memberAccount,
         ]);
@@ -176,31 +178,40 @@ class MemberController extends Controller
      * Convierte a PDF los detalles de la cuenta (multa, pago, etc) del miembro.
      * 
      * @param int $account_id
-     * @return mixed
+     * @return string
+     * @throws HttpException
      */
     public function actionAccountPrint(int $account_id)
     {
         $id = Yii::$app->user->id;
         $memberAccount = MemberAccount::findOne(['id' => $account_id, 'mbr_id' => $id]);
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $html = $this->renderPartial('account-view', [
             'memberAccount' => $memberAccount,
         ]);
 
         $html = str_replace('<div class="row">', '<div class="hidden">', $html);
 
-        $pdf = Yii::$app->pdf;
+        $pdf = new Pdf([
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+            'options' => [
+                'margin_left' => 20,
+                'margin_right' => 15,
+                'margin_top' => 25,
+                'margin_bottom' => 25,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'showBarcodeNumbers' => false
+            ]
+        ]);
         $pdf->content = $html;
-        $pdf->options = [
-            'margin_left' => 20,
-            'margin_right' => 15,
-            'margin_top' => 25,
-            'margin_bottom' => 25,
-            'margin_header' => 10,
-            'margin_footer' => 10,
-            'showBarcodeNumbers' => FALSE
-        ];
         $pdf->methods = [
             'SetHeader' => [date('Y-m-d H:i:s')],
             'SetFooter' => [Yii::$app->name . '||{PAGENO}'],
@@ -209,18 +220,18 @@ class MemberController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            throw new HttpException(status: 500, message: $e->getMessage());
         }
     }
 
     /**
      * Muestra todas las reservas del miembro.
-     * @return mixed
+     * @return string
      */
     public function actionPlaceholds()
     {
         $id = Yii::$app->user->id;
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $biblioCopySearch = new \common\models\BiblioHoldSearch();
         $biblioCopySearch->mbr_id = $id;
         $biblioCopy = $biblioCopySearch->search([]);
@@ -235,13 +246,13 @@ class MemberController extends Controller
 
     /**
      * Actualiza la información del miembro.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionUpdate()
     {
         $id = Yii::$app->user->id;
         $model = $this->findModel($id);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash("success", Yii::t('circulation', 'Member updated successfully'));
             return $this->redirect(['account']);
@@ -267,7 +278,7 @@ class MemberController extends Controller
         if (($model = Member::findOne($id)) !== null) {
             return $model;
         } else {
-            // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }

@@ -21,16 +21,25 @@ namespace backend\reports;
 
 use Yii;
 use yii\base\Model;
+use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%checkoutStats}}".
+ * This is the model class for table "{{%checkouts}}".
  *
  * @property int $id
  * @property string $created_at
  * @property int $checkoutCount
  */
-class CheckoutStats extends Model
+class CheckoutStats extends ActiveRecord
 {
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%checkouts}}';
+    }
 
     private static $name = "Periodic Checkout Count";
     private static $category = "Statistics";

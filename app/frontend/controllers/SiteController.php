@@ -81,7 +81,7 @@ class SiteController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -100,30 +100,30 @@ class SiteController extends Controller
      */
     public function actionMaintenance(string $message)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('error', ['message' => $message]);
     }
 
     /**
      * Displays homepage.
      *
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new \common\models\BiblioSearch();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+        $searchModel = new BiblioSearch();
+
         return $this->render('index', ['searchModel' => $searchModel]);
     }
 
     /**
      * Logs in a user.
      *
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionLogin()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -141,7 +141,7 @@ class SiteController extends Controller
     /**
      * Logs out the current user.
      *
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionLogout()
     {
@@ -153,12 +153,12 @@ class SiteController extends Controller
     /**
      * Displays contact page.
      *
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionContact()
     {
         $model = new ContactForm();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Thank you for contacting us. We will respond to you as soon as possible.'));
@@ -177,7 +177,7 @@ class SiteController extends Controller
     /**
      * Displays about page.
      *
-     * @return mixed
+     * @return string
      */
     public function actionAbout()
     {
@@ -187,12 +187,12 @@ class SiteController extends Controller
     /**
      * Signs user up.
      *
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionSignup()
     {
         $model = new \frontend\models\SignupForm();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
 
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $user = Member::findByUsername($model->username);
@@ -220,13 +220,13 @@ class SiteController extends Controller
 
     /**
      * Lists all Biblio models.
-     * @return mixed
+     * @return string
      */
     public function actionSearch()
     {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('search', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -236,12 +236,12 @@ class SiteController extends Controller
     /**
      * Requests password reset.
      *
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -262,12 +262,12 @@ class SiteController extends Controller
      * Resets password.
      *
      * @param string $token
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws BadRequestHttpException
      */
     public function actionResetPassword(string $token)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidArgumentException $e) {
@@ -288,7 +288,7 @@ class SiteController extends Controller
     /**
      * Displays offline page.
      *
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionOffline()
     {

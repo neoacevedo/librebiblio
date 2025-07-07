@@ -56,8 +56,8 @@ use yii\db\ActiveRecord;
  * @property BiblioCopy[] $biblioCopies
  * @property BiblioField[] $biblioFields
  * @property BiblioStatusHistory[] $biblioStatusHists
- * @property Collection $collectionCd
- * @property MaterialType $materialCd
+ * @property Collection $collection
+ * @property MaterialType $materialType
  * @property User $user
  */
 class Biblio extends ActiveRecord
@@ -80,8 +80,8 @@ class Biblio extends ActiveRecord
             [
                 'class' => TimestampBehavior::class,
                 'attributes' => [
-                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                    static::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    static::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
             ],
             [

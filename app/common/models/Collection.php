@@ -29,7 +29,7 @@ use common\models\Biblio;
  * @property string $description
  * @property string $default_flg
  * @property integer $days_due_back
- * @property string $dayli_late_fee
+ * @property string $daily_late_fee
  *
  * @property Biblio[] $biblios
  */

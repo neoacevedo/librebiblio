@@ -53,14 +53,12 @@ class MemberAccountController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (\Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -85,7 +83,7 @@ class MemberAccountController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -102,7 +100,7 @@ class MemberAccountController extends Controller
         $searchModel = new MemberAccountSearch();
         $searchModel->mbr_id = Yii::$app->request->get('mbr_id');
         $dataProvider = $searchModel->search([]);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -113,12 +111,12 @@ class MemberAccountController extends Controller
      * Displays a single MemberAccount model.
      * @param integer $id
      * @param integer $mbr_id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView(int $id, int $mbr_id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id, $mbr_id),
         ]);
@@ -127,13 +125,13 @@ class MemberAccountController extends Controller
     /**
      * Creates a new MemberAccount model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new MemberAccount();
         $transactionType = \common\models\TransactionType::find()->all();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         } else {
@@ -152,13 +150,13 @@ class MemberAccountController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @param integer $mbr_id
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate(int $id, int $mbr_id)
     {
         $model = $this->findModel($id, $mbr_id);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'mbr_id' => $model->mbr_id]);
         }
@@ -173,7 +171,7 @@ class MemberAccountController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @param integer $mbr_id
-     * @return mixed
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete(int $id, int $mbr_id)

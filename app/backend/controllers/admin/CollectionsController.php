@@ -49,15 +49,6 @@ class CollectionsController extends Controller
                         //'actions' => ['users'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        /*'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
-                            if (array_key_exists("admin", $roles)) {
-                                return true;
-                            }
-
-                            return false;
-                        },*/
                     ],
                     [
                         'actions' => ['logout'],
@@ -81,7 +72,7 @@ class CollectionsController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -91,13 +82,13 @@ class CollectionsController extends Controller
 
     /**
      * Lists all Collection models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new CollectionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -107,11 +98,11 @@ class CollectionsController extends Controller
     /**
      * Displays a single Collection model.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -120,12 +111,12 @@ class CollectionsController extends Controller
     /**
      * Creates a new Collection model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new Collection();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -142,12 +133,12 @@ class CollectionsController extends Controller
      * Updates an existing Collection model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -164,7 +155,7 @@ class CollectionsController extends Controller
      * Deletes an existing Collection model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionDelete(int $id)
     {
@@ -182,7 +173,7 @@ class CollectionsController extends Controller
      */
     protected function findModel(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if (($model = Collection::findOne($id)) !== null) {
             return $model;
         } else {

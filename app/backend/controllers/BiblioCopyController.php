@@ -25,6 +25,7 @@ use yii\filters\AccessControl;
 use common\models\BiblioCopySearch;
 use kartik\mpdf\Pdf;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -54,14 +55,12 @@ class BiblioCopyController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (\Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -86,7 +85,7 @@ class BiblioCopyController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -102,7 +101,7 @@ class BiblioCopyController extends Controller
     {
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -117,7 +116,7 @@ class BiblioCopyController extends Controller
      */
     public function actionView(int $id, int $bibid)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id, $bibid),
         ]);
@@ -132,7 +131,7 @@ class BiblioCopyController extends Controller
     {
         $model = new BiblioCopy();
         $biblio_status = \common\models\BiblioStatusDm::find()->all();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $post = $this->request->post();
         if ($this->request->post('autoqrcode')) {
             $nzeros = "5";
@@ -166,7 +165,7 @@ class BiblioCopyController extends Controller
     {
         $model = $this->findModel($id, $bibid);
         $biblio_status = \common\models\BiblioStatusDm::find()->all();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($this->request->get('autoqrcode')) {
             $nzeros = "5";
             $copy_number = BiblioCopy::find()->where(['bibid' => $model->bibid])->max("id") + 1;
@@ -203,13 +202,14 @@ class BiblioCopyController extends Controller
 
     /**
      * Genera un PDF con el código QR de las copias bibliográficas.
-     * @return mixed
+     * @return string
+     * @throws HttpException
      */
     public function actionCopiesPrint()
     {
         $searchModel = new BiblioCopySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         // return $this->render('copies-print', [
         //     'dataProvider' => $dataProvider,
@@ -245,7 +245,7 @@ class BiblioCopyController extends Controller
         try {
             return $pdf->render();
         } catch (\Exception $e) {
-            return ($e->getMessage());
+            throw new HttpException(status: 500, message: $e->getMessage());
         }
     }
 

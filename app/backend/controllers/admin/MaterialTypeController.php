@@ -50,14 +50,6 @@ class MaterialTypeController extends Controller
                         //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        /*'matchCallback' => function () {
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                            //Yii::info($roles);
-                            if (array_key_exists("admin", $roles)) {
-                                return true;
-                            }
-                            return false;
-                        },*/
                     ],
                     [
                         'actions' => ['logout'],
@@ -81,7 +73,7 @@ class MaterialTypeController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -91,13 +83,13 @@ class MaterialTypeController extends Controller
 
     /**
      * Lists all MaterialType models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new MaterialTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -107,11 +99,11 @@ class MaterialTypeController extends Controller
     /**
      * Displays a single MaterialType model.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -120,13 +112,13 @@ class MaterialTypeController extends Controller
     /**
      * Creates a new MaterialType model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new MaterialType();
         // Uploaded file instance.
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
 
         $material_type_list = [
             "" => "--",
@@ -180,7 +172,7 @@ class MaterialTypeController extends Controller
      * Updates an existing MaterialType model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionUpdate(int $id)
     {
@@ -199,7 +191,7 @@ class MaterialTypeController extends Controller
         // Uploaded file instance.
         $fileModel = Yii::$app->storage->getFileManager();
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save($fileModel)) {
@@ -243,7 +235,7 @@ class MaterialTypeController extends Controller
      * Deletes an existing MaterialType model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionDelete(int $id)
     {
@@ -263,7 +255,7 @@ class MaterialTypeController extends Controller
      */
     protected function findModel(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if (($model = MaterialType::findOne($id)) !== null) {
             return $model;
         } else {

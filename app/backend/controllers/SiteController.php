@@ -82,7 +82,7 @@ class SiteController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -132,7 +132,7 @@ class SiteController extends Controller
             'sort' => false
         ]);
 
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'checkouts' => $copy_count,
             'bills' => $bills,
@@ -215,7 +215,7 @@ class SiteController extends Controller
      */
     public function actionSettings()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('settings/index');
     }
 
@@ -228,7 +228,7 @@ class SiteController extends Controller
     public function actionLibrarySettings()
     {
         $model = $this->findSettingsModel();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {

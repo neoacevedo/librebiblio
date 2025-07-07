@@ -131,7 +131,7 @@ class ThemeController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -141,13 +141,13 @@ class ThemeController extends Controller
 
     /**
      * Lists all Theme models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new ThemeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -162,12 +162,12 @@ class ThemeController extends Controller
      * del frontend/backend dependiendo de la configuración del JSON.
      *
      * Posterior a ello borra el archivo zip.
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionCreate()
     {
         $model = new Theme();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
 
         if ($model->load(Yii::$app->request->post())) {
             $model->themeFile = UploadedFile::getInstance($model, "themeFile");
@@ -236,13 +236,13 @@ class ThemeController extends Controller
      * Updates an existing Theme model.
      * If update is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
         $tema_activo = Theme::findOne(['frontend' => $model->frontend, "active" => 1]);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $editableIndex = $this->request->post("editableIndex");
         $post = [];
         $post["Theme"] = @$this->request->post("Theme")[$editableIndex];
@@ -279,9 +279,14 @@ class ThemeController extends Controller
     }
 
     /**
+     * Actualiza la lista de temas desde el directorio `vendor`.
      *
+     * Escanea el directorio `vendor` buscando archivos de tema JSON, 
+     * crea un nuevo modelo `Theme` por cada archivo, y guarda la información en la base de datos.
+     *
+     * @return string La vista 'index' renderizada.
      */
-    public function actionRefresh()
+    public function actionRefresh(): string
     {
         $vendorDir = Yii::$app->getVendorPath();
         $settingsFile = \yii\helpers\FileHelper::findFiles($vendorDir, ['only' => ['theme.json']]);
@@ -309,7 +314,7 @@ class ThemeController extends Controller
 
         $searchModel = new ThemeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -320,7 +325,7 @@ class ThemeController extends Controller
      * Deletes an existing Theme model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionDelete(int $id)
     {
@@ -371,6 +376,7 @@ class ThemeController extends Controller
 
     /**
      * Borra un directorio completo.
+     * 
      * Método abstraído de ({http://php.net/manual/es/function.rmdir.php#110489}) para borrar
      * el directorio completo del tema.
      * @param string $dir

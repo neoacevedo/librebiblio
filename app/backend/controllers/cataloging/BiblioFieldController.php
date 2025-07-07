@@ -58,14 +58,12 @@ class BiblioFieldController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (\Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -90,7 +88,7 @@ class BiblioFieldController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -100,14 +98,14 @@ class BiblioFieldController extends Controller
 
     /**
      * Lists all BiblioField models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex($bibid)
     {
         $searchModel = new BiblioFieldSearch();
-        $model = \common\models\Biblio::findOne($bibid);
+        $model = Biblio::findOne($bibid);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'model' => $model,
             'searchModel' => $searchModel,
@@ -119,12 +117,12 @@ class BiblioFieldController extends Controller
      * Displays a single BiblioField model.
      * @param integer $bibid
      * @param integer $fieldid
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($bibid, $fieldid)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($bibid, $fieldid),
         ]);
@@ -134,26 +132,11 @@ class BiblioFieldController extends Controller
      * Creates a new BiblioField model.
      * If creation is successful, the browser will be redirected to the 'index' page.
      * @param integer $bibid
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new BiblioField();
-        // $marcBlocks = (new Query())
-        //     ->select([
-        //         "{{%usmarc_block_dm}}.block_mbr",
-        //         "{{%usmarc_block_dm}}.description as block_description",
-        //         "{{%usmarc_tag_dm}}.tag",
-        //         "{{%usmarc_tag_dm}}.description as tag_description",
-        //         "{{%usmarc_subfield_dm}}.subfield_cd",
-        //         "{{%usmarc_subfield_dm}}.description as subfield_description",
-        //     ])
-        //     ->from(["{{%usmarc_block_dm}}", "{{%usmarc_tag_dm}}", "{{%usmarc_subfield_dm}}"])
-        //     ->where([
-        //         "{{%usmarc_tag_dm}}.block_nmbr" => new Expression("{{%usmarc_block_dm}}.block_mbr"),
-        //         "{{%usmarc_subfield_dm}}.tag" => new Expression("{{%usmarc_tag_dm}}.tag")
-        //         ])
-        //     ->all();
 
         $marcBlocks = Usmarc::find()->all();
 
@@ -170,7 +153,7 @@ class BiblioFieldController extends Controller
                 Yii::$app->session->setFlash('error', $message);
             }
         }
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('create', [
             'model' => $model,
             'marcBlocks' => $marcBlocks
@@ -182,21 +165,21 @@ class BiblioFieldController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $bibid
      * @param integer $fieldid
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($bibid, $fieldid)
     {
         $model = $this->findModel($bibid, $fieldid);
-        $biblio = \common\models\Biblio::findOne($bibid);
-        $marcBlocks = \common\models\Usmarc::find()->all();
+        $biblio = Biblio::findOne($bibid);
+        $marcBlocks = Usmarc::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([
                 'index',
                 'bibid' => $model->bibid
             ]);
         }
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('update', [
             'model' => $model,
             'biblio' => $biblio,
@@ -209,7 +192,7 @@ class BiblioFieldController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $bibid
      * @param integer $fieldid
-     * @return mixed
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($bibid, $fieldid)
@@ -219,6 +202,17 @@ class BiblioFieldController extends Controller
         return $this->redirect(['cataloging/biblio/view', 'index' => $bibid]);
     }
 
+    /**
+     * Genera las opciones HTML para los tags de USMARC basados en un número de bloque.
+     *
+     * Este método recupera los tags USMARC de la base de datos que corresponden al
+     * número de bloque especificado y genera una lista de opciones HTML para un
+     * elemento `<select>`. Si no se encuentran resultados, se muestra una opción
+     * indicando que no hay resultados.
+     *
+     * @param int $block El número de bloque USMARC para filtrar los tags.
+     * @return void Este método imprime directamente las opciones HTML en la salida.
+     */
     public function actionUsmarcTagsOptions(int $block)
     {
         $usmarTags = \common\models\UsmarcTagDm::findAll(['block_nmbr' => $block]);
@@ -231,6 +225,16 @@ class BiblioFieldController extends Controller
         }
     }
 
+    /**
+     * Genera las opciones HTML para los subcampos de USMARC basados en un tag.
+     *
+     * Este método recupera los subcampos USMARC de la base de datos que corresponden al
+     * tag especificado y genera una lista de opciones HTML para un elemento `<select>`.
+     * Si no se encuentran resultados, se muestra una opción indicando que no hay resultados.
+     *
+     * @param int $tag El tag USMARC para filtrar los subcampos.
+     * @return void Este método imprime directamente las opciones HTML en la salida.
+     */
     public function actionUsmarcSubfieldsOptions(int $tag)
     {
         $usmarcSubfields = \common\models\UsmarcSubfield::findAll(['tag' => $tag]);

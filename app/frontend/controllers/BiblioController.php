@@ -52,7 +52,7 @@ class BiblioController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -62,7 +62,7 @@ class BiblioController extends Controller
 
     /**
      * Lists all Biblio models.
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionIndex()
     {
@@ -72,11 +72,11 @@ class BiblioController extends Controller
     /**
      * Displays a single Biblio model.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -85,7 +85,7 @@ class BiblioController extends Controller
     /**
      * Creates a new Biblio model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -104,7 +104,7 @@ class BiblioController extends Controller
      * Updates an existing Biblio model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionUpdate(int $id)
     {
@@ -123,7 +123,7 @@ class BiblioController extends Controller
      * Deletes an existing Biblio model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionDelete(int $id)
     {
@@ -141,7 +141,7 @@ class BiblioController extends Controller
      */
     protected function findModel(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if (($model = Biblio::findOne($id)) !== null) {
             return $model;
         } else {

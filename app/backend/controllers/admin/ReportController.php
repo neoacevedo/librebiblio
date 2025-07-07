@@ -19,6 +19,8 @@
 
 namespace backend\controllers\admin;
 
+use common\models\Collection;
+use common\models\MaterialType;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -63,14 +65,12 @@ class ReportController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (\Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -95,7 +95,7 @@ class ReportController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -110,7 +110,7 @@ class ReportController extends Controller
      * Para idiomas diferentes al Inglés, en algunos nombres de categorías o reportes se generarían sus respectivas traducciones
      * pero encerradas con doble arroba (@@nombre de la categoría@@), esto debido a que los reportes son dinámicos y no están
      * predefinidos.
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
@@ -123,8 +123,7 @@ class ReportController extends Controller
             $report = new $classname;
             $reports[Yii::t("app/reports", $report->getCategory())][] = $report;
         }
-        Yii::debug($reports);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('index', [
             'reports' => $reports,
         ]);
@@ -134,32 +133,32 @@ class ReportController extends Controller
      * Permite realizar el reporte de acuerdo a varios filtros disponibles.
      *
      * El filtro lo establece cada reporte. El modelo es invocado de acuerdo al nombre del tipo de reporte.
-     * @return mixed
+     * @return string
      */
     public function actionSearch()
     {
         $classnameSearch = "backend\\reports\\" . $this->request->get("type") . "Search";
         $searchModel = new $classnameSearch;
         $view = strtolower(Yii::$app->request->get("type"));
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render($view, [
             'model' => $searchModel,
-            'materialType' => \common\models\MaterialType::find()->all(),
-            'collection' => \backend\models\Collection::find()->all()
+            'materialType' => MaterialType::find()->all(),
+            'collection' => Collection::find()->all()
         ]);
     }
 
     /**
      * Muestra el reporte generado.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView()
     {
         $classnameSearch = "backend\\reports\\" . Yii::$app->request->get("type");
         $viewName = Yii::$app->request->get("type");
         $searchModel = new $classnameSearch;
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render("$viewName/view", [
             'searchModel' => $searchModel,

@@ -60,14 +60,12 @@ class BiblioController extends Controller
                             $action = Yii::$app->controller->action->id;
                             $controller = Yii::$app->controller->id;
                             $route = "$controller/$action";
-                            $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
+                            $roles = (array) Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
                             if (array_key_exists("admin", $roles)) {
                                 return true;
                             }
                             //$post = Yii::$app->request->post();
-                            if (Yii::$app->user->can($route)) {
-                                return true;
-                            }
+                            return Yii::$app->user->can($route);
                         },
                     ],
                     [
@@ -101,13 +99,13 @@ class BiblioController extends Controller
 
     /**
      * Lists all Biblio models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex(): string
     {
         $searchModel = new BiblioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         #if (\Yii::$app->user->can('view')) {
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -119,11 +117,11 @@ class BiblioController extends Controller
     /**
      * Displays a single Biblio model.
      * @param integer $id
-     * @return mixed
+     * @return string
      */
     public function actionView(int $id): string
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -150,7 +148,7 @@ class BiblioController extends Controller
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
         }
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save($fileModel)) {
@@ -224,7 +222,7 @@ class BiblioController extends Controller
         for ($i = 1; $i < count($this->usmarc); $i++) {
             $modelBiblioFields[] = new \common\models\BiblioField();
         }
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post())) {
             if (null !== $fileModel->uploadedFile) {
                 if (Yii::$app->storage->save($fileModel)) {
@@ -677,7 +675,7 @@ class BiblioController extends Controller
      * para ese mismo modelo.
      * @param int $bibid
      * @param mixed $models
-     * @return boolean
+     * @return bool
      */
     private function createBiblioField(int $bibid, $models)
     {
@@ -716,7 +714,7 @@ class BiblioController extends Controller
      * Updates an existing Biblio model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionUpdate(int $id)
     {
@@ -808,7 +806,7 @@ class BiblioController extends Controller
      * Deletes an existing Biblio model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
      */
     public function actionDelete(int $id)
     {
@@ -821,10 +819,12 @@ class BiblioController extends Controller
      * Llena el atributo @usmarc del controlador.
      *
      * Estos son los datos adicionales "básicos" de la bibliografía.
+     * 
+     * @return UsmarcSubfield[]
      */
     private function getUsMarc()
     {
-        return \common\models\UsmarcSubfield::find()
+        return UsmarcSubfield::find()
             ->where(["tag" => 100, "subfield_cd" => "a"])
             ->orWhere(["tag" => 650, "subfield_cd" => "a"])
             ->orWhere(["tag" => 250, "subfield_cd" => "a"])

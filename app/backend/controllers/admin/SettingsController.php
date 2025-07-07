@@ -23,7 +23,6 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -60,14 +59,6 @@ class SettingsController extends Controller
                         //'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['admin'],
-                        /* 'matchCallback' => function () {
-                      $roles = (array) Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
-                      //Yii::info($roles);
-                      if (array_key_exists("admin", $roles)) {
-                      return true;
-                      }
-                      return false;
-                      }, */
                     ],
                     [
                         'actions' => ['logout'],
@@ -91,7 +82,7 @@ class SettingsController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -102,13 +93,13 @@ class SettingsController extends Controller
     /**
      * Actualiza un modelo Settings existente.
      *
-     * @return string
+     * @return string|\yii\web\Response
      */
     public function actionLibrarySettings()
     {
         /** @var \common\models\Settings */
         $model = $this->findModel();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         $files = \yii\helpers\FileHelper::findFiles(Yii::getAlias("@frontend/../../images/logo/"), ['only' => ['*.png', '*.jpg', '*.jpeg']]);
         $files_list = [];
 
@@ -171,7 +162,8 @@ class SettingsController extends Controller
     /**
      * Finds the Settings model.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @return Settings the loaded model
+     * @return \common\models\Settings the loaded model
+     * @throws NotFoundHttpException
      */
     protected function findModel()
     {

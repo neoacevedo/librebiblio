@@ -73,7 +73,7 @@ class AdminController extends Controller
      */
     public function actions()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -89,7 +89,7 @@ class AdminController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('users/index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -98,11 +98,11 @@ class AdminController extends Controller
 
     /**
      * Describe las configuraciones disponibles de la biblioteca.
-     * @return mixed
+     * @return string
      */
     public function actionSettings()
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         return $this->render('settings/index');
     }
 
@@ -110,12 +110,12 @@ class AdminController extends Controller
      * Carga/guarda las configuraciones de la biblioteca.
      *
      * Algunas configuraciones específicas de la plataforma se crean/guardan desde los diferentes archivos de configuración.
-     * @return mixed
+     * @return string
      */
     public function actionLibrarySettings()
     {
         $model = $this->findSettingsModel();
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('settings/library_settings', ['model' => $model]);
         } else {
@@ -136,7 +136,7 @@ class AdminController extends Controller
      */
     protected function findModel(int $id)
     {
-        // \Yii::$app->language = \Yii::$app->request->getPreferredLanguage(Yii::$app->params['preferredLanguages']);
+
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
