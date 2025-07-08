@@ -1,9 +1,7 @@
 <?php
 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * Copyright, Néstor Acevedo (neoacevedo). Todos los derechos reservados.
  */
 
 namespace backend\themes\AdminLTE\assets;
@@ -11,8 +9,14 @@ namespace backend\themes\AdminLTE\assets;
 use Yii;
 use yii\web\AssetBundle;
 
+
 /**
- * Summary of ThemeAsset
+ * ThemeAsset is an asset bundle for the AdminLTE theme.
+ * 
+ * This class manages the inclusion of CSS and JavaScript files required for the AdminLTE theme
+ * in the backend of the application. It extends the AssetBundle class provided by the framework.
+ *
+ * @package backend\themes\AdminLTE\assets
  */
 class ThemeAsset extends AssetBundle
 {
