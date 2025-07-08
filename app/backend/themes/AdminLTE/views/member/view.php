@@ -24,7 +24,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
 ?>
 <div class="user-view">
     <div class="card">
-        <nav class="navbar navbar-expand navbar-white navbar-light">
+        <nav class="navbar navbar-expand">
             <?= Nav::widget([
                 'options' => ['class' => 'navbar-nav'],
                 'items' => [

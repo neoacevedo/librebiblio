@@ -1,7 +1,7 @@
 /**
  * @link https://www.neoacevedo.co
  * @copyright Copyright (c) 2022 Néstor Acevedo
- * @license https://www.neoacevedo.co/license
+ * @license LICENSE.md
  */
 
 (function ($) {
@@ -48,36 +48,31 @@
             }
         },
         navbar_variants: function (object) {
-            var $main_header = $(".main-header");
+            let navbars = document.getElementsByClassName('navbar');
 
-            // remover los temas claro y oscuro del navbar
-            $main_header.removeClass('navbar-dark').removeClass('navbar-light');
+            for (const el of navbars) {
+                let classArr = Array.from(el.classList);
 
-            // Get class list string
-            var classList = $main_header.attr("class");
+                // validar que exista el color
+                if (classArr.length > 3) {
+                    // Remuevo la variante
+                    classArr.pop();
+                    // Ahora remuevo el color
+                    classArr.pop();
+                }
 
+                let classList = classArr.join(" ");
+                el.classList = classList;
 
-            // Creating class array by splitting class list string
-            var classArr = classList.split(" ");
+                let classes = object.value.split(" ");
 
-            // validar que exista el color
-            if (classArr.length > 3) {
-                // remover el último elemento (el color)
-                classArr.pop();
+                classes.forEach(item => {
+                    el.classList.add(item);
+                });
+
             }
 
-            $main_header.removeClass();
-
-            classList = "";
-
-            classList = classArr.join(" ");
-
-            $main_header.addClass(classList);
-
-            $main_header.addClass(object.value);
-
             setNavBarVariants(object.value);
-
         },
         dark_sidebar_variants: function (object) {
             var $main_header = $(".main-sidebar");

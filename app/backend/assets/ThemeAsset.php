@@ -26,27 +26,29 @@ class ThemeAsset extends AssetBundle
         parent::init();
         /** @var \common\models\Theme $theme */
         $theme = \common\models\Theme::find()->where(['active' => 1, 'frontend' => 0])->one();
+        $paths = explode("/", $theme->sourcePath);
+        $this->depends[] = "backend\\themes\\{$paths[2]}\\assets\\ThemeAsset";
 
-        // $this->sourcePath = Yii::getAlias("@app/themes/{$theme->name}/assets");
-        $this->sourcePath = Yii::getAlias($theme->sourcePath . "/assets");
+        // // $this->sourcePath = Yii::getAlias("@app/themes/{$theme->name}/assets");
+        // $this->sourcePath = Yii::getAlias($theme->sourcePath . "/assets");
 
-        $css_files = [];
-        $js_files = [];
+        // $css_files = [];
+        // $js_files = [];
 
-        if (file_exists($this->sourcePath . "/css")) {
-            $css_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/css", ['only' => ['*.min.css']]);
-            $css_files = str_replace($this->sourcePath . "/css", "css", $css_files);
-            natsort($css_files);
-        }
+        // if (file_exists($this->sourcePath . "/css")) {
+        //     $css_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/css", ['only' => ['*.min.css']]);
+        //     $css_files = str_replace($this->sourcePath . "/css", "css", $css_files);
+        //     natsort($css_files);
+        // }
 
-        if (file_exists($this->sourcePath . "/js")) {
-            $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js'], 'except' => ['customize.js', 'custom.js', 'demo.js']]);
-            $js_files = str_replace($this->sourcePath . "/js", "js", $js_files);
-            natsort($js_files);
-        }
+        // if (file_exists($this->sourcePath . "/js")) {
+        //     $js_files = \yii\helpers\FileHelper::findFiles($this->sourcePath . "/js", ['only' => ['*.min.js'], 'except' => ['customize.js', 'custom.js', 'demo.js']]);
+        //     $js_files = str_replace($this->sourcePath . "/js", "js", $js_files);
+        //     natsort($js_files);
+        // }
 
-        $this->css = $css_files;
-        $this->js = $js_files;
+        // $this->css = $css_files;
+        // $this->js = $js_files;
     }
 
     /**

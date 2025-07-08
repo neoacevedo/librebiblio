@@ -8,7 +8,7 @@ use yii\helpers\Html;
 backend\assets\ThemeAsset::register($this);
 $this->registerCssFile('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
 
-$assetDir = Yii::$app->assetManager->getPublishedUrl('@app/themes/AdminLTE/assets');
+$assetDir = Yii::$app->assetManager->getPublishedUrl('@app/themes/AdminLTE/assets/src');
 
 $roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->getId());
 $isAdmin = false;
