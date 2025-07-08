@@ -23,10 +23,6 @@ use DateTime;
 use common\components\storage\models\FileManager;
 use yii\web\HttpException;
 use yii\helpers\FileHelper;
-// Google Cloud
-use Google\Cloud\Storage\StorageClient;
-use Google\Cloud\Core\Exception\ServiceException as GoogleCloudStorageException;
-use Google\Cloud\Core\Timestamp;
 
 class LocalStorage extends \yii\base\Component implements StorageInterface
 {

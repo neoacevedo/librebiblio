@@ -7,8 +7,8 @@ use yii\jui\DatePicker;
 /** @var $this yii\web\View */
 /** @var backend\reports\AcquisitionsSearch $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var array|ActiveRecord[] $materialType */
-/** @var array|ActiveRecord[] $collection */
+/** @var array|\common\models\MaterialType[] $materialType */
+/** @var array|\common\models\Collection[] $collection */
 
 $this->title = Yii::t('app/reports', 'Acquisitions');
 $this->params['breadcrumbs'][] = ['label' => Yii::t("app/reports", "Reports"), 'url' => ["admin/report/index"]];
@@ -26,8 +26,8 @@ $collections = array_merge([' ' => ''], $collections);
         <div class="card-body">
             <?php
             $form = ActiveForm::begin([
-                        'action' => ['view', 'type' => $model->formName()],
-                        'method' => 'get',
+                'action' => ['view', 'type' => $model->formName()],
+                'method' => 'get',
             ]);
             ?>
 

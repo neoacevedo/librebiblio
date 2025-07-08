@@ -73,7 +73,6 @@ return [
     'Collection Cd' => '',
     'Collections' => '',
     'Contact' => '',
-    'Count' => '',
     'Create' => '',
     'Create Biblio' => '',
     'Create Biblio Copy' => '',

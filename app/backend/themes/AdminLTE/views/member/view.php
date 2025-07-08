@@ -146,37 +146,20 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
         <div class="col">
             <div class="card card-primary card-outline card-outline-tabs">
                 <div class="card-header p-0 border-bottom-0">
-                    <?= Nav::widget([
-                        'options' => ['class' => 'nav-tabs', 'role' => 'tablist'],
-                        'items' => [
-                            [
-                                'label' => Yii::t('app', 'Bibliographies Currently Checked Out'),
-                                'url' => '#bibliography-checked-out',
-                                'active' => true,
-                                'linkOptions' => [
-                                    'id' => 'checked-out-tab',
-                                    'data-toggle' => 'pill',
-                                    'role' => 'tab',
-                                    'aria-controls' => 'bibliography-checked-out',
-                                    'aria-selected' => true,
-                                ],
-                            ],
-                            [
-                                'label' => Yii::t('app', 'Bibliographies Currently On Hold'),
-                                'url' => "#bibliography-placehold",
-                                'linkOptions' => [
-                                    'id' => 'placehold-tab',
-                                    'data-toggle' => 'pill',
-                                    'aria-controls' => 'bibliography-placehold',
-                                    'role' => 'tab'
-                                ]
-                            ],
-                        ]
-                    ]); ?>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="checked-out-tab" data-bs-toggle="tab"
+                                data-bs-target="#checked-out-tab-pane"><?= Yii::t('app', 'Bibliographies Currently Checked Out') ?></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="placehold-tab" data-bs-toggle="tab"
+                                data-bs-target="#placehold-tab-pane"><?= Yii::t('app', 'Bibliographies Currently On Hold') ?></button>
+                        </li>
+                    </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="bibliography-tabContent">
-                        <div class="tab-pane fade active show" role="tabpanel" id="bibliography-checked-out"
+                        <div class="tab-pane fade active show" role="tabpanel" id="checked-out-tab-pane"
                             aria-labelledby="checked-out-tab">
                             <?= $this->render('/circulation/checkout/index', [
                                 'searchModel' => $biblioCopySearch[0],
@@ -184,7 +167,7 @@ $this->registerJsFile("@web/js/modal.js", ['depends' => ['yii\web\YiiAsset']]);
                                 'id' => $model->id
                             ]) ?>
                         </div>
-                        <div class="tab-pane fade" role="tabpanel" id="bibliography-placehold"
+                        <div class="tab-pane fade" role="tabpanel" id="placehold-tab-pane"
                             aria-labelledby="placehold-tab">
                             <?= $this->render('/circulation/placehold/index', [
                                 'searchModel' => $biblioCopySearch[1],

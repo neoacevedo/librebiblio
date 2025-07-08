@@ -32,12 +32,12 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%biblio}}".
  *
- * @property integer $id
- * @property integer $created_at
- * @property integer $updated_at
- * @property integer $updated_userid
- * @property integer $material_cd
- * @property integer $collection_cd
+ * @property int $id
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $updated_userid
+ * @property int $material_cd
+ * @property int $collection_cd
  * @property string|null $call_nmbr1 [099 a]
  * @property string|null $call_nmbr2 [099 a]
  * @property string|null $call_nmbr3

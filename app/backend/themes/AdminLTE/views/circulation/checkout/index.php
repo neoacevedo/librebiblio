@@ -1,5 +1,6 @@
 <?php
 
+use common\models\BiblioCopy;
 use common\models\MaterialType;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -10,8 +11,11 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
 <div class="biblio-index">
-    <?= Html::button(Yii::t('app', 'Check Out'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'out']),
-        'title' => Yii::t('app', 'Check Out'), 'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12']); ?>
+    <?= Html::button(Yii::t('app', 'Check Out'), [
+        'value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'out']),
+        'title' => Yii::t('app', 'Check Out'),
+        'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12'
+    ]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -39,12 +43,12 @@ use yii\widgets\Pjax;
             'renewal_count',
             [
                 'label' => Yii::t('app', 'Days Late'),
-                'value' => function ($model) {
+                'value' => function (BiblioCopy $model) {
                     $datetime1 = new DateTime($model->due_back_dt);
                     $datetime2 = new DateTime('now');
                     $interval = $datetime1->diff($datetime2);
                     $cero = 0;
-                    $diff = (int)$interval->format('%r%a');
+                    $diff = (int) $interval->format('%r%a');
                     return max($cero, $diff);
                     //greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late
                 }

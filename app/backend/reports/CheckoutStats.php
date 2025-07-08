@@ -32,6 +32,8 @@ use yii\db\ActiveRecord;
  */
 class CheckoutStats extends ActiveRecord
 {
+    private static $name = "Periodic Checkout Count";
+    private static $category = "Statistics";
 
     /**
      * @inheritdoc
@@ -40,9 +42,6 @@ class CheckoutStats extends ActiveRecord
     {
         return '{{%checkouts}}';
     }
-
-    private static $name = "Periodic Checkout Count";
-    private static $category = "Statistics";
 
     /**
      * @inheritdoc

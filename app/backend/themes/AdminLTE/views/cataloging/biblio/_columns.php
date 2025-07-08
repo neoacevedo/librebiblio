@@ -52,7 +52,7 @@ return [
         'format' => 'html',
         'value' => function (Biblio $model): string|null {
             if ($model->image_file !== '') {
-                return Html::img(src: $model->image_file, options: ['class' => 'img-fluid img-thumbnail', 'style' => 'max-width: 200px;']);
+                return Html::img(src: Yii::$app->storage->getUrl($model->image_file), options: ['class' => 'img-fluid img-thumbnail', 'style' => 'max-width: 125px;']);
             }
             return null;
         }

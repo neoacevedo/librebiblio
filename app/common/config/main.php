@@ -55,7 +55,7 @@ return [
         'storage' => [
             'class' => 'common\components\storage\LocalStorage',
             'config' => [
-                'baseUrl' => '/',
+                'baseUrl' => Yii::$app->urlManager->hostInfo,
                 'directory' => dirname(__DIR__, 3) . "/", // reemplace @webroot por @frontend o @backend según sea el caso. La ruta debe terminar con una barra diagonal
                 'extensions' => 'pdf, jpg, jpeg, gif, png, bmp, webp'
             ],

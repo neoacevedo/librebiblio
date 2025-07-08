@@ -12,9 +12,14 @@ $mbr_id = Yii::$app->request->get('id');
 ?>
 <div class="bibliosearch-index">
     <?php
-    Pjax::begin(['id' => 'pjax-checkout', 'enablePushState' => false, 'timeout' => 5000, 'clientOptions' => [
-        'replace' => false
-    ]]);
+    Pjax::begin([
+        'id' => 'pjax-checkout',
+        'enablePushState' => false,
+        'timeout' => 5000,
+        'clientOptions' => [
+            'replace' => false
+        ]
+    ]);
     ?>
     <?=
         GridView::widget([
@@ -37,7 +42,7 @@ $mbr_id = Yii::$app->request->get('id');
                     'attribute' => 'material_cd',
                     'value' => function ($model) {
                         $biblio = \common\models\Biblio::findOne(["id" => $model->bibid]);
-                        return \backend\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
+                        return \common\models\MaterialType::findOne(['id' => $biblio->material_cd])->description;
                     },
                     'label' => 'Material'
                 ],

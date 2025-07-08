@@ -10,8 +10,11 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
 <div class="biblio-index">
-    <?= Html::button(Yii::t('app', 'Check Out'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'out']),
-        'title' => Yii::t('app', 'Check Out'), 'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12']); ?>
+    <?= Html::button(Yii::t('app', 'Check Out'), [
+        'value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'out']),
+        'title' => Yii::t('app', 'Check Out'),
+        'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12'
+    ]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -41,11 +44,11 @@ use yii\widgets\Pjax;
                 'attribute' => 'days_late',
                 'label' => Yii::t('app', 'Days Late'),
                 'value' => function ($model) {
-                    $datetime1 = new DateTime($model->due_back_dt);
+                    $datetime1 = new DateTime($model->due_back_dt ?? 'now');
                     $datetime2 = new DateTime('now');
                     $interval = $datetime1->diff($datetime2);
                     $cero = 0;
-                    $diff = (int)$interval->format('%r%a');
+                    $diff = (int) $interval->format('%r%a');
                     return max($cero, $diff);
                     //greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late
                 }
