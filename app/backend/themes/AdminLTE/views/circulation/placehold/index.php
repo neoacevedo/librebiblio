@@ -11,8 +11,11 @@ use yii\widgets\Pjax;
 
 ?>
 <div class="biblio-index">
-    <?= Html::button(Yii::t('app', 'Place Hold'), ['value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'hld']),
-        'title' => Yii::t('app', 'Place Hold'), 'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12']); ?>
+    <?= Html::button(Yii::t('app', 'Place Hold'), [
+        'value' => yii\helpers\Url::to(['circulation/copy-search', 'id' => $id, 'status' => 'hld']),
+        'title' => Yii::t('app', 'Place Hold'),
+        'class' => 'showModalButton btn btn-primary col-lg-12 col-md-12 col-sm-12'
+    ]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -45,7 +48,8 @@ use yii\widgets\Pjax;
                 'label' => Yii::t('app', 'Due Back Dt'),
                 'value' => 'biblioCopy.due_back_dt'
             ],
-            ['class' => 'yii\grid\ActionColumn',
+            [
+                'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'view',
                     'delete'
@@ -60,7 +64,8 @@ use yii\widgets\Pjax;
                         return $url;
                     }
                 },
-                'template' => '{view}&nbsp;{delete}'],
+                'template' => '{view}&nbsp;{delete}'
+            ],
         ],
     ]); ?>
 </div>
